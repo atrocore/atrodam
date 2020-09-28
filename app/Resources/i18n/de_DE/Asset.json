@@ -1,0 +1,72 @@
+{
+  "labels"    : {
+    "Create Asset": "Asset erstellen",
+    "sort"        : "Sortieren"
+  },
+  "exceptions": {
+    "Code is invalid"             : "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Buchstaben, Zahlen und Zeichen \"_\" erwartet.",
+    "Such asset is already exists": "Ein solcher Vermögenswert ist bereits vorhanden"
+  },
+  "options"   : {
+    "tags": {
+      "tag1": "rot",
+      "tag2": "gelb",
+      "tag3": "grün",
+      "tag4": "blau",
+      "tag5": "Ihr Tag1"
+    },
+    "type": {
+      "Archive"          : " Archiv",
+      "Gallery Image"    : "Galerie-Bild",
+      "Description Image": "Beschreibung-Bild",
+      "Office Document"  : "Office-Dokument",
+      "Text"             : "PDF-Dokument",
+      "PDF Document"     : "PDF-Dokument"
+    }
+  },
+  "links"     : {
+    "assetCategories": "Asset Kategorien",
+    "assetMetaDatas" : "Asset Metadaten",
+    "assetVersions"  : "Asset Versionen",
+    "collection"     : "Kollektion",
+    "createdBy"      : "Erstellt vom",
+    "file"           : "Datei",
+    "image"          : "Bild",
+    "modifiedBy"     : "Geändert vom",
+    "relatedAssets"  : "Verwandte Assets",
+    "renditions"     : "Wiedergabe"
+  },
+  "fields"    : {
+    "name"           : "Vorname",
+    "isActive"       : "Aktiv",
+    "image"          : "Bild",
+    "nameOfFile"     : "Dateiname",
+    "relatedAssets"  : "Verwandte Assets",
+    "assetCategories": "Asset Kategorien",
+    "assetMetaDatas" : "Asset Metadaten",
+    "assetVersions"  : "Asset Versionen",
+    "collection"     : "Kollektion",
+    "colorDepth"     : "Farbtiefe",
+    "colorSpace"     : "Farbraum",
+    "file"           : "Datei",
+    "height"         : "Höhe",
+    "metaData"       : "Metadaten",
+    "orientation"    : "Ausrichtung",
+    "renditions"     : "Wiedergabe",
+    "size"           : "Größe",
+    "sizeUnit"       : "Größe der Einheit",
+    "tags"           : "Tags",
+    "width"          : "Breite",
+    "private"        : "Privat",
+    "code"           : "Code",
+    "assignedUser"   : "Zugewiesener Benutzer",
+    "createdAt"      : "Erstellt am",
+    "createdBy"      : "Erstellt vom",
+    "description"    : "Beschreibung",
+    "modifiedAt"     : "Geändert am",
+    "modifiedBy"     : "Geändert vom",
+    "ownerUser"      : "Inhaber",
+    "path"           : "Pfad",
+    "preview"        : "Vorschau"
+  }
+}

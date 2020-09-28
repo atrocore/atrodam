@@ -1,0 +1,13 @@
+{
+  "controller"    : "dam:controllers/block-show-list",
+  "boolFilterList": [
+    "onlyMy"
+  ],
+  "views"         : {
+    "edit": "dam:views/asset_relation/edit"
+  },
+  "modalViews" : {
+    "edit" : "dam:views/asset_relation/modals/edit",
+    "detail" : "dam:views/asset_relation/modals/detail"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "JsTree"                             : {
+    "path"     : "client/modules/dam/lib/tree.jquery.js",
+    "exportsTo": "$",
+    "exportsAs": "jsTree"
+  },
+  "crypto"                             : {
+    "path": "client/modules/dam/lib/crypto-js.min.js"
+  },
+  "codemirror"                         : {
+    "path": "client/modules/dam/lib/codemirror/codemirror.js"
+  },
+  "codemirror.addons.search"           : {
+    "path": "client/modules/dam/lib/codemirror/codemirror.addons.search.min.js"
+  },
+  "coddemiror.plugins.yaml"            : {
+    "path": "client/modules/dam/lib/codemirror/plugins/yaml.min.js"
+  },
+  "codemirros.plugins.fold.indent-fold": {
+    "path": "client/modules/dam/lib/codemirror/plugins/fold/indent-fold.min.js"
+  },
+  "codemirros.plugins.fold.foldcode": {
+    "path": "client/modules/dam/lib/codemirror/plugins/fold/foldcode.min.js"
+  },
+  "codemirros.plugins.fold.foldgutter": {
+    "path": "client/modules/dam/lib/codemirror/plugins/fold/foldgutter.min.js"
+  }
+}

@@ -1,0 +1,15 @@
+{
+    "fields": {
+        "preview": "Preview",
+        "relatedEntityName": "Related Entity Name",
+        "attributes": "Attributes",
+        "entityName": "Entity Name",
+        "entityId": "Entity Id",
+        "assetId": "Asset Id",
+        "sortOrder": "SortOrder"
+    },
+    "links": [],
+    "labels": {
+        "Create AssetRelation": "Create Asset Relation"
+    }
+}

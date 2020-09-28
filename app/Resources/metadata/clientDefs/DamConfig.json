@@ -1,0 +1,4 @@
+{
+  "controller": "dam:controllers/dam-config",
+  "iconClass": "fas fa-file-import"
+}

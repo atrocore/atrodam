@@ -1,0 +1,17 @@
+{
+    "fields": {
+        "createdBy": "Erstellt vom",
+        "modifiedBy": "Geändert vom",
+        "rendition": "Wiedergabe",
+        "value": "Wert"
+    },
+    "labels": {
+        "Create AssetMetaData": "Asset Metadaten erstellen"
+    },
+    "links": {
+        "asset": "Asset",
+        "createdBy": "Erstellt vom",
+        "modifiedBy": "Geändert vom",
+        "rendition": "Wiedergabe"
+    }
+}

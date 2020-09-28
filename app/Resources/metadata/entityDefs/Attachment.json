@@ -1,0 +1,13 @@
+{
+  "fields": {
+    "hash_md5": {
+      "type": "varchar",
+      "emHidden": true,
+      "hidden": true,
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutListDisabled": true,
+      "index": true
+    }
+  }
+}

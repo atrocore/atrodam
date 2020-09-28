@@ -1,0 +1,10 @@
+{
+    "fields": {
+        "asset": "Asset",
+        "rendition": "Rendition",
+        "value": "Value"
+    },
+    "labels": {
+        "Create AssetMetaData": "Create Asset Meta Data"
+    }
+}

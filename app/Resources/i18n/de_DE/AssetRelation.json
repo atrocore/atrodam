@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "attributes": "Attribute",
+    "createdBy": "Erstellt vom",
+    "entityId": "Entität Id",
+    "entityName": "Entität Name",
+    "modifiedBy": "Geändert vom",
+    "preview": "Vorschau",
+    "relatedEntityName": "Verwandter Entitätsname",
+    "sortOrder": "Sortierreihenfolge"
+  },
+  "labels": {
+    "Create AssetRelation": "Asset-Relation erstellen"
+  },
+  "links": {
+    "createdBy": "Erstellt vom",
+    "modifiedBy": "Geändert vom"
+  }
+}

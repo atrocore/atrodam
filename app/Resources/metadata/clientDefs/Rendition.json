@@ -1,0 +1,124 @@
+{
+  "controller"        : "dam:controllers/block-show-list",
+  "boolFilterList"    : [
+    "onlyMy"
+  ],
+  "recordViews"       : {
+    "detail": "dam:views/rendition/record/detail"
+  },
+  "views"             : {
+    "detail": "dam:views/rendition/detail"
+  },
+  "modalViews"        : {
+    "edit": "dam:views/rendition/modals/edit"
+  },
+  "sidePanels"        : {
+    "detail"     : [
+      {
+        "name" : "download",
+        "label": "Download",
+        "view" : "dam:views/rendition/record/panels/side/download/main"
+      },
+      {
+        "name" : "preview",
+        "label": "",
+        "view" : "dam:views/rendition/record/panels/side/preview/detail"
+      }
+    ],
+    "detailSmall": [
+      {
+        "name" : "preview",
+        "label": "",
+        "view" : "dam:views/rendition/record/panels/side/preview/detail"
+      }
+    ],
+    "editSmall"  : [
+      {
+        "name" : "preview",
+        "label": "",
+        "view" : "dam:views/rendition/record/panels/side/preview/detail"
+      }
+    ]
+  },
+  "relationshipPanels": {
+    "renditionMetaDatas"   : {
+      "select": false,
+      "create": false,
+      "view"  : "dam:views/rendition/record/panels/relations/meta-data/main"
+    }
+  },
+  "dynamicLogic": {
+    "fields": {
+      "type": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      },
+      "colorDepth": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "colorDepth"
+            }
+          ]
+        }
+      },
+      "colorSpace": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "colorSpace"
+            }
+          ]
+        }
+      },
+      "width": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "width"
+            }
+          ]
+        }
+      },
+      "height": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "height"
+            }
+          ]
+        }
+      },
+      "orientation": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "orientation"
+            }
+          ]
+        }
+      },
+      "size": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "size"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

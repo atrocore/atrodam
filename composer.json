@@ -1,0 +1,32 @@
+{
+  "name": "atrocore/dam",
+  "require": {
+    "atrocore/core": "~1.0.0",
+    "atrocore/dam-common": "~1.0.0",
+    "ext-gd": "*",
+    "ext-exif": "*",
+    "ext-imagick": "*",
+    "ext-yaml": "*",
+    "gumlet/php-image-resize": "1.9.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Dam\\": "app/"
+    }
+  },
+  "extra": {
+    "treoId": "Dam",
+    "name": {
+      "default": "DAM"
+    },
+    "description": {
+      "default": "Digital asset management. User-friendly mechanism of assets managing."
+    },
+    "tags": [
+      "manage",
+      "usability",
+      "files",
+      "attachments"
+    ]
+  }
+}

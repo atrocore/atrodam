@@ -1,0 +1,61 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "type"
+                }
+            ],
+            [
+                {
+                    "name": "private"
+                },
+                false
+            ],
+            [
+                {
+                    "name": "nameOfFile"
+                },
+                {
+                    "name": "file"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "Overview"
+    },
+    {
+        "rows": [
+            [
+                {
+                    "name": "colorDepth"
+                },
+                {
+                    "name": "colorSpace"
+                }
+            ],
+            [
+                {
+                    "name": "width"
+                },
+                {
+                    "name": "height"
+                }
+            ],
+            [
+                {
+                    "name": "size"
+                },
+                {
+                    "name": "orientation"
+                }
+            ]
+        ],
+        "style": "default",
+        "dynamicLogicVisible": null,
+        "customLabel": "Attributes"
+    }
+]

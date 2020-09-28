@@ -1,0 +1,18 @@
+{
+    "scopeNames": {
+        "AssetVariant": "Asset Variant",
+        "AssetRelation": "Asset Relation",
+        "AssetCategory": "Asset Category",
+        "AssetMetaData": "Asset Meta Data",
+        "AssetVersion": "Asset Version",
+        "RenditionVersion": "Rendition Version"
+    },
+    "scopeNamesPlural": {
+        "AssetVariant": "Asset Variants",
+        "AssetRelation": "Asset Relation",
+        "AssetCategory": "Asset Category",
+        "AssetMetaData": "Asset Meta Data",
+        "AssetVersion": "Asset Version",
+        "RenditionVersion": "Rendition Version"
+    }
+}

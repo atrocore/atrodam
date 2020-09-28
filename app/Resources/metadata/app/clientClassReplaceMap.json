@@ -1,0 +1,6 @@
+{
+  "views/login": [
+    "__APPEND__",
+    "dam"
+  ]
+}

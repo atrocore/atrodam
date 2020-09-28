@@ -1,0 +1,12 @@
+{
+    "dam": {
+        "label": "Dam",
+        "itemList": [
+            {
+                "url": "#DamConfig",
+                "label": "Config",
+                "description": "Config for Dam module"
+            }
+        ]
+    }
+}

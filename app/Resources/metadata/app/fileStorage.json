@@ -1,0 +1,16 @@
+{
+    "implementationClassNameMap": {
+        "DAMUploadDir": "\\Dam\\Core\\FileStorage\\DAMUploadDir"
+    },
+    "public": {
+        "folderDepth": 6,
+        "folderNameLength": 5,
+        "maxFilesInFolder": 1000
+    },
+    "private": {
+        "folderDepth": 6,
+        "folderNameLength": 5,
+        "maxFilesInFolder": 1000
+    },
+    "maxUploadFiles" : 10
+}

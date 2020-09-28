@@ -1,0 +1,84 @@
+[
+    {
+        "rows": [
+            [
+                {
+                    "name": "type"
+                },
+                {
+                    "name": "file"
+                }
+            ],
+            [
+                {
+                    "name": "name"
+                },
+                {
+                    "name": "nameOfFile"
+                }
+            ],
+            [
+                {
+                    "name": "private"
+                },
+                {
+                    "name": "code"
+                }
+            ],
+            [
+                {
+                    "name": "tags",
+                    "fullWidth": true
+                }
+            ],
+            [
+                {
+                    "name": "collection"
+                },
+                {
+                    "name": "isActive"
+                }
+            ]
+        ],
+        "style": "default",
+        "label": "Overview"
+    },
+    {
+        "rows": [
+            [
+                {
+                    "name": "size"
+                },
+                {
+                    "name": "orientation"
+                }
+            ],
+            [
+                {
+                    "name": "width"
+                },
+                {
+                    "name": "height"
+                }
+            ],
+            [
+                {
+                    "name": "colorDepth"
+                },
+                {
+                    "name": "colorSpace"
+                }
+            ]
+        ],
+        "style": "default",
+        "dynamicLogicVisible": {
+            "conditionGroup": [
+                {
+                    "type": "isNotEmpty",
+                    "attribute": "id"
+                }
+            ]
+        },
+        "customLabel": "Attributes"
+    }
+]
