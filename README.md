@@ -7,7 +7,7 @@ TreoDAM is a single page application (SPA) with an API-centric and service-orien
 ## What Are the Advantages of TreoDAM?
 
 - Many out-of-the-box features
-- Free – 100% open source, licensed under GPLv3
+- Free â€“ 100% open source, licensed under GPLv3
 - REST API
 - Service-oriented architecture (SOA)
 - Responsive and user friendly UI
@@ -25,7 +25,7 @@ TreoDAM comes with a lot of features directly out of the box, including:
 - advanced configuration and quality control;
 - automatic check for duplicates;
 - extracting of metadata information;
-- taxonomies – asset categories and tagging;
+- taxonomies â€“ asset categories and tagging;
 - asset relations;
 - content management;
 - asset collections;
@@ -59,14 +59,32 @@ Please, [ask](https://treodam.com/contact), if you want to know more.
 
 ### Installation
 
-1. Install [TreoCore](https://github.com/treolabs/treocore#installation).
+> The Installation guide is based on **Linux Mint OS**. Of course, you can use any Unix-based system, but make sure that your OS supports the following commands.<br/>
 
-2. Install the TreoDAM module via the Composer UI or by running:
+To create your new AtroDAM application, first make sure you are using PHP 7.1 or above and have [Composer](https://getcomposer.org/) installed.
 
+1. Create your new project by running the following command:
    ```
-   composer require --no-update treolabs/dam:* && composer update --no-dev
+   composer create-project atrocore/skeleton-dam my-atrodam-project
    ```
+2. Change recursively the user and group ownership for project files: 
+   ```
+   chown -R webserver_user:webserver_user my-atrodam-project/
+   ```
+   >**webserver_user** â€“ depends on your webserver and can be one of the following: www, www-data, apache, etc.
 
+3. Configure the crontab as described below.
+
+   3.1. Run the following command:
+      ```
+      crontab -e -u webserver_user
+      ```
+   3.2. Add the following configuration:
+      ```
+      * * * * * /usr/bin/php /var/www/my-atrodam-project/index.php cron
+      ```      
+
+4. Install AtroPIM following the installation wizard in the web interface. Go to http://YOUR_PROJECT/
 ## License
 
 TreoDAM is published under the GNU GPLv3 [license](https://github.com/treolabs/treodam/blob/master/LICENSE.txt).
