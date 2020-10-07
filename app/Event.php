@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Dam;
 
 use Treo\Core\ModuleManager\AbstractEvent;
+use Treo\Core\Utils\Config;
 use Treo\Core\Utils\Metadata;
 
 /**
@@ -17,20 +18,22 @@ class Event extends AbstractEvent
     /**
      * @var array
      */
-    protected $searchEntities = [
-        'Asset',
-        'AssetCategory',
-        'Collection',
-    ];
+    protected $searchEntities
+        = [
+            'Asset',
+            'AssetCategory',
+            'Collection',
+        ];
 
     /**
      * @var array
      */
-    protected $menuItems = [
-        'Asset',
-        'AssetCategory',
-        'Collection',
-    ];
+    protected $menuItems
+        = [
+            'Asset',
+            'AssetCategory',
+            'Collection',
+        ];
 
     /**
      * @inheritdoc
@@ -44,7 +47,7 @@ class Event extends AbstractEvent
         $this->addMenuItems();
 
         // add units
-//        $this->addUnit(); // @todo fix bug
+        $this->addUnit();
 
         //init DAM configs
         $this->installConfig();
@@ -60,8 +63,10 @@ class Event extends AbstractEvent
     {
         // delete global search
         $this->deleteGlobalSearchEntities();
+
         // delete menu items
         $this->deleteMenuItems();
+
         // remove applicationName
         $this->removeApplicationName();
     }
@@ -71,9 +76,9 @@ class Event extends AbstractEvent
      */
     protected function addUnit(): void
     {
-        $config         = $this->getContainer()->get('config');
-        $unitsOfMeasure = $config->get("unitsOfMeasure", []);
-        $name           = "File Size";
+        $unitsOfMeasure = $this->getConfig()->get("unitsOfMeasure", new \stdClass());
+
+        $name = "File Size";
 
         if (!property_exists($unitsOfMeasure, $name)) {
             $unitsOfMeasure->{$name} = (object)[
@@ -84,8 +89,8 @@ class Event extends AbstractEvent
                 'unitRates' => (object)[],
             ];
 
-            $config->set("unitsOfMeasure", $unitsOfMeasure);
-            $config->save();
+            $this->getConfig()->set("unitsOfMeasure", $unitsOfMeasure);
+            $this->getConfig()->save();
         }
     }
 
@@ -94,11 +99,8 @@ class Event extends AbstractEvent
      */
     protected function addGlobalSearchEntities(): void
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         // get config data
-        $globalSearchEntityList = $config->get("globalSearchEntityList", []);
+        $globalSearchEntityList = $this->getConfig()->get("globalSearchEntityList", []);
 
         foreach ($this->searchEntities as $entity) {
             if (!in_array($entity, $globalSearchEntityList)) {
@@ -107,10 +109,10 @@ class Event extends AbstractEvent
         }
 
         // set to config
-        $config->set('globalSearchEntityList', $globalSearchEntityList);
+        $this->getConfig()->set('globalSearchEntityList', $globalSearchEntityList);
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
     /**
@@ -118,21 +120,18 @@ class Event extends AbstractEvent
      */
     protected function deleteGlobalSearchEntities(): void
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         $globalSearchEntityList = [];
-        foreach ($config->get("globalSearchEntityList", []) as $entity) {
+        foreach ($this->getConfig()->get("globalSearchEntityList", []) as $entity) {
             if (!in_array($entity, $this->searchEntities)) {
                 $globalSearchEntityList[] = $entity;
             }
         }
 
         // set to config
-        $config->set('globalSearchEntityList', $globalSearchEntityList);
+        $this->getConfig()->set('globalSearchEntityList', $globalSearchEntityList);
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
 
@@ -141,13 +140,10 @@ class Event extends AbstractEvent
      */
     protected function addMenuItems()
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         // get config data
-        $tabList         = $config->get("tabList", []);
-        $quickCreateList = $config->get("quickCreateList", []);
-        $twoLevelTabList = $config->get("twoLevelTabList", []);
+        $tabList = $this->getConfig()->get("tabList", []);
+        $quickCreateList = $this->getConfig()->get("quickCreateList", []);
+        $twoLevelTabList = $this->getConfig()->get("twoLevelTabList", []);
 
         foreach ($this->menuItems as $item) {
             if (!in_array($item, $tabList)) {
@@ -162,12 +158,12 @@ class Event extends AbstractEvent
         }
 
         // set to config
-        $config->set('tabList', $tabList);
-        $config->set('quickCreateList', $quickCreateList);
-        $config->set('twoLevelTabList', $twoLevelTabList);
+        $this->getConfig()->set('tabList', $tabList);
+        $this->getConfig()->set('quickCreateList', $quickCreateList);
+        $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
     /**
@@ -175,38 +171,35 @@ class Event extends AbstractEvent
      */
     protected function deleteMenuItems()
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         // for tabList
         $tabList = [];
-        foreach ($config->get("tabList", []) as $entity) {
+        foreach ($this->getConfig()->get("tabList", []) as $entity) {
             if (!in_array($entity, $this->menuItems)) {
                 $tabList[] = $entity;
             }
         }
-        $config->set('tabList', $tabList);
+        $this->getConfig()->set('tabList', $tabList);
 
         // for quickCreateList
         $quickCreateList = [];
-        foreach ($config->get("quickCreateList", []) as $entity) {
+        foreach ($this->getConfig()->get("quickCreateList", []) as $entity) {
             if (!in_array($entity, $this->menuItems)) {
                 $quickCreateList[] = $entity;
             }
         }
-        $config->set('quickCreateList', $quickCreateList);
+        $this->getConfig()->set('quickCreateList', $quickCreateList);
 
         // for twoLevelTabList
         $twoLevelTabList = [];
-        foreach ($config->get("twoLevelTabList", []) as $entity) {
+        foreach ($this->getConfig()->get("twoLevelTabList", []) as $entity) {
             if (!in_array($entity, $this->menuItems)) {
                 $twoLevelTabList[] = $entity;
             }
         }
-        $config->set('twoLevelTabList', $twoLevelTabList);
+        $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
     /**
@@ -237,15 +230,12 @@ class Event extends AbstractEvent
      */
     protected function setApplicationName()
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         if (!$this->getMetadata()->isModuleInstalled('PIM')) {
-            $config->set('applicationName', 'TreoDAM');
+            $this->getConfig()->set('applicationName', 'AtroDAM');
         }
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
     /**
@@ -253,19 +243,17 @@ class Event extends AbstractEvent
      */
     protected function removeApplicationName()
     {
-        // get config
-        $config = $this->getContainer()->get('config');
-
         if (!$this->getMetadata()->isModuleInstalled('PIM')) {
-            $config->set('applicationName', 'TreoCore');
+            $this->getConfig()->set('applicationName', 'AtroCore');
         }
 
         // save
-        $config->save();
+        $this->getConfig()->save();
     }
 
     /**
      * Get Metadata
+     *
      * @return Metadata
      */
     protected function getMetadata(): Metadata
@@ -273,4 +261,11 @@ class Event extends AbstractEvent
         return $this->container->get('metadata');
     }
 
+    /**
+     * @return Config
+     */
+    protected function getConfig(): Config
+    {
+        return $this->getContainer()->get('config');
+    }
 }
