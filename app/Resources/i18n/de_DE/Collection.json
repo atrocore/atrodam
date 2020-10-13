@@ -1,18 +1,18 @@
 {
-    "fields": {
-        "assetCategories": "Asset Kategorien",
-        "createdBy": "Erstellt vom",
-        "isActive": "Aktiv",
-        "isDefault": "Standard",
-        "modifiedBy": "Geändert vom"
-    },
-    "labels": {
-        "Create Collection": "Kollektion erstellen"
-    },
-    "links": {
-        "assetCategories": "Asset Kategorien",
-        "assets": "Assets",
-        "createdBy": "Erstellt vom",
-        "modifiedBy": "Geändert vom"
-    }
+  "fields": {
+    "assetCategories": "Asset Kategorien",
+    "createdBy": "Erstellt vom",
+    "isActive": "Aktiv",
+    "isDefault": "Standard",
+    "modifiedBy": "Geändert vom"
+  },
+  "labels": {
+    "Create Collection": "Kollektion erstellen"
+  },
+  "links": {
+    "assetCategories": "Asset Kategorien",
+    "assets": "Assets",
+    "createdBy": "Erstellt vom",
+    "modifiedBy": "Geändert vom"
+  }
 }

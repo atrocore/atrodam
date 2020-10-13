@@ -1,15 +1,25 @@
 {
-  "scopeNames"      : {
-    "Asset": "Vermögenswert"
+  "scopeNames": {
+    "Asset": "Asset",
+    "Collection": "Kollektion",
+    "DamConfig": "DAM Konfiguration",
+    "Rendition": "Derivat",
+    "RenditionMetaData": "Derivaten Metadata"
   },
   "scopeNamesPlural": {
-    "Asset": "Vermögenswerte"
+    "Asset": "Assets",
+    "Collection": "Kollektionen",
+    "AssetRelation": "Asset Relationen",
+    "AssetVersion": "Asset Versionen",
+    "Rendition": "Derivate",
+    "RenditionMetaData": "Derivat Meta Data",
+    "RenditionVersion": "Derivatversionen"
   },
-  "exceptions"      : {
+  "exceptions": {
     "Code is invalid": "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Buchstaben, Zahlen und Zeichen \"_\" erwartet."
   },
-  "labels"          : {
-    "Preview" : "Vorschau",
+  "labels": {
+    "Preview": "Vorschau",
     "Download": "Herunterladen"
   }
 }
