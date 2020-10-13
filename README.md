@@ -63,8 +63,14 @@ Please, [ask](https://treodam.com/contact), if you want to know more.
 
 To create your new AtroDAM application, first make sure you are using PHP 7.1 or above and have [Composer](https://getcomposer.org/) installed.
 
-1. Create your new project by running the following command:
+1. Create your new project by running one of the following commands.
+
+   If you don't need the demo data, run:
    ```
+   composer create-project atrocore/skeleton-dam-no-demo my-atrodam-project
+   ```
+   If you need the demo data, run:
+    ```
    composer create-project atrocore/skeleton-dam my-atrodam-project
    ```
 2. Change recursively the user and group ownership for project files: 
