@@ -19,7 +19,6 @@
     "type": "Base",
     "module": "Dam",
     "object": true,
-    "isCustom": true,
     "hasAssignedUser": true,
     "hasTeam": true,
     "hasOwner": true
