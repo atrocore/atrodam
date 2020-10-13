@@ -1,18 +1,25 @@
 {
-    "scopeNames": {
-        "AssetVariant": "Asset Variant",
-        "AssetRelation": "Asset Relation",
-        "AssetCategory": "Asset Category",
-        "AssetMetaData": "Asset Meta Data",
-        "AssetVersion": "Asset Version",
-        "RenditionVersion": "Rendition Version"
-    },
-    "scopeNamesPlural": {
-        "AssetVariant": "Asset Variants",
-        "AssetRelation": "Asset Relation",
-        "AssetCategory": "Asset Category",
-        "AssetMetaData": "Asset Meta Data",
-        "AssetVersion": "Asset Version",
-        "RenditionVersion": "Rendition Version"
-    }
+  "scopeNames": {
+    "Asset": "Asset",
+    "DamConfig": "DAM Config",
+    "Rendition": "Rendition",
+    "RenditionMetaData": "Rendition Meta Data",
+    "Collection": "Collection",
+    "AssetVariant": "Asset Variant",
+    "AssetRelation": "Asset Relation",
+    "AssetCategory": "Asset Category",
+    "AssetMetaData": "Asset Meta Data",
+    "AssetVersion": "Asset Version",
+    "RenditionVersion": "Rendition Version"
+  },
+  "scopeNamesPlural": {
+    "Collection": "Collections",
+    "Asset": "Assets",
+    "AssetVersion": "Asset Versions",
+    "AssetRelation": "Asset Relations",
+    "AssetVariant": "Asset Variants",
+    "AssetCategory": "Asset Category",
+    "AssetMetaData": "Asset Meta Data",
+    "RenditionVersion": "Rendition Version"
+  }
 }
