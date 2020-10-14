@@ -3,7 +3,7 @@
     "assetId": "Asset ID",
     "entityId": "Entität ID",
     "attributes": "Attribute",
-    "entityName": "Entität Name",
+    "entityName": "Entitätsname",
     "preview": "Vorschau",
     "relatedEntityName": "Verwandter Entitätsname",
     "sortOrder": "Sortierreihenfolge"
