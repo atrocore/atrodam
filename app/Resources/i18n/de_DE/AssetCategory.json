@@ -1,12 +1,12 @@
 {
   "fields": {
     "categories": "Kategorien",
-    "categoryParent": "Mutter-Kategorie",
+    "categoryParent": "Parent-Kategorie",
     "categoryRouteName": "Kategoriebaum",
     "categoryRoute": "Kategoriepfad",
     "collections": "Kollektionen",
     "createdBy": "Erstellt vom",
-    "hasChild": "hat eine Tochterkategorie",
+    "hasChild": "hat eine Child-Kategorie",
     "isActive": "Aktiv",
     "modifiedBy": "Geändert vom"
   },
@@ -15,7 +15,7 @@
   },
   "links": {
     "categories": "Kategorien",
-    "categoryParent": "Mutter-Kategorie",
+    "categoryParent": "Parent-Kategorie",
     "collections": "Kollektionen",
     "createdBy": "Erstellt vom",
     "modifiedBy": "Geändert vom"
