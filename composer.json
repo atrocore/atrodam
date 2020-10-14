@@ -20,7 +20,7 @@
       "default": "DAM"
     },
     "description": {
-      "default": "Digital asset management. User-friendly mechanism of assets managing."
+      "default": "The module allows to manage digital assets of preconfigured types and to link them with other entities such as products etc."
     },
     "tags": [
       "manage",
