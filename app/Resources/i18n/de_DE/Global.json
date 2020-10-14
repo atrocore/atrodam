@@ -4,7 +4,7 @@
     "Collection": "Kollektion",
     "DamConfig": "DAM Konfiguration",
     "Rendition": "Derivat",
-    "RenditionMetaData": "Derivaten Metadata"
+    "RenditionMetaData": "Derivat-Metadata"
   },
   "scopeNamesPlural": {
     "Asset": "Assets",
@@ -12,7 +12,7 @@
     "AssetRelation": "Asset Relationen",
     "AssetVersion": "Asset Versionen",
     "Rendition": "Derivate",
-    "RenditionMetaData": "Derivat Meta Data",
+    "RenditionMetaData": "Derivat-Metadata",
     "RenditionVersion": "Derivatversionen"
   },
   "exceptions": {
