@@ -93,9 +93,6 @@ class Event extends AbstractEvent
 
         // delete menu items
         $this->deleteMenuItems();
-
-        // remove applicationName
-        $this->removeApplicationName();
     }
 
     /**
@@ -257,24 +254,11 @@ class Event extends AbstractEvent
      */
     protected function setApplicationName()
     {
-        if (!$this->getMetadata()->isModuleInstalled('PIM')) {
-            $this->getConfig()->set('applicationName', 'AtroDAM');
+        if (!in_array($this->getConfig()->get('applicationName'), ['AtroCORE'])) {
+            return;
         }
 
-        // save
-        $this->getConfig()->save();
-    }
-
-    /**
-     * Remove ApplicationName
-     */
-    protected function removeApplicationName()
-    {
-        if (!$this->getMetadata()->isModuleInstalled('PIM')) {
-            $this->getConfig()->set('applicationName', 'AtroCore');
-        }
-
-        // save
+        $this->getConfig()->set('applicationName', 'AtroDAM');
         $this->getConfig()->save();
     }
 
