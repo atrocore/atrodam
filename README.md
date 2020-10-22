@@ -4,6 +4,8 @@ AtroDAM is an open-source digital asset management system (DAM), developed by At
 
 AtroDAM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  AtroDAM allows you to gather, store, and organize all kinds of digital assets in one place.
 
+![banner](docs/_assets/atrodam-product-en.png)
+
 ## What Are the Advantages of AtroDAM?
 
 - Many out-of-the-box features
