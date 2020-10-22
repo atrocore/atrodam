@@ -1,3 +1,5 @@
+![logo](docs/_assets/AtroDAM_logo_color_250.png)
+
 # What Is AtroDAM?
 
 AtroDAM is an open-source digital asset management system (DAM), developed by AtroCore UG (haftungsbeschränkt), which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroDAM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing media assets as well as different kinds of other digital assets and their derivatives.
