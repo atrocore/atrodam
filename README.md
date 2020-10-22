@@ -1,10 +1,10 @@
-# What Is TreoDAM?
+# What Is AtroDAM?
 
-TreoDAM is an open-source digital asset management system (DAM), developed by [TreoLabs GmbH](https://treolabs.com/), which is based on the [TreoCore](https://github.com/treolabs/treocore) software platform. TreoDAM (as well as TreoCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing media assets as well as different kinds of other digital assets and their derivatives.
+AtroDAM is an open-source digital asset management system (DAM), developed by AtroCore UG (haftungsbeschränkt), which is based on the [AtroCore](https://github.com/atrocore/atrocore) software platform. AtroDAM (as well as AtroCore) is distributed under GPLv3 License and is free. It has a lot of features right out-of-the-box and thus is an excellent tool for managing media assets as well as different kinds of other digital assets and their derivatives.
 
-TreoDAM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  TreoDAM allows you to gather, store, and organize all kinds of digital assets in one place.
+AtroDAM is a single page application (SPA) with an API-centric and service-oriented architecture (SOA). It has a flexible data model based on entities and relations of all kinds among them.  AtroDAM allows you to gather, store, and organize all kinds of digital assets in one place.
 
-## What Are the Advantages of TreoDAM?
+## What Are the Advantages of AtroDAM?
 
 - Many out-of-the-box features
 - Free – 100% open source, licensed under GPLv3
@@ -12,12 +12,12 @@ TreoDAM is a single page application (SPA) with an API-centric and service-orien
 - Service-oriented architecture (SOA)
 - Responsive and user friendly UI
 - Configurable (entities, relations, layouts, labels, navigation, dashboards, etc.)
-- Extensible with [modules](https://treodam.com/product) 
-- Includes advantages of [TreoCore](https://github.com/treolabs/treocore).
+- Extensible with [modules](https://atrodam.com/product) 
+- Includes advantages of [AtroCore](https://github.com/atrocore/atrocore).
 
 ## Features
 
-TreoDAM comes with a lot of features directly out of the box, including:
+AtroDAM comes with a lot of features directly out of the box, including:
 
 - different types of media and other digital assets;
 - private and public ownership of the digital assets;
@@ -29,22 +29,22 @@ TreoDAM comes with a lot of features directly out of the box, including:
 - asset relations;
 - content management;
 - asset collections;
-- automatic versioning and creation of renditions (additional [modules](https://treodam.com/product) are needed); 
+- automatic versioning and creation of renditions (additional [modules](https://atrodam.com/product) are needed); 
 - and much more.
 
-Want to learn more about the TreoDAM functions and its advantages for you? Please, visit our [website](http://treodam.com/features)! 
+Want to learn more about the AtroDAM functions and its advantages for you? Please, visit our [website](https://atrodam.com/features)! 
 
 ## Technology
 
-TreoDAM is based on EspoCRM and uses PHP7, backbone.js, and Composer.
+AtroCore is based on EspoCRM and uses PHP7, backbone.js, and Composer.
 
-Want to know more about TreoDAM technology? Please, visit our [website](https://treodam.com/features)!
+Want to know more about AtroDAM technology? Please, visit our [website](https://atrodam.com/features)!
 
 ## Integrations
 
-TreoDAM has a REST API and can be integrated with any third-party system. The out-of-the-box TreoDAM is integrated with [TreoPIM](https://github.com/treolabs/treopim), which is our another open source application for Product Information Management.
+AtroDAM has a REST API and can be integrated with any third-party system. The out-of-the-box AtroDAM is integrated with [AtroPIM](https://github.com/atrocore/atropim), which is our another open source application for Product Information Management.
 
-Please, [ask](https://treodam.com/contact), if you want to know more.
+Please, [ask](https://atrodam.com/contact), if you want to know more.
 
 ## Requirements
 
@@ -54,8 +54,8 @@ Please, [ask](https://treodam.com/contact), if you want to know more.
 
 ## Configuration Instructions Based on Your Server
 
-- [Apache server configuration](https://github.com/treolabs/treocore/blob/master/docs/en/administration/apache-server-configuration.md)
-- [Nginx server configuration](https://github.com/treolabs/treocore/blob/master/docs/en/administration/nginx-server-configuration.md)
+- [Apache server configuration](https://github.com/atrocore/atrocore/blob/master/docs/en/administration/apache-server-configuration.md)
+- [Nginx server configuration](https://github.com/atrocore/atrocore/blob/master/docs/en/administration/nginx-server-configuration.md)
 
 ### Installation
 
@@ -93,10 +93,9 @@ To create your new AtroDAM application, first make sure you are using PHP 7.1 or
 4. Install AtroPIM following the installation wizard in the web interface. Go to http://YOUR_PROJECT/
 ## License
 
-TreoDAM is published under the GNU GPLv3 [license](https://github.com/treolabs/treodam/blob/master/LICENSE.txt).
+AtroDAM is published under the GNU GPLv3 [license](https://github.com/atrocore/atrodam/blob/master/LICENSE.txt).
 
 ## Support
 
-- TreoDAM is developed and supported by [TreoLabs GmbH](https://treolabs.com/).
-- Feel free to join [our Community](https://community.treolabs.com/).
-- To contact us, please, visit [TreoDAM Website](http://treodam.com/).
+- AtroDAM is developed and supported by AtroCore UG (haftungsbeschränkt).
+- To contact us, please, visit [AtroDAM Website](http://atrodam.com/).
