@@ -1,7 +1,6 @@
 {
   "scopeNames": {
     "Asset": "Asset",
-    "DamConfig": "DAM Config",
     "Rendition": "Rendition",
     "RenditionMetaData": "Rendition Meta Data",
     "Collection": "Collection",

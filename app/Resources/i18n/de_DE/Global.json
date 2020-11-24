@@ -2,7 +2,6 @@
   "scopeNames": {
     "Asset": "Asset",
     "Collection": "Kollektion",
-    "DamConfig": "DAM Konfiguration",
     "Rendition": "Derivat",
     "RenditionMetaData": "Derivat-Metadata"
   },

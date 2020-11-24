@@ -5,7 +5,6 @@
   "AssetRelation": "\\Dam\\Services\\AssetRelation",
   "Attachment": "\\Dam\\Services\\Attachment",
   "Collection": "\\Dam\\Services\\Collection",
-  "DamConfig": "\\Dam\\Services\\DamConfig",
   "Entity": "\\Dam\\Services\\Entity",
   "QueueRenditions": "\\Dam\\Services\\QueueRenditions",
   "Rendition": "\\Dam\\Services\\Rendition",

@@ -6,7 +6,6 @@
     "ext-gd": "*",
     "ext-exif": "*",
     "ext-imagick": "*",
-    "ext-yaml": "*",
     "gumlet/php-image-resize": "1.9.2"
   },
   "autoload": {

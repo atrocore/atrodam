@@ -4,6 +4,5 @@
   "Validator": "Dam\\Core\\Loaders\\ValidatorLoader",
   "ConfigManager": "Dam\\Core\\Loaders\\ConfigManagerLoader",
   "ImageResize": "Dam\\Core\\Loaders\\ImageResizeLoader",
-  "EntityManagerUtil": "Dam\\Core\\Loaders\\EntityManagerUtilLoader",
-  "ConsoleManager" : "Dam\\Core\\Loaders\\ConsoleManagerLoader"
+  "EntityManagerUtil": "Dam\\Core\\Loaders\\EntityManagerUtilLoader"
 }
