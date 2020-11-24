@@ -1,21 +1,4 @@
 {
-    "entity": false,
-    "layouts": false,
-    "tab": false,
-    "acl": true,
-    "aclPortal": false,
-    "aclPortalLevelList": [
-
-    ],
-    "customizable": false,
-    "importable": false,
-    "notifications": false,
-    "stream": false,
-    "disabled": false,
-    "type": "Base",
-    "module": "Dam",
-    "object": false,
-    "hasAssignedUser": false,
-    "hasTeam": false,
-    "hasOwner": false
+  "type": "Base",
+  "module": "Dam"
 }

@@ -1,50 +1,58 @@
 [
   {
-    "route" : "/AssetRelation/:entity_name/:entity_id/itemsInEntity",
+    "route": "/AssetRelation/:entity_name/:entity_id/itemsInEntity",
     "method": "get",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "itemsInEntity"
+      "action": "itemsInEntity"
     }
   },
   {
-    "route" : "/AssetRelation/byEntity/:entity_name/:entity_id",
+    "route": "/AssetRelation/byEntity/:entity_name/:entity_id",
     "method": "get",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "byEntity"
+      "action": "byEntity"
     }
   },
   {
-    "route" : "/AssetRelation/:entity_name/:entity_id/sortOrder",
+    "route": "/AssetRelation/:entity_name/:entity_id/sortOrder",
     "method": "PUT",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "sortOrder"
+      "action": "sortOrder"
     }
   },
   {
-    "route" : "/AssetRelation/EntityList/:asset_id",
+    "route": "/AssetRelation/EntityList/:asset_id",
     "method": "GET",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "entityList"
+      "action": "entityList"
     }
   },
   {
-    "route" : "/AssetRelation/byAsset/:asset_id",
+    "route": "/AssetRelation/byAsset/:asset_id",
     "method": "GET",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "byAsset"
+      "action": "byAsset"
     }
   },
   {
-    "route" : "/AssetRelation/update/by",
+    "route": "/AssetRelation/update/by",
     "method": "POST",
     "params": {
       "controller": "AssetRelation",
-      "action"    : "updateBy"
+      "action": "updateBy"
+    }
+  },
+  {
+    "route": "/DamConfig",
+    "method": "GET",
+    "params": {
+      "controller": "DamConfig",
+      "action": "read"
     }
   }
 ]

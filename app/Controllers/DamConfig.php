@@ -1,5 +1,4 @@
-
-
+<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,38 +27,20 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/dam-config/index', 'view',
-    Dep => Dep.extend({
-        template: "dam:dam-config/index",
-        
-        events: {
-            'click button[data-action="save"]': function (e) {
-                this._saveConfig();
-            },
-            
-            'click button[data-action="cancel"]': function (e) {
-                this._rollbackConfig();
-            }
-        },
-        
-        _rollbackConfig() {
-            this.getView("editor").rollback();
-        },
-        
-        _saveConfig() {
-            this.getView("editor").save();
-        },
-        
-        setup() {
-            Dep.prototype.setup.call(this);
-            
-            this.createEditorView();
-        },
-        
-        createEditorView() {
-            this.createView("editor", "dam:views/dam-config/editor", {
-                "el": this.options.el + " > .import-container"
-            });
-        }
-    })
-);
+declare(strict_types=1);
+
+namespace Dam\Controllers;
+
+/**
+ * Class DamConfig
+ */
+class DamConfig extends AbstractController
+{
+    /**
+     * @inheritDoc
+     */
+    public function actionRead($params, $data, $request)
+    {
+        return $this->getContainer()->get("ConfigManager")->getConfig();
+    }
+}

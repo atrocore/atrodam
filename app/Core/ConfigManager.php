@@ -50,7 +50,6 @@ class ConfigManager
     protected $config;
 
     const PATH_TO_DAM    = "data/dam";
-    const PATH_TO_CONFIG = self::PATH_TO_DAM . "/config.php";
 
     /**
      * ConfigManager constructor.
@@ -113,7 +112,8 @@ class ConfigManager
     public function getConfig()
     {
         if (!$this->config) {
-            $this->config = include_once self::PATH_TO_CONFIG;
+            // get config from DB
+            $this->config = include_once self::PATH_TO_DAM . "/config.php";
         }
 
         return $this->config;

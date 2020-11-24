@@ -76,9 +76,6 @@ class Event extends AbstractEvent
         // add units
         $this->addUnit();
 
-        //init DAM configs
-        $this->installConfig();
-
         // set applicationName
         $this->setApplicationName();
     }
@@ -224,29 +221,6 @@ class Event extends AbstractEvent
 
         // save
         $this->getConfig()->save();
-    }
-
-    /**
-     * @return bool
-     */
-    protected function installConfig()
-    {
-        if (file_exists("data/dam/config.yaml")) {
-            return true;
-        }
-
-        $damModule = $this->getContainer()->get('moduleManager')->getModule("Dam");
-
-        if (!is_dir("data/dam")) {
-            mkdir("data/dam");
-        }
-
-        copy($damModule->getPath() . "/app/config.yaml", "data/dam/config.yaml");
-
-        file_put_contents(
-            "data/dam/config.php",
-            "<?php " . PHP_EOL . "return " . $this->container->get("FileManager")->varExport(yaml_parse_file("data/dam/config.yaml")) . ";" . PHP_EOL
-        );
     }
 
     /**
