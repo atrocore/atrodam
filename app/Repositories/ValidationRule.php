@@ -31,9 +31,21 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Espo\ORM\Entity;
+
 /**
  * Class ValidationRule
  */
 class ValidationRule extends \Espo\Core\Templates\Repositories\Base
 {
+    /**
+     * @inheritDoc
+     */
+    public function beforeSave(Entity $entity, array $options = array())
+    {
+        // set name
+        $entity->set('name', $entity->get('type'));
+
+        parent::beforeSave($entity, $options);
+    }
 }
