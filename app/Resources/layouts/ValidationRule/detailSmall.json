@@ -1,0 +1,135 @@
+[
+  {
+    "rows": [
+      [
+        {
+          "name": "type"
+        },
+        false
+      ],
+      [
+        {
+          "name": "pattern"
+        },
+        {
+          "name": "message"
+        }
+      ],
+      [
+        {
+          "name": "ratio"
+        },
+        false
+      ],
+      [
+        {
+          "name": "skip"
+        },
+        false
+      ],
+      [
+        {
+          "name": "min"
+        },
+        {
+          "name": "max"
+        }
+      ],
+      [
+        {
+          "name": "colorDepth"
+        },
+        false
+      ],
+      [
+        {
+          "name": "colorSpace"
+        },
+        false
+      ],
+      [
+        {
+          "name": "mimeList"
+        },
+        false
+      ],
+      [
+        {
+          "name": "extension"
+        },
+        false
+      ]
+    ],
+    "style": "default",
+    "label": "Overview"
+  },
+  {
+    "rows": [
+      [
+        {
+          "name": "privateMin"
+        },
+        {
+          "name": "privateMax"
+        }
+      ]
+    ],
+    "style": "default",
+    "dynamicLogicVisible": {
+      "conditionGroup": [
+        {
+          "type": "equals",
+          "attribute": "type",
+          "value": "Size"
+        }
+      ]
+    },
+    "customLabel": "Private"
+  },
+  {
+    "rows": [
+      [
+        {
+          "name": "publicMin"
+        },
+        {
+          "name": "publicMax"
+        }
+      ]
+    ],
+    "style": "default",
+    "dynamicLogicVisible": {
+      "conditionGroup": [
+        {
+          "type": "equals",
+          "attribute": "type",
+          "value": "Size"
+        }
+      ]
+    },
+    "customLabel": "Public"
+  },
+  {
+    "rows": [
+      [
+        {
+          "name": "minWidth"
+        },
+        {
+          "name": "minHeight"
+        }
+      ]
+    ],
+    "style": "default",
+    "dynamicLogicVisible": {
+      "conditionGroup": [
+        {
+          "type": "equals",
+          "attribute": "type",
+          "value": "Scale"
+        }
+      ]
+    },
+    "customLabel": "Min"
+  }
+]

@@ -177,7 +177,7 @@
     },
     "assetType": {
       "type": "link",
-      "required": true,
+      "required": false,
       "audited": false,
       "readOnly": false,
       "tooltip": false

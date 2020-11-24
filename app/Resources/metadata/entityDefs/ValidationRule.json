@@ -61,7 +61,8 @@
       "audited": false,
       "readOnly": false,
       "isMultilang": false,
-      "tooltip": false
+      "tooltip": false,
+      "prohibitedEmptyValue": true
     },
     "message": {
       "type": "varchar",

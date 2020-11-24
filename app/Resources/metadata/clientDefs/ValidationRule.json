@@ -2,5 +2,184 @@
   "controller": "controllers/record",
   "boolFilterList": [
     "onlyMy"
-  ]
+  ],
+  "dynamicLogic": {
+    "fields": {
+      "colorDepth": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Color Depth"
+            }
+          ]
+        }
+      },
+      "colorSpace": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Color Space"
+            }
+          ]
+        }
+      },
+      "type": {
+        "readOnly": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "id"
+            }
+          ]
+        }
+      },
+      "extension": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Extension"
+            }
+          ]
+        }
+      },
+      "max": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Quality"
+            }
+          ]
+        }
+      },
+      "min": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Quality"
+            }
+          ]
+        }
+      },
+      "message": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            }
+          ]
+        }
+      },
+      "mimeList": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            }
+          ]
+        }
+      },
+      "minHeight": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Scale"
+            }
+          ]
+        }
+      },
+      "minWidth": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Scale"
+            }
+          ]
+        }
+      },
+      "pattern": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            }
+          ]
+        }
+      },
+      "privateMax": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Size"
+            }
+          ]
+        }
+      },
+      "privateMin": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Size"
+            }
+          ]
+        }
+      },
+      "publicMax": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Size"
+            }
+          ]
+        }
+      },
+      "publicMin": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Size"
+            }
+          ]
+        }
+      },
+      "ratio": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Ratio"
+            }
+          ]
+        }
+      }
+    }
+  }
 }
