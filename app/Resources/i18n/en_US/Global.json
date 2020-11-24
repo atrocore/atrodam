@@ -10,7 +10,8 @@
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",
     "AssetVersion": "Asset Version",
-    "RenditionVersion": "Rendition Version"
+    "RenditionVersion": "Rendition Version",
+    "AssetType": "Asset Type"
   },
   "scopeNamesPlural": {
     "Collection": "Collections",
@@ -20,6 +21,7 @@
     "AssetVariant": "Asset Variants",
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",
-    "RenditionVersion": "Rendition Version"
+    "RenditionVersion": "Rendition Version",
+    "AssetType": "Asset Types"
   }
 }

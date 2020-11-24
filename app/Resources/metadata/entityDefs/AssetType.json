@@ -1,0 +1,80 @@
+{
+  "fields": {
+    "name": {
+      "type": "varchar",
+      "required": true,
+      "trim": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "createdAt": {
+      "type": "datetime",
+      "readOnly": true
+    },
+    "modifiedAt": {
+      "type": "datetime",
+      "readOnly": true
+    },
+    "createdBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "modifiedBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "nature": {
+      "type": "enum",
+      "required": true,
+      "options": [
+        "File",
+        "Image"
+      ],
+      "optionColors": [
+        "FFFFFF",
+        "FFFFFF"
+      ],
+      "optionsDeDe": [],
+      "default": "File",
+      "isSorted": false,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "createVersion": {
+      "notNull": true,
+      "type": "bool",
+      "default": false,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    }
+  },
+  "links": {
+    "createdBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
+    "modifiedBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    }
+  },
+  "collection": {
+    "sortBy": "createdAt",
+    "asc": false
+  },
+  "indexes": {
+    "name": {
+      "columns": [
+        "name",
+        "deleted"
+      ]
+    }
+  }
+}
