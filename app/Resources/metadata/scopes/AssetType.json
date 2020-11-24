@@ -4,7 +4,7 @@
   "tab": false,
   "acl": false,
   "aclPortal": false,
-  "customizable": false,
+  "customizable": true,
   "importable": false,
   "notifications": false,
   "type": "Base",

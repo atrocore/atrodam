@@ -1,0 +1,22 @@
+[
+  {
+    "rows": [
+      [
+        {
+          "name": "name"
+        },
+        false
+      ],
+      [
+        {
+          "name": "nature"
+        },
+        {
+          "name": "createVersion"
+        }
+      ]
+    ],
+    "style": "default",
+    "label": "Overview"
+  }
+]

@@ -1,9 +1,12 @@
 {
   "fields": {
     "nature": "Nature",
-    "createVersion": "Create Version"
+    "createVersion": "Create Version",
+    "assets": "Assets"
   },
-  "links": [],
+  "links": {
+    "assets": "Assets"
+  },
   "labels": {
     "Create AssetType": "Create Asset Type"
   }

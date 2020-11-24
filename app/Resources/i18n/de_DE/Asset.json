@@ -7,23 +7,6 @@
     "Code is invalid": "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Kleinbuchstaben, Zahlen und Unterstrich zugelassen.",
     "Such asset is already exists": "Ein solcher Asset ist bereits vorhanden."
   },
-  "options": {
-    "tags": {
-      "tag1": "rot",
-      "tag2": "gelb",
-      "tag3": "grün",
-      "tag4": "blau",
-      "tag5": "schwarz"
-    },
-    "type": {
-      "Archive": " Archiv",
-      "Gallery Image": "Galerie-Bild",
-      "Description Image": "Beschreibungsbild",
-      "Office Document": "Office-Dokument",
-      "Text": "Text",
-      "PDF Document": "PDF-Dokument"
-    }
-  },
   "links": {
     "renditions": "Derivate",
     "assetCategories": "Asset Kategorien",
@@ -35,6 +18,7 @@
     "relatedAssets": "Verwandte Assets"
   },
   "fields": {
+    "assetType": "Typ",
     "renditions": "Derivate",
     "isActive": "Aktiv",
     "image": "Bild",

@@ -1,47 +1,37 @@
 {
-  "labels" : {
+  "labels": {
     "sort": "Sort"
   },
-  "fields" : {
-    "tests"          : "Tests",
-    "isActive"       : "Active",
-    "image"          : "Image",
-    "nameOfFile"     : "File Name",
-    "relatedAssets"  : "Related Assets",
+  "fields": {
+    "isActive": "Active",
+    "image": "Image",
+    "nameOfFile": "File Name",
+    "relatedAssets": "Related Assets",
     "assetCategories": "Asset Categories",
-    "assetMetaDatas" : "Asset Meta Datas",
-    "assetVersions"  : "Asset Versions",
-    "collection"     : "Collection",
-    "colorDepth"     : "Color Depth",
-    "colorSpace"     : "Color Space",
-    "file"           : "File",
-    "height"         : "Height",
-    "metaData"       : "Meta Data",
-    "orientation"    : "Orientation",
-    "renditions"     : "Renditions",
-    "size"           : "Size",
-    "sizeUnit"       : "Size Unit",
-    "tags"           : "Tags",
-    "width"          : "Width",
-    "private"        : "Private",
-    "code"           : "Code",
-    "preview"        : "Preview"
+    "assetMetaDatas": "Asset Meta Datas",
+    "assetVersions": "Asset Versions",
+    "assetType": "Type",
+    "collection": "Collection",
+    "colorDepth": "Color Depth",
+    "colorSpace": "Color Space",
+    "file": "File",
+    "height": "Height",
+    "metaData": "Meta Data",
+    "orientation": "Orientation",
+    "renditions": "Renditions",
+    "size": "Size",
+    "sizeUnit": "Size Unit",
+    "tags": "Tags",
+    "width": "Width",
+    "private": "Private",
+    "code": "Code",
+    "preview": "Preview"
   },
-  "links"  : {
-    "tests"          : "Tests",
+  "links": {
     "assetCategories": "Asset Categories",
-    "assetMetaDatas" : "Asset Meta Datas",
-    "assetVersions"  : "Asset Versions",
-    "renditions"     : "Renditions",
-    "relatedAssets"  : "Related Assets"
-  },
-  "options": {
-    "tags": {
-      "tag1": "red",
-      "tag2": "yellow",
-      "tag3": "green",
-      "tag4": "blue",
-      "tag5": "your tag1"
-    }
+    "assetMetaDatas": "Asset Meta Datas",
+    "assetVersions": "Asset Versions",
+    "renditions": "Renditions",
+    "relatedAssets": "Related Assets"
   }
 }

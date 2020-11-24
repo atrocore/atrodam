@@ -37,13 +37,13 @@
         "FFFFFF",
         "FFFFFF"
       ],
-      "optionsDeDe": [],
       "default": "File",
       "isSorted": false,
       "audited": false,
       "readOnly": false,
       "isMultilang": false,
-      "tooltip": false
+      "tooltip": false,
+      "prohibitedEmptyValue": true
     },
     "createVersion": {
       "notNull": true,
@@ -53,6 +53,13 @@
       "readOnly": false,
       "isMultilang": false,
       "tooltip": false
+    },
+    "assets": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "noLoad": true,
+      "importDisabled": true
     }
   },
   "links": {
@@ -63,6 +70,12 @@
     "modifiedBy": {
       "type": "belongsTo",
       "entity": "User"
+    },
+    "assets": {
+      "type": "hasMany",
+      "foreign": "assetType",
+      "entity": "Asset",
+      "audited": false
     }
   },
   "collection": {

@@ -1,340 +1,314 @@
 {
-  "fields"    : {
-    "preview"        : {
-      "type"                    : "varchar",
-      "view"                    : "dam:views/asset/fields/preview",
-      "notStorable"             : true,
-      "layoutDetailDisabled"    : true,
+  "fields": {
+    "preview": {
+      "type": "varchar",
+      "view": "dam:views/asset/fields/preview",
+      "notStorable": true,
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true
     },
-    "height"         : {
-      "type"             : "int",
-      "required"         : false,
-      "readOnly"         : true,
+    "height": {
+      "type": "int",
+      "required": false,
+      "readOnly": true,
       "disableFormatting": false,
-      "audited"          : false,
-      "tooltip"          : false
+      "audited": false,
+      "tooltip": false
     },
-    "width"          : {
-      "type"             : "int",
-      "required"         : false,
-      "readOnly"         : true,
+    "width": {
+      "type": "int",
+      "required": false,
+      "readOnly": true,
       "disableFormatting": false,
-      "audited"          : false,
-      "tooltip"          : false
+      "audited": false,
+      "tooltip": false
     },
-    "colorSpace"     : {
-      "type"    : "varchar",
+    "colorSpace": {
+      "type": "varchar",
       "required": false,
-      "trim"    : true,
+      "trim": true,
       "readOnly": true,
-      "audited" : false,
-      "tooltip" : false
+      "audited": false,
+      "tooltip": false
     },
-    "colorDepth"     : {
-      "type"    : "varchar",
+    "colorDepth": {
+      "type": "varchar",
       "required": false,
-      "trim"    : true,
+      "trim": true,
       "readOnly": true,
-      "audited" : false,
-      "tooltip" : false
+      "audited": false,
+      "tooltip": false
     },
-    "orientation"    : {
-      "type"    : "varchar",
+    "orientation": {
+      "type": "varchar",
       "required": false,
-      "trim"    : true,
+      "trim": true,
       "readOnly": true,
-      "audited" : false,
-      "tooltip" : false
+      "audited": false,
+      "tooltip": false
     },
-    "isActive"       : {
-      "notNull" : true,
-      "type"    : "bool",
-      "default" : true,
-      "audited" : false,
+    "isActive": {
+      "notNull": true,
+      "type": "bool",
+      "default": true,
+      "audited": false,
       "readOnly": false,
-      "tooltip" : false
+      "tooltip": false
     },
-    "tags"           : {
-      "type"            : "multiEnum",
+    "tags": {
+      "type": "multiEnum",
       "storeArrayValues": true,
-      "required"        : false,
-      "fontSize"        : 1,
-      "options"         : [
+      "required": false,
+      "fontSize": 1,
+      "options": [
         "tag1",
         "tag2",
         "tag3",
         "tag4",
         "tag5"
       ],
-      "optionColors"    : {
+      "optionColors": {
         "tag1": "FF0000",
         "tag2": "FFFF00",
         "tag3": "00FF00",
         "tag4": "0000FF",
         "tag5": "00FFFF"
       },
-      "audited"         : false,
-      "readOnly"        : false
+      "audited": false,
+      "readOnly": false
     },
-    "renditions"     : {
-      "type"                    : "linkMultiple",
-      "layoutDetailDisabled"    : true,
+    "renditions": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "noLoad"                  : true,
-      "importDisabled"          : true
+      "noLoad": true,
+      "importDisabled": true
     },
-    "collection"     : {
-      "type"    : "link",
+    "collection": {
+      "type": "link",
       "required": true
     },
-    "assetMetaDatas" : {
-      "type"                    : "linkMultiple",
-      "layoutDetailDisabled"    : true,
+    "assetMetaDatas": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "noLoad"                  : true,
-      "importDisabled"          : true
+      "noLoad": true,
+      "importDisabled": true
     },
-    "path"           : {
-      "type"                    : "varchar",
-      "emHidden"                : true,
-      "hidden"                  : true,
-      "layoutDetailDisabled"    : true,
+    "path": {
+      "type": "varchar",
+      "emHidden": true,
+      "hidden": true,
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "layoutListDisabled"      : true
+      "layoutListDisabled": true
     },
     "assetCategories": {
-      "type"                    : "linkMultiple",
-      "layoutDetailDisabled"    : true,
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "importDisabled"          : true,
-      "noLoad"                  : true
+      "importDisabled": true,
+      "noLoad": true
     },
-    "name"           : {
-      "type"       : "varchar",
-      "required"   : true,
-      "trim"       : true,
-      "isMultilang": true,
-      "view"       : "dam:views/asset/fields/name"
-    },
-    "nameOfFile"     : {
-      "type"    : "varchar",
+    "name": {
+      "type": "varchar",
       "required": true,
-      "trim"    : true,
-      "view"    : "dam:views/asset/fields/name-of-file"
+      "trim": true,
+      "isMultilang": true,
+      "view": "dam:views/asset/fields/name"
     },
-    "description"    : {
-      "type"       : "text",
-      "rows"       : 4,
+    "nameOfFile": {
+      "type": "varchar",
+      "required": true,
+      "trim": true,
+      "view": "dam:views/asset/fields/name-of-file"
+    },
+    "description": {
+      "type": "text",
+      "rows": 4,
       "lengthOfCut": 400,
       "isMultilang": true
     },
-    "metaData"       : {
+    "metaData": {
       "type": "text"
     },
-    "createdAt"      : {
-      "type"    : "datetime",
+    "createdAt": {
+      "type": "datetime",
       "readOnly": true
     },
-    "modifiedAt"     : {
-      "type"    : "datetime",
+    "modifiedAt": {
+      "type": "datetime",
       "readOnly": true
     },
-    "createdBy"      : {
-      "type"    : "link",
+    "createdBy": {
+      "type": "link",
       "readOnly": true,
-      "view"    : "views/fields/user"
+      "view": "views/fields/user"
     },
-    "modifiedBy"     : {
-      "type"    : "link",
+    "modifiedBy": {
+      "type": "link",
       "readOnly": true,
-      "view"    : "views/fields/user"
+      "view": "views/fields/user"
     },
-    "assignedUser"   : {
-      "type"    : "link",
+    "assignedUser": {
+      "type": "link",
       "required": true,
-      "view"    : "views/fields/assigned-user"
+      "view": "views/fields/assigned-user"
     },
-    "teams"          : {
+    "teams": {
       "type": "linkMultiple",
       "view": "views/fields/teams"
     },
-    "private"        : {
-      "notNull" : true,
-      "type"    : "bool",
-      "default" : false,
-      "audited" : false,
+    "private": {
+      "notNull": true,
+      "type": "bool",
+      "default": false,
+      "audited": false,
       "readOnly": false,
-      "tooltip" : false
+      "tooltip": false
     },
-    "code"           : {
-      "type"                    : "varchar",
+    "code": {
+      "type": "varchar",
       "layoutMassUpdateDisabled": true,
-      "required"                : true,
-      "trim"                    : true,
-      "emHidden"                : true,
-      "view"                    : "dam:views/fields/code-from-name"
+      "required": true,
+      "trim": true,
+      "emHidden": true,
+      "view": "dam:views/fields/code-from-name"
     },
-    "type"           : {
-      "type"                : "enum",
-      "required"            : false,
-      "fontSize"            : 1,
-      "options"             : [
-        "Gallery Image",
-        "Description Image",
-        "Icon",
-        "Office Document",
-        "Text",
-        "CSV",
-        "PDF Document",
-        "Archive"
-      ],
-      "optionColors"        : {
-        "File"             : "fff",
-        "PDF"              : "fff",
-        "Image"            : "fff",
-        "Icon"             : "fff",
-        "Description Image": "fff",
-        "Gallery Image"    : "fff",
-        "Office Document"  : "fff",
-        "Text"             : "fff",
-        "CSV"              : "fff",
-        "PDF Document"     : "fff",
-        "Archive"          : "fff"
-      },
-      "default"             : "Gallery Image",
-      "isSorted"            : false,
-      "audited"             : false,
-      "readOnly"            : false,
-      "tooltip"             : false,
-      "prohibitedEmptyValue": true
+    "assetType": {
+      "type": "link",
+      "required": true,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
     },
-    "file"           : {
-      "type"                    : "file",
-      "required"                : true,
-      "sourceList"              : [],
-      "audited"                 : false,
-      "tooltip"                 : false,
-      "view"                    : "dam:views/asset/fields/file",
+    "file": {
+      "type": "file",
+      "required": true,
+      "sourceList": [],
+      "audited": false,
+      "tooltip": false,
+      "view": "dam:views/asset/fields/file",
       "layoutMassUpdateDisabled": true
     },
-    "size"           : {
-      "type"    : "unit",
+    "size": {
+      "type": "unit",
       "required": false,
-      "measure" : "File Size",
-      "audited" : false,
+      "measure": "File Size",
+      "audited": false,
       "readOnly": true,
-      "tooltip" : false
+      "tooltip": false
     },
-    "relatedAssets"  : {
-      "type"                    : "linkMultiple",
-      "layoutDetailDisabled"    : true,
+    "relatedAssets": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "importDisabled"          : true,
-      "noLoad"                  : true
+      "importDisabled": true,
+      "noLoad": true
     }
   },
-  "links"     : {
-    "renditions"     : {
-      "type"               : "hasMany",
-      "foreign"            : "asset",
-      "entity"             : "Rendition",
-      "audited"            : false,
-      "entityAsset"        : false,
+  "links": {
+    "assetType": {
+      "type": "belongsTo",
+      "foreign": "assets",
+      "entity": "AssetType",
+      "audited": false
+    },
+    "renditions": {
+      "type": "hasMany",
+      "foreign": "asset",
+      "entity": "Rendition",
+      "audited": false,
+      "entityAsset": false,
       "disableMassRelation": true
     },
-    "collection"     : {
-      "type"       : "belongsTo",
-      "foreign"    : "assets",
-      "entity"     : "Collection",
-      "audited"    : false,
+    "collection": {
+      "type": "belongsTo",
+      "foreign": "assets",
+      "entity": "Collection",
+      "audited": false,
       "entityAsset": false
     },
-    "assetMetaDatas" : {
-      "type"               : "hasMany",
-      "foreign"            : "asset",
-      "entity"             : "AssetMetaData",
-      "audited"            : false,
-      "entityAsset"        : false,
+    "assetMetaDatas": {
+      "type": "hasMany",
+      "foreign": "asset",
+      "entity": "AssetMetaData",
+      "audited": false,
+      "entityAsset": false,
       "disableMassRelation": true
     },
-    "createdBy"      : {
-      "type"       : "belongsTo",
-      "entity"     : "User",
+    "createdBy": {
+      "type": "belongsTo",
+      "entity": "User",
       "entityAsset": false
     },
-    "modifiedBy"     : {
-      "type"       : "belongsTo",
-      "entity"     : "User",
+    "modifiedBy": {
+      "type": "belongsTo",
+      "entity": "User",
       "entityAsset": false
     },
-    "assignedUser"   : {
-      "type"       : "belongsTo",
-      "entity"     : "User",
+    "assignedUser": {
+      "type": "belongsTo",
+      "entity": "User",
       "entityAsset": false
     },
-    "teams"          : {
-      "type"                       : "hasMany",
-      "entity"                     : "Team",
-      "relationName"               : "EntityTeam",
+    "teams": {
+      "type": "hasMany",
+      "entity": "Team",
+      "relationName": "EntityTeam",
       "layoutRelationshipsDisabled": true,
-      "entityAsset"                : false
+      "entityAsset": false
     },
-    "file"           : {
-      "type"       : "belongsTo",
-      "entity"     : "Attachment",
+    "file": {
+      "type": "belongsTo",
+      "entity": "Attachment",
       "skipOrmDefs": true,
       "entityAsset": false
     },
     "assetCategories": {
-      "type"               : "hasMany",
-      "relationName"       : "assetCategoryAsset",
-      "foreign"            : "assets",
-      "entity"             : "AssetCategory",
-      "audited"            : false,
-      "entityAsset"        : false,
+      "type": "hasMany",
+      "relationName": "assetCategoryAsset",
+      "foreign": "assets",
+      "entity": "AssetCategory",
+      "audited": false,
+      "entityAsset": false,
       "disableMassRelation": true
     },
-    "relatedAssets"  : {
-      "type"               : "hasMany",
-      "relationName"       : "assetAsset",
-      "foreign"            : "assetsLeft",
-      "entity"             : "Asset",
-      "audited"            : false,
-      "midKeys"            : [
+    "relatedAssets": {
+      "type": "hasMany",
+      "relationName": "assetAsset",
+      "foreign": "assetsLeft",
+      "entity": "Asset",
+      "audited": false,
+      "midKeys": [
         "leftId",
         "rightId"
       ],
       "disableMassRelation": true
     },
-    "assetsLeft"     : {
-      "type"                       : "hasMany",
-      "relationName"               : "assetAsset",
-      "foreign"                    : "relatedAssets",
-      "entity"                     : "Asset",
+    "assetsLeft": {
+      "type": "hasMany",
+      "relationName": "assetAsset",
+      "foreign": "relatedAssets",
+      "entity": "Asset",
       "layoutRelationshipsDisabled": true,
-      "audited"                    : false,
-      "midKeys"                    : [
+      "audited": false,
+      "midKeys": [
         "rightId",
         "leftId"
       ],
-      "disableMassRelation"        : true
+      "disableMassRelation": true
     }
   },
   "collection": {
     "sortBy": "createdAt",
-    "asc"   : false
+    "asc": false
   },
-  "indexes"   : {
-    "name"        : {
+  "indexes": {
+    "name": {
       "columns": [
         "name",
         "deleted"
-      ]
-    },
-    "type"        : {
-      "columns": [
-        "type"
       ]
     },
     "assignedUser": {
