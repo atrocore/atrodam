@@ -10,7 +10,8 @@
     "AssetMetaData": "Asset Meta Data",
     "AssetVersion": "Asset Version",
     "RenditionVersion": "Rendition Version",
-    "AssetType": "Asset Type"
+    "AssetType": "Asset Type",
+    "ValidationRule": "Validation Rule"
   },
   "scopeNamesPlural": {
     "Collection": "Collections",
@@ -21,6 +22,7 @@
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",
     "RenditionVersion": "Rendition Version",
-    "AssetType": "Asset Types"
+    "AssetType": "Asset Types",
+    "validationRules": "Validation Rules"
   }
 }

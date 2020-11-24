@@ -5,9 +5,6 @@
       "required": true,
       "trim": true
     },
-    "description": {
-      "type": "text"
-    },
     "createdAt": {
       "type": "datetime",
       "readOnly": true
@@ -60,6 +57,13 @@
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
       "importDisabled": true
+    },
+    "validationRules": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "noLoad": true,
+      "importDisabled": true
     }
   },
   "links": {
@@ -75,6 +79,12 @@
       "type": "hasMany",
       "foreign": "assetType",
       "entity": "Asset",
+      "audited": false
+    },
+    "validationRules": {
+      "type": "hasMany",
+      "foreign": "assetType",
+      "entity": "ValidationRule",
       "audited": false
     }
   },

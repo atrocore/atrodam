@@ -2,10 +2,12 @@
   "fields": {
     "nature": "Nature",
     "createVersion": "Create Version",
-    "assets": "Assets"
+    "assets": "Assets",
+    "validationRules": "Validation Rules"
   },
   "links": {
-    "assets": "Assets"
+    "assets": "Assets",
+    "validationRules": "Validation Rules"
   },
   "labels": {
     "Create AssetType": "Create Asset Type"

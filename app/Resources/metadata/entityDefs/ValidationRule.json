@@ -1,0 +1,242 @@
+{
+  "fields": {
+    "name": {
+      "type": "varchar"
+    },
+    "createdAt": {
+      "type": "datetime",
+      "readOnly": true
+    },
+    "modifiedAt": {
+      "type": "datetime",
+      "readOnly": true
+    },
+    "createdBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "modifiedBy": {
+      "type": "link",
+      "readOnly": true,
+      "view": "views/fields/user"
+    },
+    "assetType": {
+      "type": "link"
+    },
+    "type": {
+      "type": "enum",
+      "required": true,
+      "options": [
+        "Color Depth",
+        "Color Space",
+        "CSV Validation",
+        "Extension",
+        "Mime",
+        "PDF Validation",
+        "Quality",
+        "Ratio",
+        "Scale",
+        "Size",
+        "Txt Validation",
+        "Unique"
+      ],
+      "optionColors": [
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF",
+        "FFFFFF"
+      ],
+      "optionsDeDe": [],
+      "default": "Mime",
+      "isSorted": false,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "message": {
+      "type": "varchar",
+      "required": false,
+      "trim": true,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "ratio": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "pattern": {
+      "type": "varchar",
+      "required": false,
+      "trim": true,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "skip": {
+      "notNull": true,
+      "type": "bool",
+      "default": false,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "privateMin": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "privateMax": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "publicMin": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "publicMax": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "min": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "max": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "colorDepth": {
+      "type": "array",
+      "storeArrayValues": true,
+      "required": false,
+      "noEmptyString": false,
+      "options": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "colorSpace": {
+      "type": "multiEnum",
+      "storeArrayValues": true,
+      "required": false,
+      "options": [
+        "RGB",
+        "SRGB"
+      ],
+      "optionColors": [
+        "FFFFFF",
+        "FFFFFF"
+      ],
+      "optionsDeDe": [],
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false
+    },
+    "minWidth": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "minHeight": {
+      "notNull": false,
+      "type": "float",
+      "required": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "extension": {
+      "type": "array",
+      "storeArrayValues": true,
+      "required": false,
+      "noEmptyString": false,
+      "options": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
+    "mimeList": {
+      "type": "array",
+      "storeArrayValues": true,
+      "required": false,
+      "noEmptyString": false,
+      "options": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    }
+  },
+  "links": {
+    "createdBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
+    "modifiedBy": {
+      "type": "belongsTo",
+      "entity": "User"
+    },
+    "assetType": {
+      "type": "belongsTo",
+      "foreign": "validationRules",
+      "entity": "AssetType",
+      "audited": false
+    }
+  },
+  "collection": {
+    "sortBy": "createdAt",
+    "asc": false
+  },
+  "indexes": {
+    "name": {
+      "columns": [
+        "name",
+        "deleted"
+      ]
+    }
+  }
+}
