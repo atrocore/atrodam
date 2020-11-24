@@ -5,7 +5,9 @@
         {
           "name": "type"
         },
-        false
+        {
+          "name": "skip"
+        }
       ],
       [
         {
@@ -18,12 +20,6 @@
       [
         {
           "name": "ratio"
-        },
-        false
-      ],
-      [
-        {
-          "name": "skip"
         },
         false
       ],
