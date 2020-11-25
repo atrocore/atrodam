@@ -36,6 +36,7 @@ use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class Scale
+ *
  * @package Dam\Core\Validation\Items
  */
 class Scale extends Base
@@ -45,10 +46,6 @@ class Scale extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         list ($width, $height) = getimagesize($this->attachment->get("tmpPath"));
 
         return $width > $this->params['min']['width'] && $height > $this->params['min']['height'];
@@ -59,6 +56,8 @@ class Scale extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Image must have width more than {$this->params['min']['width']} and height more than {$this->params['min']['height']}");
+        throw new BadRequest(
+            sprintf($this->exception('Image must have width more than %s and height more than %s'), $this->params['min']['width'], $this->params['min']['height'])
+        );
     }
 }

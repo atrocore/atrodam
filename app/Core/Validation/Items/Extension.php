@@ -32,7 +32,7 @@ declare(strict_types=1);
 namespace Dam\Core\Validation\Items;
 
 use Dam\Core\Validation\Base;
-use Espo\Core\Exceptions\Error;
+use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class Extension
@@ -45,18 +45,14 @@ class Extension extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()){
-            return true;
-        }
-
         return in_array(pathinfo($this->attachment->get('name'))['extension'], $this->params);
     }
 
     /**
-     * @throws Error
+     * @throws BadRequest
      */
     public function onValidateFail()
     {
-        throw new Error("Use only next extension ". implode(', ', $this->params));
+        throw new BadRequest(sprintf($this->exception('Use only next extensions %s'), implode(", ", $this->params)));
     }
 }

@@ -37,6 +37,7 @@ use Espo\Core\Exceptions\Error;
 
 /**
  * Class Mime
+ *
  * @package Dam\Core\Validation\Items
  */
 class Mime extends Base
@@ -46,10 +47,6 @@ class Mime extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         $mimeType = mime_content_type($this->attachment->get('tmpPath'));
 
         if (isset($this->params['list'])) {
@@ -66,8 +63,6 @@ class Mime extends Base
      */
     public function onValidateFail()
     {
-        $message = $this->params['message'] ?? "Incorrect MIME type";
-
-        throw new BadRequest($message);
+        throw new BadRequest($this->exception('Incorrect MIME type'));
     }
 }

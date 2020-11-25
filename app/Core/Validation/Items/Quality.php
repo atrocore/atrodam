@@ -36,6 +36,7 @@ use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class Quality
+ *
  * @package Dam\Core\Validation\Items
  */
 class Quality extends Base
@@ -46,11 +47,7 @@ class Quality extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
-        $img     = new \Imagick($this->attachment->get('tmpPath'));
+        $img = new \Imagick($this->attachment->get('tmpPath'));
         $quality = $img->getImageCompressionQuality();
 
         if ($img->getImageMimeType() !== "image/jpeg") {
@@ -65,6 +62,6 @@ class Quality extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Quality must between {$this->params['min']} and {$this->params['max']}");
+        throw new BadRequest(sprintf($this->exception('Quality must between %s and %s'), $this->params['min'], $this->params['max']));
     }
 }

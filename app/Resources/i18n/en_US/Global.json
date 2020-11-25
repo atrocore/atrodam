@@ -24,5 +24,17 @@
     "RenditionVersion": "Rendition Version",
     "AssetType": "Asset Types",
     "validationRules": "Validation Rules"
+  },
+  "exceptions": {
+    "Color depth must been in list %s": "Color depth must been in list %s",
+    "Color space must been in list %s": "Color space must been in list %s",
+    "Use only next extensions %s": "Use only next extensions %s",
+    "Incorrect MIME type": "Incorrect MIME type",
+    "Incorrect PDF document": "Incorrect PDF document",
+    "Quality must between %s and %s": "Quality must between %s and %s",
+    "Image must have ratio %s": "Image must have ratio %s",
+    "Image must have width more than %s and height more than %s": "Image must have width more than %s and height more than %s",
+    "File size should not exceed from %skb to %skb": "File size should not exceed from %skb to %skb",
+    "Duplicate file": "Duplicate file"
   }
 }

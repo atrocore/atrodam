@@ -76,7 +76,7 @@ class ColorSpace extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Color space must been in list " . implode(", ", $this->params));
+        throw new BadRequest(sprintf($this->exception('Color space must been in list %s'), implode(", ", $this->params)));
     }
 
     /**

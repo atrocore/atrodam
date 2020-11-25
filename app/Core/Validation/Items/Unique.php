@@ -46,10 +46,6 @@ class Unique extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         $md5 = md5(file_get_contents($this->attachment->get("tmpPath")));
 
         /**@var $repository Attachment* */
@@ -69,6 +65,6 @@ class Unique extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Duplicate file");
+        throw new BadRequest($this->exception('Duplicate file'));
     }
 }

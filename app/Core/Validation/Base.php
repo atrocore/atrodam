@@ -36,6 +36,7 @@ use Treo\Core\ORM\EntityManager;
 
 /**
  * Class Base
+ *
  * @package Dam\Core\Validation
  */
 abstract class Base
@@ -55,6 +56,7 @@ abstract class Base
 
     /**
      * Base constructor.
+     *
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -64,6 +66,7 @@ abstract class Base
 
     /**
      * @param $attachment
+     *
      * @return $this
      */
     public function setAttachment($attachment)
@@ -75,6 +78,7 @@ abstract class Base
 
     /**
      * @param $params
+     *
      * @return $this
      */
     public function setParams($params)
@@ -104,6 +108,7 @@ abstract class Base
 
     /**
      * @param string $name
+     *
      * @return mixed
      */
     protected function getRepository(string $name)
@@ -120,25 +125,26 @@ abstract class Base
     }
 
     /**
-     * @return bool
+     * @param string $label
+     * @param string $category
+     * @param string $scope
+     *
+     * @return string
      */
-    protected function skip()
+    protected function translate(string $label, string $category, string $scope): string
     {
-        if ($this->params['skip'] ?? false) {
-            return true;
-        }
-
-        return false;
+        return $this->container->get("language")->translate($label, $category, $scope);
     }
 
     /**
      * @param string $label
      * @param string $category
      * @param string $scope
+     *
+     * @return string
      */
-    protected function translate(string $label, string $category, string $scope)
+    protected function exception(string $label): string
     {
-        $this->container->get("language")->translate($label, $category, $scope);
+        return $this->translate($label, 'exceptions', 'Global');
     }
-
 }

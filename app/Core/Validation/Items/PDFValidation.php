@@ -36,6 +36,7 @@ use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class PDFValidation
+ *
  * @package Dam\Core\Validation\Items
  */
 class PDFValidation extends Base
@@ -45,10 +46,6 @@ class PDFValidation extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         $content = file_get_contents($this->attachment->get('tmpPath'));
 
         if (preg_match("/^%PDF-1./", $content)) {
@@ -63,6 +60,6 @@ class PDFValidation extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Incorrect PDF document");
+        throw new BadRequest($this->exception('Incorrect PDF document'));
     }
 }

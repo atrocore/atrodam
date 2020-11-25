@@ -36,6 +36,7 @@ use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class ColorDepth
+ *
  * @package Dam\Core\Validation\Items
  */
 class ColorDepth extends Base
@@ -46,10 +47,6 @@ class ColorDepth extends Base
      */
     public function validate(): bool
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         $img = new \Imagick($this->attachment->get("tmpPath"));
 
         return in_array($img->getImageDepth(), $this->params);
@@ -60,6 +57,6 @@ class ColorDepth extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest("Color depth must been in list " . implode(", ", $this->params));
+        throw new BadRequest(sprintf($this->exception('Color depth must been in list %s'), implode(", ", $this->params)));
     }
 }
