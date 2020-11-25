@@ -99,38 +99,6 @@
       "isMultilang": false,
       "tooltip": false
     },
-    "privateMin": {
-      "notNull": false,
-      "type": "float",
-      "required": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
-    },
-    "privateMax": {
-      "notNull": false,
-      "type": "float",
-      "required": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
-    },
-    "publicMin": {
-      "notNull": false,
-      "type": "float",
-      "required": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
-    },
-    "publicMax": {
-      "notNull": false,
-      "type": "float",
-      "required": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
-    },
     "min": {
       "notNull": false,
       "type": "float",

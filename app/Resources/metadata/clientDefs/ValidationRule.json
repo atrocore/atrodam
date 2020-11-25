@@ -18,6 +18,19 @@
               "value": "Color Depth"
             }
           ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Color Depth"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
+            }
+          ]
         }
       },
       "colorSpace": {
@@ -27,6 +40,19 @@
               "type": "equals",
               "attribute": "type",
               "value": "Color Space"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Color Space"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }
@@ -50,15 +76,47 @@
               "value": "Extension"
             }
           ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Extension"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
+            }
+          ]
         }
       },
       "max": {
         "visible": {
           "conditionGroup": [
             {
-              "type": "equals",
+              "type": "in",
               "attribute": "type",
-              "value": "Quality"
+              "value": [
+                "Quality",
+                "Size"
+              ]
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "in",
+              "attribute": "type",
+              "value": [
+                "Quality",
+                "Size"
+              ]
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }
@@ -67,9 +125,28 @@
         "visible": {
           "conditionGroup": [
             {
-              "type": "equals",
+              "type": "in",
               "attribute": "type",
-              "value": "Quality"
+              "value": [
+                "Quality",
+                "Size"
+              ]
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "in",
+              "attribute": "type",
+              "value": [
+                "Quality",
+                "Size"
+              ]
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }
@@ -81,6 +158,19 @@
               "type": "equals",
               "attribute": "type",
               "value": "Mime"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }
@@ -105,6 +195,19 @@
               "value": "Scale"
             }
           ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Scale"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
+            }
+          ]
         }
       },
       "minWidth": {
@@ -114,6 +217,19 @@
               "type": "equals",
               "attribute": "type",
               "value": "Scale"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Scale"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }
@@ -129,50 +245,6 @@
           ]
         }
       },
-      "privateMax": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Size"
-            }
-          ]
-        }
-      },
-      "privateMin": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Size"
-            }
-          ]
-        }
-      },
-      "publicMax": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Size"
-            }
-          ]
-        }
-      },
-      "publicMin": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Size"
-            }
-          ]
-        }
-      },
       "ratio": {
         "visible": {
           "conditionGroup": [
@@ -180,6 +252,19 @@
               "type": "equals",
               "attribute": "type",
               "value": "Ratio"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Ratio"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "skip"
             }
           ]
         }

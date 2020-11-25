@@ -5,9 +5,7 @@
         {
           "name": "type"
         },
-        {
-          "name": "skip"
-        }
+        false
       ],
       [
         {
@@ -20,6 +18,12 @@
       [
         {
           "name": "ratio"
+        },
+        false
+      ],
+      [
+        {
+          "name": "skip"
         },
         false
       ],
@@ -58,52 +62,6 @@
     ],
     "style": "default",
     "label": "Overview"
-  },
-  {
-    "rows": [
-      [
-        {
-          "name": "privateMin"
-        },
-        {
-          "name": "privateMax"
-        }
-      ]
-    ],
-    "style": "default",
-    "dynamicLogicVisible": {
-      "conditionGroup": [
-        {
-          "type": "equals",
-          "attribute": "type",
-          "value": "Size"
-        }
-      ]
-    },
-    "customLabel": "Private"
-  },
-  {
-    "rows": [
-      [
-        {
-          "name": "publicMin"
-        },
-        {
-          "name": "publicMax"
-        }
-      ]
-    ],
-    "style": "default",
-    "dynamicLogicVisible": {
-      "conditionGroup": [
-        {
-          "type": "equals",
-          "attribute": "type",
-          "value": "Size"
-        }
-      ]
-    },
-    "customLabel": "Public"
   },
   {
     "rows": [
