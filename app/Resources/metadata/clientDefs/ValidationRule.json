@@ -9,6 +9,22 @@
   },
   "dynamicLogic": {
     "fields": {
+      "skip": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "in",
+              "attribute": "type",
+              "value": [
+                "Mime",
+                "Size",
+                "Quality",
+                "Scale"
+              ]
+            }
+          ]
+        }
+      },
       "colorDepth": {
         "visible": {
           "conditionGroup": [

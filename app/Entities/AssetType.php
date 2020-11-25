@@ -31,13 +31,98 @@ declare(strict_types=1);
 
 namespace Dam\Entities;
 
+use Espo\Core\Templates\Entities\Base;
+use Espo\Core\Utils\Util;
+
 /**
  * Class AssetType
  */
-class AssetType extends \Espo\Core\Templates\Entities\Base
+class AssetType extends Base
 {
     /**
      * @var string
      */
     protected $entityType = "AssetType";
+
+    /**
+     * @return array
+     */
+    public function getValidations(): array
+    {
+        $result = [];
+
+        $validations = $this->get('validationRules');
+        if ($validations->count() > 0) {
+            foreach ($validations as $validation) {
+                $type = self::prepareType($validation->get('type'));
+
+                $data = [];
+                switch ($type) {
+                    case 'mime':
+                        $data['skip'] = $validation->get('skip');
+                        $data['pattern'] = $validation->get('pattern');
+                        $data['list'] = $validation->get('mimeList');
+                        $data['message'] = $validation->get('message');
+                        break;
+                    case 'size':
+                        $data['skip'] = $validation->get('skip');
+                        $data['private'] = [
+                            'min' => $validation->get('min'),
+                            'max' => $validation->get('max'),
+                        ];
+                        $data['public'] = [
+                            'min' => $validation->get('min'),
+                            'max' => $validation->get('max'),
+                        ];
+                        break;
+                    case 'quality':
+                        $data['skip'] = $validation->get('skip');
+                        $data['min'] = $validation->get('min');
+                        $data['max'] = $validation->get('max');
+                        break;
+                    case 'colorDepth':
+                        $data = $validation->get('colorDepth');
+                        break;
+                    case 'colorSpace':
+                        $data = $validation->get('colorSpace');
+                        break;
+                    case 'extension':
+                        $data = $validation->get('extension');
+                        break;
+                    case 'ratio':
+                        $data = $validation->get('ratio');
+                        break;
+                    case 'scale':
+                        $data['skip'] = $validation->get('skip');
+                        $data['min'] = [
+                            'width'  => $validation->get('minWidth'),
+                            'height' => $validation->get('minHeight'),
+                        ];
+                        break;
+                }
+
+                $result[$type] = $data;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRenditions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    protected static function prepareType(string $type): string
+    {
+        return Util::toCamelCase(strtolower(str_replace(' ', '_', $type)));
+    }
 }

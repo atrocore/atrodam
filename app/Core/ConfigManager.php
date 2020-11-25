@@ -35,6 +35,7 @@ use Treo\Core\Container;
 
 /**
  * Class ConfigManager
+ *
  * @package Dam\Core
  */
 class ConfigManager
@@ -49,10 +50,11 @@ class ConfigManager
      */
     protected $config;
 
-    const PATH_TO_DAM    = "data/dam";
+    const PATH_TO_DAM = "data/dam";
 
     /**
      * ConfigManager constructor.
+     *
      * @param Container $container
      */
     public function __construct(Container $container)
@@ -62,6 +64,7 @@ class ConfigManager
 
     /**
      * @param $type
+     *
      * @return string
      */
     public static function getType($type)
@@ -72,6 +75,7 @@ class ConfigManager
     /**
      * @param array $path
      * @param array $config
+     *
      * @return array|mixed|null|string
      */
     public function get(array $path, array $config = [])
@@ -93,6 +97,7 @@ class ConfigManager
 
     /**
      * @param array $path
+     *
      * @return array|mixed|string|null
      */
     public function getByType(array $path)
@@ -112,8 +117,54 @@ class ConfigManager
     public function getConfig()
     {
         if (!$this->config) {
-            // get config from DB
-            $this->config = include_once self::PATH_TO_DAM . "/config.php";
+            $result = [
+                'type'             => [
+                    'custom'  => [],
+                    'default' => [
+                        'validations' => [],
+                        'renditions'  => [],
+                    ]
+                ],
+                'attributeMapping' => [
+                    'size'        => [
+                        'field' => 'size',
+                    ],
+                    'orientation' => [
+                        'field' => 'orientation',
+                    ],
+                    'width'       => [
+                        'field' => 'width',
+                    ],
+                    'height'      => [
+                        'field' => 'height',
+                    ],
+                    'color-depth' => [
+                        'field' => 'colorDepth',
+                    ],
+                    'color-space' => [
+                        'field' => 'colorSpace',
+                    ],
+                ]
+            ];
+
+            $types = $this
+                ->container
+                ->get('entityManager')
+                ->getRepository('AssetType')
+                ->find();
+
+            if ($types->count() > 0) {
+                foreach ($types as $type) {
+                    $result['type']['custom'][$type->get('name')] = [
+                        'nature'        => strtolower($type->get('nature')),
+                        'createVersion' => $type->get('createVersion'),
+                        'validations'   => $type->getValidations(),
+                        'renditions'    => $type->getRenditions(),
+                    ];
+                }
+            }
+
+            $this->config = $result;
         }
 
         return $this->config;
