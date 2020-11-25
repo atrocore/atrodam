@@ -313,6 +313,11 @@
         "deleted"
       ]
     },
+    "type": {
+      "columns": [
+        "type"
+      ]
+    },
     "assignedUser": {
       "columns": [
         "assignedUserId",
