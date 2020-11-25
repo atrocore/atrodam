@@ -54,18 +54,22 @@ class AssetType extends Base
         $validations = $this->get('validationRules');
         if ($validations->count() > 0) {
             foreach ($validations as $validation) {
+                if (empty($validation->get('isActive'))) {
+                    continue 1;
+                }
+
                 $type = self::prepareType($validation->get('type'));
 
                 $data = [];
                 switch ($type) {
                     case 'mime':
-                        $data['skip'] = $validation->get('skip');
-                        $data['pattern'] = $validation->get('pattern');
-                        $data['list'] = $validation->get('mimeList');
-                        $data['message'] = $validation->get('message');
+                        if ($validation->get('validateBy') == 'List') {
+                            $data['list'] = $validation->get('mimeList');
+                        } elseif ($validation->get('validateBy') == 'Pattern') {
+                            $data['pattern'] = $validation->get('pattern');
+                        }
                         break;
                     case 'size':
-                        $data['skip'] = $validation->get('skip');
                         $data['private'] = [
                             'min' => $validation->get('min'),
                             'max' => $validation->get('max'),
@@ -76,7 +80,6 @@ class AssetType extends Base
                         ];
                         break;
                     case 'quality':
-                        $data['skip'] = $validation->get('skip');
                         $data['min'] = $validation->get('min');
                         $data['max'] = $validation->get('max');
                         break;
@@ -93,7 +96,6 @@ class AssetType extends Base
                         $data = $validation->get('ratio');
                         break;
                     case 'scale':
-                        $data['skip'] = $validation->get('skip');
                         $data['min'] = [
                             'width'  => $validation->get('minWidth'),
                             'height' => $validation->get('minHeight'),

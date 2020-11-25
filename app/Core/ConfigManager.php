@@ -156,10 +156,9 @@ class ConfigManager
             if ($types->count() > 0) {
                 foreach ($types as $type) {
                     $result['type']['custom'][$type->get('name')] = [
-                        'nature'        => strtolower($type->get('nature')),
-                        'createVersion' => $type->get('createVersion'),
-                        'validations'   => $type->getValidations(),
-                        'renditions'    => $type->getRenditions(),
+                        'nature'      => strtolower($type->get('nature')),
+                        'validations' => $type->getValidations(),
+                        'renditions'  => $type->getRenditions(),
                     ];
                 }
             }
