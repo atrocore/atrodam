@@ -42,13 +42,6 @@
       "tooltip": false,
       "prohibitedEmptyValue": true
     },
-    "assets": {
-      "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "noLoad": true,
-      "importDisabled": true
-    },
     "validationRules": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
@@ -65,12 +58,6 @@
     "modifiedBy": {
       "type": "belongsTo",
       "entity": "User"
-    },
-    "assets": {
-      "type": "hasMany",
-      "foreign": "assetType",
-      "entity": "Asset",
-      "audited": false
     },
     "validationRules": {
       "type": "hasMany",

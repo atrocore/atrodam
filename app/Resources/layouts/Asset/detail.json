@@ -3,7 +3,7 @@
         "rows": [
             [
                 {
-                    "name": "assetType"
+                    "name": "type"
                 },
                 {
                     "name": "file"

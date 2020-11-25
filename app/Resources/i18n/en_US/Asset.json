@@ -10,7 +10,7 @@
     "assetCategories": "Asset Categories",
     "assetMetaDatas": "Asset Meta Datas",
     "assetVersions": "Asset Versions",
-    "assetType": "Type",
+    "type": "Type",
     "collection": "Collection",
     "colorDepth": "Color Depth",
     "colorSpace": "Color Space",

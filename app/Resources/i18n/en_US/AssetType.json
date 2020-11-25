@@ -1,11 +1,9 @@
 {
   "fields": {
     "nature": "Nature",
-    "assets": "Assets",
     "validationRules": "Validation Rules"
   },
   "links": {
-    "assets": "Assets",
     "validationRules": "Validation Rules"
   },
   "labels": {

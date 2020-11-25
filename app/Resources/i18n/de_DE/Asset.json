@@ -18,7 +18,7 @@
     "relatedAssets": "Verwandte Assets"
   },
   "fields": {
-    "assetType": "Typ",
+    "type": "Typ",
     "renditions": "Derivate",
     "isActive": "Aktiv",
     "image": "Bild",

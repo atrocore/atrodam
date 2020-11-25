@@ -175,12 +175,16 @@
       "emHidden": true,
       "view": "dam:views/fields/code-from-name"
     },
-    "assetType": {
-      "type": "link",
+    "type": {
+      "type": "enum",
       "required": false,
+      "fontSize": 1,
+      "options": [],
+      "isSorted": false,
       "audited": false,
       "readOnly": false,
-      "tooltip": false
+      "tooltip": false,
+      "prohibitedEmptyValue": true
     },
     "file": {
       "type": "file",
@@ -208,12 +212,6 @@
     }
   },
   "links": {
-    "assetType": {
-      "type": "belongsTo",
-      "foreign": "assets",
-      "entity": "AssetType",
-      "audited": false
-    },
     "renditions": {
       "type": "hasMany",
       "foreign": "asset",

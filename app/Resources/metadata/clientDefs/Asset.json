@@ -165,7 +165,7 @@
           ]
         }
       },
-      "assetType"       : {
+      "type"       : {
         "readOnly": {
           "conditionGroup": [
             {

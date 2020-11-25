@@ -1,14 +1,12 @@
 {
   "fields": {
-    "nature": "Nature",
-    "assets": "Assets",
-    "validationRules": "Validation Rules"
+    "nature": "Art",
+    "validationRules": "Validierungsregel"
   },
   "links": {
-    "assets": "Assets",
-    "validationRules": "Validation Rules"
+    "validationRules": "Validierungsregel"
   },
   "labels": {
-    "Create AssetType": "Create Asset Type"
+    "Create AssetType": "Asset-Typ erstellen"
   }
 }

@@ -1,24 +1,24 @@
 {
   "fields": {
-    "validateBy": "Validate By",
-    "isActive": "Active",
-    "assetType": "Asset Type",
-    "type": "Type",
-    "ratio": "Ratio",
-    "pattern": "Pattern",
+    "validateBy": "Validieren durch",
+    "isActive": "Aktiv",
+    "assetType": "Asset-Typ",
+    "type": "Typ",
+    "ratio": "Seitenverhältnis",
+    "pattern": "Muster",
     "min": "Min",
     "max": "Max",
-    "colorDepth": "Color Depth",
-    "colorSpace": "Color Space",
-    "minWidth": "Width",
-    "minHeight": "Height",
-    "extension": "Extension",
-    "mimeList": "List"
+    "colorDepth": "Farbtiefe",
+    "colorSpace": "Farbraum",
+    "minWidth": "Breite",
+    "minHeight": "Höhe",
+    "extension": "Erweiterung",
+    "mimeList": "Liste"
   },
   "links": {
-    "assetType": "Asset Type"
+    "assetType": "Asset-Typ"
   },
   "labels": {
-    "Create ValidationRule": "Create Validation Rule"
+    "Create ValidationRule": "Validierungsregel erstellen"
   }
 }

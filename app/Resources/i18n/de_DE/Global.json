@@ -4,8 +4,8 @@
     "Collection": "Kollektion",
     "Rendition": "Derivat",
     "RenditionMetaData": "Derivat-Metadata",
-    "AssetType": "Asset Type",
-    "ValidationRule": "Validation Rule"
+    "AssetType": "Asset-Typ",
+    "ValidationRule": "Validierungsregel"
   },
   "scopeNamesPlural": {
     "Asset": "Assets",
@@ -15,8 +15,8 @@
     "Rendition": "Derivate",
     "RenditionMetaData": "Derivat-Metadata",
     "RenditionVersion": "Derivatversionen",
-    "AssetType": "Asset Types",
-    "validationRules": "Validation Rules"
+    "AssetType": "Asset-Typen",
+    "validationRules": "Validierungsregel"
   },
   "exceptions": {
     "Code is invalid": "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Buchstaben, Zahlen und Zeichen \"_\" erwartet."
