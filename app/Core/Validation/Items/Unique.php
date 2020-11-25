@@ -65,6 +65,6 @@ class Unique extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest($this->exception('Duplicate file'));
+        throw new BadRequest($this->exception('Duplicate assets are not allowed.'));
     }
 }

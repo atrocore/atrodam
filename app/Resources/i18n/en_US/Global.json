@@ -26,7 +26,7 @@
     "validationRules": "Validation Rules"
   },
   "exceptions": {
-    "Color depth must been in list %s": "Color depth must been in list %s",
+    "Color depth must be in the list %s.": "Color depth must be in the list %s.",
     "Color space must be in the list %s.": "Color space must be in the list %s.",
     "Use only files with next extensions:  %s.": "Use only files with next extensions:  %s.",
     "Asset has incorrect MIME type.": "Asset has incorrect MIME type.",
@@ -35,6 +35,6 @@
     "Image must have side ratio of %s.": "Image must have side ratio of %s.",
     "Image must have width more than %spx and height more than %spx.": "Image must have width more than %spx and height more than %spx.",
     "Asset size should be between %skb and %skb.": "Asset size should be between %skb and  %skb.",
-    "Duplicate file": "Duplicate file"
+    "Duplicate assets are not allowed.": "Duplicate assets are not allowed."
   }
 }
