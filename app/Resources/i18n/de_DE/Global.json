@@ -19,7 +19,16 @@
     "validationRules": "Validierungsregel"
   },
   "exceptions": {
-    "Code is invalid": "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Buchstaben, Zahlen und Zeichen \"_\" erwartet."
+    "Color depth must been in list %s": "Color depth must been in list %s",
+    "Color space must be in the list %s.": "Farbraum sollte in der Liste %s sein.",
+    "Use only files with next extensions:  %s.": "Nutzen Sie die Dateien nur mit folgenden Erweiterungen: %s.",
+    "Asset has incorrect MIME type.": "Asset hat einen falschen MIME-Typ.",
+    "Asset is not a PDF document.": "Asset ist kein PDF-Dokument.",
+    "Image quality must be between %s and %s.": "Bildqualität sollte zwischen %s  und %s sein.",
+    "Image must have side ratio of %s.": "Bild sollte ein Seitenverhältnis von %s haben.",
+    "Image must have width more than %spx and height more than %spx.": "Bild sollte eine Breite mehr als %spx und eine Höhe mehr als %spx haben.",
+    "Asset size should be between %skb and %skb.": "Asset-Größe sollte zwischen %skb und %skb sein.",
+    "Duplicate file": "Duplicate file"
   },
   "labels": {
     "Preview": "Vorschau",

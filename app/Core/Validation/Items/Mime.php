@@ -63,6 +63,6 @@ class Mime extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest($this->exception('Incorrect MIME type'));
+        throw new BadRequest($this->exception('Asset has incorrect MIME type.'));
     }
 }

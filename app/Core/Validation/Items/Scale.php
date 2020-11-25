@@ -57,7 +57,7 @@ class Scale extends Base
     public function onValidateFail()
     {
         throw new BadRequest(
-            sprintf($this->exception('Image must have width more than %s and height more than %s'), $this->params['min']['width'], $this->params['min']['height'])
+            sprintf($this->exception('Image must have width more than %spx and height more than %spx.'), $this->params['min']['width'], $this->params['min']['height'])
         );
     }
 }

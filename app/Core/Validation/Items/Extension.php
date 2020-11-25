@@ -53,6 +53,6 @@ class Extension extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest(sprintf($this->exception('Use only next extensions %s'), implode(", ", $this->params)));
+        throw new BadRequest(sprintf($this->exception('Use only files with next extensions:  %s.'), implode(", ", $this->params)));
     }
 }

@@ -60,6 +60,6 @@ class PDFValidation extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest($this->exception('Incorrect PDF document'));
+        throw new BadRequest($this->exception('Asset is not a PDF document.'));
     }
 }

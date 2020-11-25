@@ -27,14 +27,14 @@
   },
   "exceptions": {
     "Color depth must been in list %s": "Color depth must been in list %s",
-    "Color space must been in list %s": "Color space must been in list %s",
-    "Use only next extensions %s": "Use only next extensions %s",
-    "Incorrect MIME type": "Incorrect MIME type",
-    "Incorrect PDF document": "Incorrect PDF document",
-    "Quality must between %s and %s": "Quality must between %s and %s",
-    "Image must have ratio %s": "Image must have ratio %s",
-    "Image must have width more than %s and height more than %s": "Image must have width more than %s and height more than %s",
-    "File size should not exceed from %skb to %skb": "File size should not exceed from %skb to %skb",
+    "Color space must be in the list %s.": "Color space must be in the list %s.",
+    "Use only files with next extensions:  %s.": "Use only files with next extensions:  %s.",
+    "Asset has incorrect MIME type.": "Asset has incorrect MIME type.",
+    "Asset is not a PDF document.": "Asset is not a PDF document.",
+    "Image quality must be between %s and %s.": "Image quality must be between %s and %s.",
+    "Image must have side ratio of %s.": "Image must have side ratio of %s.",
+    "Image must have width more than %spx and height more than %spx.": "Image must have width more than %spx and height more than %spx.",
+    "Asset size should be between %skb and %skb.": "Asset size should be between %skb and  %skb.",
     "Duplicate file": "Duplicate file"
   }
 }
