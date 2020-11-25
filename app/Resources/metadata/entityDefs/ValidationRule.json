@@ -21,6 +21,14 @@
       "readOnly": true,
       "view": "views/fields/user"
     },
+    "isActive": {
+      "notNull": true,
+      "type": "bool",
+      "default": false,
+      "audited": false,
+      "readOnly": false,
+      "tooltip": false
+    },
     "assetType": {
       "type": "link"
     },
@@ -30,7 +38,6 @@
       "options": [
         "Color Depth",
         "Color Space",
-        "CSV Validation",
         "Extension",
         "Mime",
         "PDF Validation",
@@ -38,24 +45,8 @@
         "Ratio",
         "Scale",
         "Size",
-        "Txt Validation",
         "Unique"
       ],
-      "optionColors": [
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF",
-        "FFFFFF"
-      ],
-      "optionsDeDe": [],
       "default": "Mime",
       "isSorted": false,
       "audited": false,
@@ -64,15 +55,6 @@
       "tooltip": false,
       "prohibitedEmptyValue": true
     },
-    "message": {
-      "type": "varchar",
-      "required": false,
-      "trim": true,
-      "audited": false,
-      "readOnly": false,
-      "isMultilang": false,
-      "tooltip": false
-    },
     "ratio": {
       "notNull": false,
       "type": "float",
@@ -80,6 +62,21 @@
       "audited": false,
       "readOnly": false,
       "tooltip": false
+    },
+    "validateBy": {
+      "type": "enum",
+      "required": true,
+      "options": [
+        "List",
+        "Pattern"
+      ],
+      "default": "List",
+      "isSorted": false,
+      "audited": false,
+      "readOnly": false,
+      "isMultilang": false,
+      "tooltip": false,
+      "prohibitedEmptyValue": true
     },
     "pattern": {
       "type": "varchar",
@@ -90,18 +87,11 @@
       "isMultilang": false,
       "tooltip": false
     },
-    "skip": {
-      "notNull": true,
-      "type": "bool",
-      "default": false,
-      "audited": false,
-      "readOnly": false,
-      "isMultilang": false,
-      "tooltip": false
-    },
     "min": {
       "notNull": false,
-      "type": "float",
+      "type": "int",
+      "default": 0,
+      "min": 0,
       "required": false,
       "audited": false,
       "readOnly": false,
@@ -109,7 +99,8 @@
     },
     "max": {
       "notNull": false,
-      "type": "float",
+      "type": "int",
+      "min": 0,
       "required": false,
       "audited": false,
       "readOnly": false,
@@ -133,11 +124,6 @@
         "RGB",
         "SRGB"
       ],
-      "optionColors": [
-        "FFFFFF",
-        "FFFFFF"
-      ],
-      "optionsDeDe": [],
       "audited": false,
       "readOnly": false,
       "isMultilang": false,
@@ -145,7 +131,8 @@
     },
     "minWidth": {
       "notNull": false,
-      "type": "float",
+      "type": "int",
+      "min": 0,
       "required": false,
       "audited": false,
       "readOnly": false,
@@ -153,7 +140,8 @@
     },
     "minHeight": {
       "notNull": false,
-      "type": "float",
+      "type": "int",
+      "min": 0,
       "required": false,
       "audited": false,
       "readOnly": false,

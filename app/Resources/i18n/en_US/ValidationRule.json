@@ -1,11 +1,11 @@
 {
   "fields": {
+    "validateBy": "Validate By",
+    "isActive": "Active",
     "assetType": "Asset Type",
     "type": "Type",
-    "message": "Message",
     "ratio": "Ratio",
     "pattern": "Pattern",
-    "skip": "Skip",
     "min": "Min",
     "max": "Max",
     "colorDepth": "Color Depth",

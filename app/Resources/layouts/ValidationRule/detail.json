@@ -6,16 +6,26 @@
           "name": "type"
         },
         {
-          "name": "skip"
+          "name": "isActive"
         }
+      ],
+      [
+        {
+          "name": "validateBy"
+        },
+        false
       ],
       [
         {
           "name": "pattern"
         },
+        false
+      ],
+      [
         {
-          "name": "message"
-        }
+          "name": "mimeList"
+        },
+        false
       ],
       [
         {
@@ -40,12 +50,6 @@
       [
         {
           "name": "colorSpace"
-        },
-        false
-      ],
-      [
-        {
-          "name": "mimeList"
         },
         false
       ],

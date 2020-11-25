@@ -9,22 +9,6 @@
   },
   "dynamicLogic": {
     "fields": {
-      "skip": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "in",
-              "attribute": "type",
-              "value": [
-                "Mime",
-                "Size",
-                "Quality",
-                "Scale"
-              ]
-            }
-          ]
-        }
-      },
       "colorDepth": {
         "visible": {
           "conditionGroup": [
@@ -44,7 +28,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -68,7 +52,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -102,7 +86,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -132,7 +116,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -162,31 +146,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
-            }
-          ]
-        }
-      },
-      "message": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Mime"
-            }
-          ]
-        },
-        "required": {
-          "conditionGroup": [
-            {
-              "type": "equals",
-              "attribute": "type",
-              "value": "Mime"
-            },
-            {
-              "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -198,6 +158,29 @@
               "type": "equals",
               "attribute": "type",
               "value": "Mime"
+            },
+            {
+              "type": "equals",
+              "attribute": "validateBy",
+              "value": "List"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            },
+            {
+              "type": "equals",
+              "attribute": "validateBy",
+              "value": "List"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "isActive"
             }
           ]
         }
@@ -221,7 +204,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -245,7 +228,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }
@@ -257,6 +240,53 @@
               "type": "equals",
               "attribute": "type",
               "value": "Mime"
+            },
+            {
+              "type": "equals",
+              "attribute": "validateBy",
+              "value": "Pattern"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            },
+            {
+              "type": "equals",
+              "attribute": "validateBy",
+              "value": "Pattern"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "isActive"
+            }
+          ]
+        }
+      },
+      "validateBy": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            }
+          ]
+        },
+        "required": {
+          "conditionGroup": [
+            {
+              "type": "equals",
+              "attribute": "type",
+              "value": "Mime"
+            },
+            {
+              "type": "isFalse",
+              "attribute": "isActive"
             }
           ]
         }
@@ -280,7 +310,7 @@
             },
             {
               "type": "isFalse",
-              "attribute": "skip"
+              "attribute": "isActive"
             }
           ]
         }

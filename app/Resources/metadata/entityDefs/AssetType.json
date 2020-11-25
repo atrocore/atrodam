@@ -42,15 +42,6 @@
       "tooltip": false,
       "prohibitedEmptyValue": true
     },
-    "createVersion": {
-      "notNull": true,
-      "type": "bool",
-      "default": false,
-      "audited": false,
-      "readOnly": false,
-      "isMultilang": false,
-      "tooltip": false
-    },
     "assets": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
