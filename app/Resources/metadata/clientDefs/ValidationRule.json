@@ -27,7 +27,7 @@
               "value": "Color Depth"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -51,7 +51,7 @@
               "value": "Color Space"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -85,7 +85,7 @@
               "value": "Extension"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -115,7 +115,7 @@
               ]
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -145,7 +145,7 @@
               ]
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -179,7 +179,7 @@
               "value": "List"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -203,7 +203,7 @@
               "value": "Scale"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -227,7 +227,7 @@
               "value": "Scale"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -261,7 +261,7 @@
               "value": "Pattern"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -285,7 +285,7 @@
               "value": "Mime"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]
@@ -309,7 +309,7 @@
               "value": "Ratio"
             },
             {
-              "type": "isFalse",
+              "type": "isTrue",
               "attribute": "isActive"
             }
           ]

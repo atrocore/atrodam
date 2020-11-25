@@ -44,8 +44,7 @@
         "Quality",
         "Ratio",
         "Scale",
-        "Size",
-        "Unique"
+        "Size"
       ],
       "default": "Mime",
       "isSorted": false,
