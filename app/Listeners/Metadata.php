@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
+use Espo\Core\Utils\Json;
 use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
 
@@ -39,6 +40,23 @@ use Treo\Core\EventManager\Event;
  */
 class Metadata extends AbstractListener
 {
+    /**
+     * @var string
+     */
+    protected const CACHE_FILE = 'data/cache/asset_types.json';
+
+    /**
+     * @return bool
+     */
+    public static function dropCache(): bool
+    {
+        if (file_exists(self::CACHE_FILE)) {
+            unlink(self::CACHE_FILE);
+        }
+
+        return true;
+    }
+
     /**
      * @param Event $event
      */
@@ -56,12 +74,23 @@ class Metadata extends AbstractListener
      */
     protected function getAssetTypes(): array
     {
-        $sth = $this
-            ->getContainer()
-            ->get('pdo')
-            ->prepare("SELECT name FROM asset_type WHERE deleted=0");
-        $sth->execute();
+        if (!file_exists(self::CACHE_FILE)) {
+            $sth = $this
+                ->getContainer()
+                ->get('pdo')
+                ->prepare("SELECT name FROM asset_type WHERE deleted=0");
+            $sth->execute();
+            $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
 
-        return $sth->fetchAll(\PDO::FETCH_COLUMN);
+            if (!file_exists('data/cache')) {
+                mkdir('data/cache', 0777, true);
+                sleep(1);
+            }
+            file_put_contents(self::CACHE_FILE, Json::encode($types));
+        } else {
+            $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
+        }
+
+        return $types;
     }
 }

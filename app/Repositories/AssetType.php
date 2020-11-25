@@ -31,9 +31,31 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Dam\Listeners\Metadata;
+use Espo\ORM\Entity;
+
 /**
  * Class AssetType
  */
 class AssetType extends \Espo\Core\Templates\Repositories\Base
 {
+    /**
+     * @inheritDoc
+     */
+    protected function afterSave(Entity $entity, array $options = [])
+    {
+        Metadata::dropCache();
+
+        parent::afterSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function afterRemove(Entity $entity, array $options = [])
+    {
+        Metadata::dropCache();
+
+        parent::afterRemove($entity, $options);
+    }
 }
