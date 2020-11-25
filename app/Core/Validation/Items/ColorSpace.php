@@ -85,10 +85,6 @@ class ColorSpace extends Base
      */
     private function createMap()
     {
-        if ($this->skip()) {
-            return true;
-        }
-
         $imagick = new ReflectionClass(\Imagick::class);
         $res     = [];
         foreach ($imagick->getConstants() as $constantName => $constantValue) {
