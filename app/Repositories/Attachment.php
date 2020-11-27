@@ -65,8 +65,48 @@ class Attachment extends \Treo\Repositories\Attachment
      */
     public function afterSave(Entity $entity, array $options = [])
     {
-        if ($this->createAsset($entity)) {
-            parent::afterSave($entity, $options);
+        // get field type
+        $fieldType = $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'type']);
+
+        if ($entity->isNew() && $fieldType === 'asset') {
+            $this->createAsset($entity);
+        }
+
+        parent::afterSave($entity, $options);
+    }
+
+    /**
+     * Create asset if it needs
+     *
+     * @param Entity $entity
+     *
+     * @throws Error
+     * @throws \Throwable
+     */
+    public function createAsset(Entity $entity)
+    {
+        $asset = $this->getEntityManager()->getEntity('Asset');
+        $asset->set('name', explode('.', $entity->get('name'))[0]);
+        $asset->set('nameOfFile', $asset->get('name'));
+        $asset->set('fileId', $entity->get('id'));
+        $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
+        $asset->set('code', preg_replace("/[^a-z0-9_?!]/", "", strtolower($asset->get('name'))) . '_' . time());
+
+        // get config by type
+        $config = $this
+            ->getInjection("ConfigManager")
+            ->getByType([ConfigManager::getType($asset->get('type'))]);
+
+        try {
+            foreach ($config['validations'] as $type => $value) {
+                $this->getInjection('Validator')->validate($type, $entity, ($value['public'] ?? $value));
+            }
+            $this->getEntityManager()->saveEntity($asset);
+        } catch (\Throwable $exception) {
+            $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
+            $this->getEntityManager()->removeEntity($entity);
+
+            throw $exception;
         }
     }
 
@@ -222,52 +262,6 @@ class Attachment extends \Treo\Repositories\Attachment
             $this->removeThumbs($entity);
             parent::afterRemove($entity, $options);
         }
-    }
-
-    /**
-     * Create asset if it needs
-     *
-     * @param Entity $entity
-     *
-     * @return bool
-     * @throws Error
-     * @throws \Throwable
-     */
-    protected function createAsset(Entity $entity): bool
-    {
-        if (!$entity->isNew()) {
-            return true;
-        }
-
-        if ($this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'type']) !== 'asset') {
-            return true;
-        }
-
-        $asset = $this->getEntityManager()->getEntity('Asset');
-        $asset->set('name', explode('.', $entity->get('name'))[0]);
-        $asset->set('nameOfFile', $asset->get('name'));
-        $asset->set('fileId', $entity->get('id'));
-        $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
-        $asset->set('code', preg_replace("/[^a-z0-9_?!]/", "", strtolower($asset->get('name'))) . '_' . time());
-
-        // get config by type
-        $config = $this
-            ->getInjection("ConfigManager")
-            ->getByType([ConfigManager::getType($asset->get('type'))]);
-
-        try {
-            foreach ($config['validations'] as $type => $value) {
-                $this->getInjection('Validator')->validate($type, $entity, ($value['public'] ?? $value));
-            }
-            $this->getEntityManager()->saveEntity($asset);
-        } catch (\Throwable $exception) {
-            $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
-            $this->getEntityManager()->removeEntity($entity);
-
-            throw $exception;
-        }
-
-        return true;
     }
 
     /**

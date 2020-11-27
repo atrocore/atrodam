@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam;
 
+use Dam\Repositories\Attachment;
 use Treo\Core\ModuleManager\AbstractEvent;
 use Treo\Core\Utils\Config;
 use Treo\Core\Utils\Metadata;
@@ -78,6 +79,9 @@ class Event extends AbstractEvent
 
         // insert demo data to DB
         $this->insertDemoData();
+
+        // create assets
+        $this->createAssets();
 
         // set applicationName
         $this->setApplicationName();
@@ -242,6 +246,31 @@ class Event extends AbstractEvent
             $sth->execute();
         } catch (\Throwable $e) {
             // ignore all
+        }
+    }
+
+    /**
+     * Create assets if it needs
+     */
+    protected function createAssets()
+    {
+        /** @var Attachment $attachmentRepository */
+        $attachmentRepository = $this->getContainer()->get('entityManager')->getRepository('Attachment');
+
+        $attachments = $attachmentRepository->find();
+        if ($attachments->count() > 0) {
+            foreach ($attachments as $attachment) {
+                // get field type
+                $fieldType = $this->getMetadata()->get(['entityDefs', $attachment->get('relatedType'), 'fields', $attachment->get('field'), 'type']);
+
+                if ($fieldType === 'asset') {
+                    try {
+                        $attachmentRepository->createAsset($attachment);
+                    } catch (\Throwable $e) {
+                        // ignore validations
+                    }
+                }
+            }
         }
     }
 
