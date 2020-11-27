@@ -64,7 +64,8 @@ class Metadata extends AbstractListener
     {
         $data = $event->getArgument('data');
 
-        $data['entityDefs']['Asset']['fields']['type']['options'] = $this->getAssetTypes();
+        $data['fields']['asset']['typeNatures'] = $this->getAssetTypes();
+        $data['entityDefs']['Asset']['fields']['type']['options'] = array_keys($data['fields']['asset']['typeNatures']);
 
         $event->setArgument('data', $data);
     }
@@ -78,9 +79,9 @@ class Metadata extends AbstractListener
             $sth = $this
                 ->getContainer()
                 ->get('pdo')
-                ->prepare("SELECT name FROM asset_type WHERE deleted=0");
+                ->prepare("SELECT name, nature FROM asset_type WHERE deleted=0");
             $sth->execute();
-            $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
+            $types = array_column($sth->fetchAll(\PDO::FETCH_ASSOC), 'nature', 'name');
 
             if (!file_exists('data/cache')) {
                 mkdir('data/cache', 0777, true);

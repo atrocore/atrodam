@@ -31,8 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Listeners\Traits;
 
-use Espo\Core\ORM\Entity;
-use Treo\Core\EventManager\Event;
+use Espo\ORM\Entity;
 
 /**
  * Trait ValidateCode
@@ -70,13 +69,12 @@ trait ValidateCode
      */
     protected function isUnique($entity, $field)
     {
-        $repository = $this->getEntityManager()
-                           ->getRepository($entity->getEntityName());
+        $entity = $this
+            ->getEntityManager()
+            ->getRepository($entity->getEntityName())
+            ->where([[$field => $entity->get($field)], ["id!=" => $entity->get("id")],])
+            ->findOne();
 
-        return $repository->where([
-            [$field => $entity->get($field)],
-            ["id!=" => $entity->get("id")],
-        ])->findOne() ? false : true;
-
+        return empty($entity);
     }
 }
