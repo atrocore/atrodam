@@ -102,6 +102,8 @@ class Entity extends AbstractListener
         } else {
             $this->getService("Entity")->assetRelation($entity, $userId);
         }
+
+        return true;
     }
 
     /**

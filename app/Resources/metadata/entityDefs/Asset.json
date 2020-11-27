@@ -86,7 +86,7 @@
     },
     "collection": {
       "type": "link",
-      "required": true
+      "required": false
     },
     "assetMetaDatas": {
       "type": "linkMultiple",

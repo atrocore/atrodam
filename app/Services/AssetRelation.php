@@ -334,7 +334,7 @@ class AssetRelation extends Base
             }
         }
 
-        return null;
+        return [];
     }
 
     /**

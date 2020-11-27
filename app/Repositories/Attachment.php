@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
 use Dam\Core\FileStorage\DAMUploadDir;
 use Dam\Core\PathInfo;
@@ -45,17 +46,46 @@ use Espo\ORM\Entity;
 class Attachment extends \Treo\Repositories\Attachment
 {
     /**
+     * @inheritDoc
+     */
+    public function beforeSave(Entity $entity, array $options = [])
+    {
+        if ($entity->isNew()) {
+            if ($entity->get("contents") && $entity->get('relatedType') === "Asset") {
+                $entity->set('hash_md5', md5($entity->get("contents")));
+            }
+            $entity->set('hash_md5', md5($entity->get("contents")));
+        }
+
+        parent::beforeSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function afterSave(Entity $entity, array $options = [])
+    {
+        if ($this->createAsset($entity)) {
+            parent::afterSave($entity, $options);
+        }
+    }
+
+    /**
      * Init
      */
     protected function init()
     {
         parent::init();
+
         $this->addDependency("DAMFileManager");
+        $this->addDependency("Validator");
+        $this->addDependency("ConfigManager");
     }
 
     /**
-     * @param Entity $entity
+     * @param Entity              $entity
      * @param \Dam\Entities\Asset $asset
+     *
      * @return bool
      * @throws Error
      */
@@ -79,7 +109,7 @@ class Attachment extends \Treo\Repositories\Attachment
 
     /**
      * @param Entity $entity
-     * @param null $role
+     * @param null   $role
      *
      * @return |null
      * @throws \Espo\Core\Exceptions\Error
@@ -88,17 +118,19 @@ class Attachment extends \Treo\Repositories\Attachment
     {
         $attachment = $this->get();
 
-        $attachment->set([
-            'sourceId' => $entity->getSourceId(),
-            'name' => $entity->get('name'),
-            'type' => $entity->get('type'),
-            'size' => $entity->get('size'),
-            'role' => $entity->get('role'),
-            'storageFilePath' => $entity->get('storageFilePath'),
-            'relatedType' => $entity->get('relatedType'),
-            'relatedId' => $entity->get('relatedId'),
-            'hash_md5' => $entity->get('hash_md5')
-        ]);
+        $attachment->set(
+            [
+                'sourceId'        => $entity->getSourceId(),
+                'name'            => $entity->get('name'),
+                'type'            => $entity->get('type'),
+                'size'            => $entity->get('size'),
+                'role'            => $entity->get('role'),
+                'storageFilePath' => $entity->get('storageFilePath'),
+                'relatedType'     => $entity->get('relatedType'),
+                'relatedId'       => $entity->get('relatedId'),
+                'hash_md5'        => $entity->get('hash_md5')
+            ]
+        );
 
         if ($role) {
             $attachment->set('role', $role);
@@ -112,6 +144,7 @@ class Attachment extends \Treo\Repositories\Attachment
 
     /**
      * @param \Espo\ORM\Entity $entity
+     *
      * @return bool
      */
     public function removeThumbs(\Espo\ORM\Entity $entity)
@@ -129,6 +162,7 @@ class Attachment extends \Treo\Repositories\Attachment
     /**
      * @param Entity $entity
      * @param string $path
+     *
      * @return mixed
      * @throws Error
      */
@@ -141,9 +175,10 @@ class Attachment extends \Treo\Repositories\Attachment
     }
 
     /**
-     * @param Entity $attachment
-     * @param string $newFileName
+     * @param Entity        $attachment
+     * @param string        $newFileName
      * @param PathInfo|null $entity
+     *
      * @return bool
      * @throws Error
      */
@@ -168,20 +203,71 @@ class Attachment extends \Treo\Repositories\Attachment
      * @param Entity $entity
      * @param array  $options
      */
-    public function afterRemove(\Espo\ORM\Entity $entity, array $options = [])
+    protected function afterRemove(\Espo\ORM\Entity $entity, array $options = [])
     {
-        //if uploaded new attachment with previous name
-        $res = $this->where([
-            "relatedId" => $entity->get("relatedId"),
-            "relatedType" => $entity->get("relatedType"),
-            "storageFilePath" => $entity->get("storageFilePath"),
-            "name" => $entity->get("name"),
-            "deleted" => 0
-        ])->count();
+        // if uploaded new attachment with previous name
+        $res = $this
+            ->where(
+                [
+                    "relatedId"       => $entity->get("relatedId"),
+                    "relatedType"     => $entity->get("relatedType"),
+                    "storageFilePath" => $entity->get("storageFilePath"),
+                    "name"            => $entity->get("name"),
+                    "deleted"         => 0
+                ]
+            )
+            ->count();
 
         if (!$res) {
+            $this->removeThumbs($entity);
             parent::afterRemove($entity, $options);
         }
+    }
+
+    /**
+     * Create asset if it needs
+     *
+     * @param Entity $entity
+     *
+     * @return bool
+     * @throws Error
+     * @throws \Throwable
+     */
+    protected function createAsset(Entity $entity): bool
+    {
+        if (!$entity->isNew()) {
+            return true;
+        }
+
+        if ($this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'type']) !== 'asset') {
+            return true;
+        }
+
+        $asset = $this->getEntityManager()->getEntity('Asset');
+        $asset->set('name', explode('.', $entity->get('name'))[0]);
+        $asset->set('nameOfFile', $asset->get('name'));
+        $asset->set('fileId', $entity->get('id'));
+        $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
+        $asset->set('code', preg_replace("/[^a-z0-9_?!]/", "", strtolower($asset->get('name'))) . '_' . time());
+
+        // get config by type
+        $config = $this
+            ->getInjection("ConfigManager")
+            ->getByType([ConfigManager::getType($asset->get('type'))]);
+
+        try {
+            foreach ($config['validations'] as $type => $value) {
+                $this->getInjection('Validator')->validate($type, $entity, ($value['public'] ?? $value));
+            }
+            $this->getEntityManager()->saveEntity($asset);
+        } catch (\Throwable $exception) {
+            $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
+            $this->getEntityManager()->removeEntity($entity);
+
+            throw $exception;
+        }
+
+        return true;
     }
 
     /**
@@ -195,6 +281,7 @@ class Attachment extends \Treo\Repositories\Attachment
     /**
      * @param PathInfo $entity
      * @param Entity   $attachment
+     *
      * @return string
      */
     private function buildPath(PathInfo $entity, Entity $attachment): string
