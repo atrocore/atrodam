@@ -49,7 +49,21 @@ Espo.define('dam:views/fields/code-from-name', 'dam:views/fields/varchar-with-pa
         },
         
         transformToPattern(value) {
-            return value.toLowerCase().replace(/ /g, '_').replace(/[^a-z_0-9]/g, '');
+            let replacementSymbols = {
+                \u00e4: 'ae',
+                \u00fc: 'ue',
+                \u00df: 'ss',
+                \u00f6: 'oe',
+                \u00d6: 'oe',
+                \u00e5: 'a'
+            };
+
+            return value.toLowerCase()
+                .replace(/ /g, '_')
+                .replace(new RegExp('[' + Object.keys(replacementSymbols).join('') + ']', 'gu'), function (str) {
+                    return replacementSymbols[str];
+                })
+                .replace(/[^a-z_0-9]/g, '');
         }
         
     })
