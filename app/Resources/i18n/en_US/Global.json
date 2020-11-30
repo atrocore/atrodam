@@ -34,7 +34,6 @@
     "Image quality must be between %s and %s.": "Image quality must be between %s and %s.",
     "Image must have side ratio of %s.": "Image must have side ratio of %s.",
     "Image must have width more than %spx and height more than %spx.": "Image must have width more than %spx and height more than %spx.",
-    "Asset size should be between %skb and %skb.": "Asset size should be between %skb and  %skb.",
-    "Duplicate assets are not allowed.": "Duplicate assets are not allowed."
+    "Asset size should be between %skb and %skb.": "Asset size should be between %skb and  %skb."
   }
 }

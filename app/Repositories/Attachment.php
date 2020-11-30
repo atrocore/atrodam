@@ -48,21 +48,6 @@ class Attachment extends \Treo\Repositories\Attachment
     /**
      * @inheritDoc
      */
-    public function beforeSave(Entity $entity, array $options = [])
-    {
-        if ($entity->isNew()) {
-            if ($entity->get("contents") && $entity->get('relatedType') === "Asset") {
-                $entity->set('hash_md5', md5($entity->get("contents")));
-            }
-            $entity->set('hash_md5', md5($entity->get("contents")));
-        }
-
-        parent::beforeSave($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function afterSave(Entity $entity, array $options = [])
     {
         // get field type
@@ -161,41 +146,6 @@ class Attachment extends \Treo\Repositories\Attachment
     }
 
     /**
-     * @param Entity $entity
-     * @param null   $role
-     *
-     * @return |null
-     * @throws \Espo\Core\Exceptions\Error
-     */
-    public function getCopiedAttachment(Entity $entity, $role = null)
-    {
-        $attachment = $this->get();
-
-        $attachment->set(
-            [
-                'sourceId'        => $entity->getSourceId(),
-                'name'            => $entity->get('name'),
-                'type'            => $entity->get('type'),
-                'size'            => $entity->get('size'),
-                'role'            => $entity->get('role'),
-                'storageFilePath' => $entity->get('storageFilePath'),
-                'relatedType'     => $entity->get('relatedType'),
-                'relatedId'       => $entity->get('relatedId'),
-                'hash_md5'        => $entity->get('hash_md5')
-            ]
-        );
-
-        if ($role) {
-            $attachment->set('role', $role);
-        }
-
-        $this->save($attachment);
-
-        return $attachment;
-
-    }
-
-    /**
      * @param \Espo\ORM\Entity $entity
      *
      * @return bool
@@ -210,6 +160,8 @@ class Attachment extends \Treo\Repositories\Attachment
 
             return $this->getFileManager()->removeInDir($dirPath);
         }
+
+        return false;
     }
 
     /**
@@ -280,7 +232,7 @@ class Attachment extends \Treo\Repositories\Attachment
     /**
      * @return FileManager
      */
-    protected function getFileManager(): FileManager
+    protected function getFileManager()
     {
         return $this->getInjection("DAMFileManager");
     }
@@ -293,7 +245,6 @@ class Attachment extends \Treo\Repositories\Attachment
      */
     private function buildPath(PathInfo $entity, Entity $attachment): string
     {
-        $path = $entity->getPathInfo()[0];
-        return $path . $attachment->get('storageFilePath') . "/" . $attachment->get('name');
+        return $entity->getPathInfo()[0] . $attachment->get('storageFilePath') . "/" . $attachment->get('name');
     }
 }
