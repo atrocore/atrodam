@@ -45,31 +45,79 @@ use Espo\ORM\Entity;
 class Asset extends Base implements DAMAttachment
 {
     /**
-     * @var null|\Dam\Entities\Asset[]
+     * @param string $nature
+     *
+     * @return array
      */
-    private $entityAssets = null;
+    public function getNatureTypes(string $nature): array
+    {
+        $types = [];
+        foreach ($this->getMetadata()->get(['fields', 'asset', 'typeNatures'], []) as $type => $typeNature) {
+            if ($typeNature == $nature) {
+                $types[] = $type;
+            }
+        }
+
+        return $types;
+    }
 
     /**
      * @param Entity $entity
      * @param string $nature
      *
-     * @return bool
+     * @return int
      */
-    public function hasAssetsWithNature(Entity $entity, string $nature): bool
+    public function countRelatedAssetsByNature(Entity $entity, string $nature): int
     {
-        if (is_null($this->entityAssets)) {
-            $this->entityAssets = $entity->get('assets');
+        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
+        if (empty($relation)) {
+            return 0;
         }
 
-        if ($this->entityAssets->count() > 0) {
-            foreach ($this->entityAssets as $asset) {
-                if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $asset->get('type')]) == $nature) {
-                    return true;
-                }
-            }
+        return $this
+            ->where(['type' => $this->getNatureTypes($nature), "$relation.id" => $entity->get('id')])
+            ->join($relation)
+            ->count();
+    }
+
+    /**
+     * @param Entity $entity
+     * @param string $nature
+     *
+     * @return array
+     */
+    public function findRelatedAssetsByNature(Entity $entity, string $nature, bool $countOnly = false): array
+    {
+        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
+        if (empty($relation)) {
+            return [];
         }
 
-        return false;
+        return $this
+            ->where(['type' => $this->getNatureTypes($nature), "$relation.id" => $entity->get('id')])
+            ->join($relation)
+            ->find()
+            ->toArray();
+    }
+
+    /**
+     * @param Entity $entity
+     * @param array  $ids
+     *
+     * @return array
+     */
+    public function findRelatedAssetsByIds(Entity $entity, array $ids): array
+    {
+        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
+        if (empty($relation)) {
+            return [];
+        }
+
+        return $this
+            ->where(['id' => $ids, "$relation.id" => $entity->get('id')])
+            ->join($relation)
+            ->find()
+            ->toArray();
     }
 
     /**

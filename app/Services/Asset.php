@@ -65,12 +65,12 @@ class Asset extends Base
             [
                 "id"      => "Image",
                 "name"    => $this->translate('Image', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "Image")
+                "hasItem" => !empty($this->getRepository()->countRelatedAssetsByNature($entity, "Image"))
             ],
             [
                 "id"      => "File",
                 "name"    => $this->translate('File', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
+                "hasItem" => !empty($this->getRepository()->countRelatedAssetsByNature($entity, "File"))
             ]
         ];
 
@@ -94,29 +94,10 @@ class Asset extends Base
         }
 
         $list = [];
-
-        $assets = $entity->get('assets');
-        if ($assets->count() > 0) {
-            if (!empty($nature = $request->get('nature'))) {
-                $types = [];
-                foreach ($this->getMetadata()->get(['fields', 'asset', 'typeNatures'], []) as $type => $typeNature) {
-                    if ($typeNature == $nature) {
-                        $types[] = $type;
-                    }
-                }
-
-                foreach ($assets as $asset) {
-                    if (in_array($asset->get('type'), $types)) {
-                        $list[] = $asset->toArray();
-                    }
-                }
-            } elseif ($ids = $request->get("assetIds")) {
-                foreach ($assets as $asset) {
-                    if (in_array($asset->get('id'), $ids)) {
-                        $list[] = $asset->toArray();
-                    }
-                }
-            }
+        if (!empty($nature = $request->get('nature'))) {
+            $list = $this->getRepository()->findRelatedAssetsByNature($entity, $nature);
+        } elseif ($ids = $request->get("assetIds")) {
+            $list = $this->getRepository()->findRelatedAssetsByIds($entity, $ids);
         }
 
         return [
