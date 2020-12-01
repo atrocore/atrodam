@@ -45,8 +45,37 @@ use Espo\ORM\Entity;
 class Asset extends Base implements DAMAttachment
 {
     /**
+     * @var null|\Dam\Entities\Asset[]
+     */
+    private $entityAssets = null;
+
+    /**
+     * @param Entity $entity
+     * @param string $nature
+     *
+     * @return bool
+     */
+    public function hasAssetsWithNature(Entity $entity, string $nature): bool
+    {
+        if (is_null($this->entityAssets)) {
+            $this->entityAssets = $entity->get('assets');
+        }
+
+        if ($this->entityAssets->count() > 0) {
+            foreach ($this->entityAssets as $asset) {
+                if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $asset->get('type')]) == $nature) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      *
      * @param Entity $entity
+     *
      * @return array
      */
     public function buildPath(Entity $entity): array
@@ -60,17 +89,18 @@ class Asset extends Base implements DAMAttachment
     /**
      * @param \Dam\Entities\Asset $main
      * @param \Dam\Entities\Asset $foreign
+     *
      * @return bool
      */
     public function linkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
     {
-        return $this->getMapper()->relate($foreign, "relatedAssets", $main) &&
-            $this->getMapper()->relate($main, "relatedAssets", $foreign);
+        return $this->getMapper()->relate($foreign, "relatedAssets", $main) && $this->getMapper()->relate($main, "relatedAssets", $foreign);
     }
 
     /**
      * @param \Dam\Entities\Asset $main
      * @param \Dam\Entities\Asset $foreign
+     *
      * @return mixed
      */
     public function unlinkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)

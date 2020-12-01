@@ -67,6 +67,8 @@ class Metadata extends AbstractListener
         $data['fields']['asset']['typeNatures'] = $this->getAssetTypes();
         $data['entityDefs']['Asset']['fields']['type']['options'] = array_keys($data['fields']['asset']['typeNatures']);
 
+        $this->setAssetListView($data);
+
         $event->setArgument('data', $data);
     }
 
@@ -93,5 +95,23 @@ class Metadata extends AbstractListener
         }
 
         return $types;
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function setAssetListView(array &$data)
+    {
+        foreach ($data['entityDefs'] as $scope => $defs) {
+            if (empty($defs['links'])) {
+                continue 1;
+            }
+            foreach ($defs['links'] as $link => $linkData) {
+                if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['label'] = $this->getLanguage()->translate('Asset', 'scopeNamesPlural', 'Global');
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
+                }
+            }
+        }
     }
 }

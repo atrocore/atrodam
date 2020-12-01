@@ -1,5 +1,3 @@
-
-
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,30 +26,30 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset_relation/record/panels/asset-type-block', 'view',
+Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
     Dep => Dep.extend({
-        template: "dam:asset_relation/record/panels/asset-type-block",
-        sort    : false,
-        show    : true,
-        
+        template: "dam:asset/record/panels/asset-type-block",
+        sort: false,
+        show: true,
+
         setup() {
             Dep.prototype.setup.call(this);
             this.sort = this.options.sort || false;
             this.createHeaderBlock();
-            
+
             this.listenTo(this, "after:render", () => {
                 this.showInfo();
             });
         },
-        
+
         createHeaderBlock() {
-            this.createView("headerBlock", "dam:views/asset_relation/record/panels/header", {
+            this.createView("headerBlock", "dam:views/asset/record/panels/header", {
                 model: this.model,
-                el   : this.options.el + " .group-name",
-                show : this.show
+                el: this.options.el + " .group-name",
+                show: this.show
             });
         },
-        
+
         showInfo() {
             this.show = true;
             if (this.collection) {
@@ -59,23 +57,23 @@ Espo.define('dam:views/asset_relation/record/panels/asset-type-block', 'view',
                     this.getView("list").reRender();
                 });
             } else {
-                this.getCollectionFactory().create("AssetRelation", (collection) => {
-                    collection.url = `AssetRelation/byEntity/${this.model.get('entityName')}/${this.model.get('entityId')}?type=${this.model.get('name')}`;
+                this.getCollectionFactory().create("Asset", (collection) => {
+                    collection.url = `Asset/action/byEntity?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}&type=${this.model.get('name')}`;
                     collection.sortBy = "";
                     this.collection = collection;
                     this.waitForView("list");
-                    this.createView('list', "dam:views/asset_relation/record/list", {
-                        collection          : this.collection,
-                        model               : this.model,
-                        buttonsDisabled     : true,
-                        checkboxes          : false,
-                        el                  : this.options.el + ' .list-container',
-                        layoutName          : "listSmall",
-                        dragableListRows    : this.sort,
+                    this.createView('list', "dam:views/asset/record/list", {
+                        collection: this.collection,
+                        model: this.model,
+                        buttonsDisabled: true,
+                        checkboxes: false,
+                        el: this.options.el + ' .list-container',
+                        layoutName: "listSmall",
+                        dragableListRows: this.sort,
                         listRowsOrderSaveUrl: `AssetRelation/${this.model.get('entityName')}/${this.model.get('entityId')}/sortOrder`,
-                        listLayout          : null,
-                        skipBuildRows       : true,
-                        rowActionsView      : this.model.get('rowActionsView') ? this.model.get('rowActionsView') : this.rowActionsView,
+                        listLayout: null,
+                        skipBuildRows: true,
+                        rowActionsView: this.model.get('rowActionsView') ? this.model.get('rowActionsView') : this.rowActionsView,
                     }, function (view) {
                         view.listenTo(collection, "sync", () => {
                             $(view.el).find('.list').slideDown("fast");
@@ -97,7 +95,7 @@ Espo.define('dam:views/asset_relation/record/panels/asset-type-block', 'view',
                 });
             }
         },
-        
+
         hideInfo() {
             this.show = false;
             if (this.hasView("list")) {

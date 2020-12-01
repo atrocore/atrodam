@@ -1,6 +1,8 @@
 {
   "labels": {
-    "sort": "Sort"
+    "sort": "Sort",
+    "Image": "Image",
+    "File": "File"
   },
   "fields": {
     "isActive": "Active",
