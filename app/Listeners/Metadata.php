@@ -108,6 +108,7 @@ class Metadata extends AbstractListener
             }
             foreach ($defs['links'] as $link => $linkData) {
                 if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['label'] = $this->getLanguage()->translate('Asset', 'scopeNamesPlural', 'Global');
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
                 }

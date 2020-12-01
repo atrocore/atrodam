@@ -38,6 +38,7 @@ use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
+use Slim\Http\Request;
 
 /**
  * Class Asset
@@ -72,6 +73,51 @@ class Asset extends Base
                 "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
             ]
         ];
+
+        return [
+            'count' => count($list),
+            'list'  => $list
+        ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     * @throws NotFound
+     */
+    public function getAssetsForEntity(Request $request): array
+    {
+        $entity = $this->getEntityManager()->getEntity($request->get('entity'), $request->get('id'));
+        if (empty($entity)) {
+            throw new NotFound();
+        }
+
+        $list = [];
+
+        $assets = $entity->get('assets');
+        if ($assets->count() > 0) {
+            if (!empty($nature = $request->get('nature'))) {
+                $types = [];
+                foreach ($this->getMetadata()->get(['fields', 'asset', 'typeNatures'], []) as $type => $typeNature) {
+                    if ($typeNature == $nature) {
+                        $types[] = $type;
+                    }
+                }
+
+                foreach ($assets as $asset) {
+                    if (in_array($asset->get('type'), $types)) {
+                        $list[] = $asset->toArray();
+                    }
+                }
+            } elseif ($ids = $request->get("assetIds")) {
+                foreach ($assets as $asset) {
+                    if (in_array($asset->get('id'), $ids)) {
+                        $list[] = $asset->toArray();
+                    }
+                }
+            }
+        }
 
         return [
             'count' => count($list),

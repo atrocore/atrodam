@@ -58,7 +58,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                 });
             } else {
                 this.getCollectionFactory().create("Asset", (collection) => {
-                    collection.url = `Asset/action/byEntity?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}&type=${this.model.get('name')}`;
+                    collection.url = `Asset/action/assetsForEntity?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}&nature=${this.model.get('name')}`;
                     collection.sortBy = "";
                     this.collection = collection;
                     this.waitForView("list");

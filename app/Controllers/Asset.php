@@ -70,21 +70,19 @@ class Asset extends AbstractController
      * @param Request $request
      *
      * @return array
+     * @throws BadRequest
+     * @throws Forbidden
      */
-    public function actionByEntity($params, $data, Request $request)
+    public function actionAssetsForEntity($params, $data, Request $request)
     {
-        return [
-            'list'  => [],
-            'total' => 0,
-        ];
+        if (!$request->isGet() || empty($request->get('entity')) || empty($request->get('id'))) {
+            throw new BadRequest();
+        }
 
-//        $this->isReadAction($request);
-//
-//        $list = $this->getRecordService()->getItems($params['entity_id'], $params['entity_name'], $request);
-//
-//        return [
-//            'list'  => $list,
-//            'total' => count($list),
-//        ];
+        if (!$this->getAcl()->check($this->name, 'read')) {
+            throw new Forbidden();
+        }
+
+        return $this->getRecordService()->getAssetsForEntity($request);
     }
 }

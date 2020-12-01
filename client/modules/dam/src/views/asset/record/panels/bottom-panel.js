@@ -275,7 +275,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
         _updateAssetRelations(assetIds, assetTypes) {
             this.getCollectionFactory().create("Asset", collection => {
-                collection.url = `Asset/action/byEntity?entity=${this.scope}&id=${this.model.id}&assetIds=${assetIds.ids.join(',')}`;
+                collection.url = `Asset/action/assetsForEntity?entity=${this.scope}&id=${this.model.id}&assetIds=${assetIds.ids.join(',')}`;
                 collection.fetch().then(() => {
                     this.createView("EntityAssetList", "dam:views/asset_relation/modals/entity-asset-list", {
                         collection: collection,
