@@ -34,13 +34,11 @@ namespace Dam\Listeners;
 use Dam\Core\FilePathBuilder;
 use Dam\Entities\Asset;
 use Dam\Entities\AssetCategory;
-use Dam\Listeners\Traits\ValidateCode;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
 use PDO;
 use Treo\Core\EventManager\Event;
-use Treo\Listeners\AbstractListener;
 
 /**
  * Class AssetEntity
@@ -49,8 +47,6 @@ use Treo\Listeners\AbstractListener;
  */
 class AssetEntity extends AbstractListener
 {
-    use ValidateCode;
-
     /**
      * @param Event $event
      * @throws BadRequest

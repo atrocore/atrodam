@@ -32,10 +32,8 @@ declare(strict_types=1);
 namespace Dam\Listeners;
 
 use Dam\Entities\Collection;
-use Dam\Listeners\Traits\ValidateCode;
 use Espo\Core\Exceptions\BadRequest;
 use Treo\Core\EventManager\Event;
-use Treo\Listeners\AbstractListener;
 
 /**
  * Class AssetEntity
@@ -44,8 +42,6 @@ use Treo\Listeners\AbstractListener;
  */
 class CollectionEntity extends AbstractListener
 {
-    use ValidateCode;
-
     /**
      * @param Event $event
      * @throws BadRequest

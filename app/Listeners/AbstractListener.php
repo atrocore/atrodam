@@ -29,16 +29,14 @@
 
 declare(strict_types=1);
 
-namespace Dam\Listeners\Traits;
+namespace Dam\Listeners;
 
 use Espo\ORM\Entity;
 
 /**
- * Trait ValidateCode
- *
- * @package Dam\Listeners\Traits
+ * Class AbstractListener
  */
-trait ValidateCode
+abstract class AbstractListener extends \Treo\Listeners\AbstractListener
 {
     /**
      * @var string

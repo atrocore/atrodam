@@ -10,7 +10,6 @@
   "scopeNamesPlural": {
     "Asset": "Assets",
     "Collection": "Kollektionen",
-    "AssetRelation": "Asset Relationen",
     "AssetVersion": "Asset Versionen",
     "Rendition": "Derivate",
     "RenditionMetaData": "Derivat-Metadata",

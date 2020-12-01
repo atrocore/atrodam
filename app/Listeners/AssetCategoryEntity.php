@@ -32,11 +32,9 @@ declare(strict_types=1);
 namespace Dam\Listeners;
 
 use Dam\Entities\Asset;
-use Dam\Listeners\Traits\ValidateCode;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\ORM\Entity;
 use Treo\Core\EventManager\Event;
-use Treo\Listeners\AbstractListener;
 
 /**
  * Class AssetCategoryEntity
@@ -46,8 +44,6 @@ use Treo\Listeners\AbstractListener;
  */
 class AssetCategoryEntity extends AbstractListener
 {
-    use ValidateCode;
-
     /**
      * @param Event $event
      *
@@ -83,9 +79,9 @@ class AssetCategoryEntity extends AbstractListener
         $entity = $event->getArgument('entity');
 
         $this->updateChildren($entity)
-             ->activateParents($entity)
-             ->updateHasChild($entity)
-             ->deactivateChildren($entity);
+            ->activateParents($entity)
+            ->updateHasChild($entity)
+            ->deactivateChildren($entity);
     }
 
     /**
@@ -252,7 +248,7 @@ class AssetCategoryEntity extends AbstractListener
     protected function getCategoryRoute($entity, $isName = false): string
     {
         $result = '';
-        $data   = [];
+        $data = [];
 
         while (!empty($parent = $entity->get('categoryParent'))) {
             $data[] = $isName ? trim($parent->get('name')) : $parent->get('id');
@@ -280,7 +276,7 @@ class AssetCategoryEntity extends AbstractListener
 
         if (!empty($parent)) {
             $parents[] = $parent;
-            $parents   = $this->getEntityParents($parent, $parents);
+            $parents = $this->getEntityParents($parent, $parents);
         }
 
         return $parents;
@@ -327,9 +323,11 @@ class AssetCategoryEntity extends AbstractListener
     {
         $repository = $this->getEntityManager()->getRepository($entity->getEntityType());
 
-        return $repository->where([
-            'categoryParentId' => $entity->id,
-        ])->limit(0, 1)->find()->toArray() ? true : false;
+        return $repository->where(
+            [
+                'categoryParentId' => $entity->id,
+            ]
+        )->limit(0, 1)->find()->toArray() ? true : false;
     }
 
     /**

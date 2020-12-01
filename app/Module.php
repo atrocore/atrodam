@@ -33,7 +33,6 @@ namespace Dam;
 
 use Espo\Core\Utils\DataUtil;
 use Treo\Core\ModuleManager\AbstractModule;
-use Treo\Core\Utils\Metadata;
 
 /**
  * Class Module
@@ -49,16 +48,6 @@ class Module extends AbstractModule
     }
 
     /**
-     * Get Metadata
-     *
-     * @return Metadata
-     */
-    protected function getMetadata(): Metadata
-    {
-        return $this->container->get('metadata');
-    }
-
-    /**
      * @inheritdoc
      */
     public function loadMetadata(\stdClass &$data)
@@ -68,7 +57,7 @@ class Module extends AbstractModule
             ->unify('metadata', $this->path . 'app/Resources/metadata', true);
 
         // checking if module PIM installed
-        if ($this->getMetadata()->isModuleInstalled('PIM')) {
+        if ($this->container->get('metadata')->isModuleInstalled('PIM')) {
             unset($metadata->themes);
         }
 
@@ -77,7 +66,7 @@ class Module extends AbstractModule
     }
 
     /**
-     * @return string|\Treo\Core\ModuleManager\string
+     * @return string
      */
     public function getPath()
     {

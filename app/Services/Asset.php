@@ -121,50 +121,6 @@ class Asset extends Base
     }
 
     /**
-     * @param Entity $entity
-     * @return mixed
-     */
-    public function getRelationsCount(Entity $entity)
-    {
-        $collection = $this->getService("AssetRelation")->getRelationsLinks($entity);
-
-        return $collection->count();
-    }
-
-    /**
-     * @param Entity $entity
-     * @param        $userId
-     * @return bool
-     */
-    public function assetRelation(Entity $entity, $userId)
-    {
-        if (!$list = $this->checkIssetLink($entity)) {
-            return false;
-        }
-
-        $service = $this->getService("AssetRelation");
-
-        foreach ($list as $item) {
-            $fEntity = $this->getEntityManager()->getEntity($item['entityName'], $item['entityId']);
-
-            if ($fEntity) {
-                $service->createLink($entity, $fEntity, $userId);
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param Entity $entity
-     * @return mixed
-     */
-    public function deleteLinks(Entity $entity)
-    {
-        return $this->getService("AssetRelation")->deleteLinks("Asset", $entity->id);
-    }
-
-    /**
      * @param \Dam\Entities\Asset $main
      * @param \Dam\Entities\Asset $foreign
      * @return mixed
