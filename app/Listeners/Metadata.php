@@ -94,6 +94,10 @@ class Metadata extends AbstractListener
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
 
+        // set system asset types
+        $types['File'] = 'File';
+        $types['Image'] = 'Image';
+
         return $types;
     }
 
