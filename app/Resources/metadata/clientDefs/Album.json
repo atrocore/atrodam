@@ -5,7 +5,7 @@
   ],
   "relationshipPanels": {
     "assetCategories": {
-      "view": "dam:views/collection/record/panels/asset_category",
+      "view": "dam:views/album/record/panels/asset_category",
       "selectAction": "selectRelatedEntity",
       "selectBoolFilterList": [
         "notEntity",

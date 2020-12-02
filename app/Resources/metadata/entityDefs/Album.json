@@ -1,28 +1,18 @@
 {
   "fields": {
-    "albums": {
+    "assetCategories": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "importDisabled": true,
+      "noLoad": true
+    },
+    "assets": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
       "noLoad": true,
-      "isCustom": true
-    },
-    "categoryRoute": {
-      "type": "varchar",
-      "required": false,
-      "trim": true,
-      "readOnly": true,
-      "audited": false,
-      "tooltip": false
-    },
-    "categoryRouteName": {
-      "type": "varchar",
-      "required": false,
-      "trim": true,
-      "readOnly": true,
-      "audited": false,
-      "tooltip": false
+      "importDisabled": true
     },
     "name": {
       "type": "varchar",
@@ -66,8 +56,6 @@
       "audited": false,
       "readOnly": false,
       "tooltip": false,
-      "emHidden": true,
-      "layoutMassUpdateDisabled": true,
       "view": "dam:views/fields/code-from-name"
     },
     "isActive": {
@@ -77,44 +65,22 @@
       "audited": false,
       "readOnly": false,
       "tooltip": false
-    },
-    "hasChild": {
-      "type": "bool",
-      "emHidden": true,
-      "hidden": true,
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "layoutListDisabled": true
-    },
-    "categories": {
-      "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "noLoad": true,
-      "importDisabled": true,
-      "layoutRelationshipsDisabled": true
-    },
-    "categoryParent": {
-      "type": "link",
-      "view": "dam:views/asset_category/fields/category-parent",
-      "layoutMassUpdateDisabled": true
-    },
-    "assets": {
-      "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "importDisabled": true,
-      "noLoad": true
     }
   },
   "links": {
-    "albums": {
+    "assetCategories": {
       "type": "hasMany",
       "relationName": "albumAssetCategory",
-      "foreign": "assetCategories",
-      "entity": "Album",
+      "foreign": "albums",
+      "entity": "AssetCategory",
+      "audited": false
+    },
+    "assets": {
+      "type": "hasMany",
+      "foreign": "album",
+      "entity": "Asset",
       "audited": false,
-      "isCustom": true
+      "disableMassRelation": true
     },
     "createdBy": {
       "type": "belongsTo",
@@ -133,25 +99,6 @@
       "entity": "Team",
       "relationName": "EntityTeam",
       "layoutRelationshipsDisabled": true
-    },
-    "categories": {
-      "type": "hasMany",
-      "foreign": "categoryParent",
-      "entity": "AssetCategory",
-      "audited": false
-    },
-    "categoryParent": {
-      "type": "belongsTo",
-      "foreign": "categories",
-      "entity": "AssetCategory",
-      "audited": false
-    },
-    "assets": {
-      "type": "hasMany",
-      "relationName": "assetCategoryAsset",
-      "foreign": "assetCategories",
-      "entity": "Asset",
-      "audited": false
     }
   },
   "collection": {

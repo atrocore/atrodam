@@ -1,7 +1,7 @@
 {
   "scopeNames": {
     "Asset": "Asset",
-    "Collection": "Kollektion",
+    "Album": "Album",
     "Rendition": "Derivat",
     "RenditionMetaData": "Derivat-Metadata",
     "AssetType": "Asset-Typ",
@@ -9,7 +9,7 @@
   },
   "scopeNamesPlural": {
     "Asset": "Assets",
-    "Collection": "Kollektionen",
+    "Album": "Alben",
     "AssetVersion": "Asset Versionen",
     "Rendition": "Derivate",
     "RenditionMetaData": "Derivat-Metadata",

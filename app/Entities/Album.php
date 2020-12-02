@@ -32,13 +32,13 @@ declare(strict_types=1);
 namespace Dam\Entities;
 
 /**
- * Class Collection
+ * Class Album
  * @package Dam\Entities
  */
-class Collection extends \Espo\Core\Templates\Entities\Base
+class Album extends \Espo\Core\Templates\Entities\Base
 {
     /**
      * @var string
      */
-    protected $entityType = "Collection";
+    protected $entityType = "Album";
 }

@@ -84,9 +84,10 @@
       "noLoad": true,
       "importDisabled": true
     },
-    "collection": {
+    "album": {
       "type": "link",
-      "required": false
+      "required": true,
+      "default": "1"
     },
     "assetMetaDatas": {
       "type": "linkMultiple",
@@ -220,10 +221,10 @@
       "entityAsset": false,
       "disableMassRelation": true
     },
-    "collection": {
+    "album": {
       "type": "belongsTo",
       "foreign": "assets",
-      "entity": "Collection",
+      "entity": "Album",
       "audited": false,
       "entityAsset": false
     },

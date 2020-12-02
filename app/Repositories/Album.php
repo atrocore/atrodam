@@ -29,18 +29,27 @@
 
 declare(strict_types=1);
 
-namespace Dam\Services;
+namespace Dam\Repositories;
 
 /**
- * Class Collection
- * @package Dam\Services
+ * Class Album
+ * @package Dam\Repositories
  */
-class Collection extends \Espo\Core\Templates\Services\Base
+class Album extends \Espo\Core\Templates\Repositories\Base
 {
-    public function updateDefault($entity)
+    /**
+     * @param string $id
+     */
+    public function normalizedDefaultValue(string $id)
     {
-        if ($entity->get("isDefault")) {
-            $this->getRepository()->normalizedDefaultValue($entity->id);
+        $entity = $this->where([
+            'isDefault' => 1,
+            "id!="      => $id,
+        ])->findOne();
+
+        if ($entity) {
+            $entity->set("isDefault", false);
+            $this->save($entity);
         }
     }
 }
