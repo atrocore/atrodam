@@ -31,25 +31,94 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Dam\Listeners\AbstractListener;
+use Espo\Core\Exceptions\BadRequest;
+use Espo\ORM\Entity;
+
 /**
  * Class Album
- * @package Dam\Repositories
  */
 class Album extends \Espo\Core\Templates\Repositories\Base
 {
     /**
-     * @param string $id
+     * @inheritDoc
+     *
+     * @throws BadRequest
      */
-    public function normalizedDefaultValue(string $id)
+    protected function beforeSave(Entity $entity, array $options = [])
     {
-        $entity = $this->where([
-            'isDefault' => 1,
-            "id!="      => $id,
-        ])->findOne();
-
-        if ($entity) {
-            $entity->set("isDefault", false);
-            $this->save($entity);
+        if (!$this->isValidCode($entity)) {
+            throw new BadRequest($this->getInjection('language')->translate('Code is invalid', 'exceptions', 'Global'));
         }
+
+        parent::beforeSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     *
+     * @throws BadRequest
+     */
+    protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
+    {
+        if ($relationName == "assetCategories" && !$this->isValidCategory($foreign)) {
+            throw new BadRequest($this->getInjection('language')->translate('Album can be linked with a root category only.', 'exceptions', 'Album'));
+        }
+
+        parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init()
+    {
+        $this->addDependency('language');
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return bool
+     */
+    protected function isValidCategory(Entity $entity): bool
+    {
+        if (is_string($entity)) {
+            $entity = $this->getEntityManager()->getEntity("AssetCategory", $entity);
+        }
+
+        return !$entity->get("categoryParentId");
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return bool
+     */
+    protected function isValidCode(Entity $entity): bool
+    {
+        $result = false;
+
+        if (!empty($entity->get('code')) && preg_match(AbstractListener::CODE_PATTERN, $entity->get('code'))) {
+            $result = $this->isUnique($entity);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return bool
+     */
+    protected function isUnique(Entity $entity)
+    {
+        $entity = $this
+            ->getEntityManager()
+            ->getRepository('Album')
+            ->where([['code' => $entity->get('code')], ["id!=" => $entity->get("id")],])
+            ->findOne();
+
+        return empty($entity);
     }
 }

@@ -33,7 +33,6 @@ namespace Dam\Controllers;
 
 /**
  * Class Collection
- * @package Dam\Controllers
  */
 class Album extends \Espo\Core\Templates\Controllers\Base
 {

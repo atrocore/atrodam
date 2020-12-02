@@ -3,6 +3,12 @@
     "rows": [
       [
         {
+          "name": "isActive"
+        },
+        false
+      ],
+      [
+        {
           "name": "name",
           "fullWidth": true
         }
@@ -10,12 +16,6 @@
       [
         {
           "name": "code",
-          "fullWidth": true
-        }
-      ],
-      [
-        {
-          "name": "isActive",
           "fullWidth": true
         }
       ]

@@ -3,12 +3,14 @@
     "assets": "Assets",
     "code": "Code",
     "isActive": "Active",
-    "isDefault": "Default",
     "assetCategories": "Asset Categories"
   },
   "links": {
     "assets": "Assets",
     "asset": "Asset",
     "assetCategories": "Asset Categories"
+  },
+  "exceptions": {
+    "Album can be linked with a root category only.": "Album can be linked with a root category only."
   }
 }

@@ -41,7 +41,7 @@ abstract class AbstractListener extends \Treo\Listeners\AbstractListener
     /**
      * @var string
      */
-    private $pattern = '/^[a-z0-9_]*$/';
+    public const CODE_PATTERN = '/^[a-z0-9_]*$/';
 
     /**
      * @param Entity $entity
@@ -52,7 +52,7 @@ abstract class AbstractListener extends \Treo\Listeners\AbstractListener
     {
         $result = false;
 
-        if (!empty($entity->get('code')) && preg_match($this->pattern, $entity->get('code'))) {
+        if (!empty($entity->get('code')) && preg_match(self::CODE_PATTERN, $entity->get('code'))) {
             $result = $this->isUnique($entity, 'code');
         }
 

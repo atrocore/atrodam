@@ -3,7 +3,6 @@
     "assetCategories": "Asset Kategorien",
     "createdBy": "Erstellt vom",
     "isActive": "Aktiv",
-    "isDefault": "Standard",
     "modifiedBy": "Geändert vom"
   },
   "labels": {
@@ -11,8 +10,9 @@
   },
   "links": {
     "assetCategories": "Asset Kategorien",
-    "assets": "Assets",
-    "createdBy": "Erstellt vom",
-    "modifiedBy": "Geändert vom"
+    "assets": "Assets"
+  },
+  "exceptions": {
+    "Album can be linked with a root category only.": "Album kann nur mit einer Stammkategorie verknüpft werden."
   }
 }

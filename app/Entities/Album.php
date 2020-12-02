@@ -33,7 +33,6 @@ namespace Dam\Entities;
 
 /**
  * Class Album
- * @package Dam\Entities
  */
 class Album extends \Espo\Core\Templates\Entities\Base
 {

@@ -3,18 +3,16 @@
     "rows": [
       [
         {
+          "name": "isActive"
+        },
+        false
+      ],
+      [
+        {
           "name": "name"
         },
         {
           "name": "code"
-        }
-      ],
-      [
-        {
-          "name": "isActive"
-        },
-        {
-          "name": "isDefault"
         }
       ],
       [

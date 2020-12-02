@@ -57,7 +57,13 @@ class V1Dot1Dot0 extends Base
      */
     public function down(): void
     {
-        $this->execute("");
+        $this->execute("CREATE TABLE `collection` (`id` VARCHAR(24) NOT NULL COLLATE utf8mb4_unicode_ci, `name` VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `deleted` TINYINT(1) DEFAULT '0' COLLATE utf8mb4_unicode_ci, `description` MEDIUMTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci, `created_at` DATETIME DEFAULT NULL COLLATE utf8mb4_unicode_ci, `modified_at` DATETIME DEFAULT NULL COLLATE utf8mb4_unicode_ci, `code` VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `is_active` TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci, `created_by_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `modified_by_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `assigned_user_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `owner_user_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, INDEX `IDX_CREATED_BY_ID` (created_by_id), INDEX `IDX_MODIFIED_BY_ID` (modified_by_id), INDEX `IDX_ASSIGNED_USER_ID` (assigned_user_id), INDEX `IDX_OWNER_USER_ID` (owner_user_id), INDEX `IDX_NAME` (name, deleted), INDEX `IDX_ASSIGNED_USER` (assigned_user_id, deleted), INDEX `IDX_OWNER_USER` (owner_user_id, deleted), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB");
+        $this->execute("CREATE TABLE `collection_asset_category` (`id` INT AUTO_INCREMENT NOT NULL UNIQUE COLLATE utf8mb4_unicode_ci, `asset_category_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `collection_id` VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci, `deleted` TINYINT(1) DEFAULT '0' COLLATE utf8mb4_unicode_ci, INDEX `IDX_8F27FD8A993EC4EB` (asset_category_id), INDEX `IDX_8F27FD8A514956FD` (collection_id), UNIQUE INDEX `UNIQ_8F27FD8A993EC4EB514956FD` (asset_category_id, collection_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB");
+        $this->execute("DROP TABLE album");
+        $this->execute("DROP TABLE album_asset_category");
+        $this->execute("DROP INDEX IDX_ALBUM_ID ON `asset`");
+        $this->execute("ALTER TABLE `asset` DROP album_id");
+        $this->execute("CREATE INDEX IDX_COLLECTION_ID ON `asset` (collection_id)");
     }
 
     /**

@@ -33,14 +33,7 @@ namespace Dam\Services;
 
 /**
  * Class Album
- * @package Dam\Services
  */
 class Album extends \Espo\Core\Templates\Services\Base
 {
-    public function updateDefault($entity)
-    {
-        if ($entity->get("isDefault")) {
-            $this->getRepository()->normalizedDefaultValue($entity->id);
-        }
-    }
 }
