@@ -65,19 +65,21 @@ class Asset extends Base implements DAMAttachment
      * @param Entity $entity
      * @param string $nature
      *
-     * @return int
+     * @return bool
      */
-    public function countRelatedAssetsByNature(Entity $entity, string $nature): int
+    public function hasAssetsWithNature(Entity $entity, string $nature): bool
     {
         $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
         if (empty($relation)) {
-            return 0;
+            return false;
         }
 
-        return $this
+        $entity = $this
             ->where(['type' => $this->getNatureTypes($nature), "$relation.id" => $entity->get('id')])
             ->join($relation)
-            ->count();
+            ->findOne();
+
+        return !empty($entity);
     }
 
     /**

@@ -65,12 +65,12 @@ class Asset extends Base
             [
                 "id"      => "Image",
                 "name"    => $this->translate('Image', 'labels', 'Asset'),
-                "hasItem" => !empty($this->getRepository()->countRelatedAssetsByNature($entity, "Image"))
+                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "Image")
             ],
             [
                 "id"      => "File",
                 "name"    => $this->translate('File', 'labels', 'Asset'),
-                "hasItem" => !empty($this->getRepository()->countRelatedAssetsByNature($entity, "File"))
+                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
             ]
         ];
 
