@@ -158,4 +158,16 @@ class Asset extends Base implements DAMAttachment
         return $this->getMapper()->unrelate($foreign, "relatedAssets", $main);
     }
 
+    /**
+     * @inheritDoc
+     */
+    protected function beforeSave(Entity $entity, array $options = [])
+    {
+        // set default album
+        if (empty($entity->get('albumId'))) {
+            $entity->set('albumId', '1');
+        }
+
+        parent::beforeSave($entity, $options);
+    }
 }

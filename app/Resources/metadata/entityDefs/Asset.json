@@ -87,7 +87,10 @@
     "album": {
       "type": "link",
       "required": true,
-      "default": "1"
+      "defaultAttributes": {
+        "albumId": "1",
+        "albumName": "Default Album"
+      }
     },
     "assetMetaDatas": {
       "type": "linkMultiple",

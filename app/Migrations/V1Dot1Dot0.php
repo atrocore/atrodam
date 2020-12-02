@@ -50,6 +50,8 @@ class V1Dot1Dot0 extends Base
         $this->execute("DROP INDEX IDX_COLLECTION_ID ON `asset`");
         $this->execute("ALTER TABLE `asset` ADD album_id VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
         $this->execute("CREATE INDEX IDX_ALBUM_ID ON `asset` (album_id)");
+        $this->execute("INSERT INTO `album` (`id`, `name`, `code`, `is_active`) VALUES ('1', 'Default Album', 'default_album', 1)");
+        $this->execute("UPDATE asset SET album_id='1' WHERE album_id IS NULL");
     }
 
     /**

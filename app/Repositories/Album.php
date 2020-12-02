@@ -48,10 +48,23 @@ class Album extends \Espo\Core\Templates\Repositories\Base
     protected function beforeSave(Entity $entity, array $options = [])
     {
         if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->getInjection('language')->translate('Code is invalid', 'exceptions', 'Global'));
+            throw new BadRequest($this->translate('Code is invalid', 'exceptions', 'Global'));
         }
 
         parent::beforeSave($entity, $options);
+    }
+
+    /**
+     * @param Entity $entity
+     * @param array  $options
+     */
+    protected function beforeRemove(Entity $entity, array $options = [])
+    {
+        if ($entity->get('id') === '1') {
+            throw new BadRequest($this->translate("Default album can't be deleted.", 'exceptions', 'Album'));
+        }
+
+        parent::beforeRemove($entity, $options);
     }
 
     /**
@@ -62,7 +75,7 @@ class Album extends \Espo\Core\Templates\Repositories\Base
     protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
     {
         if ($relationName == "assetCategories" && !$this->isValidCategory($foreign)) {
-            throw new BadRequest($this->getInjection('language')->translate('Album can be linked with a root category only.', 'exceptions', 'Album'));
+            throw new BadRequest($this->translate('Album can be linked with a root category only.', 'exceptions', 'Album'));
         }
 
         parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
@@ -120,5 +133,17 @@ class Album extends \Espo\Core\Templates\Repositories\Base
             ->findOne();
 
         return empty($entity);
+    }
+
+    /**
+     * @param string $key
+     * @param string $category
+     * @param string $scope
+     *
+     * @return string
+     */
+    protected function translate(string $key, string $category, string $scope): string
+    {
+        return $this->getInjection('language')->translate($key, $category, $scope);
     }
 }
