@@ -31,6 +31,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
         template: "dam:asset/record/panels/asset-type-block",
         sort: false,
         show: true,
+        rowActionsView: 'views/record/row-actions/relationship-no-remove',
 
         setup() {
             Dep.prototype.setup.call(this);
