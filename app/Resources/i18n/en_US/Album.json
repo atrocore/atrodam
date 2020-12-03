@@ -11,6 +11,7 @@
     "assetCategories": "Asset Categories"
   },
   "exceptions": {
-    "Album can be linked with a root category only.": "Album can be linked with a root category only."
+    "Album can be linked with a root category only.": "Album can be linked with a root category only.",
+    "Default album can't be deleted.": "Default album can't be deleted."
   }
 }
