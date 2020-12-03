@@ -160,7 +160,7 @@
     "private": {
       "notNull": true,
       "type": "bool",
-      "default": false,
+      "default": true,
       "audited": false,
       "readOnly": false,
       "tooltip": false
