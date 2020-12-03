@@ -26,7 +26,7 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset_relation/modals/asset-form', 'views/record/detail', function (Dep) {
+Espo.define('dam:views/asset/modals/entity-asset-form', 'views/record/detail', function (Dep) {
     return Dep.extend({
         sideDisabled   : true,
         bottomDisabled : true,
@@ -36,9 +36,7 @@ Espo.define('dam:views/asset_relation/modals/asset-form', 'views/record/detail',
         fieldsMode     : "edit",
         type           : "edit",
         columnCount    : 1,
-        skipRows       : [
-            "image", "file", "type", "active", "private"
-        ],
+        skipRows       : [],
         
         getGridLayout: function (callback) {
             if (this.gridLayout !== null) {
@@ -59,7 +57,7 @@ Espo.define('dam:views/asset_relation/modals/asset-form', 'views/record/detail',
             this._helper.layoutManager.get(this.model.name, this.layoutName, function (simpleLayout) {
                 
                 simpleLayout = this._filterSimpleLayout(simpleLayout);
-           
+                
                 this.gridLayout = {
                     type  : gridLayoutType,
                     layout: this.convertDetailLayout(simpleLayout)

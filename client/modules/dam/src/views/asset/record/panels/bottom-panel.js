@@ -152,7 +152,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
         },
 
         actionCreateRelation() {
-            this.createView("createAssetRelation", "dam:views/asset_relation/modals/create-assets", {
+            this.createView("createAssetRelation", "dam:views/asset/modals/create-assets", {
                 relate: {
                     model: this.model,
                     link: this.model.defs['links'][this.link].foreign

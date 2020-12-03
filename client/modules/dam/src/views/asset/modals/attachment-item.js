@@ -26,22 +26,28 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/modals/attachment-item', ['view', "dam:views/fields/code-from-name", "dam:config"],
-    function (Dep, Code, Config) {
+Espo.define('dam:views/asset/modals/attachment-item',
+    ['view', "dam:views/fields/code-from-name", "dam:config"],
+    (Dep, Code, Config) => {
         return Dep.extend({
-            template : "dam:asset/modals/attachment-item",
-            type    : null,
+            template: "dam:asset/modals/attachment-item",
+            type: null,
             damConfig: null,
-            
+
             events: {
-                'click span[data-action="collapsePanel"]'   : function (e) {
+                'click span[data-action="collapsePanel"]': function (e) {
                     let obj = $(e.currentTarget);
                     obj.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
                     obj.parents(".media-body").find('.edit-form').slideToggle();
                 },
+                'click span[data-action="collapseAssetPanel"]': function (e) {
+                    let obj = $(e.currentTarget);
+                    obj.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                    obj.parents(".asset-edit-form").find('.detail').slideToggle();
+                },
                 'click span[data-action="deleteAttachment"]': function (e) {
                     this.model.destroy({
-                        wait   : true,
+                        wait: true,
                         success: () => {
                             this.notify('Removed', 'success');
                             this.remove();
@@ -57,47 +63,75 @@ Espo.define('dam:views/asset/modals/attachment-item', ['view', "dam:views/fields
                         parseInt(this.model.get("size")) / 1024
                     ).toFixed(2) + " kb"
                 };
-    
+
                 if (this._showPreview()) {
                     data.preview = `?entryPoint=preview&size=small&id=${this.model.id}&type=attachment`;
                 }
-                
+
                 return data;
             },
             setup() {
                 this.damConfig = Config.prototype.init.call(this);
-                
-                let type   = this.options.type || null;
+
+                let type = this.options.type || null;
                 let access = this.options.private;
-                
-                this.type   = this.damConfig.getType(type);
-                
-                this.getModelFactory().create("Asset", model => {
-                    
-                    model.set("type", type);
-                    model.set("private", access);
-                    model.set(`fileId`, this.model.id);
-                    model.set(`fileName`, this.model.get("name"));
-                    model.set("name", this._getFileName(this.model.get("name")));
-                    model.set("nameOfFile", this._getFileName(this.model.get("name")));
-                    model.set("code", Code.prototype.transformToPattern.call(this, this._getFileName(this.model.get("name"))));
-                    
-                    model.trigger("change:name");
-                    
-                    this.model.set("assetModel", model);
-                    this.createView("edit", "dam:views/asset/modals/asset-form", {
-                        model: model,
-                        el   : this.options.el + " .edit-form"
+
+                this.type = this.damConfig.getType(type);
+
+                this.getModelFactory().create("Asset", assetModel => {
+
+                    assetModel.set("type", type);
+                    assetModel.set("private", access);
+                    assetModel.set(`fileId`, this.model.id);
+                    assetModel.set(`fileName`, this.model.get("name"));
+                    assetModel.set("name", this._getFileName(this.model.get("name")));
+                    assetModel.set("nameOfFile", this._getFileName(this.model.get("name")));
+                    assetModel.set("code", Code.prototype.transformToPattern.call(this, this._getFileName(this.model.get("name"))));
+
+                    assetModel.trigger("change:name");
+
+                    this.model.set("assetModel", assetModel);
+                    this.createView("assetEdit", "dam:views/asset/modals/asset-form", {
+                        model: assetModel,
+                        el: this.options.el + " .asset-edit-form"
+                    });
+
+                    this.getModelFactory().create("AssetRelation", entityAssetModel => {
+                        assetModel.set("EntityAsset", entityAssetModel);
+                        entityAssetModel.set({
+                            name: `${assetModel.get("name")} / ${(
+                                (
+                                    this.model.get('size') / 1024
+                                ).toFixed(1)
+                            )}`,
+                            entityName: this.options.entityName
+                        });
+                        this.createView("entityAssetEdit", "dam:views/asset/modals/entity-asset-form", {
+                            model: entityAssetModel,
+                            el: this.options.el + " .edit-form"
+                        });
+
                     });
                 });
             },
-            
+
             _getFileName(name) {
                 name = name.split('.');
                 name.pop();
                 return name.join('.');
             },
-            
+
+            validate() {
+                let notValid = false;
+                for (let key in this.nestedViews) {
+                    const view = this.nestedViews[key];
+                    if (view && typeof view.validate === 'function') {
+                        notValid = view.validate() || notValid;
+                    }
+                }
+                return notValid;
+            },
+
             _showPreview() {
                 let config = this.damConfig.getByType(this.type);
                 return config.nature === "image" || config.preview;

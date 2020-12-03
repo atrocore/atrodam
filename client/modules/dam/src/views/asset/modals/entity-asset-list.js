@@ -26,38 +26,66 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset_relation/modals/attachment-list', 'view',
-    Dep => Dep.extend({
-        template: "dam:asset_relation/modals/attachment-list",
-        items   : [],
-
+Espo.define('dam:views/asset/modals/entity-asset-list', 'views/modal', function (Dep) {
+    return Dep.extend({
+        template  : "dam:asset/modals/entity-asset-list",
+        items     : [],
+        assetTypes: {},
+        
         data() {
             return {
                 items: this.items
             };
         },
-
+        
         setup() {
-            this.items = [];
-            for (let i = 0; i < this.collection.length; i++) {
-                let attachment = this.collection.models[i];
-
-                let name = `attachment-${attachment.get('id')}`;
-                this.items.push(name);
-                this.createView(name, "dam:views/asset_relation/modals/attachment-item", {
-                    el     : this.options.el + ` tr[data-name="${name}"]`,
-                    model  : attachment,
-                    type   : this.model.get('type'),
-                    private: this.model.get('private'),
-                    entityName: this.options.entityName
-                }, view => {
-                    view.listenTo(view, "attachment:remove", () => {
-                        this.reRender();
-                    });
-                });
-            }
+            this.header     = this.getLanguage().translate("Create Entity Assets", 'labels', this.scope);
+            this.assetTypes = this.options.assetTypes;
+            
+            this.addButton({
+                name : "save",
+                label: "Save",
+                style: 'primary'
+            });
+            
+            this.addButton({
+                name : "cancel",
+                label: "Cancel"
+            });
+            
+            this._renderItems();
         },
-
+        
+        _renderItems() {
+            this.items = [];
+            
+            this.collection.forEach((model) => {
+               
+                let viewName = `entityAsset-${model.id}`;
+                this.items.push(viewName);
+                this.createView(viewName, "dam:views/asset/modals/entity-asset-item", {
+                    model: model,
+                    el   : this.options.el + ` tr[data-name="${viewName}"]`,
+                    assetType : this.assetTypes[model.get("assetId")]
+                });
+            });
+        },
+        
+        actionSave() {
+            if (this.validate()) {
+                this.notify('Not valid', 'error');
+                return;
+            }
+            
+            this.collection.forEach(model => {
+                model.save().then(() => {
+                    this.notify('Linked', 'success');
+                    this.trigger("after:save");
+                    this.dialog.close();
+                });
+            });
+        },
+        
         validate() {
             let notValid = false;
             for (let key in this.nestedViews) {
@@ -66,7 +94,7 @@ Espo.define('dam:views/asset_relation/modals/attachment-list', 'view',
                     notValid = view.validate() || notValid;
                 }
             }
-            return notValid
+            return notValid;
         }
-    })
-);
+    });
+});

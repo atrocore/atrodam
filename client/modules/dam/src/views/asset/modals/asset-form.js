@@ -37,7 +37,7 @@ Espo.define('dam:views/asset/modals/asset-form', 'views/record/detail', function
         type           : "edit",
         columnCount    : 1,
         skipRows       : [
-            "file", "type", "active", "private"
+            "image", "file", "type", "active", "private"
         ],
         
         getGridLayout: function (callback) {

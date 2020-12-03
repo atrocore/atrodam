@@ -26,66 +26,57 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset_relation/modals/entity-asset-list', 'views/modal', function (Dep) {
-    return Dep.extend({
-        template  : "dam:asset_relation/modals/entity-asset-list",
-        items     : [],
-        assetTypes: {},
-        
-        data() {
-            return {
-                items: this.items
-            };
-        },
-        
-        setup() {
-            this.header     = this.getLanguage().translate("Create Entity Assets", 'labels', this.scope);
-            this.assetTypes = this.options.assetTypes;
-            
-            this.addButton({
-                name : "save",
-                label: "Save",
-                style: 'primary'
-            });
-            
-            this.addButton({
-                name : "cancel",
-                label: "Cancel"
-            });
-            
-            this._renderItems();
-        },
-        
-        _renderItems() {
-            this.items = [];
-            
-            this.collection.forEach((model) => {
-               
-                let viewName = `entityAsset-${model.id}`;
-                this.items.push(viewName);
-                this.createView(viewName, "dam:views/asset_relation/modals/entity-asset-item", {
-                    model: model,
-                    el   : this.options.el + ` tr[data-name="${viewName}"]`,
-                    assetType : this.assetTypes[model.get("assetId")]
-                });
+Espo.define('dam:views/asset/modals/create-assets', 'dam:views/modals/multi-create',
+    Dep => Dep.extend({
+        entityAssetModels: {},
+
+        _renderAttachmentList() {
+            this.createView("attachmentList", "dam:views/asset/modals/attachment-list", {
+                el: this.options.el + " .attachment-list",
+                collection: this.collection,
+                model: this.model,
+                entityName: this.scope
+            }, view => {
+                view.render();
             });
         },
-        
+
         actionSave() {
             if (this.validate()) {
                 this.notify('Not valid', 'error');
                 return;
             }
-            
+            let Promises = [];
             this.collection.forEach(model => {
-                model.save().then(() => {
-                    this.notify('Linked', 'success');
-                    this.trigger("after:save");
-                    this.dialog.close();
-                });
+                let assetModel = model.get("assetModel");
+                let entityAssetModel = assetModel.get("EntityAsset");
+                assetModel.unset("EntityAsset");
+
+                assetModel.setRelate(this.options.relate);
+
+                Promises.push(new Promise((resolve, rejected) => {
+                    assetModel.save().then(() => {
+                        let entityId = this.getParentView().model.id;
+                        entityAssetModel.url = `AssetRelation/update/by?entityName=${this.scope}&entityId=${entityId}&assetId=${assetModel.id}`;
+                        entityAssetModel.save().then(() => {
+                            resolve();
+                        }).fail((data) => {
+                            rejected();
+                        });
+                    }).fail(() => {
+                        assetModel.set("EntityAsset", entityAssetModel);
+                        rejected();
+                    });
+                }));
+            });
+            Promise.all(Promises).then(r => {
+                this._afterSave();
+                this.saved = true;
+                this.dialog.close();
+            }).catch(r => {
             });
         },
-        
+
         validate() {
             let notValid = false;
             for (let key in this.nestedViews) {
@@ -94,7 +85,7 @@ Espo.define('dam:views/asset_relation/modals/entity-asset-list', 'views/modal', 
                     notValid = view.validate() || notValid;
                 }
             }
-            return notValid;
+            return notValid
         }
-    });
-});
+    })
+);

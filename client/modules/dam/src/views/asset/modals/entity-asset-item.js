@@ -26,9 +26,9 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset_relation/modals/entity-asset-item', ['view', "dam:config"], (Dep, Config) => {
+Espo.define('dam:views/asset/modals/entity-asset-item', ['view', "dam:config"], (Dep, Config) => {
     return Dep.extend({
-        template : "dam:asset_relation/modals/entity-asset-item",
+        template : "dam:asset/modals/entity-asset-item",
         type     : null,
         damConfig: null,
         
@@ -45,7 +45,7 @@ Espo.define('dam:views/asset_relation/modals/entity-asset-item', ['view', "dam:c
             
             this.type = this.damConfig.getType(this.options.assetType);
             
-            this.createView("entityAssetEdit", "dam:views/asset_relation/modals/entity-asset-form", {
+            this.createView("entityAssetEdit", "dam:views/asset/modals/entity-asset-form", {
                 model: this.model,
                 el   : this.options.el + " .edit-form"
             });
