@@ -121,12 +121,6 @@
       "isMultilang": false,
       "view": "dam:views/asset/fields/name"
     },
-    "nameOfFile": {
-      "type": "varchar",
-      "required": true,
-      "trim": true,
-      "view": "dam:views/asset/fields/name-of-file"
-    },
     "description": {
       "type": "text",
       "rows": 4,

@@ -73,22 +73,11 @@ class Attachment extends \Treo\Repositories\Attachment
         // prepare name
         $name = explode('.', $entity->get('name'))[0];
 
-        // prepare code
-        $code = preg_replace("/[^a-z0-9_?!]/", "", strtolower($name));
-        $suffix = '';
-        $number = 1;
-        while (!empty($this->getEntityManager()->getRepository('Asset')->where(['code' => $code . $suffix])->findOne())) {
-            $suffix = '_' . $number;
-            $number++;
-        }
-
         $asset = $this->getEntityManager()->getEntity('Asset');
         $asset->set('name', $name);
-        $asset->set('nameOfFile', $name);
         $asset->set('private', true);
         $asset->set('fileId', $entity->get('id'));
         $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
-        $asset->set('code', $code . $suffix);
 
         // get config by type
         $config = $this

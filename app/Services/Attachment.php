@@ -193,8 +193,8 @@ class Attachment extends \Treo\Services\Attachment
     {
         $attachment = $this->getEntity($asset->get("fileId"));
 
-        if ($asset->get("nameOfFile")) {
-            $attachment->setName($asset->get("nameOfFile"));
+        if ($asset->get("name")) {
+            $attachment->setName($asset->get("name"));
         }
 
         $sourcePath = $attachment->get("tmpPath");

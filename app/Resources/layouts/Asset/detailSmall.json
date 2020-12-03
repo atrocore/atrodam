@@ -22,12 +22,6 @@
             ],
             [
                 {
-                    "name": "nameOfFile",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
                     "name" : "album",
                     "fullWidth" : true
                 }

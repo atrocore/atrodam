@@ -22,7 +22,6 @@
     "renditions": "Derivate",
     "isActive": "Aktiv",
     "image": "Bild",
-    "nameOfFile": "Dateiname",
     "relatedAssets": "Verwandte Assets",
     "assetCategories": "Asset Kategorien",
     "assetMetaDatas": "Asset Metadaten",
@@ -39,7 +38,6 @@
     "tags": "Tags",
     "width": "Breite",
     "private": "Privat",
-    "code": "Code",
     "ownerUser": "Inhaber",
     "path": "Pfad",
     "preview": "Vorschau"

@@ -61,10 +61,6 @@ class AssetEntity extends AbstractListener
             throw new BadRequest($this->getLanguage()->translate('You can not change collection', 'exceptions', 'Asset'));
         }
 
-        if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->getLanguage()->translate('Code is invalid', 'exceptions', 'Global'));
-        }
-
         if (!$entity->isNew() && $entity->isAttributeChanged("type")) {
             throw new BadRequest("You can't change type");
         }
@@ -96,8 +92,8 @@ class AssetEntity extends AbstractListener
         }
 
         //rename file
-        if (!$entity->isNew() && $entity->isAttributeChanged("nameOfFile")) {
-            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('nameOfFile'), $entity);
+        if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
+            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('name'), $entity);
         }
 
         //deactivate asset

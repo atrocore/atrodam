@@ -7,7 +7,6 @@
   "fields": {
     "isActive": "Active",
     "image": "Image",
-    "nameOfFile": "File Name",
     "relatedAssets": "Related Assets",
     "assetCategories": "Asset Categories",
     "assetMetaDatas": "Asset Meta Datas",
@@ -26,7 +25,6 @@
     "tags": "Tags",
     "width": "Width",
     "private": "Private",
-    "code": "Code",
     "preview": "Preview"
   },
   "links": {
