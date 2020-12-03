@@ -65,7 +65,7 @@ class V1Dot1Dot0 extends Base
         $this->execute("DROP TABLE album");
         $this->execute("DROP TABLE album_asset_category");
         $this->execute("DROP INDEX IDX_ALBUM_ID ON `asset`");
-        $this->execute("ALTER TABLE `asset` DROP album_id");
+        $this->execute("ALTER TABLE `asset` DROP album_id, CHANGE `private` private TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci, ADD name_of_file VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD code VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD collection_id VARCHAR(24) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
         $this->execute("CREATE INDEX IDX_COLLECTION_ID ON `asset` (collection_id)");
     }
 
