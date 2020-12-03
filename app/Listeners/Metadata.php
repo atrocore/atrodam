@@ -117,7 +117,8 @@ class Metadata extends AbstractListener
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
 
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                        'type' => 'int'
+                        'type' => 'int',
+                        'default' => 100000
                     ];
                     $data['entityDefs'][$scope]['fields'][$link]['columns']['assetSorting'] = 'sorting';
                     $data['entityDefs'][$scope]['fields']['assetSorting'] = [

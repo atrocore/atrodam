@@ -53,8 +53,8 @@ class V1Dot1Dot0 extends Base
         $this->execute("INSERT INTO `album` (`id`, `name`, `code`, `is_active`) VALUES ('1', 'Default Album', 'default_album', 1)");
         $this->execute("UPDATE asset SET album_id='1' WHERE album_id IS NULL");
         $this->execute("ALTER TABLE `asset` DROP name_of_file, DROP code, DROP collection_id, CHANGE `private` private TINYINT(1) DEFAULT '1' NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE `album_id` album_id VARCHAR(24) DEFAULT '1' COLLATE utf8mb4_unicode_ci");
-        $this->execute("ALTER TABLE `category_asset` ADD sorting INT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
-        $this->execute("ALTER TABLE `product_asset` ADD sorting INT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `category_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `product_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
     }
 
     /**
