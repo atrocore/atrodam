@@ -107,6 +107,22 @@ class Asset extends Base
     }
 
     /**
+     * @param string $scope
+     * @param string $entityId
+     * @param array  $data
+     *
+     * @return bool
+     */
+    public function updateAssetsSortOrder(string $scope, string $entityId, array $data): bool
+    {
+        if (!empty($data['ids']) && is_array($data['ids'])) {
+            return $this->getRepository()->updateSortOrder($scope, $entityId, $data['ids']);
+        }
+
+        return true;
+    }
+
+    /**
      * @param \Dam\Entities\Asset $asset
      *
      * @return mixed

@@ -35,6 +35,7 @@ use Dam\Core\DAMAttachment;
 use Dam\Core\FilePathBuilder;
 use Dam\Core\FileStorage\DAMUploadDir;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
 
 /**
@@ -88,18 +89,29 @@ class Asset extends AbstractRepository implements DAMAttachment
      *
      * @return array
      */
-    public function findRelatedAssetsByNature(Entity $entity, string $nature, bool $countOnly = false): array
+    public function findRelatedAssetsByNature(Entity $entity, string $nature): array
     {
-        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
-        if (empty($relation)) {
+        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
+        if (empty($relation['foreign']) || empty($relation['relationName'])) {
             return [];
         }
 
-        return $this
-            ->where(['type' => $this->getNatureTypes($nature), "$relation.id" => $entity->get('id')])
-            ->join($relation)
-            ->find()
-            ->toArray();
+        $relationTableName = Util::toUnderScore($relation['relationName']);
+        $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
+        $types = implode("','", $this->getNatureTypes($nature));
+        $id = $entity->get('id');
+
+        $sql = "SELECT a.* 
+                FROM $relationTableName r 
+                LEFT JOIN asset a ON a.id=r.asset_id 
+                WHERE 
+                      r.deleted=0 
+                  AND a.deleted=0 
+                  AND a.type IN ('$types') 
+                  AND r.{$entityTableName}_id='$id' 
+                ORDER BY r.sorting ASC";
+
+        return $this->findByQuery($sql)->toArray();
     }
 
     /**
@@ -110,16 +122,52 @@ class Asset extends AbstractRepository implements DAMAttachment
      */
     public function findRelatedAssetsByIds(Entity $entity, array $ids): array
     {
-        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets', 'foreign']);
-        if (empty($relation)) {
+        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
+        if (empty($relation['foreign']) || empty($relation['relationName'])) {
             return [];
         }
 
-        return $this
-            ->where(['id' => $ids, "$relation.id" => $entity->get('id')])
-            ->join($relation)
-            ->find()
-            ->toArray();
+        $relationTableName = Util::toUnderScore($relation['relationName']);
+        $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
+        $ids = implode("','", $ids);
+        $id = $entity->get('id');
+
+        $sql = "SELECT a.* 
+                FROM $relationTableName r 
+                LEFT JOIN asset a ON a.id=r.asset_id 
+                WHERE 
+                      r.deleted=0 
+                  AND a.deleted=0 
+                  AND a.id IN ('$ids')
+                  AND r.{$entityTableName}_id='$id' 
+                ORDER BY r.sorting ASC";
+
+        return $this->findByQuery($sql)->toArray();
+    }
+
+    /**
+     * @param string $scope
+     * @param string $entityId
+     * @param array  $ids
+     *
+     * @return bool
+     */
+    public function updateSortOrder(string $scope, string $entityId, array $ids): bool
+    {
+        $relation = $this->getMetadata()->get(['entityDefs', $scope, 'links', 'assets']);
+        if (empty($relation['foreign']) || empty($relation['relationName'])) {
+            return false;
+        }
+
+        $relationTableName = Util::toUnderScore($relation['relationName']);
+        $entityTableName = Util::toUnderScore(lcfirst($scope));
+
+        foreach ($ids as $k => $id) {
+            $sorting = $k * 10;
+            $this->getEntityManager()->nativeQuery("UPDATE $relationTableName SET sorting=$sorting WHERE asset_id='$id' AND {$entityTableName}_id='$entityId' AND deleted=0");
+        }
+
+        return true;
     }
 
     /**

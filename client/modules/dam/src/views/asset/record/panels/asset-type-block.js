@@ -71,7 +71,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                         el: this.options.el + ' .list-container',
                         layoutName: "listSmall",
                         dragableListRows: this.sort,
-                        listRowsOrderSaveUrl: `AssetRelation/${this.model.get('entityName')}/${this.model.get('entityId')}/sortOrder`,
+                        listRowsOrderSaveUrl: `Asset/action/assetsSortOrder?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}`,
                         listLayout: null,
                         skipBuildRows: true,
                         rowActionsView: this.model.get('rowActionsView') ? this.model.get('rowActionsView') : this.rowActionsView,
@@ -81,9 +81,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                             this.model.get('entityModel').fetch();
                         });
                         view.listenTo(view, "after:model-remove", () => {
-                            let parent = this.getParentView();
-                            parent.actionRefresh();
-                            parent._refreshAssetPanel();
+                            this.getParentView().actionRefresh();
                             this.model.get('entityModel').fetch();
                         });
                         if (this.getMetadata().get(['scopes', this.model.get('entityName'), 'advancedFilters'])) {

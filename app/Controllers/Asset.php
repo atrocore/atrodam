@@ -43,9 +43,9 @@ use Slim\Http\Request;
 class Asset extends AbstractController
 {
     /**
-     * @param array   $params
-     * @param array   $data
-     * @param Request $request
+     * @param array     $params
+     * @param \stdClass $data
+     * @param Request   $request
      *
      * @return array
      * @throws BadRequest
@@ -65,9 +65,9 @@ class Asset extends AbstractController
     }
 
     /**
-     * @param array   $params
-     * @param array   $data
-     * @param Request $request
+     * @param array     $params
+     * @param \stdClass $data
+     * @param Request   $request
      *
      * @return array
      * @throws BadRequest
@@ -84,5 +84,27 @@ class Asset extends AbstractController
         }
 
         return $this->getRecordService()->getAssetsForEntity($request);
+    }
+
+    /**
+     * @param array     $params
+     * @param \stdClass $data
+     * @param Request   $request
+     *
+     * @return array
+     * @throws BadRequest
+     * @throws Forbidden
+     */
+    public function actionAssetsSortOrder($params, $data, Request $request)
+    {
+        if (!$request->isPut() || empty($request->get('entity')) || empty($request->get('id')) || empty($data)) {
+            throw new BadRequest();
+        }
+
+        if (!$this->getAcl()->check($this->name, 'edit')) {
+            throw new Forbidden();
+        }
+
+        return $this->getRecordService()->updateAssetsSortOrder((string)$request->get('entity'), (string)$request->get('id'), get_object_vars($data));
     }
 }
