@@ -33,5 +33,8 @@
     "assetVersions": "Asset Versions",
     "renditions": "Renditions",
     "relatedAssets": "Related Assets"
+  },
+  "exceptions": {
+    "Asset name is invalid.": "Asset name is invalid."
   }
 }

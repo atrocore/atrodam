@@ -38,7 +38,7 @@ use Espo\ORM\Entity;
 /**
  * Class Album
  */
-class Album extends \Espo\Core\Templates\Repositories\Base
+class Album extends AbstractRepository
 {
     /**
      * @inheritDoc
@@ -79,14 +79,6 @@ class Album extends \Espo\Core\Templates\Repositories\Base
         }
 
         parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function init()
-    {
-        $this->addDependency('language');
     }
 
     /**
@@ -133,17 +125,5 @@ class Album extends \Espo\Core\Templates\Repositories\Base
             ->findOne();
 
         return empty($entity);
-    }
-
-    /**
-     * @param string $key
-     * @param string $category
-     * @param string $scope
-     *
-     * @return string
-     */
-    protected function translate(string $key, string $category, string $scope): string
-    {
-        return $this->getInjection('language')->translate($key, $category, $scope);
     }
 }

@@ -34,7 +34,7 @@ namespace Dam\Repositories;
 use Dam\Core\DAMAttachment;
 use Dam\Core\FilePathBuilder;
 use Dam\Core\FileStorage\DAMUploadDir;
-use Espo\Core\Templates\Repositories\Base;
+use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
 /**
@@ -42,7 +42,7 @@ use Espo\ORM\Entity;
  *
  * @package Dam\Repositories
  */
-class Asset extends Base implements DAMAttachment
+class Asset extends AbstractRepository implements DAMAttachment
 {
     /**
      * @param string $nature
@@ -166,6 +166,10 @@ class Asset extends Base implements DAMAttachment
         // set default album
         if (empty($entity->get('albumId'))) {
             $entity->set('albumId', '1');
+        }
+
+        if (empty(str_replace('/', '', (string)$entity->get('name')))) {
+            throw new BadRequest($this->translate('Asset name is invalid.', 'exceptions', 'Asset'));
         }
 
         parent::beforeSave($entity, $options);

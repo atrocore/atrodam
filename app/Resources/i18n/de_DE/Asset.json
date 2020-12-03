@@ -3,10 +3,6 @@
     "Create Asset": "Asset erstellen",
     "sort": "Sortieren"
   },
-  "exceptions": {
-    "Code is invalid": "Code ist ungültig. Der Code sollte eindeutig sein. Es werden nur Kleinbuchstaben, Zahlen und Unterstrich zugelassen.",
-    "Such asset is already exists": "Ein solcher Asset ist bereits vorhanden."
-  },
   "links": {
     "renditions": "Derivate",
     "assetCategories": "Asset Kategorien",
@@ -41,5 +37,8 @@
     "ownerUser": "Inhaber",
     "path": "Pfad",
     "preview": "Vorschau"
+  },
+  "exceptions": {
+    "Asset name is invalid.": "Asset-Name ist ungültig."
   }
 }
