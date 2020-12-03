@@ -9,12 +9,6 @@
             ],
             [
                 {
-                    "name": "code",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
                     "name": "type"
                 }
             ],

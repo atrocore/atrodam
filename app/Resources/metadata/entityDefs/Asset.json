@@ -171,14 +171,6 @@
       "readOnly": false,
       "tooltip": false
     },
-    "code": {
-      "type": "varchar",
-      "layoutMassUpdateDisabled": true,
-      "required": true,
-      "trim": true,
-      "emHidden": true,
-      "view": "dam:views/fields/code-from-name"
-    },
     "type": {
       "type": "enum",
       "required": false,
@@ -306,8 +298,7 @@
     "sortBy": "createdAt",
     "asc": false,
     "textFilterFields": [
-      "name",
-      "code"
+      "name"
     ]
   },
   "indexes": {

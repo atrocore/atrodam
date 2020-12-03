@@ -21,9 +21,7 @@
                 {
                     "name": "private"
                 },
-                {
-                    "name": "code"
-                }
+                false
             ],
             [
                 {
