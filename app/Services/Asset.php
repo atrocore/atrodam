@@ -227,21 +227,6 @@ class Asset extends Base
     }
 
     /**
-     * @inheritDoc
-     */
-    protected function storeEntity(Entity $entity)
-    {
-        if ($entity->isNew()) {
-            $exist = $this->getRepository()->where(['fileId' => $entity->get('fileId')])->findOne();
-            if (!empty($exist)){
-                return $exist;
-            }
-        }
-
-        return parent::storeEntity($entity);
-    }
-
-    /**
      * @return FileManager
      */
     protected function getFileManager(): FileManager

@@ -39,6 +39,7 @@
     "preview": "Vorschau"
   },
   "exceptions": {
-    "Asset name is invalid.": "Asset-Name ist ungültig."
+    "Asset name is invalid.": "Asset-Name ist ungültig.",
+    "Such asset already exists.": "Dieser Asset existiert bereits."
   }
 }

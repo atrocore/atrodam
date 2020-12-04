@@ -35,6 +35,7 @@
     "relatedAssets": "Related Assets"
   },
   "exceptions": {
-    "Asset name is invalid.": "Asset name is invalid."
+    "Asset name is invalid.": "Asset name is invalid.",
+    "Such asset already exists.": "Such asset already exists."
   }
 }
