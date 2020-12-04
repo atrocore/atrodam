@@ -98,7 +98,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
             this.buttonList.push({
                 title: 'Create',
-                action: this.defs.createAction || 'createRelation',
+                action: this.defs.createAction || 'createRelated',
                 link: this.link,
                 acl: 'create',
                 aclScope: this.scope,
@@ -149,22 +149,6 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     }
                 });
             }
-        },
-
-        actionCreateRelation() {
-            this.createView("createAssetRelation", "dam:views/asset/modals/create-assets", {
-                relate: {
-                    model: this.model,
-                    link: this.model.defs['links'][this.link].foreign
-                },
-                scope: this.scope
-            }, (view) => {
-                view.render();
-
-                view.listenTo(view, "after:save", () => {
-                    this.actionRefresh();
-                });
-            });
         },
 
         actionUnlinkRelated: function (data) {
