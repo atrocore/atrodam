@@ -9,7 +9,6 @@
             <div class="col-md-12 edit-form">
                 {{{entityAssetEdit}}}
                 <div class="col-md-12 asset-edit-form">
-                    <h5>Asset&nbsp;&nbsp;&nbsp;&nbsp;<span class="collapser fas fa-chevron-up" data-action="collapseAssetPanel"></span></h5>
                     {{{assetEdit}}}
                 </div>
             </div>

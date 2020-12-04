@@ -94,11 +94,7 @@ class Metadata extends AbstractListener
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
 
-        // set system asset types
-        $types['File'] = 'File';
-        $types['Image'] = 'Image';
-
-        return $types;
+        return array_merge(['File' => 'File', 'Image' => 'Image'], $types);
     }
 
     /**
@@ -117,7 +113,7 @@ class Metadata extends AbstractListener
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
 
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                        'type' => 'int',
+                        'type'    => 'int',
                         'default' => 100000
                     ];
                     $data['entityDefs'][$scope]['fields'][$link]['columns']['assetSorting'] = 'sorting';

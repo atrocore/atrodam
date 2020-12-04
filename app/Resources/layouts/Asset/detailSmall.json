@@ -1,33 +1,39 @@
 [
-    {
-        "rows": [
-            [
-                {
-                    "name": "name",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "type"
-                }
-            ],
-            [
-                {
-                    "name": "file"
-                },
-                {
-                    "name": "private"
-                }
-            ],
-            [
-                {
-                    "name" : "album",
-                    "fullWidth" : true
-                }
-            ]
-        ],
-        "style": "default",
-        "label": ""
-    }
+  {
+    "rows": [
+      [
+        {
+          "name": "name",
+          "fullWidth": true
+        }
+      ],
+      [
+        {
+          "name": "type"
+        }
+      ],
+      [
+        {
+          "name": "file"
+        },
+        {
+          "name": "private"
+        }
+      ],
+      [
+        {
+          "name": "tags",
+          "fullWidth": true
+        }
+      ],
+      [
+        {
+          "name": "album",
+          "fullWidth": true
+        }
+      ]
+    ],
+    "style": "default",
+    "label": ""
+  }
 ]

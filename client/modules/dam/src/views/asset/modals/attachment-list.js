@@ -48,7 +48,6 @@ Espo.define('dam:views/asset/modals/attachment-list', 'view',
                     el: this.options.el + ` tr[data-name="${name}"]`,
                     model: attachment,
                     type: this.model.get('type'),
-                    private: this.model.get('private'),
                     entityName: this.options.entityName
                 }, view => {
                     view.listenTo(view, "attachment:remove", () => {

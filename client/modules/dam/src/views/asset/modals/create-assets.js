@@ -49,25 +49,9 @@ Espo.define('dam:views/asset/modals/create-assets', 'dam:views/modals/multi-crea
             let Promises = [];
             this.collection.forEach(model => {
                 let assetModel = model.get("assetModel");
-                let entityAssetModel = assetModel.get("EntityAsset");
                 assetModel.unset("EntityAsset");
-
                 assetModel.setRelate(this.options.relate);
-
-                Promises.push(new Promise((resolve, rejected) => {
-                    assetModel.save().then(() => {
-                        let entityId = this.getParentView().model.id;
-                        entityAssetModel.url = `AssetRelation/update/by?entityName=${this.scope}&entityId=${entityId}&assetId=${assetModel.id}`;
-                        entityAssetModel.save().then(() => {
-                            resolve();
-                        }).fail((data) => {
-                            rejected();
-                        });
-                    }).fail(() => {
-                        assetModel.set("EntityAsset", entityAssetModel);
-                        rejected();
-                    });
-                }));
+                assetModel.save();
             });
             Promise.all(Promises).then(r => {
                 this._afterSave();

@@ -119,7 +119,18 @@ class ConfigManager
         if (!$this->config) {
             $result = [
                 'type'             => [
-                    'custom'  => [],
+                    'custom'  => [
+                        'file' => [
+                            'nature' => 'file',
+                            'validations' => [],
+                            'renditions' => [],
+                        ],
+                        'image' => [
+                            'nature' => 'image',
+                            'validations' => [],
+                            'renditions' => [],
+                        ]
+                    ],
                     'default' => [
                         'validations' => [],
                         'renditions'  => [],
