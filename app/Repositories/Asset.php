@@ -91,6 +91,11 @@ class Asset extends AbstractRepository implements DAMAttachment
      */
     public function findRelatedAssetsByNature(Entity $entity, string $nature): array
     {
+        $types = $this->getNatureTypes($nature);
+        if (method_exists($this->getEntityManager()->getRepository($entity->getEntityType()), 'findRelatedAssetsByTypes')) {
+            return $this->getEntityManager()->getRepository($entity->getEntityType())->findRelatedAssetsByTypes($entity, $types);
+        }
+
         $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
         if (empty($relation['foreign']) || empty($relation['relationName'])) {
             return [];
@@ -98,7 +103,7 @@ class Asset extends AbstractRepository implements DAMAttachment
 
         $relationTableName = Util::toUnderScore($relation['relationName']);
         $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
-        $types = implode("','", $this->getNatureTypes($nature));
+        $types = implode("','", $types);
         $id = $entity->get('id');
 
         $sql = "SELECT a.* 
@@ -122,6 +127,10 @@ class Asset extends AbstractRepository implements DAMAttachment
      */
     public function findRelatedAssetsByIds(Entity $entity, array $ids): array
     {
+        if (method_exists($this->getEntityManager()->getRepository($entity->getEntityType()), 'findRelatedAssetsByIds')) {
+            return $this->getEntityManager()->getRepository($entity->getEntityType())->findRelatedAssetsByIds($entity, $ids);
+        }
+
         $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
         if (empty($relation['foreign']) || empty($relation['relationName'])) {
             return [];

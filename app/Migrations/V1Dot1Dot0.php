@@ -55,7 +55,7 @@ class V1Dot1Dot0 extends Base
         $this->execute("ALTER TABLE `asset` DROP name_of_file, DROP code, DROP collection_id, CHANGE `private` private TINYINT(1) DEFAULT '1' NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE `library_id` library_id VARCHAR(24) DEFAULT '1' COLLATE utf8mb4_unicode_ci");
         $this->execute("ALTER TABLE `category_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
         $this->execute("ALTER TABLE `product_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
-        $this->execute("ALTER TABLE `product_asset` ADD scope MEDIUMTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `product_asset` ADD channel VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**
