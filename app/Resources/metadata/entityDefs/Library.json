@@ -70,14 +70,14 @@
   "links": {
     "assetCategories": {
       "type": "hasMany",
-      "relationName": "albumAssetCategory",
-      "foreign": "albums",
+      "relationName": "libraryAssetCategory",
+      "foreign": "libraries",
       "entity": "AssetCategory",
       "audited": false
     },
     "assets": {
       "type": "hasMany",
-      "foreign": "album",
+      "foreign": "library",
       "entity": "Asset",
       "audited": false,
       "disableMassRelation": true

@@ -60,7 +60,7 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
             this.scope = this.options.scope || this.scope;
             this.wait(true);
 
-            this.getFullEntity('Album', {select: 'name,assetCategoriesIds,assetCategoriesNames'}, catalogs => {
+            this.getFullEntity('Library', {select: 'name,assetCategoriesIds,assetCategoriesNames'}, catalogs => {
                 this.catalogs = catalogs;
                 this.rootCategoriesIds = this.getRootCategoriesIds();
                 this.getFullEntity('AssetCategory', {

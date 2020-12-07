@@ -29,11 +29,11 @@
 
 declare(strict_types=1);
 
-namespace Dam\Services;
+namespace Dam\Controllers;
 
 /**
- * Class Album
+ * Class Library
  */
-class Album extends \Espo\Core\Templates\Services\Base
+class Library extends \Espo\Core\Templates\Controllers\Base
 {
 }

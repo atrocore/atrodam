@@ -29,15 +29,11 @@
 
 declare(strict_types=1);
 
-namespace Dam\Entities;
+namespace Dam\Services;
 
 /**
- * Class Album
+ * Class Library
  */
-class Album extends \Espo\Core\Templates\Entities\Base
+class Library extends \Espo\Core\Templates\Services\Base
 {
-    /**
-     * @var string
-     */
-    protected $entityType = "Album";
 }

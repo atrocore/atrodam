@@ -1,6 +1,6 @@
 {
   "fields": {
-    "albums": {
+    "libraries": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
@@ -108,11 +108,11 @@
     }
   },
   "links": {
-    "albums": {
+    "libraries": {
       "type": "hasMany",
-      "relationName": "albumAssetCategory",
+      "relationName": "libraryAssetCategory",
       "foreign": "assetCategories",
-      "entity": "Album",
+      "entity": "Library",
       "audited": false,
       "isCustom": true
     },

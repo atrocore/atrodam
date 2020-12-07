@@ -3,7 +3,7 @@
     "Asset": "Asset",
     "Rendition": "Rendition",
     "RenditionMetaData": "Rendition Meta Data",
-    "Album": "Album",
+    "Library": "Library",
     "AssetVariant": "Asset Variant",
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",
@@ -13,7 +13,7 @@
     "ValidationRule": "Validation Rule"
   },
   "scopeNamesPlural": {
-    "Album": "Albums",
+    "Library": "Libraries",
     "Asset": "Assets",
     "AssetVersion": "Asset Versions",
     "AssetVariant": "Asset Variants",

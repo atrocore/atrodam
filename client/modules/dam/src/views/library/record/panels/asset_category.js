@@ -26,7 +26,7 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/album/record/panels/asset_category', 'views/record/panels/relationship',
+Espo.define('dam:views/library/record/panels/asset_category', 'views/record/panels/relationship',
     Dep => Dep.extend({
         
         boolFilterData: {

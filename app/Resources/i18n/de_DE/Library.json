@@ -13,7 +13,7 @@
     "assets": "Assets"
   },
   "exceptions": {
-    "Album can be linked with a root category only.": "Album kann nur mit einer Stammkategorie verknüpft werden.",
-    "Default album can't be deleted.": "Standardalbum kann nicht gelöscht werden."
+    "Library can be linked with a root category only.": "Bibliothek kann nur mit einer Stammkategorie verknüpft werden.",
+    "Default library can't be deleted.": "Standardbibliothek kann nicht gelöscht werden."
   }
 }

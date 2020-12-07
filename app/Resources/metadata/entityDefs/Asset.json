@@ -84,12 +84,12 @@
       "noLoad": true,
       "importDisabled": true
     },
-    "album": {
+    "library": {
       "type": "link",
       "required": true,
       "defaultAttributes": {
-        "albumId": "1",
-        "albumName": "Default Album"
+        "libraryId": "1",
+        "libraryName": "Default Library"
       }
     },
     "assetMetaDatas": {
@@ -210,10 +210,10 @@
       "entityAsset": false,
       "disableMassRelation": true
     },
-    "album": {
+    "library": {
       "type": "belongsTo",
       "foreign": "assets",
-      "entity": "Album",
+      "entity": "Library",
       "audited": false,
       "entityAsset": false
     },
