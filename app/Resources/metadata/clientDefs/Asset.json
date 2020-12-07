@@ -49,7 +49,8 @@
     ]
   },
   "modalViews": {
-    "select": "dam:views/asset/modals/select-records"
+    "select": "dam:views/asset/modals/select-records",
+    "edit": "dam:views/asset/modals/edit"
   },
   "views": {
     "list": "dam:views/asset/list",

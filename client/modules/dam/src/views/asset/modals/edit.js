@@ -28,6 +28,16 @@
 
 Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
     Dep => Dep.extend({
+
         fullFormDisabled: true,
+
+        actionSave() {
+            this.notify('Saving...');
+            this.model.save().then(() => {
+                this.notify('Saved', 'success');
+                $('button[data-panel="assets"][data-action="refresh"]').click();
+                this.close();
+            });
+        },
     })
 );
