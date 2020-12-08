@@ -76,7 +76,7 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
         },
 
         _normalizeName(name) {
-            return name.replace(/[_-]+/gm, " ");
+            return name;
         },
 
         _isGeneratedName() {

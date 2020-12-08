@@ -138,10 +138,6 @@ class Attachment extends \Treo\Services\Attachment
             throw $exception;
         }
 
-        if (!empty($attachment->file)) {
-            $entity->clear('contents');
-        }
-
         return $entity;
     }
 
