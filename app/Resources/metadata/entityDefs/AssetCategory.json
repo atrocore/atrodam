@@ -1,6 +1,6 @@
 {
   "fields": {
-    "collections": {
+    "libraries": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
@@ -108,11 +108,11 @@
     }
   },
   "links": {
-    "collections": {
+    "libraries": {
       "type": "hasMany",
-      "relationName": "collectionAssetCategory",
+      "relationName": "libraryAssetCategory",
       "foreign": "assetCategories",
-      "entity": "Collection",
+      "entity": "Library",
       "audited": false,
       "isCustom": true
     },

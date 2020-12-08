@@ -34,13 +34,11 @@ namespace Dam\Listeners;
 use Dam\Core\FilePathBuilder;
 use Dam\Entities\Asset;
 use Dam\Entities\AssetCategory;
-use Dam\Listeners\Traits\ValidateCode;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
 use PDO;
 use Treo\Core\EventManager\Event;
-use Treo\Listeners\AbstractListener;
 
 /**
  * Class AssetEntity
@@ -49,8 +47,6 @@ use Treo\Listeners\AbstractListener;
  */
 class AssetEntity extends AbstractListener
 {
-    use ValidateCode;
-
     /**
      * @param Event $event
      * @throws BadRequest
@@ -63,10 +59,6 @@ class AssetEntity extends AbstractListener
 
         if (!$entity->isNew() && !$entity->get("isActive") && $entity->isAttributeChanged("collectionId")) {
             throw new BadRequest($this->getLanguage()->translate('You can not change collection', 'exceptions', 'Asset'));
-        }
-
-        if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->getLanguage()->translate('Code is invalid', 'exceptions', 'Global'));
         }
 
         if (!$entity->isNew() && $entity->isAttributeChanged("type")) {
@@ -100,8 +92,8 @@ class AssetEntity extends AbstractListener
         }
 
         //rename file
-        if (!$entity->isNew() && $entity->isAttributeChanged("nameOfFile")) {
-            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('nameOfFile'), $entity);
+        if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
+            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('name'), $entity);
         }
 
         //deactivate asset

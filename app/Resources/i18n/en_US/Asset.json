@@ -1,17 +1,18 @@
 {
   "labels": {
-    "sort": "Sort"
+    "sort": "Sort",
+    "Image": "Image",
+    "File": "File"
   },
   "fields": {
     "isActive": "Active",
     "image": "Image",
-    "nameOfFile": "File Name",
     "relatedAssets": "Related Assets",
     "assetCategories": "Asset Categories",
     "assetMetaDatas": "Asset Meta Datas",
     "assetVersions": "Asset Versions",
     "type": "Type",
-    "collection": "Collection",
+    "library": "Library",
     "colorDepth": "Color Depth",
     "colorSpace": "Color Space",
     "file": "File",
@@ -24,7 +25,6 @@
     "tags": "Tags",
     "width": "Width",
     "private": "Private",
-    "code": "Code",
     "preview": "Preview"
   },
   "links": {
@@ -33,5 +33,9 @@
     "assetVersions": "Asset Versions",
     "renditions": "Renditions",
     "relatedAssets": "Related Assets"
+  },
+  "exceptions": {
+    "Asset name is invalid.": "Asset name is invalid.",
+    "Such asset already exists.": "Such asset already exists."
   }
 }

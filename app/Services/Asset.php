@@ -34,9 +34,11 @@ namespace Dam\Services;
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
+use Slim\Http\Request;
 
 /**
  * Class Asset
@@ -46,20 +48,83 @@ use Espo\ORM\Entity;
 class Asset extends Base
 {
     /**
-     * Asset constructor.
+     * @param string $scope
+     * @param string $id
+     *
+     * @return array
+     * @throws NotFound
      */
-    public function __construct()
+    public function getAssetsNatures(string $scope, string $id): array
     {
-        parent::__construct();
+        $entity = $this->getEntityManager()->getEntity($scope, $id);
+        if (empty($entity)) {
+            throw new NotFound();
+        }
 
-        $this->addDependency("DAMFileManager");
-        $this->addDependency("language");
-        $this->addDependency("ConfigManager");
-        $this->addDependency('log');
+        $list = [
+            [
+                "id"      => "Image",
+                "name"    => $this->translate('Image', 'labels', 'Asset'),
+                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "Image")
+            ],
+            [
+                "id"      => "File",
+                "name"    => $this->translate('File', 'labels', 'Asset'),
+                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
+            ]
+        ];
+
+        return [
+            'count' => count($list),
+            'list'  => $list
+        ];
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     * @throws NotFound
+     */
+    public function getAssetsForEntity(Request $request): array
+    {
+        $entity = $this->getEntityManager()->getEntity($request->get('entity'), $request->get('id'));
+        if (empty($entity)) {
+            throw new NotFound();
+        }
+
+        $list = [];
+        if (!empty($nature = $request->get('nature'))) {
+            $list = $this->getRepository()->findRelatedAssetsByNature($entity, $nature);
+        } elseif ($ids = $request->get("assetIds")) {
+            $list = $this->getRepository()->findRelatedAssetsByIds($entity, $ids);
+        }
+
+        return [
+            'count' => count($list),
+            'list'  => $list
+        ];
+    }
+
+    /**
+     * @param string $scope
+     * @param string $entityId
+     * @param array  $data
+     *
+     * @return bool
+     */
+    public function updateAssetsSortOrder(string $scope, string $entityId, array $data): bool
+    {
+        if (!empty($data['ids']) && is_array($data['ids'])) {
+            return $this->getRepository()->updateSortOrder($scope, $entityId, $data['ids']);
+        }
+
+        return true;
     }
 
     /**
      * @param \Dam\Entities\Asset $asset
+     *
      * @return mixed
      */
     public function updateMetaData(\Dam\Entities\Asset $asset)
@@ -76,15 +141,17 @@ class Asset extends Base
      */
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {
-        $type   = ConfigManager::getType($asset->get('type'));
+        $type = ConfigManager::getType($asset->get('type'));
         $nature = $this->getConfigManager()->getByType([$type, "nature"]);
 
         $fileInfo = $this->getService("Attachment")->getFileInfo($asset->get("file"));
 
-        $asset->set([
-            "size"     => round($fileInfo['size'] / 1024, 1),
-            "sizeUnit" => "kb",
-        ]);
+        $asset->set(
+            [
+                "size"     => round($fileInfo['size'] / 1024, 1),
+                "sizeUnit" => "kb",
+            ]
+        );
 
         if ($nature === "image") {
             $imageInfo = $this->getService("Attachment")->getImageInfo($asset->get("file"));
@@ -121,58 +188,15 @@ class Asset extends Base
     }
 
     /**
-     * @param Entity $entity
-     * @return mixed
-     */
-    public function getRelationsCount(Entity $entity)
-    {
-        $collection = $this->getService("AssetRelation")->getRelationsLinks($entity);
-
-        return $collection->count();
-    }
-
-    /**
-     * @param Entity $entity
-     * @param        $userId
-     * @return bool
-     */
-    public function assetRelation(Entity $entity, $userId)
-    {
-        if (!$list = $this->checkIssetLink($entity)) {
-            return false;
-        }
-
-        $service = $this->getService("AssetRelation");
-
-        foreach ($list as $item) {
-            $fEntity = $this->getEntityManager()->getEntity($item['entityName'], $item['entityId']);
-
-            if ($fEntity) {
-                $service->createLink($entity, $fEntity, $userId);
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @param Entity $entity
-     * @return mixed
-     */
-    public function deleteLinks(Entity $entity)
-    {
-        return $this->getService("AssetRelation")->deleteLinks("Asset", $entity->id);
-    }
-
-    /**
      * @param \Dam\Entities\Asset $main
      * @param \Dam\Entities\Asset $foreign
+     *
      * @return mixed
      */
     public function linkToAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
     {
         if ($main->id === $foreign->id) {
-            throw new BadRequest($this->getTranslate("JoinMainAsset", "exceptions", "Asset"));
+            throw new BadRequest($this->translate("JoinMainAsset", "exceptions", "Asset"));
         }
 
         return $this->getRepository()->linkAsset($main, $foreign);
@@ -181,11 +205,25 @@ class Asset extends Base
     /**
      * @param \Dam\Entities\Asset $main
      * @param \Dam\Entities\Asset $foreign
+     *
      * @return mixed
      */
     public function unlinkToAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
     {
         return $this->getRepository()->unlinkAsset($main, $foreign);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency("DAMFileManager");
+        $this->addDependency("language");
+        $this->addDependency("ConfigManager");
+        $this->addDependency('log');
     }
 
     /**
@@ -214,6 +252,7 @@ class Asset extends Base
 
     /**
      * @param $name
+     *
      * @return mixed
      */
     protected function getService($name)
@@ -223,6 +262,7 @@ class Asset extends Base
 
     /**
      * @param Entity $entity
+     *
      * @return array
      */
     protected function checkIssetLink(Entity $entity)
@@ -243,6 +283,7 @@ class Asset extends Base
 
     /**
      * @param string $key
+     *
      * @return bool
      */
     protected function skipEntityAssets(string $key)
@@ -254,21 +295,20 @@ class Asset extends Base
      * @param Entity $entity
      * @param        $relation
      * @param        $key
+     *
      * @return bool
      */
     protected function isMulti(Entity $entity, $relation, $key): bool
     {
         return $relation['type'] === "belongsTo"
-            &&
-            $entity->isAttributeChanged($relation['key'])
-            &&
-            $key !== "ownerUser"
-            &&
-            !$this->skipEntityAssets($key);
+            && $entity->isAttributeChanged($relation['key'])
+            && $key !== "ownerUser"
+            && !$this->skipEntityAssets($key);
     }
 
     /**
      * @param string $name
+     *
      * @return string
      */
     protected function attributeMapping(string $name): string
@@ -277,12 +317,14 @@ class Asset extends Base
     }
 
     /**
-     * @param $label
-     * @param $category
-     * @param $scope
+     * @param string $label
+     * @param string $category
+     * @param string $scope
+     *
+     * @return string
      */
-    private function getTranslate($label, $category, $scope)
+    protected function translate(string $label, string $category, string $scope): string
     {
-        $this->getInjection("language")->translate($label, $category, $scope);
+        return $this->getInjection("language")->translate($label, $category, $scope);
     }
 }

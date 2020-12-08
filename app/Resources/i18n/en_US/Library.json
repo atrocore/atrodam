@@ -1,0 +1,17 @@
+{
+  "fields": {
+    "assets": "Assets",
+    "code": "Code",
+    "isActive": "Active",
+    "assetCategories": "Asset Categories"
+  },
+  "links": {
+    "assets": "Assets",
+    "asset": "Asset",
+    "assetCategories": "Asset Categories"
+  },
+  "exceptions": {
+    "Library can be linked with a root category only.": "Library can be linked with a root category only.",
+    "Default library can't be deleted.": "Default library can't be deleted."
+  }
+}

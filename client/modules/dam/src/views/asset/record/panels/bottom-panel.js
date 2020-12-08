@@ -1,5 +1,3 @@
-
-
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,44 +26,187 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/record/panels/bottom-panel', 'views/record/panels/relationship', Dep => {
-    return Dep.extend({
+Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/record/panels/relationship',
+    Dep => Dep.extend({
+        template: "dam:asset/record/panels/asset",
+        blocks: [],
+        link: null,
+        sort: false,
+        scope: null,
+
+        data() {
+            return {
+                blocks: this.blocks
+            };
+        },
+
         setup() {
-            this.defs.createAction = "createMulti";
-            Dep.prototype.setup.call(this);
+            this.link = this._getAssetLink();
+            this.scope = this.options.defs.entityName;
+
+            this.getGroupsInfo();
+            if (this.link) {
+                this.actionButtonList();
+            }
+
+            this.listenTo(this.model, 'after:relate after:unrelate', function () {
+                this.actionRefresh();
+            });
         },
-        
-        actionCreateMulti: function (data) {
-            data = data || {};
-            
-            var link        = data.link;
-            var scope       = this.model.defs['links'][link].entity;
-            var foreignLink = this.model.defs['links'][link].foreign;
-            
-            var attributes = {};
-            
-            this.notify('Loading...');
-            
-            var viewName = this.getMetadata().get('clientDefs.' + scope + '.modalViews.edit') || "dam:views/asset/modals/multi-create";
-            this.createView('quickCreate', viewName, {
-                scope     : scope,
-                relate    : {
-                    model: this.model,
-                    link : foreignLink
+
+        getGroupsInfo() {
+            this.wait(true);
+            this.blocks = [];
+            let showFirst = true;
+
+            this.getCollectionFactory().create("Asset", (collection) => {
+                collection.url = `Asset/action/assetsNatures?entity=${this.model.name}&id=${this.model.id}`;
+                collection.fetch().then(() => {
+                    this.collection = collection;
+                    this.collection.forEach((model) => {
+                        if (model.get("hasItem")) {
+                            this.blocks.push(model.get("name"));
+                            this._createTypeBlock(model, showFirst);
+                            showFirst = false;
+                        }
+                    });
+                    this.wait(false);
+                });
+            });
+        },
+
+        actionButtonList() {
+
+            this.buttonList.push({
+                title: this.translate('clickToRefresh', 'messages', 'Global'),
+                action: 'refresh',
+                link: this.link,
+                acl: 'read',
+                aclScope: this.scope,
+                html: '<span class="fas fa-sync"></span>'
+            });
+
+            this.actionList.unshift({
+                label: 'Select',
+                action: this.defs.selectAction || 'selectRelated',
+                data: {
+                    link: this.link
                 },
-                attributes: attributes
-            }, function (view) {
-                view.render();
-                view.notify(false);
-                this.listenToOnce(view, 'after:save', function () {
-                    this.updateRelationshipPanel();
-                }, this);
-            }.bind(this));
+                acl: 'edit',
+                aclScope: this.model.name
+            });
+
+            this.buttonList.push({
+                title: 'Create',
+                action: this.defs.createAction || 'createRelated',
+                link: this.link,
+                acl: 'create',
+                aclScope: this.scope,
+                html: '<span class="fas fa-plus"></span>',
+                data: {
+                    link: this.link
+                }
+            });
+
         },
-        
-        updateRelationshipPanel: function () {
-            this.notify('Success');
-            this.collection.fetch();
+
+        actionRefresh() {
+            if (this.collection) {
+                let Promises = [];
+
+                this.collection.fetch().then(() => {
+                    this.blocks = [];
+                    this.collection.forEach(model => {
+                        if (model.get("hasItem") && !this.hasView(model.get("name"))) {
+                            Promises.push(new Promise(resolve => {
+                                model.set({
+                                    entityName: this.defs.entityName,
+                                    entityId: this.model.id,
+                                    entityModel: this.model
+                                });
+
+                                this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
+                                    model: model,
+                                    el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
+                                    sort: this.sort,
+                                    show: false
+                                }, view => {
+                                    resolve();
+                                });
+                            }));
+                        }
+                        if (model.get("hasItem")) {
+                            this.blocks.push(model.get("name"));
+                        }
+                    });
+
+                    if (Promises.length > 0) {
+                        Promise.all(Promises).then(r => {
+                            this.reRender();
+                        });
+                    } else {
+                        this.reRender();
+                    }
+                });
+            }
+        },
+
+        actionUnlinkRelated: function (data) {
+            const id = data.id;
+            this.confirm({
+                message: this.translate('unlinkRecordConfirmation', 'messages'),
+                confirmText: this.translate('Unlink')
+            }, function () {
+                var model = this.collection.get(id);
+                this.notify('Unlinking...');
+                $.ajax({
+                    url: `${this.model.name}/${this.model.id}/assets`,
+                    type: 'DELETE',
+                    data: JSON.stringify({
+                        id: id
+                    }),
+                    contentType: 'application/json',
+                    success: function () {
+                        this.notify('Unlinked', 'success');
+                        this.collection.fetch();
+                        this.model.trigger('after:unrelate');
+                    }.bind(this),
+                    error: function () {
+                        this.notify('Error occurred', 'error');
+                    }.bind(this),
+                });
+            }, this);
+        },
+
+        _getAssetLink() {
+            let links = this.model.defs.links;
+            for (let key in links) {
+                if (links[key].type === "hasMany" && links[key].entity === "Asset") {
+                    this.sort = true;
+                    return key;
+                }
+            }
+
+            return false;
+        },
+
+        _createTypeBlock(model, show, callback) {
+            model.set({
+                entityName: this.defs.entityName,
+                entityId: this.model.id,
+                entityModel: this.model
+            });
+
+            this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
+                model: model,
+                el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
+                sort: this.sort,
+                show: show
+            }, view => {
+                if (typeof callback === "function") {
+                    callback(view);
+                }
+            });
         }
-    });
-});
+    })
+);

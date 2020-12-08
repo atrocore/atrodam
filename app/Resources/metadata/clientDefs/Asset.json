@@ -1,50 +1,41 @@
 {
-  "bottomPanels"        : {
-    "detail": [
+  "sidePanels": {
+    "edit": [
       {
-        "name" : "relations",
-        "label": "Relations",
-        "view" : "dam:views/asset/record/panels/asset_relations"
-      }
-    ]
-  },
-  "sidePanels"          : {
-    "edit"       : [
-      {
-        "name" : "preview",
+        "name": "preview",
         "label": "",
-        "view" : "dam:views/asset/record/panels/side/preview/main"
+        "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
-    "detail"     : [
+    "detail": [
       {
-        "name" : "custom_download",
+        "name": "custom_download",
         "label": "Custom Download",
-        "view" : "dam:views/asset/record/panels/side/download/main"
+        "view": "dam:views/asset/record/panels/side/download/main"
       },
       {
-        "name" : "preview",
+        "name": "preview",
         "label": "",
-        "view" : "dam:views/asset/record/panels/side/preview/main"
+        "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
     "detailSmall": [
       {
-        "name" : "preview",
+        "name": "preview",
         "label": "",
-        "view" : "dam:views/asset/record/panels/side/preview/main"
+        "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
-    "editSmall"  : [
+    "editSmall": [
       {
-        "name" : "preview",
+        "name": "preview",
         "label": "",
-        "view" : "dam:views/asset/record/panels/side/preview/main"
+        "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ]
   },
-  "controller"          : "dam:controllers/asset",
-  "boolFilterList"      : [
+  "controller": "dam:controllers/asset",
+  "boolFilterList": [
     "onlyMy",
     "notSelectAssets"
   ],
@@ -57,36 +48,37 @@
       "onlyActive"
     ]
   },
-  "modalViews"          : {
-    "select": "dam:views/asset/modals/select-records"
+  "modalViews": {
+    "select": "dam:views/asset/modals/select-records",
+    "edit": "dam:views/asset/modals/edit"
   },
-  "views"               : {
-    "list" : "dam:views/asset/list",
+  "views": {
+    "list": "dam:views/asset/list",
     "plate": "dam:views/asset/plate"
   },
-  "recordViews"         : {
-    "plate"    : "dam:views/asset/record/plate",
+  "recordViews": {
+    "plate": "dam:views/asset/record/plate",
     "plateItem": "dam:views/asset/record/plate-item",
-    "detail"   : "dam:views/asset/record/detail",
-    "list"     : "dam:views/asset/record/list"
+    "detail": "dam:views/asset/record/detail",
+    "list": "dam:views/asset/record/list"
   },
-  "menu"                : {
-    "list" : {
+  "menu": {
+    "list": {
       "buttons": [
         {
-          "acl"     : "read",
-          "label"   : "",
-          "link"    : "#Asset/list",
-          "style"   : "primary",
-          "title"   : "List",
+          "acl": "read",
+          "label": "",
+          "link": "#Asset/list",
+          "style": "primary",
+          "title": "List",
           "iconHtml": "<span class=\"fa fa-list\"></span>"
         },
         {
-          "acl"     : "read",
-          "label"   : "",
-          "link"    : "#Asset/plate",
-          "style"   : "default",
-          "title"   : "Plate",
+          "acl": "read",
+          "label": "",
+          "link": "#Asset/plate",
+          "style": "default",
+          "title": "Plate",
           "iconHtml": "<span class=\"fa fa-th\"></span>"
         }
       ]
@@ -94,62 +86,62 @@
     "plate": {
       "buttons": [
         {
-          "acl"     : "read",
-          "label"   : "",
-          "link"    : "#Asset/list",
-          "style"   : "default",
-          "title"   : "List",
+          "acl": "read",
+          "label": "",
+          "link": "#Asset/list",
+          "style": "default",
+          "title": "List",
           "iconHtml": "<span class=\"fa fa-list\"></span>"
         },
         {
-          "acl"     : "read",
-          "label"   : "",
-          "link"    : "#Asset/plate",
-          "style"   : "primary",
-          "title"   : "Plate",
+          "acl": "read",
+          "label": "",
+          "link": "#Asset/plate",
+          "style": "primary",
+          "title": "Plate",
           "iconHtml": "<span class=\"fa fa-th\"></span>"
         }
       ]
     }
   },
-  "iconClass"           : "fas fa-archive",
-  "dynamicLogic"        : {
+  "iconClass": "fas fa-archive",
+  "dynamicLogic": {
     "fields": {
-      "height"     : {
+      "height": {
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "height"
             }
           ]
         }
       },
-      "width"      : {
+      "width": {
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "width"
             }
           ]
         }
       },
-      "colorSpace" : {
+      "colorSpace": {
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "colorSpace"
             }
           ]
         }
       },
-      "colorDepth" : {
+      "colorDepth": {
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "colorDepth"
             }
           ]
@@ -159,27 +151,27 @@
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "colorDepth"
             }
           ]
         }
       },
-      "type"       : {
+      "type": {
         "readOnly": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "id"
             }
           ]
         }
       },
-      "size"       : {
+      "size": {
         "visible": {
           "conditionGroup": [
             {
-              "type"     : "isNotEmpty",
+              "type": "isNotEmpty",
               "attribute": "id"
             }
           ]
@@ -187,7 +179,7 @@
       }
     }
   },
-  "relationshipPanels"  : {
+  "relationshipPanels": {
     "assetCategories": {
       "selectBoolFilterList": [
         "onlyChildCategory",
@@ -195,26 +187,26 @@
         "byCollection",
         "onlyActive"
       ],
-      "view"                : "dam:views/asset/record/panels/asset_category",
-      "selectAction"        : "selectRelatedEntity"
+      "view": "dam:views/asset/record/panels/asset_category",
+      "selectAction": "selectRelatedEntity"
     },
-    "renditions"     : {
+    "renditions": {
       "select": false,
-      "view"  : "dam:views/asset/record/panels/rendition"
+      "view": "dam:views/asset/record/panels/rendition"
     },
-    "assetMetaDatas" : {
-      "select"        : false,
-      "create"        : false,
+    "assetMetaDatas": {
+      "select": false,
+      "create": false,
       "view": "dam:views/asset/record/panels/relations/asset-meta-data/main"
     },
-    "relatedAssets"  : {
+    "relatedAssets": {
       "selectBoolFilterList": [
         "notEntity",
         "onlyActive",
         "notSelected"
       ],
-      "view"                : "dam:views/asset/record/panels/related-assets",
-      "selectAction"        : "selectRelatedEntity"
+      "view": "dam:views/asset/record/panels/related-assets",
+      "selectAction": "selectRelatedEntity"
     }
   }
 }

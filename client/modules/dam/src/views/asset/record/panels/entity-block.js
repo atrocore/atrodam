@@ -1,5 +1,3 @@
-
-
 /*
  *  This file is part of AtroDAM.
  *
@@ -51,9 +49,8 @@ Espo.define('dam:views/asset/record/panels/entity-block', 'view',
                 if (this.collection) {
                     this.getView("list").reRender();
                 } else {
-                    this.getCollectionFactory().create("AssetRelation", (collection) => {
-                        collection.url = `AssetRelation/byEntity/${this.model.get('entityName')}/${this.model.get('entityId')}?type=${this.model.get('name')}`;
-                        
+                    this.getCollectionFactory().create("Asset", (collection) => {
+                        collection.url = `Asset/action/assetsForEntity?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}&nature=${this.model.get('name')}`;
                         this.collection = collection;
                         this.createView('list', "dam:views/asset/record/panels/asset-relation-record-list", {
                             collection     : this.collection,

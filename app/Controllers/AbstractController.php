@@ -37,6 +37,7 @@ use Slim\Http\Request;
 
 /**
  * Class AbstractController
+ *
  * @package Dam\Controllers
  */
 class AbstractController extends Base
@@ -87,6 +88,7 @@ class AbstractController extends Base
 
     /**
      * @param $request
+     *
      * @return bool
      */
     public function isPostAction($request)

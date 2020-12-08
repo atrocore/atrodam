@@ -84,9 +84,13 @@
       "noLoad": true,
       "importDisabled": true
     },
-    "collection": {
+    "library": {
       "type": "link",
-      "required": false
+      "required": true,
+      "defaultAttributes": {
+        "libraryId": "1",
+        "libraryName": "Default Library"
+      }
     },
     "assetMetaDatas": {
       "type": "linkMultiple",
@@ -116,12 +120,6 @@
       "trim": true,
       "isMultilang": false,
       "view": "dam:views/asset/fields/name"
-    },
-    "nameOfFile": {
-      "type": "varchar",
-      "required": true,
-      "trim": true,
-      "view": "dam:views/asset/fields/name-of-file"
     },
     "description": {
       "type": "text",
@@ -162,18 +160,10 @@
     "private": {
       "notNull": true,
       "type": "bool",
-      "default": false,
+      "default": true,
       "audited": false,
       "readOnly": false,
       "tooltip": false
-    },
-    "code": {
-      "type": "varchar",
-      "layoutMassUpdateDisabled": true,
-      "required": true,
-      "trim": true,
-      "emHidden": true,
-      "view": "dam:views/fields/code-from-name"
     },
     "type": {
       "type": "enum",
@@ -220,10 +210,10 @@
       "entityAsset": false,
       "disableMassRelation": true
     },
-    "collection": {
+    "library": {
       "type": "belongsTo",
       "foreign": "assets",
-      "entity": "Collection",
+      "entity": "Library",
       "audited": false,
       "entityAsset": false
     },
@@ -302,8 +292,7 @@
     "sortBy": "createdAt",
     "asc": false,
     "textFilterFields": [
-      "name",
-      "code"
+      "name"
     ]
   },
   "indexes": {

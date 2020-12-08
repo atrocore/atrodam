@@ -13,17 +13,13 @@
                 {
                     "name": "name"
                 },
-                {
-                    "name": "nameOfFile"
-                }
+                false
             ],
             [
                 {
                     "name": "private"
                 },
-                {
-                    "name": "code"
-                }
+                false
             ],
             [
                 {
@@ -33,7 +29,7 @@
             ],
             [
                 {
-                    "name": "collection"
+                    "name": "library"
                 },
                 {
                     "name": "isActive"

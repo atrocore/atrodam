@@ -1,0 +1,19 @@
+{
+  "fields": {
+    "assetCategories": "Asset Kategorien",
+    "createdBy": "Erstellt vom",
+    "isActive": "Aktiv",
+    "modifiedBy": "Geändert vom"
+  },
+  "labels": {
+    "Create Collection": "Kollektion erstellen"
+  },
+  "links": {
+    "assetCategories": "Asset Kategorien",
+    "assets": "Assets"
+  },
+  "exceptions": {
+    "Library can be linked with a root category only.": "Bibliothek kann nur mit einer Stammkategorie verknüpft werden.",
+    "Default library can't be deleted.": "Standardbibliothek kann nicht gelöscht werden."
+  }
+}

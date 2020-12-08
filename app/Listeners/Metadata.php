@@ -67,6 +67,8 @@ class Metadata extends AbstractListener
         $data['fields']['asset']['typeNatures'] = $this->getAssetTypes();
         $data['entityDefs']['Asset']['fields']['type']['options'] = array_keys($data['fields']['asset']['typeNatures']);
 
+        $this->updateRelationMetadata($data);
+
         $event->setArgument('data', $data);
     }
 
@@ -92,6 +94,43 @@ class Metadata extends AbstractListener
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
 
-        return $types;
+        return array_merge(['File' => 'File', 'Image' => 'Image'], $types);
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function updateRelationMetadata(array &$data)
+    {
+        foreach ($data['entityDefs'] as $scope => $defs) {
+            if (empty($defs['links']) || $scope == 'Asset') {
+                continue 1;
+            }
+            foreach ($defs['links'] as $link => $linkData) {
+                if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['label'] = $this->getLanguage()->translate('Asset', 'scopeNamesPlural', 'Global');
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
+
+                    $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
+                        'type'    => 'int',
+                        'default' => 100000
+                    ];
+                    $data['entityDefs'][$scope]['fields'][$link]['columns']['assetSorting'] = 'sorting';
+                    $data['entityDefs'][$scope]['fields']['assetSorting'] = [
+                        'type'                      => 'int',
+                        'notStorable'               => true,
+                        'layoutListDisabled'        => true,
+                        'layoutListSmallDisabled'   => true,
+                        'layoutDetailDisabled'      => true,
+                        'layoutDetailSmallDisabled' => true,
+                        'layoutMassUpdateDisabled'  => true,
+                        'layoutFiltersDisabled'     => true,
+                        'importDisabled'            => true,
+                        'exportDisabled'            => true,
+                    ];
+                }
+            }
+        }
     }
 }

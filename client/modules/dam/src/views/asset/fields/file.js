@@ -1,5 +1,3 @@
-
-
 /*
  *  This file is part of AtroDAM.
  *
@@ -44,6 +42,16 @@ Espo.define('dam:views/asset/fields/file', 'dam:views/fields/file',
             
             this.listenTo(this.model, "change:type", () => {
                 this.deleteAttachment();
+            });
+
+            this.listenTo(this.model, "change:name", () => {
+                if (this.model.get('fileName') && this.model.get('name')) {
+                    const name = this.model.get('name');
+                    const fileName = this.model.get('fileName');
+
+                    this.model.set('fileName', name + '.' + fileName.split('.').pop());
+                    this.reRender();
+                }
             });
         }
     })

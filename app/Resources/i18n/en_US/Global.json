@@ -3,9 +3,8 @@
     "Asset": "Asset",
     "Rendition": "Rendition",
     "RenditionMetaData": "Rendition Meta Data",
-    "Collection": "Collection",
+    "Library": "Library",
     "AssetVariant": "Asset Variant",
-    "AssetRelation": "Asset Relation",
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",
     "AssetVersion": "Asset Version",
@@ -14,10 +13,9 @@
     "ValidationRule": "Validation Rule"
   },
   "scopeNamesPlural": {
-    "Collection": "Collections",
+    "Library": "Libraries",
     "Asset": "Assets",
     "AssetVersion": "Asset Versions",
-    "AssetRelation": "Asset Relations",
     "AssetVariant": "Asset Variants",
     "AssetCategory": "Asset Category",
     "AssetMetaData": "Asset Meta Data",

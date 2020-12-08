@@ -2,7 +2,7 @@
   "name": "atrocore/dam",
   "require": {
     "atrocore/core": "~1.0.61",
-    "atrocore/dam-common": "~1.0.0",
+    "atrocore/dam-common": "~1.1.0",
     "ext-gd": "*",
     "ext-exif": "*",
     "ext-imagick": "*",
