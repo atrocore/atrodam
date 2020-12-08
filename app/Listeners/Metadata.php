@@ -110,7 +110,10 @@ class Metadata extends AbstractListener
                 if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['label'] = $this->getLanguage()->translate('Asset', 'scopeNamesPlural', 'Global');
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
+
+                    if (empty($data['clientDefs'][$scope]['relationshipPanels'][$link]['view'])) {
+                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
+                    }
 
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
                         'type'    => 'int',

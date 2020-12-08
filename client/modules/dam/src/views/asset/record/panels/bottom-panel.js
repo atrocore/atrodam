@@ -125,7 +125,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                                     entityModel: this.model
                                 });
 
-                                this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
+                                this.createView(model.get('name'), this._getInnerPanelView(), {
                                     model: model,
                                     el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
                                     sort: this.sort,
@@ -190,6 +190,10 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             return false;
         },
 
+        _getInnerPanelView() {
+            return this.getMetadata().get(`clientDefs.${this.defs.entityName}.relationshipPanels.assets.innerPanelView`, 'dam:views/asset/record/panels/asset-type-block');
+        },
+
         _createTypeBlock(model, show, callback) {
             model.set({
                 entityName: this.defs.entityName,
@@ -197,7 +201,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 entityModel: this.model
             });
 
-            this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
+            this.createView(model.get('name'), this._getInnerPanelView(), {
                 model: model,
                 el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
                 sort: this.sort,
