@@ -56,6 +56,7 @@ class V1Dot1Dot0 extends Base
         $this->execute("ALTER TABLE `category_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
         $this->execute("ALTER TABLE `product_asset` ADD sorting INT DEFAULT '100000' COLLATE utf8mb4_unicode_ci");
         $this->execute("ALTER TABLE `product_asset` ADD channel VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `category_asset` ADD channel VARCHAR(255) DEFAULT NULL COLLATE utf8mb4_unicode_ci");
     }
 
     /**
