@@ -48,6 +48,25 @@ use Slim\Http\Request;
 class Asset extends Base
 {
     /**
+     * @var string[]
+     */
+    protected $mandatorySelectAttributeList = ['fileId', 'type'];
+
+    /**
+     * @inheritDoc
+     */
+    public function prepareEntityForOutput(Entity $entity)
+    {
+        parent::prepareEntityForOutput($entity);
+
+        $nature = $this->getMetadata()->get(['fields', 'asset', 'typeNatures', $entity->get('type')], 'File');
+        if ($nature !== 'Image' && !empty($file = $entity->get('file'))) {
+            $fileNameParts = explode('.', $file->get('name'));
+            $entity->set('icon', strtolower(array_pop($fileNameParts)));
+        }
+    }
+
+    /**
      * @param string $scope
      * @param string $id
      *

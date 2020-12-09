@@ -7,6 +7,19 @@
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true
     },
+    "icon": {
+      "type": "varchar",
+      "notStorable": true,
+      "default": null,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
     "height": {
       "type": "int",
       "required": false,

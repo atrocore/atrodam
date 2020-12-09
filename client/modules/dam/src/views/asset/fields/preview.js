@@ -29,25 +29,27 @@
 Espo.define('dam:views/asset/fields/preview', 'view',
     Dep => Dep.extend({
         template: "dam:asset/fields/preview/list",
-    
+
         events: {
             'click a[data-action="showImagePreview"]': function (e) {
                 e.stopPropagation();
                 e.preventDefault();
                 let id = $(e.currentTarget).data('id');
                 this.createView('preview', 'dam:views/asset/modals/image-preview', {
-                    id   : id,
+                    id: id,
                     model: this.model,
-                    type : "asset"
+                    type: "asset"
                 }, function (view) {
                     view.render();
                 });
             }
         },
-        
+
         data() {
             return {
-                "timestamp": this.getTimestamp()
+                "timestamp": this.getTimestamp(),
+                "fileId": this.model.get('fileId'),
+                "icon": this.model.get('icon')
             };
         },
         setup() {
