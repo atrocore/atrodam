@@ -80,13 +80,13 @@
         "tag4",
         "tag5"
       ],
-      "optionColors": {
-        "tag1": "FF0000",
-        "tag2": "FFFF00",
-        "tag3": "00FF00",
-        "tag4": "0000FF",
-        "tag5": "00FFFF"
-      },
+      "optionColors": [
+        "FF0000",
+        "FFFF00",
+        "00FF00",
+        "0000FF",
+        "00FFFF"
+      ],
       "audited": false,
       "readOnly": false
     },
