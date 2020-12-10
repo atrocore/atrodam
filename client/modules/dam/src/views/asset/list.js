@@ -31,6 +31,8 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
 
         template: 'dam:asset/list',
 
+        createButton: false,
+
         setup() {
             Dep.prototype.setup.call(this);
 
@@ -38,12 +40,22 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
                 this.setupCatalogTreePanel();
             }
 
-            (this.menu.buttons || []).unshift({
+            this.menu.buttons.push({
+                link: '#' + this.scope + '/create',
+                action: 'create',
+                label: 'Create ' +  this.scope,
+                style: 'primary',
+                acl: 'create',
+                cssStyle: "margin-left: 15px",
+                aclScope: this.entityType || this.scope
+            });
+
+            (this.menu.dropdown || []).unshift({
                 acl: 'create',
                 aclScope: 'Asset',
                 action: 'massAssetCreate',
                 label: this.translate('Mass Upload', 'labels', 'Asset'),
-                style: 'default'
+                iconHtml: ''
             });
         },
 
