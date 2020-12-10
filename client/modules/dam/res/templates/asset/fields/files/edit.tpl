@@ -24,9 +24,8 @@
     </div>
     {{#if isUploading}}
     <div class="progress">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0"
-             aria-valuemin="0" aria-valuemax="100" style="width:{{percentCompleted}}%">
-            {{percentCompleted}}% {{translate 'uploaded' category='labels' scope='ImportFeed'}}
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{percentCompleted}}%">
+            {{percentCompleted}}% {{translate 'uploaded' category='labels' scope='Asset'}}
         </div>
     </div>
     {{/if}}
@@ -34,9 +33,10 @@
 </div>
 <style>
     .attachment-upload .attachments {
-        max-height: 450px;
+        max-height: 210px;
         overflow: auto;
     }
+
     .attachment-upload .progress {
         width: 50%;
     }

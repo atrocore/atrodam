@@ -96,6 +96,16 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 aclScope: this.model.name
             });
 
+            this.actionList.unshift({
+                label: this.translate('Mass Upload', 'labels', 'Asset'),
+                action: 'massAssetCreate',
+                data: {
+                    link: this.link
+                },
+                acl: 'create',
+                aclScope: this.model.name
+            });
+
             this.buttonList.push({
                 title: 'Create',
                 action: this.defs.createAction || 'createRelated',
@@ -107,7 +117,29 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     link: this.link
                 }
             });
+        },
 
+        actionMassAssetCreate: function (data) {
+            const foreignLink = this.model.defs['links'][data.link].foreign;
+
+            this.notify('Loading...');
+            this.createView('massCreate', 'views/modals/edit', {
+                scope: 'Asset',
+                relate: {
+                    model: this.model,
+                    link: foreignLink,
+                },
+                attributes: {},
+                fullFormDisabled: true,
+                layoutName: 'massCreateDetailSmall'
+            }, view => {
+                view.render();
+                view.notify(false);
+                this.listenToOnce(view, 'after:save', function () {
+                    this.actionRefresh();
+                    this.model.trigger('after:relate');
+                }, this);
+            });
         },
 
         actionRefresh() {

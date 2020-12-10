@@ -2,7 +2,8 @@
   "labels": {
     "Create Asset": "Asset erstellen",
     "sort": "Sortieren",
-    "Mass Upload": "Massenupload"
+    "Mass Upload": "Massenupload",
+    "uploaded": "hochgeladen"
   },
   "links": {
     "renditions": "Derivate",

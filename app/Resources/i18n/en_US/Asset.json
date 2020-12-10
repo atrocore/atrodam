@@ -3,7 +3,8 @@
     "sort": "Sort",
     "Image": "Image",
     "File": "File",
-    "Mass Upload": "Mass Upload"
+    "Mass Upload": "Mass Upload",
+    "uploaded": "uploaded"
   },
   "fields": {
     "isActive": "Active",
