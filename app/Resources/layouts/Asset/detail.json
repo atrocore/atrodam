@@ -1,80 +1,80 @@
 [
-    {
-        "rows": [
-            [
-                {
-                    "name": "type"
-                },
-                {
-                    "name": "file"
-                }
-            ],
-            [
-                {
-                    "name": "name"
-                },
-                false
-            ],
-            [
-                {
-                    "name": "private"
-                },
-                false
-            ],
-            [
-                {
-                    "name": "tags",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "library"
-                },
-                {
-                    "name": "isActive"
-                }
-            ]
-        ],
-        "style": "default",
-        "label": "Overview"
-    },
-    {
-        "rows": [
-            [
-                {
-                    "name": "size"
-                },
-                {
-                    "name": "orientation"
-                }
-            ],
-            [
-                {
-                    "name": "width"
-                },
-                {
-                    "name": "height"
-                }
-            ],
-            [
-                {
-                    "name": "colorDepth"
-                },
-                {
-                    "name": "colorSpace"
-                }
-            ]
-        ],
-        "style": "default",
-        "dynamicLogicVisible": {
-            "conditionGroup": [
-                {
-                    "type": "isNotEmpty",
-                    "attribute": "id"
-                }
-            ]
+  {
+    "rows": [
+      [
+        {
+          "name": "type"
         },
-        "customLabel": "Attributes"
-    }
+        {
+          "name": "file"
+        }
+      ],
+      [
+        {
+          "name": "name"
+        },
+        false
+      ],
+      [
+        {
+          "name": "private"
+        },
+        false
+      ],
+      [
+        {
+          "name": "tags",
+          "fullWidth": true
+        }
+      ],
+      [
+        {
+          "name": "library"
+        },
+        {
+          "name": "isActive"
+        }
+      ]
+    ],
+    "style": "default",
+    "label": "Overview"
+  },
+  {
+    "rows": [
+      [
+        {
+          "name": "size"
+        },
+        {
+          "name": "orientation"
+        }
+      ],
+      [
+        {
+          "name": "width"
+        },
+        {
+          "name": "height"
+        }
+      ],
+      [
+        {
+          "name": "colorDepth"
+        },
+        {
+          "name": "colorSpace"
+        }
+      ]
+    ],
+    "style": "default",
+    "dynamicLogicVisible": {
+      "conditionGroup": [
+        {
+          "type": "isNotEmpty",
+          "attribute": "id"
+        }
+      ]
+    },
+    "customLabel": "Attributes"
+  }
 ]
