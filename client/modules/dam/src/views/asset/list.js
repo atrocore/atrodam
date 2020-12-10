@@ -61,7 +61,7 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
 
         actionMassAssetCreate() {
             this.notify('Loading...');
-            this.createView('massCreate', 'views/modals/edit', {
+            this.createView('massCreate', 'dam:views/asset/modals/edit', {
                 scope: 'Asset',
                 attributes: this.getCreateAttributes() || {},
                 fullFormDisabled: true,

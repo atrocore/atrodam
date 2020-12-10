@@ -269,6 +269,7 @@ class Asset extends Base
 
         $entity = $this->getRepository()->get();
 
+        $created = 0;
         foreach ($data->filesIds as $fileId) {
             // get file name
             $fileName = $data->filesNames->$fileId;
@@ -288,11 +289,16 @@ class Asset extends Base
             unset($postData->filesNames);
             unset($postData->filesTypes);
 
+            $created++;
             try {
                 $entity = parent::createEntity($postData);
             } catch (\Throwable $e) {
-                // skip all
+                $created--;
             }
+        }
+
+        if (count($data->filesIds) != $created) {
+            $entity->set('afterSaveMessage', sprintf('Out of %s selected assets %s assets were uploaded.', count($data->filesIds), $created), 'messages', 'Asset');
         }
 
         return $entity;

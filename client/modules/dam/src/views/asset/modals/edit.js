@@ -33,9 +33,19 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
         actionSave() {
             this.notify('Saving...');
-            this.model.save().then(() => {
-                this.notify('Saved', 'success');
+            const isNew = typeof this.model.id === 'undefined';
+            this.model.save().then(response => {
+                // refresh
                 $('button[data-panel="assets"][data-action="refresh"]').click();
+                $('button[data-action="search"]').click();
+
+                if (response.afterSaveMessage) {
+                    Espo.Ui.notify(response.afterSaveMessage, 'success', 1000 * 60 * 60, true);
+                } else if (isNew) {
+                    this.notify('Created', 'success');
+                } else {
+                    this.notify('Saved', 'success');
+                }
                 this.close();
             });
         },

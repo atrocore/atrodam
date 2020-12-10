@@ -20,6 +20,19 @@
       "importDisabled": true,
       "exportDisabled": true
     },
+    "afterSaveMessage": {
+      "type": "text",
+      "notStorable": true,
+      "default": "",
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
     "height": {
       "type": "int",
       "required": false,

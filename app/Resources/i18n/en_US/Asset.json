@@ -37,6 +37,9 @@
     "renditions": "Renditions",
     "relatedAssets": "Related Assets"
   },
+  "messages": {
+    "Out of %s selected assets %s assets were uploaded.": "Out of %s selected assets %s assets were uploaded."
+  },
   "exceptions": {
     "Asset name is invalid.": "Asset name is invalid.",
     "Such asset already exists.": "Such asset already exists."

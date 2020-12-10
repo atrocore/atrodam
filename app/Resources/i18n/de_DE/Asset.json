@@ -41,6 +41,9 @@
     "path": "Pfad",
     "preview": "Vorschau"
   },
+  "messages": {
+    "Out of %s selected assets %s assets were uploaded.": "Von %s ausgewählten Assets wurden %s Assets hochgeladen."
+  },
   "exceptions": {
     "Asset name is invalid.": "Asset-Name ist ungültig.",
     "Such asset already exists.": "Dieser Asset existiert bereits."

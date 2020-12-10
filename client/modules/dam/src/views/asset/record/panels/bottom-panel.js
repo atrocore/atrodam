@@ -123,7 +123,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             const foreignLink = this.model.defs['links'][data.link].foreign;
 
             this.notify('Loading...');
-            this.createView('massCreate', 'views/modals/edit', {
+            this.createView('massCreate', 'dam:views/asset/modals/edit', {
                 scope: 'Asset',
                 relate: {
                     model: this.model,
