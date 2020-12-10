@@ -220,9 +220,12 @@ class Asset extends AbstractRepository implements DAMAttachment
      */
     protected function beforeSave(Entity $entity, array $options = [])
     {
-        // set default library
+        // set defaults
         if (empty($entity->get('libraryId'))) {
             $entity->set('libraryId', '1');
+        }
+        if (empty($entity->get('type'))) {
+            $entity->set('type', 'File');
         }
 
         if (empty(str_replace('/', '', (string)$entity->get('name')))) {
