@@ -2,7 +2,8 @@
   "labels": {
     "sort": "Sort",
     "Image": "Image",
-    "File": "File"
+    "File": "File",
+    "Mass Upload": "Mass Upload"
   },
   "fields": {
     "isActive": "Active",
@@ -16,6 +17,7 @@
     "colorDepth": "Color Depth",
     "colorSpace": "Color Space",
     "file": "File",
+    "files": "Files",
     "height": "Height",
     "metaData": "Meta Data",
     "orientation": "Orientation",

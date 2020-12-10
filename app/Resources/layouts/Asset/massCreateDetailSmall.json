@@ -1,0 +1,30 @@
+[
+  {
+    "rows": [
+      [
+        {
+          "name": "type"
+        },
+        {
+          "name": "library"
+        }
+      ],
+      [
+        {
+          "name": "private"
+        },
+        {
+          "name": "tags"
+        }
+      ],
+      [
+        {
+          "name": "files",
+          "fullWidth": true
+        }
+      ]
+    ],
+    "style": "default",
+    "label": ""
+  }
+]

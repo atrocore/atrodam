@@ -37,6 +37,33 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
             if (this.getAcl().check('Catalog', 'read') && this.getAcl().check('Category', 'read')) {
                 this.setupCatalogTreePanel();
             }
+
+            (this.menu.buttons || []).unshift({
+                acl: 'create',
+                aclScope: 'Asset',
+                action: 'massAssetCreate',
+                label: this.translate('Mass Upload', 'labels', 'Asset'),
+                style: 'default'
+            });
+        },
+
+        actionMassAssetCreate() {
+            this.notify('Loading...');
+            this.createView('massCreate', 'views/modals/edit', {
+                scope: 'Asset',
+                attributes: this.getCreateAttributes() || {},
+                fullFormDisabled: true,
+                layoutName: 'massCreateDetailSmall'
+            }, view => {
+                view.notify(false);
+                this.listenToOnce(view, 'after:save', () => {
+                    this.collection.fetch();
+                    view.close();
+                });
+                view.listenTo(view.model, 'updating-started', () => view.disableButton('save'));
+                view.listenTo(view.model, 'updating-ended', () => view.enableButton('save'));
+                view.render();
+            });
         },
 
         setupCatalogTreePanel() {

@@ -34,6 +34,7 @@ namespace Dam\Services;
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\Core\Utils\Log;
@@ -64,6 +65,30 @@ class Asset extends Base
             $fileNameParts = explode('.', $file->get('name'));
             $entity->set('icon', strtolower(array_pop($fileNameParts)));
         }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isRequiredField(string $field, Entity $entity, $typeResult): bool
+    {
+        if ($field == 'filesIds') {
+            return false;
+        }
+
+        return parent::isRequiredField($field, $entity, $typeResult);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createEntity($data)
+    {
+        if (!empty($data->filesIds)) {
+            return $this->massCreateAssets($data);
+        }
+
+        return parent::createEntity($data);
     }
 
     /**
@@ -233,6 +258,47 @@ class Asset extends Base
     }
 
     /**
+     * @param \stdClass $data
+     *
+     * @return Entity
+     */
+    protected function massCreateAssets(\stdClass $data): Entity
+    {
+        // update timeout limit
+        set_time_limit(60 * 5);
+
+        $entity = $this->getRepository()->get();
+
+        foreach ($data->filesIds as $fileId) {
+            // get file name
+            $fileName = $data->filesNames->$fileId;
+
+            // parse name
+            $parts = explode('.', $fileName);
+
+            // get asset name
+            $assetName = array_shift($parts);
+
+            $postData = clone $data;
+            $postData->fileId = $fileId;
+            $postData->fileName = $fileName;
+            $postData->name = $assetName;
+
+            unset($postData->filesIds);
+            unset($postData->filesNames);
+            unset($postData->filesTypes);
+
+            try {
+                $entity = parent::createEntity($postData);
+            } catch (\Throwable $e) {
+                // skip all
+            }
+        }
+
+        return $entity;
+    }
+
+    /**
      * @inheritDoc
      */
     protected function init()
@@ -345,5 +411,27 @@ class Asset extends Base
     protected function translate(string $label, string $category, string $scope): string
     {
         return $this->getInjection("language")->translate($label, $category, $scope);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function isValid($entity)
+    {
+        if ($this->isMassCreating($entity)) {
+            return true;
+        }
+
+        return parent::isValid($entity);
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return bool
+     */
+    protected function isMassCreating(Entity $entity): bool
+    {
+        return !empty($entity->get('filesIds')) && $entity->isNew();
     }
 }

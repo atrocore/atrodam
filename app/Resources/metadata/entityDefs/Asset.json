@@ -198,6 +198,16 @@
       "view": "dam:views/asset/fields/file",
       "layoutMassUpdateDisabled": true
     },
+    "files": {
+      "type": "attachmentMultiple",
+      "required": true,
+      "previewSize": "x-small",
+      "sourceList": [],
+      "tooltip": false,
+      "isCustom": true,
+      "notStorable": true,
+      "view": "dam:views/asset/fields/files"
+    },
     "size": {
       "type": "unit",
       "required": false,

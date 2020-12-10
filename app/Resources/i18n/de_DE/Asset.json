@@ -1,7 +1,8 @@
 {
   "labels": {
     "Create Asset": "Asset erstellen",
-    "sort": "Sortieren"
+    "sort": "Sortieren",
+    "Mass Upload": "Massenupload"
   },
   "links": {
     "renditions": "Derivate",
@@ -26,6 +27,7 @@
     "colorDepth": "Farbtiefe",
     "colorSpace": "Farbraum",
     "file": "Datei",
+    "files": "Dateien",
     "height": "Höhe",
     "metaData": "Metadaten",
     "orientation": "Ausrichtung",
