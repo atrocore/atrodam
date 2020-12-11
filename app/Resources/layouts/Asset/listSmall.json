@@ -4,7 +4,8 @@
     "link": true
   },
   {
-    "name": "preview"
+    "name": "preview",
+    "align": "center"
   },
   {
     "name": "type"
