@@ -5,7 +5,11 @@
 	</div>
 	<div class="actions">{{{rowActions}}}</div>
 	<div class="field-preview">
+		{{#if icon}}
+		<span class="fiv-cla fiv-icon-{{icon}} fiv-size-lg"></span>
+		{{else}}
 		<img src="?entryPoint=preview&size=large&id={{model.id}}&v={{version}}" alt="">
+		{{/if}}
 	</div>
 	<div class="field-name">
 		<span class="record-checkbox-container">

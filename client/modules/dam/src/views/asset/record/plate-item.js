@@ -46,7 +46,8 @@ Espo.define('dam:views/asset/record/plate-item', 'view',
 
         data() {
             return {
-                version: moment(this.model.get('modifiedAt')).format("X")
+                version: moment(this.model.get('modifiedAt')).format("X"),
+                icon: this.model.get('icon')
             };
         }
 
