@@ -186,7 +186,7 @@
     "private": {
       "notNull": true,
       "type": "bool",
-      "default": true,
+      "default": false,
       "audited": false,
       "readOnly": false,
       "tooltip": false
