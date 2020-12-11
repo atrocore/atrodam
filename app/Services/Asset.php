@@ -144,6 +144,17 @@ class Asset extends Base
             $list = $this->getRepository()->findRelatedAssetsByIds($entity, $ids);
         }
 
+        // prepare icon
+        foreach ($list as &$item) {
+            $item['icon'] = null;
+            $nature = $this->getMetadata()->get(['fields', 'asset', 'typeNatures', $item['type']], 'File');
+            if ($nature !== 'Image' && !empty($item['fileName'])) {
+                $fileNameParts = explode('.', $item['fileName']);
+                $item['icon'] = strtolower(array_pop($fileNameParts));
+            }
+        }
+        unset($item);
+
         return [
             'count' => count($list),
             'list'  => $list

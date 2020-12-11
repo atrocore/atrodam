@@ -106,12 +106,14 @@ class Asset extends AbstractRepository implements DAMAttachment
         $types = implode("','", $types);
         $id = $entity->get('id');
 
-        $sql = "SELECT a.* 
+        $sql = "SELECT a.*, at.id as fileId, at.name as fileName
                 FROM $relationTableName r 
-                LEFT JOIN asset a ON a.id=r.asset_id 
+                LEFT JOIN asset a ON a.id=r.asset_id
+                LEFT JOIN attachment at ON at.id=a.file_id 
                 WHERE 
                       r.deleted=0 
-                  AND a.deleted=0 
+                  AND a.deleted=0
+                  AND at.deleted=0 
                   AND a.type IN ('$types') 
                   AND r.{$entityTableName}_id='$id' 
                 ORDER BY r.sorting ASC";
@@ -141,9 +143,10 @@ class Asset extends AbstractRepository implements DAMAttachment
         $ids = implode("','", $ids);
         $id = $entity->get('id');
 
-        $sql = "SELECT a.* 
+        $sql = "SELECT a.*, at.id as fileId, at.name as fileName
                 FROM $relationTableName r 
-                LEFT JOIN asset a ON a.id=r.asset_id 
+                LEFT JOIN asset a ON a.id=r.asset_id
+                LEFT JOIN attachment at ON at.id=a.file_id 
                 WHERE 
                       r.deleted=0 
                   AND a.deleted=0 
