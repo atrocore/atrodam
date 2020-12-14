@@ -78,18 +78,25 @@ class Metadata extends AbstractListener
     protected function getAssetTypes(): array
     {
         if (!file_exists(self::CACHE_FILE)) {
-            $sth = $this
-                ->getContainer()
-                ->get('pdo')
-                ->prepare("SELECT name, nature FROM asset_type WHERE deleted=0");
-            $sth->execute();
-            $types = array_column($sth->fetchAll(\PDO::FETCH_ASSOC), 'nature', 'name');
+            try {
+                $sth = $this
+                    ->getContainer()
+                    ->get('pdo')
+                    ->prepare("SELECT name, nature FROM asset_type WHERE deleted=0");
+                $sth->execute();
+                $types = array_column($sth->fetchAll(\PDO::FETCH_ASSOC), 'nature', 'name');
+            } catch (\Throwable $e) {
+                $error = true;
+            }
 
             if (!file_exists('data/cache')) {
                 mkdir('data/cache', 0777, true);
                 sleep(1);
             }
-            file_put_contents(self::CACHE_FILE, Json::encode($types));
+
+            if (empty($error)) {
+                file_put_contents(self::CACHE_FILE, Json::encode($types));
+            }
         } else {
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
