@@ -73,13 +73,7 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
         _getFileName() {
             let name = this.model.get("fileName") || this.model.get("imageName");
 
-            if (!name) {
-                return '';
-            }
-
-            name = name.split('.');
-            name.pop();
-            return name.join('.');
+            return name ? name : '';
         },
 
         _normalizeName(name) {
