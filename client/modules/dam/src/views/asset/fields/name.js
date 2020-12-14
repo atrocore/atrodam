@@ -33,6 +33,8 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
 
         detailTemplate: "dam:fields/name/detail",
 
+        editTemplate: 'dam:asset/fields/name/edit',
+
         setup() {
             Dep.prototype.setup.call(this);
             this.fileName = this._getFileName();
@@ -41,9 +43,14 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
         },
 
         data() {
-            return _.extend({
-                attachmentId: this.model.get("fileId")
-            }, Dep.prototype.data.call(this));
+            let data = _.extend({attachmentId: this.model.get("fileId")}, Dep.prototype.data.call(this));
+
+            const parts = (data.value || '').split('.');
+
+            data['valueWithoutExt'] = parts[0];
+            data['fileExt'] = (typeof parts[1] !== 'undefined') ? parts[1] : '';
+
+            return data;
         },
 
         registerListeners() {

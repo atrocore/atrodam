@@ -60,10 +60,16 @@ class Asset extends Base
     {
         parent::prepareEntityForOutput($entity);
 
-        $nature = $this->getMetadata()->get(['fields', 'asset', 'typeNatures', $entity->get('type')], 'File');
-        if ($nature !== 'Image' && !empty($file = $entity->get('file'))) {
+        $file = $entity->get('file');
+        if (!empty($file)) {
             $fileNameParts = explode('.', $file->get('name'));
-            $entity->set('icon', strtolower(array_pop($fileNameParts)));
+            $fileExt = array_pop($fileNameParts);
+
+            $entity->set('name', $entity->get('name') . '.' . $fileExt);
+
+            if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $entity->get('type')], 'File') !== 'Image') {
+                $entity->set('icon', strtolower($fileExt));
+            }
         }
     }
 
@@ -146,12 +152,19 @@ class Asset extends Base
 
         // prepare icon
         foreach ($list as &$item) {
-            $item['icon'] = null;
-            $nature = $this->getMetadata()->get(['fields', 'asset', 'typeNatures', $item['type']], 'File');
-            if ($nature !== 'Image' && !empty($item['fileName'])) {
+            if (!empty($item['fileName'])) {
                 $fileNameParts = explode('.', $item['fileName']);
-                $item['icon'] = strtolower(array_pop($fileNameParts));
+                $fileExt = array_pop($fileNameParts);
+
+                $item['name'] .= '.' . $fileExt;
+
+                $item['icon'] = null;
+                if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $item['type']], 'File') !== 'Image') {
+                    $item['icon'] = strtolower($fileExt);
+                }
             }
+
+
         }
         unset($item);
 
