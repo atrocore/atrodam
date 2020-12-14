@@ -35,11 +35,9 @@ use Dam\Core\Validation\Base;
 use Espo\Core\Exceptions\BadRequest;
 
 /**
- * Class PDFValidation
- *
- * @package Dam\Core\Validation\Items
+ * Class PdfValidation
  */
-class PDFValidation extends Base
+class PdfValidation extends Base
 {
     /**
      * @return bool
