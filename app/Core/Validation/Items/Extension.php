@@ -36,7 +36,6 @@ use Espo\Core\Exceptions\BadRequest;
 
 /**
  * Class Extension
- * @package Dam\Core\Validation\Items
  */
 class Extension extends Base
 {
@@ -45,7 +44,7 @@ class Extension extends Base
      */
     public function validate(): bool
     {
-        return in_array(pathinfo($this->attachment->get('name'))['extension'], $this->params);
+        return in_array(strtolower(pathinfo($this->attachment->get('name'))['extension']), array_map('strtolower', $this->params));
     }
 
     /**
