@@ -107,6 +107,16 @@
   "iconClass": "fas fa-archive",
   "dynamicLogic": {
     "fields": {
+      "name": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isNotEmpty",
+              "attribute": "fileId"
+            }
+          ]
+        }
+      },
       "height": {
         "visible": {
           "conditionGroup": [
