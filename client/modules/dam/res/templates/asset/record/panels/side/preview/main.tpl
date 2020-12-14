@@ -15,4 +15,10 @@
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 </style>
+{{else}}
+<div class="row">
+    <div class="col-sm-12" style="text-align: center">
+        <span class="fiv-cla fiv-icon-{{icon}} fiv-size-lg"></span>
+    </div>
+</div>
 {{/if}}
