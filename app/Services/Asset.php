@@ -62,8 +62,8 @@ class Asset extends Base
 
         $file = $entity->get('file');
         if (!empty($file)) {
-            $entity->set('name', $this->prepareAssetName($entity->get('name'), $file->get('name')));
-            $entity->set('icon', $this->prepareAssetIcon($entity->get('type'), $file->get('name')));
+            $entity->set('name', $this->prepareAssetName((string)$entity->get('name'), (string)$file->get('name')));
+            $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
         }
     }
 
@@ -147,8 +147,8 @@ class Asset extends Base
         // prepare icon
         foreach ($list as &$item) {
             if (!empty($item['fileName'])) {
-                $item['name'] = $this->prepareAssetName($item['name'], $item['fileName']);
-                $item['icon'] = $this->prepareAssetIcon($item['type'], $item['fileName']);
+                $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
+                $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
             }
         }
         unset($item);
