@@ -1,8 +1,14 @@
-{{#if previewId}}
+{{#if icon}}
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <a data-action="showImagePreview" data-id="{{previewId}}" href="?entryPoint=preview&type=attachment&size=original&id={{previewId}}">
-            <img src="?entryPoint=preview&type=attachment&size=original&id={{previewId}}" class="img-fluid image-preview" alt="Responsive image">
+        <span class="fiv-cla fiv-icon-{{icon}} fiv-size-lg"></span>
+    </div>
+</div>
+{{else}}
+<div class="row">
+    <div class="col-sm-12" style="text-align: center">
+        <a data-action="showImagePreview" data-id="{{fileId}}" href="?entryPoint=preview&type=attachment&size=original&id={{fileId}}">
+            <img src="?entryPoint=preview&type=attachment&size=original&id={{fileId}}" class="img-fluid image-preview" alt="Responsive image">
         </a>
     </div>
 </div>
@@ -15,10 +21,4 @@
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 </style>
-{{else}}
-<div class="row">
-    <div class="col-sm-12" style="text-align: center">
-        <span class="fiv-cla fiv-icon-{{icon}} fiv-size-lg"></span>
-    </div>
-</div>
 {{/if}}

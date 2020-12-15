@@ -62,14 +62,8 @@ class Asset extends Base
 
         $file = $entity->get('file');
         if (!empty($file)) {
-            $fileNameParts = explode('.', $file->get('name'));
-            $fileExt = array_pop($fileNameParts);
-
-            $entity->set('name', $entity->get('name') . '.' . $fileExt);
-
-            if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $entity->get('type')], 'File') !== 'Image') {
-                $entity->set('icon', strtolower($fileExt));
-            }
+            $entity->set('name', $this->prepareAssetName($entity->get('name'), $file->get('name')));
+            $entity->set('icon', $this->prepareAssetIcon($entity->get('type'), $file->get('name')));
         }
     }
 
@@ -153,18 +147,9 @@ class Asset extends Base
         // prepare icon
         foreach ($list as &$item) {
             if (!empty($item['fileName'])) {
-                $fileNameParts = explode('.', $item['fileName']);
-                $fileExt = array_pop($fileNameParts);
-
-                $item['name'] .= '.' . $fileExt;
-
-                $item['icon'] = null;
-                if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $item['type']], 'File') !== 'Image') {
-                    $item['icon'] = strtolower($fileExt);
-                }
+                $item['name'] = $this->prepareAssetName($item['name'], $item['fileName']);
+                $item['icon'] = $this->prepareAssetIcon($item['type'], $item['fileName']);
             }
-
-
         }
         unset($item);
 
@@ -463,5 +448,25 @@ class Asset extends Base
     protected function isMassCreating(Entity $entity): bool
     {
         return !empty($entity->get('filesIds')) && $entity->isNew();
+    }
+
+    protected function prepareAssetName(string $assetName, string $fileName): string
+    {
+        $fileNameParts = explode('.', $fileName);
+        $fileExt = array_pop($fileNameParts);
+
+        return $assetName . $fileExt;
+    }
+
+    protected function prepareAssetIcon(string $type, string $fileName): ?string
+    {
+        $fileNameParts = explode('.', $fileName);
+        $fileExt = strtolower(array_pop($fileNameParts));
+
+        if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $type], 'File') !== 'Image' && strtolower($fileExt) !== 'pdf') {
+            return $fileExt;
+        }
+
+        return null;
     }
 }

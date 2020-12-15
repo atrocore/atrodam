@@ -54,16 +54,8 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                 });
             },
             data() {
-                let hasPreview = this.getMetadata().get(`fields.asset.typeNatures.${this.model.get("type")}`) === "Image";
-                if (!hasPreview && this.model.get('name')) {
-                    let fileExt = this.model.get('name').split('.').pop().toLowerCase();
-                    if (fileExt === 'pdf') {
-                        hasPreview = true;
-                    }
-                }
-
                 return {
-                    previewId: hasPreview ? this.model.get('fileId') : null,
+                    fileId: this.model.get('fileId'),
                     path: this.options.el,
                     icon: this.model.get('icon')
                 };
