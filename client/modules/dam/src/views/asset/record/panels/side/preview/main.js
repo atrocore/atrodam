@@ -57,7 +57,7 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                 return {
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
-                    icon: this.model.get('icon')
+                    icon: (!this.model.get('fileId')) ? 'download' : this.model.get('icon')
                 };
             }
         });
