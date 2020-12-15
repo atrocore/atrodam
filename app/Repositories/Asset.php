@@ -231,6 +231,9 @@ class Asset extends AbstractRepository implements DAMAttachment
             $entity->set('type', 'File');
         }
 
+        // prepare name
+        $entity->set('name', explode('.', (string)$entity->get('name'))[0]);
+
         if (empty(str_replace('/', '', (string)$entity->get('name')))) {
             throw new BadRequest($this->translate('Asset name is invalid.', 'exceptions', 'Asset'));
         }
