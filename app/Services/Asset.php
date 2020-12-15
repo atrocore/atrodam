@@ -455,7 +455,7 @@ class Asset extends Base
         $fileNameParts = explode('.', $fileName);
         $fileExt = array_pop($fileNameParts);
 
-        return $assetName . $fileExt;
+        return $assetName . '.' . $fileExt;
     }
 
     protected function prepareAssetIcon(string $type, string $fileName): ?string
