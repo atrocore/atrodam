@@ -34,7 +34,7 @@ namespace Dam\Core\Preview;
 use Dam\Entities\Attachment;
 use Espo\Core\Exceptions\Error;
 use Espo\Core\Exceptions\NotFound;
-use Imagick;
+use ImalH\PDFLib\PDFLib;
 use Treo\Core\Container;
 
 /**
@@ -43,110 +43,81 @@ use Treo\Core\Container;
 class Pdf extends Base
 {
     /**
-     * @var Imagick|null
+     * @var \Imagick
      */
-    protected $imagick = null;
+    protected $imagick;
 
     /**
-     * Pdf constructor.
-     *
-     * @param Attachment $attachment
-     * @param string     $size
-     * @param Container  $container
-     *
-     * @throws \ImagickException
+     * @inheritDoc
      */
     public function __construct(Attachment $attachment, string $size, Container $container)
     {
         parent::__construct($attachment, $size, $container);
 
-        $this->imagick = new Imagick();
+        $this->imagick = new \Imagick();
     }
 
     /**
-     * @inheritDoc
+     * Show PDF preview image
+     *
+     * @return mixed|void
+     * @throws Error
+     * @throws NotFound
      */
     public function show()
     {
         $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
-
-        $fileType = $this->attachment->get('type');
-
         if (!file_exists($filePath)) {
             throw new NotFound();
         }
 
-        if (!empty($this->size)) {
-            if (!empty($this->imageSizes[$this->size]) || $this->size === "original") {
-                $thumbFilePath = $this->buildPath($this->attachment, $this->size);
+        // create original
+        $originalImagePath = $this->createImageFromPdf($filePath);
 
-                if (!file_exists($thumbFilePath)) {
-                    $image = $this->createImageFromPdf($filePath);
-                    $thumbFilePath = $this->createThumb($thumbFilePath, $image, $this->size);
-                }
-                $filePath = $thumbFilePath;
-            } else {
-                throw new Error();
+        $thumbFilePath = $originalImagePath;
+        if (!empty($this->size) && !empty($this->imageSizes[$this->size])) {
+            $createThumbPath = $this->createThumb($originalImagePath, $originalImagePath, $this->size);
+            if (is_string($createThumbPath)) {
+                $thumbFilePath = $createThumbPath;
             }
         }
 
-        $fileName = $this->attachment->get('name');
-
-        header('Content-Disposition:inline;filename="' . $fileName . '"');
-        if (!empty($fileType)) {
-            header('Content-Type: ' . ($fileType === "application/pdf" ? "image/png" : $fileType));
-        }
+        header('Content-Disposition:inline;filename="' . $this->attachment->get('name') . '"');
+        header('Content-Type: image/png');
         header('Pragma: public');
         header('Cache-Control: max-age=360000, must-revalidate');
-        $fileSize = filesize($filePath);
+        $fileSize = filesize($thumbFilePath);
         if ($fileSize) {
             header('Content-Length: ' . $fileSize);
         }
-        readfile($filePath);
+        readfile($thumbFilePath);
         exit;
     }
 
     /**
-     * @param $thumbFilePath
-     * @param $filePath
-     * @param $size
+     * @param string $pdfPath
      *
-     * @return mixed
-     * @throws Error
-     * @throws \Gumlet\ImageResizeException
-     * @throws \ImagickException
+     * @return string
+     * @throws \Exception
      */
-    protected function createThumb($thumbFilePath, $filePath, $size)
+    protected function createImageFromPdf(string $pdfPath): string
     {
-        $pathInfo = pathinfo($thumbFilePath);
-        $thumbFilePath = $pathInfo['dirname'] . "/" . $pathInfo['filename'] . ".png";
-
-        if ($size !== "original") {
-            list($w, $h) = $this->imageSizes[$size];
-
-            $this->imagick->resizeImage($w, $h, Imagick::FILTER_HAMMING, 1, true);
+        $dirPath = str_replace('.', '_', $this->buildPath($this->attachment, $this->size));
+        if (!file_exists($dirPath)) {
+            mkdir($dirPath, 0777, true);
         }
 
-        if ($this->getFileManager()->putContents($thumbFilePath, $this->imagick->getImageBlob())) {
-            return $thumbFilePath;
+        $original = $dirPath . '/page-1.png';
+        if (!file_exists($original)) {
+            $pdflib = new PDFLib();
+            $pdflib->setPdfPath($pdfPath);
+            $pdflib->setOutputPath($dirPath);
+            $pdflib->setImageFormat(PDFLib::$IMAGE_FORMAT_PNG);
+            $pdflib->setPageRange(1, 1);
+            $pdflib->setFilePrefix('page-');
+            $pdflib->convert();
         }
 
-        return false;
-    }
-
-    /**
-     * @param $filePath
-     *
-     * @return $this
-     * @throws \ImagickException
-     */
-    protected function createImageFromPdf($filePath)
-    {
-        $this->imagick->setResolution(120, 120);
-        $this->imagick->readImage($filePath . "[0]");
-        $this->imagick->setimageformat("png");
-        $this->imagick->setImageAlphaChannel(Imagick::ALPHACHANNEL_REMOVE);
-
-        return $this;
+        return $original;
     }
 }
