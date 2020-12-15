@@ -39,7 +39,6 @@ use Treo\Core\Container;
 
 /**
  * Class Pdf
- * @package Dam\Core\Preview
  */
 class Pdf extends Base
 {
@@ -50,9 +49,11 @@ class Pdf extends Base
 
     /**
      * Pdf constructor.
+     *
      * @param Attachment $attachment
      * @param string     $size
      * @param Container  $container
+     *
      * @throws \ImagickException
      */
     public function __construct(Attachment $attachment, string $size, Container $container)
@@ -62,6 +63,9 @@ class Pdf extends Base
         $this->imagick = new Imagick();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function show()
     {
         $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
@@ -77,7 +81,7 @@ class Pdf extends Base
                 $thumbFilePath = $this->buildPath($this->attachment, $this->size);
 
                 if (!file_exists($thumbFilePath)) {
-                    $image         = $this->createImageFromPdf($filePath);
+                    $image = $this->createImageFromPdf($filePath);
                     $thumbFilePath = $this->createThumb($thumbFilePath, $image, $this->size);
                 }
                 $filePath = $thumbFilePath;
@@ -106,6 +110,7 @@ class Pdf extends Base
      * @param $thumbFilePath
      * @param $filePath
      * @param $size
+     *
      * @return mixed
      * @throws Error
      * @throws \Gumlet\ImageResizeException
@@ -113,7 +118,7 @@ class Pdf extends Base
      */
     protected function createThumb($thumbFilePath, $filePath, $size)
     {
-        $pathInfo      = pathinfo($thumbFilePath);
+        $pathInfo = pathinfo($thumbFilePath);
         $thumbFilePath = $pathInfo['dirname'] . "/" . $pathInfo['filename'] . ".png";
 
         if ($size !== "original") {
@@ -131,6 +136,7 @@ class Pdf extends Base
 
     /**
      * @param $filePath
+     *
      * @return $this
      * @throws \ImagickException
      */

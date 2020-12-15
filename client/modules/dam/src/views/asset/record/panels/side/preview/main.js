@@ -29,7 +29,7 @@
 Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:config"],
     (Dep, Config) => {
         return Dep.extend({
-            template : "dam:asset/record/panels/side/preview/main",
+            template: "dam:asset/record/panels/side/preview/main",
             damConfig: null,
 
             events: {
@@ -38,7 +38,7 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                     e.preventDefault();
                     let id = $(e.currentTarget).data('id');
                     this.createView('preview', 'dam:views/modals/image-preview', {
-                        id   : id,
+                        id: id,
                         model: this.model
                     }, function (view) {
                         view.render();
@@ -54,25 +54,19 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                 });
             },
             data() {
+                let hasPreview = this.getMetadata().get(`fields.asset.typeNatures.${this.model.get("type")}`) === "Image";
+                if (!hasPreview && this.model.get('name')) {
+                    let fileExt = this.model.get('name').split('.').pop().toLowerCase();
+                    if (fileExt === 'pdf') {
+                        hasPreview = true;
+                    }
+                }
+
                 return {
-                    showImage: this._showImage(),
+                    previewId: hasPreview ? this.model.get('fileId') : null,
                     path: this.options.el,
                     icon: this.model.get('icon')
                 };
-            },
-            _showImage() {
-                return !!(
-                    this._isImage() && this._hasImage()
-                );
-            },
-            _hasImage() {
-                return this.model.has("fileId") && this.model.get("fileId");
-            },
-            _isImage() {
-                if (this.model.get("type")) {
-                    return this.damConfig.getByType(`${this.model.get("type")}.nature`) === "image";
-                }
-                return false;
             }
         });
     }

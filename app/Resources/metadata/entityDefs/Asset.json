@@ -5,7 +5,13 @@
       "view": "dam:views/asset/fields/preview",
       "notStorable": true,
       "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true
+      "layoutDetailSmallDisabled": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
     },
     "icon": {
       "type": "varchar",
