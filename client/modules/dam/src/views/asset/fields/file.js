@@ -28,7 +28,7 @@
 
 Espo.define('dam:views/asset/fields/file', 'dam:views/fields/file',
     Dep => Dep.extend({
-        
+
         getDownloadUrl(id) {
             var url = this.getBasePath() + '?entryPoint=download&showInline=false&id=' + id;
             if (this.getUser().get('portalId')) {
@@ -36,17 +36,21 @@ Espo.define('dam:views/asset/fields/file', 'dam:views/fields/file',
             }
             return url;
         },
-        
+
         setup() {
             Dep.prototype.setup.call(this);
-            
+
             this.listenTo(this.model, "change:type", () => {
                 this.deleteAttachment();
             });
 
             this.listenTo(this.model, "change:name", () => {
                 if (this.model.get('name')) {
+                    const ext = (this.model.get('fileName') || '').split('.').pop();
+
+                    this.model.set('name', this.model.get('name') + '.' + ext, {silent: true});
                     this.model.set('fileName', this.model.get('name'));
+
                     this.reRender();
                 }
             });
