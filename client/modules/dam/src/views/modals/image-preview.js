@@ -37,7 +37,7 @@ Espo.define('dam:views/modals/image-preview', 'views/modals/image-preview', func
         },
         
         getImageUrl() {
-            return `${this.getBasePath()}?entryPoint=preview&type=attachment&size=original&id=${this.options.id}`;
+            return `${this.getBasePath()}?entryPoint=image&type=attachment&size=original&id=${this.options.id}`;
         }
     });
 });

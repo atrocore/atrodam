@@ -35,7 +35,7 @@ Espo.define('dam:views/asset/modals/entity-asset-item', ['view', "dam:config"], 
         data() {
             let data = {};
             
-            data.preview = `?entryPoint=preview&size=small&id=${this.model.get("assetId")}`;
+            data.preview = `?entryPoint=image?type=asset&size=small&id=${this.model.get("assetId")}`;
             
             return data;
         },
