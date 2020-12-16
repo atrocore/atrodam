@@ -40,7 +40,6 @@ Espo.define('dam:views/asset/record/panels/header', 'view',
         data() {
             return {
                 name: this.model.get("name"),
-                hasItems: this.model.get("hasItem"),
                 show: this.show
             }
         },

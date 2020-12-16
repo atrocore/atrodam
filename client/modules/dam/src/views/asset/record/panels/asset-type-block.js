@@ -54,9 +54,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
         showInfo() {
             this.show = true;
             if (this.collection) {
-                this.collection.fetch().then(() => {
-                    this.getView("list").reRender();
-                });
+                this.getView("list").reRender();
             } else {
                 this.getCollectionFactory().create("Asset", (collection) => {
                     this.collection = collection;

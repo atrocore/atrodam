@@ -82,42 +82,6 @@ class Asset extends AbstractRepository implements DAMAttachment
     }
 
     /**
-     * @param Entity $entity
-     * @param array  $ids
-     *
-     * @return array
-     */
-    public function findRelatedAssetsByIds(Entity $entity, array $ids): array
-    {
-        if (method_exists($this->getEntityManager()->getRepository($entity->getEntityType()), 'findRelatedAssetsByIds')) {
-            return $this->getEntityManager()->getRepository($entity->getEntityType())->findRelatedAssetsByIds($entity, $ids);
-        }
-
-        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
-        if (empty($relation['foreign']) || empty($relation['relationName'])) {
-            return [];
-        }
-
-        $relationTableName = Util::toUnderScore($relation['relationName']);
-        $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
-        $ids = implode("','", $ids);
-        $id = $entity->get('id');
-
-        $sql = "SELECT a.*, at.id as fileId, at.name as fileName
-                FROM $relationTableName r 
-                LEFT JOIN asset a ON a.id=r.asset_id
-                LEFT JOIN attachment at ON at.id=a.file_id 
-                WHERE 
-                      r.deleted=0 
-                  AND a.deleted=0 
-                  AND a.id IN ('$ids')
-                  AND r.{$entityTableName}_id='$id' 
-                ORDER BY r.sorting ASC";
-
-        return $this->findByQuery($sql)->toArray();
-    }
-
-    /**
      * @param string $scope
      * @param string $entityId
      * @param array  $ids
