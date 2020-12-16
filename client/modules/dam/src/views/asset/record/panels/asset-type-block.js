@@ -59,8 +59,6 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                 });
             } else {
                 this.getCollectionFactory().create("Asset", (collection) => {
-                    collection.url = `Asset/action/assetsForEntity?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}&nature=${this.model.get('name')}`;
-                    collection.sortBy = "";
                     this.collection = collection;
                     this.waitForView("list");
                     this.createView('list', "dam:views/asset/record/list", {
@@ -89,7 +87,8 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                                 this.model.trigger("advanced-filters");
                             });
                         }
-                        collection.fetch();
+                        collection.set(this.model.get('assets'));
+                        collection.trigger('sync');
                     });
                 });
             }

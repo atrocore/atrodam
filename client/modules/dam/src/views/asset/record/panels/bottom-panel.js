@@ -60,11 +60,11 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             let showFirst = true;
 
             this.getCollectionFactory().create("Asset", (collection) => {
-                collection.url = `Asset/action/assetsNatures?entity=${this.model.name}&id=${this.model.id}`;
+                collection.url = `Asset/action/entityAssets?entity=${this.model.name}&id=${this.model.id}`;
                 collection.fetch().then(() => {
                     this.collection = collection;
                     this.collection.forEach((model) => {
-                        if (model.get("hasItem")) {
+                        if (model.get('assets').length > 0) {
                             this.blocks.push(model.get("name"));
                             this._createTypeBlock(model, showFirst);
                             showFirst = false;
@@ -144,41 +144,13 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
         actionRefresh() {
             if (this.collection) {
-                let Promises = [];
-
                 this.collection.fetch().then(() => {
-                    this.blocks = [];
-                    this.collection.forEach(model => {
-                        if (model.get("hasItem") && !this.hasView(model.get("name"))) {
-                            Promises.push(new Promise(resolve => {
-                                model.set({
-                                    entityName: this.defs.entityName,
-                                    entityId: this.model.id,
-                                    entityModel: this.model
-                                });
-
-                                this.createView(model.get('name'), this._getInnerPanelView(), {
-                                    model: model,
-                                    el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
-                                    sort: this.sort,
-                                    show: false
-                                }, view => {
-                                    resolve();
-                                });
-                            }));
-                        }
-                        if (model.get("hasItem")) {
-                            this.blocks.push(model.get("name"));
+                    this.collection.forEach((model) => {
+                        if (model.get('assets').length > 0) {
+                            this._createTypeBlock(model, false);
                         }
                     });
-
-                    if (Promises.length > 0) {
-                        Promise.all(Promises).then(r => {
-                            this.reRender();
-                        });
-                    } else {
-                        this.reRender();
-                    }
+                    this.reRender();
                 });
             }
         },

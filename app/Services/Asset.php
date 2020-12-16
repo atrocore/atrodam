@@ -99,60 +99,32 @@ class Asset extends Base
      * @return array
      * @throws NotFound
      */
-    public function getAssetsNatures(string $scope, string $id): array
+    public function getEntityAssets(string $scope, string $id): array
     {
         $entity = $this->getEntityManager()->getEntity($scope, $id);
         if (empty($entity)) {
             throw new NotFound();
         }
 
-        $list = [
-            [
-                "id"      => "Image",
-                "name"    => $this->translate('Image', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "Image")
-            ],
-            [
-                "id"      => "File",
-                "name"    => $this->translate('File', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
-            ]
-        ];
-
-        return [
-            'count' => count($list),
-            'list'  => $list
-        ];
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return array
-     * @throws NotFound
-     */
-    public function getAssetsForEntity(Request $request): array
-    {
-        $entity = $this->getEntityManager()->getEntity($request->get('entity'), $request->get('id'));
-        if (empty($entity)) {
-            throw new NotFound();
-        }
-
         $list = [];
-        if (!empty($nature = $request->get('nature'))) {
-            $list = $this->getRepository()->findRelatedAssetsByNature($entity, $nature);
-        } elseif ($ids = $request->get("assetIds")) {
-            $list = $this->getRepository()->findRelatedAssetsByIds($entity, $ids);
-        }
+        foreach ($this->getMetadata()->get('fields.asset.types', []) as $type) {
+            $assets = $this->getRepository()->findRelatedAssetsByType($entity, $type);
 
-        // prepare icon
-        foreach ($list as &$item) {
-            if (!empty($item['fileName'])) {
-                $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
-                $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+            // prepare assets
+            foreach ($assets as &$item) {
+                if (!empty($item['fileName'])) {
+                    $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
+                    $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+                }
             }
+            unset($item);
+
+            $list[] = [
+                'id'     => $type,
+                'name'   => $type,
+                'assets' => $assets
+            ];
         }
-        unset($item);
 
         return [
             'count' => count($list),
