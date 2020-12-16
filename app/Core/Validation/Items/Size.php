@@ -46,7 +46,7 @@ class Size extends Base
      */
     public function validate(): bool
     {
-        $imageSize = (filesize($this->attachment->get('tmpPath')) / 1024);
+        $imageSize = (filesize($this->getFilePath()) / 1024);
 
         if ($imageSize >= $this->params['min'] && $imageSize <= $this->params['max']) {
             return true;

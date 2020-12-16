@@ -46,7 +46,7 @@ class Scale extends Base
      */
     public function validate(): bool
     {
-        list ($width, $height) = getimagesize($this->attachment->get("tmpPath"));
+        list ($width, $height) = getimagesize($this->getFilePath());
 
         return $width > $this->params['min']['width'] && $height > $this->params['min']['height'];
     }

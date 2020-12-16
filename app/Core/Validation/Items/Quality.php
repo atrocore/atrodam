@@ -47,7 +47,7 @@ class Quality extends Base
      */
     public function validate(): bool
     {
-        $img = new \Imagick($this->attachment->get('tmpPath'));
+        $img = new \Imagick($this->getFilePath());
         $quality = $img->getImageCompressionQuality();
 
         if ($img->getImageMimeType() !== "image/jpeg") {

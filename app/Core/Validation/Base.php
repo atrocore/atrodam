@@ -147,4 +147,12 @@ abstract class Base
     {
         return $this->translate($label, 'exceptions', 'Global');
     }
+
+    /**
+     * @return string
+     */
+    protected function getFilePath(): string
+    {
+        return $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
+    }
 }

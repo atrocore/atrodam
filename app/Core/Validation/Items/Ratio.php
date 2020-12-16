@@ -46,7 +46,7 @@ class Ratio extends Base
      */
     public function validate(): bool
     {
-        $imageParams = getimagesize($this->attachment->get('tmpPath'));
+        $imageParams = getimagesize($this->getFilePath());
 
         return ($imageParams[0] / $imageParams[1]) == $this->params;
     }

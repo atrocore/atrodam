@@ -47,7 +47,7 @@ class Mime extends Base
      */
     public function validate(): bool
     {
-        $mimeType = (string)mime_content_type($this->attachment->get('tmpPath'));
+        $mimeType = (string)mime_content_type($this->getFilePath());
 
         if (isset($this->params['list'])) {
             return in_array($mimeType, $this->params['list']);

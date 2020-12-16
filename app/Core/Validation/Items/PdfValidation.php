@@ -44,7 +44,7 @@ class PdfValidation extends Base
      */
     public function validate(): bool
     {
-        $content = file_get_contents($this->attachment->get('tmpPath'));
+        $content = file_get_contents($this->getFilePath());
 
         if (preg_match("/^%PDF-1./", $content)) {
             return true;
