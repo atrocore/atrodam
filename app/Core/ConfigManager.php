@@ -121,14 +121,8 @@ class ConfigManager
                 'type'             => [
                     'custom'  => [
                         'file' => [
-                            'nature' => 'file',
                             'validations' => [],
-                            'renditions' => [],
-                        ],
-                        'image' => [
-                            'nature' => 'image',
-                            'validations' => [],
-                            'renditions' => [],
+                            'renditions'  => [],
                         ]
                     ],
                     'default' => [
@@ -167,10 +161,7 @@ class ConfigManager
             if ($types->count() > 0) {
                 foreach ($types as $type) {
                     $name = strtolower(str_replace(" ", "-", $type->get('name')));
-                    $nature = strtolower($type->get('nature'));
-
                     $result['type']['custom'][$name] = [
-                        'nature'      => $nature,
                         'validations' => $type->getValidations(),
                         'renditions'  => $type->getRenditions(),
                     ];

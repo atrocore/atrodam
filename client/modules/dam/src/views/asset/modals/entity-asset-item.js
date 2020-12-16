@@ -61,10 +61,6 @@ Espo.define('dam:views/asset/modals/entity-asset-item', ['view', "dam:config"], 
             }
             return notValid;
         },
-        
-        _showPreview() {
-            let config = this.damConfig.getByType(this.type);
-            return config.nature === "image" || config.preview;
-        }
+
     });
 });
