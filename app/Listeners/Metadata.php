@@ -64,8 +64,10 @@ class Metadata extends AbstractListener
     {
         $data = $event->getArgument('data');
 
-        $data['fields']['asset']['typeNatures'] = $this->getAssetTypes();
-        $data['entityDefs']['Asset']['fields']['type']['options'] = array_keys($data['fields']['asset']['typeNatures']);
+        $data['fields']['asset']['types'] = $this->getAssetTypes();
+        $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
+
+        $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
 
         $this->updateRelationMetadata($data);
 
@@ -82,9 +84,9 @@ class Metadata extends AbstractListener
                 $sth = $this
                     ->getContainer()
                     ->get('pdo')
-                    ->prepare("SELECT name, nature FROM asset_type WHERE deleted=0");
+                    ->prepare("SELECT name FROM asset_type WHERE deleted=0");
                 $sth->execute();
-                $types = array_column($sth->fetchAll(\PDO::FETCH_ASSOC), 'nature', 'name');
+                $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
             } catch (\Throwable $e) {
                 $error = true;
             }
@@ -101,7 +103,7 @@ class Metadata extends AbstractListener
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
 
-        return array_merge(['File' => 'File', 'Image' => 'Image'], $types);
+        return array_merge(['File'], $types);
     }
 
     /**

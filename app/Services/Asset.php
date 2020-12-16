@@ -33,6 +33,7 @@ namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
+use Dam\EntryPoints\Preview;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
@@ -463,10 +464,6 @@ class Asset extends Base
         $fileNameParts = explode('.', $fileName);
         $fileExt = strtolower(array_pop($fileNameParts));
 
-        if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $type], 'File') !== 'Image' && strtolower($fileExt) !== 'pdf') {
-            return $fileExt;
-        }
-
-        return null;
+        return in_array($fileExt, $this->getMetadata()->get('fields.asset.hasPreviewExtensions', [])) ? null : $fileExt;
     }
 }

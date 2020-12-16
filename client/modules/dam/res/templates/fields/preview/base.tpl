@@ -1,1 +1,1 @@
-<img src="?entryPoint=preview&size=small&id={{get model "assetId"}}&v=1567595490" style="max-width: 100px"/>
+<img src="?entryPoint=image&type=asset&size=small&id={{get model "assetId"}}&v=1567595490" style="max-width: 100px"/>
