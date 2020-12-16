@@ -106,8 +106,14 @@ class Asset extends Base
             throw new NotFound();
         }
 
+        // get asset types
+        $types = $this->getMetadata()->get('fields.asset.types', []);
+
+        // sorting types
+        sort($types);
+
         $list = [];
-        foreach ($this->getMetadata()->get('fields.asset.types', []) as $type) {
+        foreach ($types as $type) {
             $assets = $this->getRepository()->findRelatedAssetsByType($entity, $type);
 
             // prepare assets

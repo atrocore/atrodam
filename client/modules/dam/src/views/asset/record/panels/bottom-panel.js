@@ -145,8 +145,10 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
         actionRefresh() {
             if (this.collection) {
                 this.collection.fetch().then(() => {
+                    this.blocks = [];
                     this.collection.forEach((model) => {
                         if (model.get('assets').length > 0) {
+                            this.blocks.push(model.get("name"));
                             this._createTypeBlock(model, false);
                         }
                     });
@@ -172,7 +174,6 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     contentType: 'application/json',
                     success: function () {
                         this.notify('Unlinked', 'success');
-                        this.collection.fetch();
                         this.model.trigger('after:unrelate');
                     }.bind(this),
                     error: function () {
