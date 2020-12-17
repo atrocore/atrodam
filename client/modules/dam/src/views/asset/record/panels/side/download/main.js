@@ -51,30 +51,31 @@ Espo.define('dam:views/asset/record/panels/side/download/main', ['view', "dam:co
                 this.damConfig = Config.prototype.init.call(this);
                 
                 if (this.model.get("type")) {
-                    let type   = this.damConfig.getType(this.model.get("type"));
-                    let nature = this.damConfig.getByType(`${type}.nature`);
-                    
-                    this._buildViews(nature);
+                    this._buildViews();
                 } else {
                     this.listenToOnce(this.model, "sync", () => {
                         if (this.model.get("type")) {
-                            let type   = this.damConfig.getType(this.model.get("type"));
-                            let nature = this.damConfig.getByType(`${type}.nature`);
-                            
-                            this._buildViews(nature);
+                            this._buildViews();
                             this.reRender();
                         }
                     });
                 }
+            },
+
+            isImage() {
+                const imageExtensions = this.getMetadata().get('dam.image.extensions') || [];
+                const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+
+                return $.inArray(fileExt, imageExtensions) !== -1;
             },
             
             _buildUrl() {
                 return this.getView(this.active).buildUrl();
             },
             
-            _buildViews(type) {
+            _buildViews() {
                 this._renderOriginal();
-                if (type === "image") {
+                if (this.isImage()) {
                     this._renderRenditions();
                     this._renderCustom();
                 }

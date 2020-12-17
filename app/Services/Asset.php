@@ -174,7 +174,6 @@ class Asset extends Base
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {
         $type = ConfigManager::getType($asset->get('type'));
-        $nature = $this->getConfigManager()->getByType([$type, "nature"]);
 
         $fileInfo = $this->getService("Attachment")->getFileInfo($asset->get("file"));
 
@@ -185,7 +184,7 @@ class Asset extends Base
             ]
         );
 
-        if ($nature === "image") {
+        if ($this->isImage($asset)) {
             $imageInfo = $this->getService("Attachment")->getImageInfo($asset->get("file"));
             $this->updateAttributes($asset, $imageInfo);
         }
@@ -443,5 +442,13 @@ class Asset extends Base
         $fileExt = strtolower(array_pop($fileNameParts));
 
         return in_array($fileExt, $this->getMetadata()->get('fields.asset.hasPreviewExtensions', [])) ? null : $fileExt;
+    }
+
+    protected function isImage(Entity $asset): bool
+    {
+        $fileNameParts = explode('.', $asset->get("file")->get('name'));
+        $fileExt = strtolower(array_pop($fileNameParts));
+
+        return in_array($fileExt, $this->getMetadata()->get('dam.image.extensions', []));
     }
 }
