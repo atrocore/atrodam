@@ -31,12 +31,6 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
         fullFormDisabled: true,
 
-        setup() {
-            Dep.prototype.setup.call(this);
-
-            console.log(this.model);
-        },
-
         actionSave() {
             this.notify('Saving...');
             const isNew = typeof this.model.id === 'undefined';
