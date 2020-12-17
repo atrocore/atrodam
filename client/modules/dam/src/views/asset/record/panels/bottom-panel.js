@@ -144,41 +144,17 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
         actionRefresh() {
             if (this.collection) {
-                let Promises = [];
-
+                this.blocks = [];
                 this.collection.fetch().then(() => {
-                    this.blocks = [];
-                    this.collection.forEach(model => {
-                        if (model.get('assets').length > 0 && !this.hasView(model.get("name"))) {
-                            Promises.push(new Promise(resolve => {
-                                model.set({
-                                    entityName: this.defs.entityName,
-                                    entityId: this.model.id,
-                                    entityModel: this.model
-                                });
-
-                                this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
-                                    model: model,
-                                    el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
-                                    sort: this.sort,
-                                    show: false
-                                }, view => {
-                                    resolve();
-                                });
-                            }));
-                        }
+                    this.collection.forEach((model) => {
                         if (model.get('assets').length > 0) {
                             this.blocks.push(model.get("name"));
+                            this._createTypeBlock(model, false);
                         }
                     });
-
-                    if (Promises.length > 0) {
-                        Promise.all(Promises).then(r => {
-                            this.reRender();
-                        });
-                    } else {
+                    setTimeout(() => {
                         this.reRender();
-                    }
+                    }, 300);
                 });
             }
         },
