@@ -1,9 +1,9 @@
 {
     "entity": true,
-    "layouts": true,
+    "layouts": false,
     "tab": false,
-    "acl": true,
-    "aclPortal": true,
+    "acl": false,
+    "aclPortal": false,
     "aclPortalLevelList": [
         "all",
         "account",
@@ -11,9 +11,9 @@
         "own",
         "no"
     ],
-    "customizable": true,
-    "importable": true,
-    "notifications": true,
+    "customizable": false,
+    "importable": false,
+    "notifications": false,
     "stream": false,
     "disabled": false,
     "type": "Base",
