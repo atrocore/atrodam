@@ -162,10 +162,6 @@ class Asset extends AbstractRepository implements DAMAttachment
             throw new BadRequest($this->translate('Asset name is invalid.', 'exceptions', 'Asset'));
         }
 
-        if (!empty($this->where(['fileId' => $entity->get('fileId'), 'id!=' => $entity->get('id')])->findOne())) {
-            throw new BadRequest($this->translate('Such asset already exists.', 'exceptions', 'Asset'));
-        }
-
         parent::beforeSave($entity, $options);
     }
 }
