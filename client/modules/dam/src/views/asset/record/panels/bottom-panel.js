@@ -157,7 +157,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                                     entityModel: this.model
                                 });
 
-                                this.createView(model.get('name'), "dam:views/asset_relation/record/panels/asset-type-block", {
+                                this.createView(model.get('name'), "dam:views/asset/record/panels/asset-type-block", {
                                     model: model,
                                     el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
                                     sort: this.sort,
