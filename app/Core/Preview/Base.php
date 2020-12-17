@@ -32,9 +32,9 @@ declare(strict_types=1);
 namespace Dam\Core\Preview;
 
 use Dam\Core\FileStorage\DAMUploadDir;
-use Dam\Entities\Attachment;
 use Espo\Core\Exceptions\Error;
 use Gumlet\ImageResize;
+use Treo\Entities\Attachment;
 use Treo\Core\Container;
 use Treo\Core\ModuleManager\Manager;
 
@@ -89,14 +89,16 @@ abstract class Base
     }
 
     /**
-     * @param Attachment $attachment
-     * @param string     $size
-     * @param Container  $container
+     * @param Attachment  $attachment
+     * @param string|null $size
+     * @param Container   $container
+     *
      * @return mixed
      */
-    public static function init(Attachment $attachment, string $size, Container $container)
+    public static function init(Attachment $attachment, $size, Container $container)
     {
-        $mime      = $attachment->get('type');
+        $size = $size ?? 'original';
+        $mime = $attachment->get('type');
         $extension = explode('.', $attachment->get("name"));
         $extension = end($extension);
 

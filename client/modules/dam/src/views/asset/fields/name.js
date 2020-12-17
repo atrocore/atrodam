@@ -65,7 +65,7 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
 
         updateName() {
             if (this._isGeneratedName()) {
-                this.model.set("name", this._normalizeName(this._getFileName()));
+                this.model.set("name", this._normalizeName(this._getFileName()), {silent: true});
                 this.fileName = this._getFileName();
             }
         },

@@ -29,32 +29,40 @@
 
 declare(strict_types=1);
 
-namespace Dam\EntryPoints;
+namespace Dam\Migrations;
 
-use Dam\Core\FileStorage\DAMUploadDir;
-use Dam\Core\PathInfo;
-use Treo\Entities\Attachment;
+use Treo\Core\Migration\Base;
 
 /**
- * Class Image
- * @package Dam\EntryPoints
+ * Class V1Dot1Dot2
  */
-class Image extends \Treo\EntryPoints\Image
+class V1Dot1Dot2 extends Base
 {
     /**
-     * @param Attachment $attachment
-     * @param            $size
-     * @return string
+     * @inheritDoc
      */
-    protected function getThumbPath($attachment, $size)
+    public function up(): void
     {
-        $related = $attachment->get("related");
-        $path    = DAMUploadDir::BASE_THUMB_PATH;
+        $this->execute("ALTER TABLE `asset_type` DROP nature");
+    }
 
-        if (is_a($related, PathInfo::class)) {
-            $path = DAMUploadDir::DAM_THUMB_PATH . $related->getMainFolder() . "/";
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+        $this->execute("ALTER TABLE `asset_type` ADD nature VARCHAR(255) DEFAULT 'File' COLLATE utf8mb4_unicode_ci");
+    }
+
+    /**
+     * @param string $sql
+     */
+    protected function execute(string $sql)
+    {
+        try {
+            $this->getPDO()->exec($sql);
+        } catch (\Throwable $e) {
+            // ignore all
         }
-
-        return $path . $attachment->get('storageFilePath') . "/{$size}/" . $attachment->get('name');
     }
 }

@@ -33,6 +33,7 @@ namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
+use Dam\EntryPoints\Preview;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
@@ -98,60 +99,38 @@ class Asset extends Base
      * @return array
      * @throws NotFound
      */
-    public function getAssetsNatures(string $scope, string $id): array
+    public function getEntityAssets(string $scope, string $id): array
     {
         $entity = $this->getEntityManager()->getEntity($scope, $id);
         if (empty($entity)) {
             throw new NotFound();
         }
 
-        $list = [
-            [
-                "id"      => "Image",
-                "name"    => $this->translate('Image', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "Image")
-            ],
-            [
-                "id"      => "File",
-                "name"    => $this->translate('File', 'labels', 'Asset'),
-                "hasItem" => $this->getRepository()->hasAssetsWithNature($entity, "File")
-            ]
-        ];
+        // get asset types
+        $types = $this->getMetadata()->get('fields.asset.types', []);
 
-        return [
-            'count' => count($list),
-            'list'  => $list
-        ];
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return array
-     * @throws NotFound
-     */
-    public function getAssetsForEntity(Request $request): array
-    {
-        $entity = $this->getEntityManager()->getEntity($request->get('entity'), $request->get('id'));
-        if (empty($entity)) {
-            throw new NotFound();
-        }
+        // sorting types
+        sort($types);
 
         $list = [];
-        if (!empty($nature = $request->get('nature'))) {
-            $list = $this->getRepository()->findRelatedAssetsByNature($entity, $nature);
-        } elseif ($ids = $request->get("assetIds")) {
-            $list = $this->getRepository()->findRelatedAssetsByIds($entity, $ids);
-        }
+        foreach ($types as $type) {
+            $assets = $this->getRepository()->findRelatedAssetsByType($entity, $type);
 
-        // prepare icon
-        foreach ($list as &$item) {
-            if (!empty($item['fileName'])) {
-                $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
-                $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+            // prepare assets
+            foreach ($assets as &$item) {
+                if (!empty($item['fileName'])) {
+                    $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
+                    $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+                }
             }
+            unset($item);
+
+            $list[] = [
+                'id'     => $type,
+                'name'   => $type,
+                'assets' => $assets
+            ];
         }
-        unset($item);
 
         return [
             'count' => count($list),
@@ -195,7 +174,6 @@ class Asset extends Base
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {
         $type = ConfigManager::getType($asset->get('type'));
-        $nature = $this->getConfigManager()->getByType([$type, "nature"]);
 
         $fileInfo = $this->getService("Attachment")->getFileInfo($asset->get("file"));
 
@@ -206,7 +184,7 @@ class Asset extends Base
             ]
         );
 
-        if ($nature === "image") {
+        if ($this->isImage($asset)) {
             $imageInfo = $this->getService("Attachment")->getImageInfo($asset->get("file"));
             $this->updateAttributes($asset, $imageInfo);
         }
@@ -463,10 +441,14 @@ class Asset extends Base
         $fileNameParts = explode('.', $fileName);
         $fileExt = strtolower(array_pop($fileNameParts));
 
-        if ($this->getMetadata()->get(['fields', 'asset', 'typeNatures', $type], 'File') !== 'Image' && strtolower($fileExt) !== 'pdf') {
-            return $fileExt;
-        }
+        return in_array($fileExt, $this->getMetadata()->get('fields.asset.hasPreviewExtensions', [])) ? null : $fileExt;
+    }
 
-        return null;
+    protected function isImage(Entity $asset): bool
+    {
+        $fileNameParts = explode('.', $asset->get("file")->get('name'));
+        $fileExt = strtolower(array_pop($fileNameParts));
+
+        return in_array($fileExt, $this->getMetadata()->get('dam.image.extensions', []));
     }
 }

@@ -250,6 +250,7 @@
       "entity": "Rendition",
       "audited": false,
       "entityAsset": false,
+      "layoutRelationshipsDisabled": true,
       "disableMassRelation": true
     },
     "library": {

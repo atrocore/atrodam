@@ -23,25 +23,6 @@
       "readOnly": true,
       "view": "views/fields/user"
     },
-    "nature": {
-      "type": "enum",
-      "required": true,
-      "options": [
-        "File",
-        "Image"
-      ],
-      "optionColors": [
-        "FFFFFF",
-        "FFFFFF"
-      ],
-      "default": "File",
-      "isSorted": false,
-      "audited": false,
-      "readOnly": false,
-      "isMultilang": false,
-      "tooltip": false,
-      "prohibitedEmptyValue": true
-    },
     "validationRules": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,

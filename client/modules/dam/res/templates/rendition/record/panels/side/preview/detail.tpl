@@ -1,8 +1,8 @@
 {{#if show}}
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <a data-action="showImagePreview" data-id="{{get model "fileId"}}" href="?entryPoint=preview&type=attachment&size=original&id={{get model "fileId"}}">
-            <img src="?entryPoint=preview&type=attachment&size=original&id={{get model "fileId"}}" class="img-fluid image-preview" alt="Responsive image">
+        <a data-action="showImagePreview" data-id="{{get model "fileId"}}" href="?entryPoint=image&type=attachment&size=original&id={{get model "fileId"}}">
+            <img src="?entryPoint=image&type=attachment&size=original&id={{get model "fileId"}}" class="img-fluid image-preview" alt="Responsive image">
         </a>
     </div>
 </div>

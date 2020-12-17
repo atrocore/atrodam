@@ -51,7 +51,7 @@ class Asset extends AbstractController
      * @throws BadRequest
      * @throws Forbidden
      */
-    public function actionAssetsNatures($params, $data, Request $request): array
+    public function actionEntityAssets($params, $data, Request $request): array
     {
         if (!$request->isGet() || empty($request->get('entity')) || empty($request->get('id'))) {
             throw new BadRequest();
@@ -61,29 +61,7 @@ class Asset extends AbstractController
             throw new Forbidden();
         }
 
-        return $this->getRecordService()->getAssetsNatures((string)$request->get('entity'), (string)$request->get('id'));
-    }
-
-    /**
-     * @param array     $params
-     * @param \stdClass $data
-     * @param Request   $request
-     *
-     * @return array
-     * @throws BadRequest
-     * @throws Forbidden
-     */
-    public function actionAssetsForEntity($params, $data, Request $request)
-    {
-        if (!$request->isGet() || empty($request->get('entity')) || empty($request->get('id'))) {
-            throw new BadRequest();
-        }
-
-        if (!$this->getAcl()->check($this->name, 'read')) {
-            throw new Forbidden();
-        }
-
-        return $this->getRecordService()->getAssetsForEntity($request);
+        return $this->getRecordService()->getEntityAssets((string)$request->get('entity'), (string)$request->get('id'));
     }
 
     /**
