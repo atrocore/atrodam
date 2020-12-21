@@ -76,7 +76,7 @@ class EntityManagerController extends AbstractListener
     {
         throw new BadRequest(
             $this->getLanguage()->translate(
-                sprintf("Entity 'Asset' already linked with entity '%s'. You can't relate such entities again.", $entity), 'exceptions', 'Asset'
+                sprintf("Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.", $entity), 'exceptions', 'Asset'
             )
         );
     }
