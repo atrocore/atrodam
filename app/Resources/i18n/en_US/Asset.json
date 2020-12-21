@@ -42,6 +42,7 @@
   },
   "exceptions": {
     "Asset name is invalid.": "Asset name is invalid.",
-    "Such asset already exists.": "Such asset already exists."
+    "Such asset already exists.": "Such asset already exists.",
+    "Entity 'Asset' already linked with entity '%s'. You can't relate such entities again.": "Entity 'Asset' already linked with entity '%s'. You can't relate such entities again."
   }
 }
