@@ -79,6 +79,7 @@ class Metadata extends AbstractListener
      */
     protected function getAssetTypes(): array
     {
+        $types = [];
         if (!file_exists(self::CACHE_FILE)) {
             try {
                 $sth = $this
