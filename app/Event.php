@@ -77,11 +77,13 @@ class Event extends AbstractEvent
         // add units
         $this->addUnit();
 
-        // insert DB data to DB
-        $this->insertDbData();
+        if ($this->getConfig()->get('isInstalled')) {
+            // insert DB data to DB
+            $this->insertDbData();
 
-        // create assets
-        $this->createAssets();
+            // create assets
+            $this->createAssets();
+        }
 
         // set applicationName
         $this->setApplicationName();
