@@ -39,6 +39,25 @@ namespace Dam\SelectManagers;
 class Asset extends AbstractSelectManager
 {
     /**
+     * @inheritDoc
+     */
+    public function getSelectParams(array $params, $withAcl = false, $checkWherePermission = false)
+    {
+        parent::getSelectParams($params, $withAcl, $checkWherePermission);
+
+        if (isset($params['where']) && is_array($params['where'])) {
+            foreach ($params['where'] as $key => $condition) {
+                if ((isset($condition['attribute']) && $condition['attribute'] == 'name')
+                    || (isset($condition['type'])) && $condition['type'] == 'textFilter') {
+                    if (preg_match('/^(.+)\.[a-z0-9]+$/', $condition['value'], $matches)) {
+                        $params['where'][$key]['value'] = $matches[1];
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * NotEntity filter
      *
      * @param array $result
