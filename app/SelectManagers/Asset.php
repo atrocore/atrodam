@@ -43,8 +43,6 @@ class Asset extends AbstractSelectManager
      */
     public function getSelectParams(array $params, $withAcl = false, $checkWherePermission = false)
     {
-        parent::getSelectParams($params, $withAcl, $checkWherePermission);
-
         if (isset($params['where']) && is_array($params['where'])) {
             foreach ($params['where'] as $key => $condition) {
                 if ((isset($condition['attribute']) && $condition['attribute'] == 'name')
@@ -55,6 +53,8 @@ class Asset extends AbstractSelectManager
                 }
             }
         }
+
+        return parent::getSelectParams($params, $withAcl, $checkWherePermission);
     }
 
     /**
