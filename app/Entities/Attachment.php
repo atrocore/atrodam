@@ -36,20 +36,12 @@ namespace Dam\Entities;
  *
  * @package Dam\Entities
  */
-class Attachment extends \Treo\Entities\Attachment
+class Attachment extends \Espo\Entities\Attachment
 {
     /**
      * @var string
      */
     protected $entityType = "Attachment";
-
-    /**
-     * @return string
-     */
-    public function _getStorage()
-    {
-        return $this->valuesContainer['storage'] ? $this->valuesContainer['storage'] : "DAMUploadDir";
-    }
 
     /**
      * @param $name

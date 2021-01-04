@@ -33,7 +33,6 @@ namespace Dam\Repositories;
 
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
-use Dam\Core\FileStorage\DAMUploadDir;
 use Dam\Core\PathInfo;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
@@ -43,7 +42,7 @@ use Espo\ORM\Entity;
  *
  * @package Dam\Repositories
  */
-class Attachment extends \Treo\Repositories\Attachment
+class Attachment extends \Espo\Repositories\Attachment
 {
     /**
      * @inheritDoc
@@ -110,50 +109,6 @@ class Attachment extends \Treo\Repositories\Attachment
     }
 
     /**
-     * @param Entity              $entity
-     * @param \Dam\Entities\Asset $asset
-     *
-     * @return bool
-     * @throws Error
-     */
-    public function moveFile(Entity $entity, \Dam\Entities\Asset $asset): bool
-    {
-        $file = $this->getFileStorageManager()->getLocalFilePath($entity);
-        $fileManager = $this->getFileManager();
-
-        $path = $asset->get('private') ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH;
-        $storePath = $asset->get('path');
-
-        $path = $path . $storePath . "/" . $entity->get('name');
-
-        if ($fileManager->move($file, $path)) {
-            $entity->set('storageFilePath', $storePath);
-            return $this->save($entity) ? true : false;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \Espo\ORM\Entity $entity
-     *
-     * @return bool
-     */
-    public function removeThumbs(\Espo\ORM\Entity $entity)
-    {
-        foreach (DAMUploadDir::thumbsFolderList() as $path) {
-            $dirPath = $path . $entity->get('storageFilePath');
-            if (!is_dir($dirPath)) {
-                continue;
-            }
-
-            return $this->getFileManager()->removeInDir($dirPath);
-        }
-
-        return false;
-    }
-
-    /**
      * @param Entity $entity
      * @param string $path
      *
@@ -213,17 +168,8 @@ class Attachment extends \Treo\Repositories\Attachment
             ->count();
 
         if (!$res) {
-            $this->removeThumbs($entity);
             parent::afterRemove($entity, $options);
         }
-    }
-
-    /**
-     * @return FileManager
-     */
-    protected function getFileManager()
-    {
-        return $this->getInjection("DAMFileManager");
     }
 
     /**

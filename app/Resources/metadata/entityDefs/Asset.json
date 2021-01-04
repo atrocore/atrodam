@@ -109,13 +109,6 @@
       "audited": false,
       "readOnly": false
     },
-    "renditions": {
-      "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "noLoad": true,
-      "importDisabled": true
-    },
     "library": {
       "type": "link",
       "required": true,
@@ -244,15 +237,6 @@
     }
   },
   "links": {
-    "renditions": {
-      "type": "hasMany",
-      "foreign": "asset",
-      "entity": "Rendition",
-      "audited": false,
-      "entityAsset": false,
-      "layoutRelationshipsDisabled": true,
-      "disableMassRelation": true
-    },
     "library": {
       "type": "belongsTo",
       "foreign": "assets",

@@ -31,20 +31,18 @@ declare(strict_types=1);
 
 namespace Dam\Core\Loaders;
 
-use Dam\Core\FilePathBuilder;
-use Treo\Core\Loaders\Base;
+use Dam\Core\Thumbnail\Image;
 
 /**
- * Class FilePathBuilderLoader
- * @package Dam\Core\Loaders
+ * Class Thumbnail
  */
-class FilePathBuilderLoader extends Base
+class Thumbnail extends \Treo\Core\Loaders\Base
 {
     /**
-     * @return FilePathBuilder
+     * @inheritdoc
      */
     public function load()
     {
-        return new FilePathBuilder($this->getContainer());
+        return new Image($this->getContainer());
     }
 }
