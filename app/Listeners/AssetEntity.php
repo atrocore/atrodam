@@ -93,7 +93,8 @@ class AssetEntity extends AbstractListener
 
         //rename file
         if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
-            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('name'), $entity);
+            $info = pathinfo($entity->get('name'));
+            $this->getService("Attachment")->changeName($entity->get('file'), $info['filename'], $entity);
         }
 
         //deactivate asset

@@ -70,11 +70,8 @@ class Attachment extends \Treo\Repositories\Attachment
      */
     public function createAsset(Entity $entity)
     {
-        // prepare name
-        $name = explode('.', $entity->get('name'))[0];
-
         $asset = $this->getEntityManager()->getEntity('Asset');
-        $asset->set('name', $name);
+        $asset->set('name', $entity->get('name'));
         $asset->set('private', true);
         $asset->set('fileId', $entity->get('id'));
         $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
