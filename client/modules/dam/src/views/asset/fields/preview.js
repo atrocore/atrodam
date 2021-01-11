@@ -47,6 +47,8 @@ Espo.define('dam:views/asset/fields/preview', 'view',
 
         data() {
             return {
+                "originPath": this.model.get('filePathsData').download,
+                "thumbnailPath": this.model.get('filePathsData').thumbs.small,
                 "timestamp": this.getTimestamp(),
                 "fileId": this.model.get('fileId'),
                 "icon": this.model.get('icon')

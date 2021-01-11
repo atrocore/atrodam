@@ -7,8 +7,8 @@
 {{else}}
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <a data-action="showImagePreview" data-id="{{fileId}}" href="?entryPoint=image&type=attachment&size=original&id={{fileId}}">
-            <img src="?entryPoint=image&type=attachment&size=original&id={{fileId}}" class="img-fluid image-preview" alt="Responsive image">
+        <a data-action="showImagePreview" data-id="{{fileId}}" href="{{originPath}}">
+            <img src="{{thumbnailPath}}" class="img-fluid image-preview" alt="Responsive image">
         </a>
     </div>
 </div>

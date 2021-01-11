@@ -34,9 +34,9 @@ namespace Dam\Core\Loaders;
 use Dam\Core\Thumbnail\Image;
 
 /**
- * Class Thumbnail
+ * Class ThumbnailLoader
  */
-class Thumbnail extends \Treo\Core\Loaders\Base
+class ThumbnailLoader extends \Treo\Core\Loaders\Base
 {
     /**
      * @inheritdoc

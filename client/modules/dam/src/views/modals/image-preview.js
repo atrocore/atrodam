@@ -29,15 +29,20 @@
 Espo.define('dam:views/modals/image-preview', 'views/modals/image-preview', function (Dep) {
     return Dep.extend({
         template: "dam:modals/image-preview",
-        
-        data () {
+
+        data() {
             return _.extend({
-                path : this.options.el
+                path: this.options.el
             }, Dep.prototype.data.call(this));
         },
-        
+
         getImageUrl() {
-            return `${this.getBasePath()}?entryPoint=image&type=attachment&size=original&id=${this.options.id}`;
-        }
+            return this.getBasePath() + '/' + this.model.get('filePathsData').thumbs.large;
+        },
+
+        getOriginalImageUrl: function () {
+            return this.getBasePath() + '/' + this.model.get('filePathsData').download;
+        },
+
     });
 });

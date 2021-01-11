@@ -33,14 +33,11 @@ namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
-use Dam\EntryPoints\Preview;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
-use Slim\Http\Request;
 
 /**
  * Class Asset

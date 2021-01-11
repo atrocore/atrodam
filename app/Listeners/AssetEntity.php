@@ -57,10 +57,6 @@ class AssetEntity extends AbstractListener
         /**@var $entity Asset* */
         $entity = $event->getArgument('entity');
 
-        if (!$entity->isNew() && !$entity->get("isActive") && $entity->isAttributeChanged("collectionId")) {
-            throw new BadRequest($this->getLanguage()->translate('You can not change collection', 'exceptions', 'Asset'));
-        }
-
         if (!$entity->isNew() && $entity->isAttributeChanged("type")) {
             throw new BadRequest("You can't change type");
         }
@@ -129,13 +125,6 @@ class AssetEntity extends AbstractListener
                 throw new BadRequest($this->getLanguage()->translate("Category is not last", 'exceptions', 'Global'));
             }
         }
-
-        //check if this is collection category
-        if ($event->getArgument("relationName") === "collection") {
-            if ($this->isCollectionCatalog($entity, $foreign)) {
-                throw new BadRequest($this->getLanguage()->translate("Category is not set in collection", 'exceptions', 'Global'));
-            }
-        }
     }
 
     /**
@@ -162,30 +151,6 @@ class AssetEntity extends AbstractListener
 
         if ($attachmentId) {
             $this->getService("Attachment")->toDelete($attachmentId);
-        }
-
-        $this->getService("Rendition")->toDeleteCollection($entity->get("renditions"));
-    }
-
-    /**
-     * @param $entity
-     * @param $foreign
-     *
-     * @throws BadRequest
-     */
-    protected function isCollectionCatalog($entity, $foreign)
-    {
-        $collection = $entity->get('collection');
-
-        $route = $foreign->get('categoryRoute');
-        $routeEl = array_filter(
-            explode("|", $route ?? ''), function ($item) {
-            return !empty($item);
-        }
-        );
-
-        if (!$this->isCorrectCategory($collection->id, $routeEl)) {
-            throw new BadRequest("Incorrect catalog");
         }
     }
 

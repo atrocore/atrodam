@@ -60,7 +60,7 @@ class Image extends \Treo\Core\Thumbnail\Image
     {
         $parts = explode('.', $attachment->get('name'));
 
-        return array_pop($parts) === 'pdf';
+        return strtolower(array_pop($parts)) === 'pdf';
     }
 
     /**
