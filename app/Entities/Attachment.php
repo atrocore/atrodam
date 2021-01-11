@@ -45,6 +45,7 @@ class Attachment extends \Espo\Entities\Attachment
 
     /**
      * @param $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -53,5 +54,13 @@ class Attachment extends \Espo\Entities\Attachment
         $this->set("name", $name . "." . $baseFileInfo['extension']);
 
         return $this;
+    }
+
+    /**
+     * @return Asset|null
+     */
+    public function getAsset(): ?Asset
+    {
+        return $this->entityManager->getRepository($this->getEntityType())->getAsset($this);
     }
 }

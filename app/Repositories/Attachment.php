@@ -32,9 +32,9 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Dam\Core\ConfigManager;
-use Dam\Core\FileManager;
 use Dam\Core\PathInfo;
 use Espo\Core\Exceptions\Error;
+use Dam\Entities\Asset;
 use Espo\ORM\Entity;
 
 /**
@@ -44,6 +44,36 @@ use Espo\ORM\Entity;
  */
 class Attachment extends \Espo\Repositories\Attachment
 {
+    /**
+     * @inheritDoc
+     */
+    public function isPrivate(Entity $entity): bool
+    {
+        if (!empty($asset = $entity->getAsset())) {
+            return $asset->get('private');
+        }
+
+        return parent::isPrivate($entity);
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return Asset|null
+     * @throws Error
+     */
+    public function getAsset(Entity $entity): ?Asset
+    {
+        if ($entity->get('relatedType') === 'Asset') {
+            $asset = $this->getEntityManager()->getEntity('Asset', $entity->get('relatedId'));
+            if (!empty($asset)) {
+                return $asset;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @inheritDoc
      */
@@ -74,7 +104,7 @@ class Attachment extends \Espo\Repositories\Attachment
 
         $asset = $this->getEntityManager()->getEntity('Asset');
         $asset->set('name', $name);
-        $asset->set('private', true);
+        $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
         $asset->set('fileId', $entity->get('id'));
         $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
 
