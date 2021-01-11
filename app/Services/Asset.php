@@ -118,6 +118,7 @@ class Asset extends Base
                 if (!empty($item['fileName'])) {
                     $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
                     $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+                    $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
                 }
             }
             unset($item);
