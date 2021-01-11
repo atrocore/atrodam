@@ -8,7 +8,7 @@
 		{{#if icon}}
 		<span class="fiv-cla fiv-icon-{{icon}} fiv-size-lg"></span>
 		{{else}}
-		<img src="?entryPoint=image&type=asset&size=large&id={{model.id}}" alt="">
+		<img src="{{thumbnailPath}}" alt="">
 		{{/if}}
 	</div>
 	<div class="field-name">
