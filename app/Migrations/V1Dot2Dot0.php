@@ -43,8 +43,9 @@ class V1Dot2Dot0 extends Base
      */
     public function up(): void
     {
-        exec('mv data/dam/public/master/ upload/files/');
-        exec('mv data/dam/private/master/ upload/files/');
+        $this->execute("UPDATE attachment SET storage='UploadDir' WHERE storage='DAMUploadDir'");
+        exec('mv data/dam/public/master/* upload/files/');
+        exec('mv data/dam/private/master/* upload/files/');
     }
 
     /**
@@ -52,5 +53,17 @@ class V1Dot2Dot0 extends Base
      */
     public function down(): void
     {
+    }
+
+    /**
+     * @param string $sql
+     */
+    protected function execute(string $sql)
+    {
+        try {
+            $this->getPDO()->exec($sql);
+        } catch (\Throwable $e) {
+            // ignore all
+        }
     }
 }
