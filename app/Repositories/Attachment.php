@@ -64,14 +64,7 @@ class Attachment extends \Espo\Repositories\Attachment
      */
     public function getAsset(Entity $entity): ?Asset
     {
-        if ($entity->get('relatedType') === 'Asset') {
-            $asset = $this->getEntityManager()->getEntity('Asset', $entity->get('relatedId'));
-            if (!empty($asset)) {
-                return $asset;
-            }
-        }
-
-        return null;
+        return $this->getEntityManager()->getRepository('Asset')->where(['fileId' => $entity->get('id')])->findOne();
     }
 
     /**
