@@ -32,10 +32,6 @@ declare(strict_types=1);
 namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
-use Dam\Core\FileManager;
-use Dam\Core\FilePathBuilder;
-use Dam\Core\FileStorage\DAMUploadDir;
-use Dam\Core\Utils\Util;
 use Dam\Core\Validation\Validator;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
@@ -49,7 +45,7 @@ use Treo\Core\FileStorage\Manager;
  *
  * @package Dam\Services
  */
-class Attachment extends \Treo\Services\Attachment
+class Attachment extends \Espo\Services\Attachment
 {
     /**
      * Attachment constructor.
@@ -86,7 +82,7 @@ class Attachment extends \Treo\Services\Attachment
             $result = [
                 "width"       => $image->getImageWidth(),
                 "height"      => $image->getImageHeight(),
-                "color_space" => Util::getColorSpace($image),
+                "color_space" => self::getColorSpace($image),
                 "color_depth" => $image->getImageDepth(),
                 'orientation' => $this->getPosition($image->getImageWidth(), $image->getImageHeight()),
                 'mime'        => $image->getImageMimeType(),
@@ -177,98 +173,6 @@ class Attachment extends \Treo\Services\Attachment
         }
 
         return $attachmentRepository->remove($attachment);
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $asset
-     * @return mixed
-     * @throws Error
-     * @throws Forbidden
-     */
-    public function moveToMaster(\Dam\Entities\Asset $asset)
-    {
-        $attachment = $this->getEntity($asset->get("fileId"));
-
-        if ($asset->get("name")) {
-            $attachment->setName($asset->get("name"));
-        }
-
-        $sourcePath = $attachment->get("tmpPath");
-        $destPath   = ($asset->get("private") ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH) . "master/" . $asset->get('path') . "/" . $attachment->get('name');
-
-        if ($this->getFileManager()->move($sourcePath, $destPath, false)) {
-            return $this->getEntityManager()->getRepository("Attachment")->updateStorage($attachment,
-                $asset->get('path'));
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $entity
-     * @param $attachment
-     * @return bool
-     */
-    public function moveToRendition($entity, $attachment)
-    {
-        $sourcePath = $attachment->get("tmpPath");
-
-        if (!$entity->get("path")) {
-            $type = $entity->get("private") ? FilePathBuilder::PRIVATE : FilePathBuilder::PUBLIC;
-            $entity->set("path", $this->getFilePathBuilder()->createPath($type, $entity->get('type')));
-        }
-
-        $destPath = ($entity->get("private") ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH) . $entity->get("type") . "/" . $entity->get('path') . "/" . $attachment->get('name');
-
-        if ($this->getFileManager()->move($sourcePath, $destPath, false)) {
-            return $this
-                ->getEntityManager()
-                ->getRepository("Attachment")
-                ->updateStorage($attachment, $entity->get('path'));
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $asset
-     * @return bool
-     */
-    public function copyDuplicate(\Dam\Entities\Asset $asset)
-    {
-        $attachment = $this->getEntity($asset->get("fileId"));
-
-        $sourcePath = $this->getFileStorageManager()->getLocalFilePath($attachment);
-        $destPath   = ($asset->get("private") ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH) . "master/" . $asset->get('path');
-
-        if ($this->getFileManager()->copy($sourcePath, $destPath, false, null, true)) {
-            $attachment->set("storageFilePath", $asset->get('path'));
-            $attachment->set('sourceId', null);
-
-            return $this->getEntityManager()->getRepository("Attachment")->save($attachment);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param Entity $entity
-     * @return mixed
-     * @throws Error
-     * @throws Forbidden
-     */
-    public function changeAccess(Entity $entity)
-    {
-        $source = ($entity->getFetched("private") ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH) . "{$entity->getMainFolder()}/" . $entity->getFetched("path");
-        $dest   = ($entity->get("private") ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH) . "{$entity->getMainFolder()}/" . $entity->get("path");
-
-        $attachment = $this->getEntity($entity->get("fileId"));
-
-        if ($this->getFileManager()->moveFolder($source, $dest)) {
-            return $this->getEntityManager()
-                        ->getRepository("Attachment")
-                        ->updateStorage($attachment, $entity->get('path'));
-        }
     }
 
     /**
@@ -397,11 +301,11 @@ class Attachment extends \Treo\Services\Attachment
     }
 
     /**
-     * @param \Treo\Entities\Attachment $attachment
+     * @param \Espo\Entities\Attachment $attachment
      *
      * @return mixed
      */
-    private function getPath(\Treo\Entities\Attachment $attachment)
+    private function getPath(\Espo\Entities\Attachment $attachment)
     {
         if ($attachment->get('sourceId')) {
             $attachment = $this->getRepository()->where(['id' => $attachment->get('sourceId')])->findOne();
@@ -476,4 +380,28 @@ class Attachment extends \Treo\Services\Attachment
         return $this->getInjection("filePathBuilder");
     }
 
+    /**
+     * @param Imagick $imagick
+     *
+     * @return string|null
+     */
+    public static function getColorSpace(Imagick $imagick): ?string
+    {
+        $colorId = $imagick->getImageColorspace();
+
+        if (!$colorId) {
+            return null;
+        }
+
+        foreach ((new \ReflectionClass($imagick))->getConstants() as $name => $value) {
+            if (stripos($name, "COLORSPACE_") !== false && $value == $colorId) {
+                $el = explode("_", $name);
+                array_shift($el);
+
+                return implode("_", $el);
+            }
+        }
+
+        return null;
+    }
 }

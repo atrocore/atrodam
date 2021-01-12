@@ -31,7 +31,6 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
-use Dam\Core\FilePathBuilder;
 use Dam\Entities\Asset;
 use Dam\Entities\AssetCategory;
 use Espo\Core\Exceptions\BadRequest;
@@ -49,6 +48,7 @@ class AssetEntity extends AbstractListener
 {
     /**
      * @param Event $event
+     *
      * @throws BadRequest
      * @throws Error
      */
@@ -57,38 +57,13 @@ class AssetEntity extends AbstractListener
         /**@var $entity Asset* */
         $entity = $event->getArgument('entity');
 
-        if (!$entity->isNew() && !$entity->get("isActive") && $entity->isAttributeChanged("collectionId")) {
-            throw new BadRequest($this->getLanguage()->translate('You can not change collection', 'exceptions', 'Asset'));
-        }
-
         if (!$entity->isNew() && $entity->isAttributeChanged("type")) {
             throw new BadRequest("You can't change type");
-        }
-
-        //Change path for new entity or after change private
-        if ($entity->isNew() || $entity->isAttributeChanged("private")) {
-            $entity->set('path', $this->setPath($entity));
         }
 
         //After update image
         if ($this->changeAttachment($entity)) {
             $this->getService("Asset")->getFileInfo($entity);
-        }
-
-        //After create new asset
-        if ($entity->isNew()) {
-            //move from tmp to master storage
-            $this->getService("Attachment")->moveToMaster($entity);
-        }
-
-        //After upload new file|image
-        if ($this->changeAttachment($entity) && !$entity->isNew()) {
-            $this->getService("Attachment")->moveToMaster($entity);
-        }
-
-        //After change private (move to other folder)
-        if (!$entity->isNew() && $entity->isAttributeChanged("private")) {
-            $this->getService("Attachment")->changeAccess($entity);
         }
 
         //rename file
@@ -128,7 +103,7 @@ class AssetEntity extends AbstractListener
     public function beforeRelate(Event $event)
     {
         $foreign = $event->getArgument('foreign');
-        $entity  = $event->getArgument('entity');
+        $entity = $event->getArgument('entity');
 
         if (is_string($foreign) && $event->getArgument("relationName") === "assetsLeft") {
             $foreign = $this->getEntityManager()->getEntity("Asset", $foreign);
@@ -150,13 +125,6 @@ class AssetEntity extends AbstractListener
                 throw new BadRequest($this->getLanguage()->translate("Category is not last", 'exceptions', 'Global'));
             }
         }
-
-        //check if this is collection category
-        if ($event->getArgument("relationName") === "collection") {
-            if ($this->isCollectionCatalog($entity, $foreign)) {
-                throw new BadRequest($this->getLanguage()->translate("Category is not set in collection", 'exceptions', 'Global'));
-            }
-        }
     }
 
     /**
@@ -165,7 +133,7 @@ class AssetEntity extends AbstractListener
     public function beforeUnrelate(Event $event)
     {
         $foreign = $event->getArgument('foreign');
-        $entity  = $event->getArgument('entity');
+        $entity = $event->getArgument('entity');
 
         //remove leftAsset relation
         if (is_a($entity, Asset::class) && is_a($foreign, Asset::class)) {
@@ -178,38 +146,18 @@ class AssetEntity extends AbstractListener
      */
     public function afterRemove(Event $event)
     {
-        $entity       = $event->getArgument("entity");
+        $entity = $event->getArgument("entity");
         $attachmentId = $entity->get("fileId");
 
         if ($attachmentId) {
             $this->getService("Attachment")->toDelete($attachmentId);
-        }
-
-        $this->getService("Rendition")->toDeleteCollection($entity->get("renditions"));
-    }
-
-    /**
-     * @param $entity
-     * @param $foreign
-     * @throws BadRequest
-     */
-    protected function isCollectionCatalog($entity, $foreign)
-    {
-        $collection = $entity->get('collection');
-
-        $route   = $foreign->get('categoryRoute');
-        $routeEl = array_filter(explode("|", $route ?? ''), function ($item) {
-            return !empty($item);
-        });
-
-        if (!$this->isCorrectCategory($collection->id, $routeEl)) {
-            throw new BadRequest("Incorrect catalog");
         }
     }
 
     /**
      * @param $collectionId
      * @param $categories
+     *
      * @return bool
      */
     protected function isCorrectCategory($collectionId, $categories): bool
@@ -219,7 +167,7 @@ class AssetEntity extends AbstractListener
         $sql = "SELECT 1 FROM collection_asset_category WHERE asset_category_id IN ('" . implode("','", $categories) . "') AND collection_id = '{$collectionId}'";
 
         $prepare = $pdo->query($sql);
-        $res     = $prepare->fetch(PDO::FETCH_ASSOC);
+        $res = $prepare->fetch(PDO::FETCH_ASSOC);
 
         return $res ? true : false;
     }
@@ -255,15 +203,7 @@ class AssetEntity extends AbstractListener
 
     /**
      * @param Entity $entity
-     * @return bool
-     */
-    private function changeAttachmentOrPrivate(Entity $entity)
-    {
-        return $entity->isAttributeChanged('private') || $this->changeAttachment($entity);
-    }
-
-    /**
-     * @param Entity $entity
+     *
      * @return mixed
      */
     private function changeAttachment(Entity $entity)
@@ -272,35 +212,8 @@ class AssetEntity extends AbstractListener
     }
 
     /**
-     * @return mixed
-     */
-    private function getFilePathBuilder()
-    {
-        return $this->getContainer()->get('filePathBuilder');
-    }
-
-    /**
      * @param Entity $entity
-     * @return string
-     */
-    private function setPath(Entity $entity): string
-    {
-        /**@var $repository \Dam\Repositories\Asset* */
-        $repository = $this->getEntityManager()->getRepository($entity->getEntityType());
-
-        do {
-            $type = $entity->get('private') ? FilePathBuilder::PRIVATE : FilePathBuilder::PUBLIC;
-            $path = $this->getFilePathBuilder()->createPath($type, "master");
-
-            $count = $repository->where(['path' => $path])->count();
-
-        } while ($count);
-
-        return $path;
-    }
-
-    /**
-     * @param Entity $entity
+     *
      * @return bool
      */
     private function isDeactivateAsset(Entity $entity)

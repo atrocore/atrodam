@@ -200,10 +200,6 @@
       "view": "dam:views/asset/record/panels/asset_category",
       "selectAction": "selectRelatedEntity"
     },
-    "renditions": {
-      "select": false,
-      "view": "dam:views/asset/record/panels/rendition"
-    },
     "assetMetaDatas": {
       "select": false,
       "create": false,

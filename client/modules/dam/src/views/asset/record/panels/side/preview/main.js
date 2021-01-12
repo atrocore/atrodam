@@ -45,6 +45,7 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                     });
                 }
             },
+
             setup() {
                 this.damConfig = Config.prototype.init.call(this);
                 Dep.prototype.setup.call(this);
@@ -53,13 +54,17 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                     this.reRender();
                 });
             },
+
             data() {
                 return {
+                    originPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').download,
+                    thumbnailPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').thumbs.large,
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
-                    icon: (!this.model.get('fileId')) ? 'download' : this.model.get('icon')
+                    icon: (!this.model.get('filePathsData')) ? 'download' : this.model.get('icon')
                 };
-            }
+            },
+
         });
     }
 );

@@ -50,7 +50,7 @@ class Event extends AbstractEvent
         = [
             'Asset',
             'AssetCategory',
-            'Collection',
+            'Library',
         ];
 
     /**
@@ -60,7 +60,7 @@ class Event extends AbstractEvent
         = [
             'Asset',
             'AssetCategory',
-            'Collection',
+            'Library',
         ];
 
     /**

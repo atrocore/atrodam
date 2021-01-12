@@ -29,16 +29,28 @@
 
 declare(strict_types=1);
 
-namespace Dam\Entities;
+namespace Dam\Migrations;
+
+use Treo\Core\Migration\Base;
 
 /**
- * Class RenditionMetaData
- * @package Dam\Entities
+ * Class V1Dot2Dot0
  */
-class RenditionMetaData extends \Espo\Core\Templates\Entities\Base
+class V1Dot2Dot0 extends Base
 {
     /**
-     * @var string
+     * @inheritDoc
      */
-    protected $entityType = "RenditionMetaData";
+    public function up(): void
+    {
+        exec('mv data/dam/public/master/ upload/files/');
+        exec('mv data/dam/private/master/ upload/files/');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function down(): void
+    {
+    }
 }

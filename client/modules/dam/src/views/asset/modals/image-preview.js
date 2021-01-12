@@ -27,9 +27,5 @@
  */
 
 Espo.define('dam:views/asset/modals/image-preview', 'dam:views/modals/image-preview',
-    Dep => Dep.extend({
-        getImageUrl() {
-            return `${this.getBasePath()}?entryPoint=image&type=asset&size=original&id=${this.options.id}`;
-        }
-    })
+    Dep => Dep.extend({})
 );

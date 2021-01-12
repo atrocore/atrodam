@@ -29,69 +29,38 @@
 
 declare(strict_types=1);
 
-namespace Dam\Core\Preview;
+namespace Dam\Core\Thumbnail;
 
-use Dam\Entities\Attachment;
-use Espo\Core\Exceptions\Error;
-use Espo\Core\Exceptions\NotFound;
+use Espo\Entities\Attachment;
 use ImalH\PDFLib\PDFLib;
-use Treo\Core\Container;
 
 /**
  * Class Pdf
  */
-class Pdf extends Base
+class Image extends \Treo\Core\Thumbnail\Image
 {
-    /**
-     * @var \Imagick
-     */
-    protected $imagick;
-
     /**
      * @inheritDoc
      */
-    public function __construct(Attachment $attachment, string $size, Container $container)
+    protected function getImageFilePath(Attachment $attachment): string
     {
-        parent::__construct($attachment, $size, $container);
+        if ($this->isPdf($attachment)) {
+            return $this->createImageFromPdf($attachment->getFilePath());
+        }
 
-        $this->imagick = new \Imagick();
+        return parent::getImageFilePath($attachment);
     }
 
     /**
-     * Show PDF preview image
+     * @param Attachment $attachment
      *
-     * @return mixed|void
-     * @throws Error
-     * @throws NotFound
+     * @return bool
      */
-    public function show()
+    protected function isPdf(Attachment $attachment): bool
     {
-        $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
-        if (!file_exists($filePath)) {
-            throw new NotFound();
-        }
+        $parts = explode('.', $attachment->get('name'));
 
-        // create original
-        $originalImagePath = $this->createImageFromPdf($filePath);
-
-        $thumbFilePath = $originalImagePath;
-        if (!empty($this->size) && !empty($this->imageSizes[$this->size])) {
-            $createThumbPath = $this->createThumb($originalImagePath, $originalImagePath, $this->size);
-            if (is_string($createThumbPath)) {
-                $thumbFilePath = $createThumbPath;
-            }
-        }
-
-        header('Content-Disposition:inline;filename="' . $this->attachment->get('name') . '"');
-        header('Content-Type: image/png');
-        header('Pragma: public');
-        header('Cache-Control: max-age=360000, must-revalidate');
-        $fileSize = filesize($thumbFilePath);
-        if ($fileSize) {
-            header('Content-Length: ' . $fileSize);
-        }
-        readfile($thumbFilePath);
-        exit;
+        return strtolower(array_pop($parts)) === 'pdf';
     }
 
     /**
@@ -102,10 +71,9 @@ class Pdf extends Base
      */
     protected function createImageFromPdf(string $pdfPath): string
     {
-        $dirPath = str_replace('.', '_', $this->buildPath($this->attachment, $this->size));
-        if (!file_exists($dirPath)) {
-            mkdir($dirPath, 0777, true);
-        }
+        $pathParts = explode('/', $pdfPath);
+        $fileName = array_pop($pathParts);
+        $dirPath = implode('/', $pathParts);
 
         $original = $dirPath . '/page-1.png';
         if (!file_exists($original)) {

@@ -1,1 +1,0 @@
-<img src="?entryPoint=image&type=asset&size=small&id={{get model "assetId"}}" style="max-width: 100px"/>
