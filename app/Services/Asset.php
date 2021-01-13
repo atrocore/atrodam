@@ -33,14 +33,11 @@ namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
 use Dam\Core\FileManager;
-use Dam\EntryPoints\Preview;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Exceptions\Forbidden;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
-use Slim\Http\Request;
 
 /**
  * Class Asset
@@ -119,6 +116,7 @@ class Asset extends Base
             foreach ($assets as &$item) {
                 if (!empty($item['fileName'])) {
                     $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
+                    $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
                 }
             }
             unset($item);

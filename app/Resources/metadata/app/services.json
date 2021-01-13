@@ -1,4 +1,3 @@
 {
-  "Attachment": "\\Dam\\Services\\Attachment",
-  "QueueRenditions": "\\Dam\\Services\\QueueRenditions"
+  "Attachment": "\\Dam\\Services\\Attachment"
 }

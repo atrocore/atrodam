@@ -113,7 +113,7 @@ class Metadata extends AbstractListener
     protected function updateRelationMetadata(array &$data)
     {
         foreach ($data['entityDefs'] as $scope => $defs) {
-            if (empty($defs['links']) || $scope == 'Asset') {
+            if (empty($defs['links']) || !empty($data['scopes'][$scope]['skipAssetSorting'])) {
                 continue 1;
             }
             foreach ($defs['links'] as $link => $linkData) {

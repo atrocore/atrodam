@@ -32,10 +32,9 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Dam\Core\ConfigManager;
-use Dam\Core\FileManager;
-use Dam\Core\FileStorage\DAMUploadDir;
 use Dam\Core\PathInfo;
 use Espo\Core\Exceptions\Error;
+use Dam\Entities\Asset;
 use Espo\ORM\Entity;
 
 /**
@@ -43,8 +42,31 @@ use Espo\ORM\Entity;
  *
  * @package Dam\Repositories
  */
-class Attachment extends \Treo\Repositories\Attachment
+class Attachment extends \Espo\Repositories\Attachment
 {
+    /**
+     * @inheritDoc
+     */
+    public function isPrivate(Entity $entity): bool
+    {
+        if (!empty($asset = $entity->getAsset())) {
+            return $asset->get('private');
+        }
+
+        return parent::isPrivate($entity);
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return Asset|null
+     * @throws Error
+     */
+    public function getAsset(Entity $entity): ?Asset
+    {
+        return $this->getEntityManager()->getRepository('Asset')->where(['fileId' => $entity->get('id')])->findOne();
+    }
+
     /**
      * @inheritDoc
      */
@@ -72,7 +94,7 @@ class Attachment extends \Treo\Repositories\Attachment
     {
         $asset = $this->getEntityManager()->getEntity('Asset');
         $asset->set('name', $entity->get('name'));
-        $asset->set('private', true);
+        $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
         $asset->set('fileId', $entity->get('id'));
         $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
 
@@ -104,50 +126,6 @@ class Attachment extends \Treo\Repositories\Attachment
         $this->addDependency("DAMFileManager");
         $this->addDependency("Validator");
         $this->addDependency("ConfigManager");
-    }
-
-    /**
-     * @param Entity              $entity
-     * @param \Dam\Entities\Asset $asset
-     *
-     * @return bool
-     * @throws Error
-     */
-    public function moveFile(Entity $entity, \Dam\Entities\Asset $asset): bool
-    {
-        $file = $this->getFileStorageManager()->getLocalFilePath($entity);
-        $fileManager = $this->getFileManager();
-
-        $path = $asset->get('private') ? DAMUploadDir::PRIVATE_PATH : DAMUploadDir::PUBLIC_PATH;
-        $storePath = $asset->get('path');
-
-        $path = $path . $storePath . "/" . $entity->get('name');
-
-        if ($fileManager->move($file, $path)) {
-            $entity->set('storageFilePath', $storePath);
-            return $this->save($entity) ? true : false;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param \Espo\ORM\Entity $entity
-     *
-     * @return bool
-     */
-    public function removeThumbs(\Espo\ORM\Entity $entity)
-    {
-        foreach (DAMUploadDir::thumbsFolderList() as $path) {
-            $dirPath = $path . $entity->get('storageFilePath');
-            if (!is_dir($dirPath)) {
-                continue;
-            }
-
-            return $this->getFileManager()->removeInDir($dirPath);
-        }
-
-        return false;
     }
 
     /**
@@ -210,17 +188,8 @@ class Attachment extends \Treo\Repositories\Attachment
             ->count();
 
         if (!$res) {
-            $this->removeThumbs($entity);
             parent::afterRemove($entity, $options);
         }
-    }
-
-    /**
-     * @return FileManager
-     */
-    protected function getFileManager()
-    {
-        return $this->getInjection("DAMFileManager");
     }
 
     /**

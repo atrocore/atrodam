@@ -9,5 +9,6 @@
   "notifications": false,
   "type": "Base",
   "module": "Dam",
-  "object": true
+  "object": true,
+  "skipAssetSorting": true
 }

@@ -1,4 +1,5 @@
 {
   "type": "Base",
-  "module": "Dam"
+  "module": "Dam",
+  "skipAssetSorting": true
 }

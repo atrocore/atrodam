@@ -36,7 +36,7 @@ namespace Dam\Entities;
  *
  * @package Dam\Entities
  */
-class Attachment extends \Treo\Entities\Attachment
+class Attachment extends \Espo\Entities\Attachment
 {
     /**
      * @var string
@@ -44,15 +44,8 @@ class Attachment extends \Treo\Entities\Attachment
     protected $entityType = "Attachment";
 
     /**
-     * @return string
-     */
-    public function _getStorage()
-    {
-        return $this->valuesContainer['storage'] ? $this->valuesContainer['storage'] : "DAMUploadDir";
-    }
-
-    /**
      * @param $name
+     *
      * @return $this
      */
     public function setName($name)
@@ -61,5 +54,13 @@ class Attachment extends \Treo\Entities\Attachment
         $this->set("name", $name . "." . $baseFileInfo['extension']);
 
         return $this;
+    }
+
+    /**
+     * @return Asset|null
+     */
+    public function getAsset(): ?Asset
+    {
+        return $this->entityManager->getRepository($this->getEntityType())->getAsset($this);
     }
 }
