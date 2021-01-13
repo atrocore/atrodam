@@ -31,9 +31,10 @@ Espo.define('dam:views/modals/image-preview', 'views/modals/image-preview', func
         template: "dam:modals/image-preview",
 
         data() {
-            return _.extend({
-                path: this.options.el
-            }, Dep.prototype.data.call(this));
+            return _.extend(Dep.prototype.data.call(this), {
+                path: this.options.el,
+                name: this.model.get('name'),
+            });
         },
 
         getImageUrl() {
