@@ -32,10 +32,10 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Dam\Core\ConfigManager;
-use Dam\Core\PathInfo;
 use Espo\Core\Exceptions\Error;
 use Dam\Entities\Asset;
 use Espo\ORM\Entity;
+use Throwable;
 
 /**
  * Class Attachment
@@ -60,7 +60,6 @@ class Attachment extends \Espo\Repositories\Attachment
      * @param Entity $entity
      *
      * @return Asset|null
-     * @throws Error
      */
     public function getAsset(Entity $entity): ?Asset
     {
@@ -88,7 +87,7 @@ class Attachment extends \Espo\Repositories\Attachment
      * @param Entity $entity
      *
      * @throws Error
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function createAsset(Entity $entity)
     {
@@ -108,7 +107,7 @@ class Attachment extends \Espo\Repositories\Attachment
                 $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
             }
             $this->getEntityManager()->saveEntity($asset);
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
             $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
             $this->getEntityManager()->removeEntity($entity);
 
@@ -138,7 +137,7 @@ class Attachment extends \Espo\Repositories\Attachment
     public function updateStorage(Entity $entity, string $path)
     {
         $entity->set("storageFilePath", $path);
-        $entity->set("tmpPath", null);
+        $entity->set("tmpPath");
 
         return $this->save($entity);
     }
@@ -146,22 +145,22 @@ class Attachment extends \Espo\Repositories\Attachment
     /**
      * @param Entity        $attachment
      * @param string        $newFileName
-     * @param PathInfo|null $entity
      *
      * @return bool
      * @throws Error
      */
-    public function renameFile(Entity $attachment, string $newFileName, PathInfo $entity = null): bool
+    public function renameFile(Entity $attachment, string $newFile): bool
     {
-        $path = $this->buildPath($entity, $attachment);
+        $path = $this->getFilePath($attachment);
         $pathInfo = pathinfo($path);
-        if ($pathInfo['basename'] == $newFileName) {
+        $newFileInfo = pathinfo($newFile);
+        if ($pathInfo['basename'] == $newFileInfo['basename']) {
             return true;
         }
 
-        $attachment->setName($newFileName);
+        $attachment->setName($newFileInfo['filename']);
 
-        if ($this->getFileManager()->renameFile($path, (string)$attachment->get("name"))) {
+        if ($this->getFileManager()->move($path, $this->getFilePath($attachment))) {
             return $this->save($attachment) ? true : false;
         }
 
@@ -172,7 +171,7 @@ class Attachment extends \Espo\Repositories\Attachment
      * @param Entity $entity
      * @param array  $options
      */
-    protected function afterRemove(\Espo\ORM\Entity $entity, array $options = [])
+    protected function afterRemove(Entity $entity, array $options = [])
     {
         // if uploaded new attachment with previous name
         $res = $this
@@ -190,16 +189,5 @@ class Attachment extends \Espo\Repositories\Attachment
         if (!$res) {
             parent::afterRemove($entity, $options);
         }
-    }
-
-    /**
-     * @param PathInfo $entity
-     * @param Entity   $attachment
-     *
-     * @return string
-     */
-    private function buildPath(PathInfo $entity, Entity $attachment): string
-    {
-        return $entity->getPathInfo()[0] . $attachment->get('storageFilePath') . "/" . $attachment->get('name');
     }
 }

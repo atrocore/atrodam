@@ -46,6 +46,12 @@ class V1Dot2Dot0 extends Base
         $this->execute("UPDATE attachment SET storage='UploadDir' WHERE storage='DAMUploadDir'");
         exec('mv data/dam/public/master/* upload/files/');
         exec('mv data/dam/private/master/* upload/files/');
+
+        $this->execute("
+            UPDATE asset, attachment 
+            SET asset.name = attachment.name 
+            WHERE asset.file_id = attachment.id;
+        ");
     }
 
     /**
@@ -53,6 +59,10 @@ class V1Dot2Dot0 extends Base
      */
     public function down(): void
     {
+        $this->execute("
+            UPDATE asset 
+            SET asset.name = SUBSTRING_INDEX(asset.name, '.', 1);
+        ");
     }
 
     /**

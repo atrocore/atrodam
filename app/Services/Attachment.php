@@ -178,12 +178,11 @@ class Attachment extends \Espo\Services\Attachment
     /**
      * @param \Dam\Entities\Attachment $attachment
      * @param string                   $newName
-     * @param Entity                   $entity
      * @return mixed
      */
-    public function changeName(\Dam\Entities\Attachment $attachment, string $newName, Entity $entity = null)
+    public function changeName(\Dam\Entities\Attachment $attachment, string $newName)
     {
-        return $this->getRepository()->renameFile($attachment, $newName, $entity);
+        return $this->getRepository()->renameFile($attachment, $newName);
     }
 
     /**

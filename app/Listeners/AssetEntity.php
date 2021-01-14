@@ -68,12 +68,11 @@ class AssetEntity extends AbstractListener
 
         //rename file
         if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
-            $info = pathinfo($entity->get('name'));
-            $this->getService("Attachment")->changeName($entity->get('file'), $info['filename'], $entity);
+            $this->getService("Attachment")->changeName($entity->get('file'), $entity->get('name'));
         }
 
         //deactivate asset
-        if ($this->isDeactivateAsset($entity) && $this->getService("Asset")->getRelationsCount($entity)) {
+        if ($this->isDeactivateAsset($entity)) {
             throw new BadRequest("You can't deactivate this asset");
         }
     }
