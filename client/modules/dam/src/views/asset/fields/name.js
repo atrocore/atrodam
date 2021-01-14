@@ -47,8 +47,8 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
 
             const parts = (data.value || '').split('.');
 
-            data['valueWithoutExt'] = parts[0];
-            data['fileExt'] = (typeof parts[1] !== 'undefined') ? parts[1] : '';
+            data['fileExt'] = parts.length >= 2 ? parts.pop() : '';
+            data['valueWithoutExt'] = parts.length > 1 ? parts.join('.') : parts[0];
 
             return data;
         },
