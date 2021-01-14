@@ -14,7 +14,7 @@
 
     <div class="cell col-sm-4 form-group" data-name="width">
         <label class="control-label" data-name="height">
-            <span class="label-text">{{translate "Widht" scope="Global"}}</span>
+            <span class="label-text">{{translate "Width" scope="Global"}}</span>
         </label>
         <div class="field" data-name="width">
             {{{width}}}
