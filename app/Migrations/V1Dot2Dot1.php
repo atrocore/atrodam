@@ -34,18 +34,20 @@ namespace Dam\Migrations;
 use Treo\Core\Migration\Base;
 
 /**
- * Class V1Dot2Dot0
+ * Class V1Dot2Dot1
  */
-class V1Dot2Dot0 extends Base
+class V1Dot2Dot1 extends Base
 {
     /**
      * @inheritDoc
      */
     public function up(): void
     {
-        $this->execute("UPDATE attachment SET storage='UploadDir' WHERE storage='DAMUploadDir'");
-        exec('mv data/dam/public/master/* upload/files/');
-        exec('mv data/dam/private/master/* upload/files/');
+        $this->execute("
+            UPDATE asset, attachment 
+            SET asset.name = attachment.name 
+            WHERE asset.file_id = attachment.id;
+        ");
     }
 
     /**
@@ -53,6 +55,10 @@ class V1Dot2Dot0 extends Base
      */
     public function down(): void
     {
+        $this->execute("
+            UPDATE asset 
+            SET asset.name = SUBSTRING_INDEX(asset.name, '.', 1);
+        ");
     }
 
     /**
