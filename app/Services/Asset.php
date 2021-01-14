@@ -60,7 +60,6 @@ class Asset extends Base
 
         $file = $entity->get('file');
         if (!empty($file)) {
-            $entity->set('name', $this->prepareAssetName((string)$entity->get('name'), (string)$file->get('name')));
             $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
         }
     }
@@ -116,7 +115,6 @@ class Asset extends Base
             // prepare assets
             foreach ($assets as &$item) {
                 if (!empty($item['fileName'])) {
-                    $item['name'] = $this->prepareAssetName((string)$item['name'], (string)$item['fileName']);
                     $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
                     $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
                 }
@@ -424,14 +422,6 @@ class Asset extends Base
     protected function isMassCreating(Entity $entity): bool
     {
         return !empty($entity->get('filesIds')) && $entity->isNew();
-    }
-
-    protected function prepareAssetName(string $assetName, string $fileName): string
-    {
-        $fileNameParts = explode('.', $fileName);
-        $fileExt = array_pop($fileNameParts);
-
-        return $assetName . '.' . $fileExt;
     }
 
     protected function prepareAssetIcon(string $type, string $fileName): ?string
