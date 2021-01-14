@@ -84,18 +84,22 @@ class Attachment extends \Espo\Repositories\Attachment
     /**
      * Create asset if it needs
      *
-     * @param Entity $entity
+     * @param Entity $attachment
      *
      * @throws Error
      * @throws Throwable
      */
-    public function createAsset(Entity $entity)
+    public function createAsset(Entity $attachment)
     {
+        if (!empty($this->where(['fileId' => $attachment->get('id')])->findOne())) {
+            return;
+        }
+
         $asset = $this->getEntityManager()->getEntity('Asset');
-        $asset->set('name', $entity->get('name'));
+        $asset->set('name', $attachment->get('name'));
         $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
-        $asset->set('fileId', $entity->get('id'));
-        $asset->set('type', $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'assetType']));
+        $asset->set('fileId', $attachment->get('id'));
+        $asset->set('type', $this->getMetadata()->get(['entityDefs', $attachment->get('relatedType'), 'fields', $attachment->get('field'), 'assetType']));
 
         // get config by type
         $config = $this
@@ -104,12 +108,11 @@ class Attachment extends \Espo\Repositories\Attachment
 
         try {
             foreach ($config['validations'] as $type => $value) {
-                $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
+                $this->getInjection('Validator')->validate($type, $asset, ($value['private'] ?? $value));
             }
             $this->getEntityManager()->saveEntity($asset);
         } catch (Throwable $exception) {
-            $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
-            $this->getEntityManager()->removeEntity($entity);
+            $this->getEntityManager()->removeEntity($attachment);
 
             throw $exception;
         }
@@ -143,8 +146,8 @@ class Attachment extends \Espo\Repositories\Attachment
     }
 
     /**
-     * @param Entity        $attachment
-     * @param string        $newFileName
+     * @param Entity $attachment
+     * @param string $newFileName
      *
      * @return bool
      * @throws Error
