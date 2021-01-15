@@ -274,7 +274,7 @@ class Event extends AbstractEvent
 
                 if ($fieldType === 'asset') {
                     try {
-                        $attachmentRepository->createAsset($attachment);
+                        $attachmentRepository->createAsset($attachment, true);
                     } catch (\Throwable $e) {
                         // ignore validations
                     }

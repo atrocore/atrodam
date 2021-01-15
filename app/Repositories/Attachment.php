@@ -85,11 +85,12 @@ class Attachment extends \Espo\Repositories\Attachment
      * Create asset if it needs
      *
      * @param Entity $attachment
+     * @param bool   $skipValidation
      *
      * @throws Error
      * @throws Throwable
      */
-    public function createAsset(Entity $attachment)
+    public function createAsset(Entity $attachment, bool $skipValidation = false)
     {
         if (!empty($this->where(['fileId' => $attachment->get('id')])->findOne())) {
             return;
@@ -101,14 +102,12 @@ class Attachment extends \Espo\Repositories\Attachment
         $asset->set('fileId', $attachment->get('id'));
         $asset->set('type', $this->getMetadata()->get(['entityDefs', $attachment->get('relatedType'), 'fields', $attachment->get('field'), 'assetType']));
 
-        // get config by type
-        $config = $this
-            ->getInjection("ConfigManager")
-            ->getByType([ConfigManager::getType($asset->get('type'))]);
-
         try {
-            foreach ($config['validations'] as $type => $value) {
-                $this->getInjection('Validator')->validate($type, $asset, ($value['private'] ?? $value));
+            if (!$skipValidation) {
+                $config = $this->getInjection("ConfigManager")->getByType([ConfigManager::getType($asset->get('type'))]);
+                foreach ($config['validations'] as $type => $value) {
+                    $this->getInjection('Validator')->validate($type, $asset, ($value['private'] ?? $value));
+                }
             }
             $this->getEntityManager()->saveEntity($asset);
         } catch (Throwable $exception) {
