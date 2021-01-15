@@ -31,8 +31,6 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
-use Dam\Core\FilePathBuilder;
-use Dam\Core\FileStorage\DAMUploadDir;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;

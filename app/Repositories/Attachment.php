@@ -106,7 +106,7 @@ class Attachment extends \Espo\Repositories\Attachment
             if (!$skipValidation) {
                 $config = $this->getInjection("ConfigManager")->getByType([ConfigManager::getType($asset->get('type'))]);
                 foreach ($config['validations'] as $type => $value) {
-                    $this->getInjection('Validator')->validate($type, $asset, ($value['private'] ?? $value));
+                    $this->getInjection('Validator')->validate($type, $attachment, ($value['private'] ?? $value));
                 }
             }
             $this->getEntityManager()->saveEntity($asset);
