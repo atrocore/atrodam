@@ -46,11 +46,13 @@ Espo.define('dam:views/asset/fields/file', 'dam:views/fields/file',
 
             this.listenTo(this.model, "change:name", () => {
                 if (this.model.get('name')) {
-                    const name = this.model.get('name').split('.').shift();
+                    const name = this.model.get('name');
                     const ext = (this.model.get('fileName') || '').split('.').pop();
 
-                    this.model.set('name', name + '.' + ext, {silent: true});
-                    this.model.set('fileName', this.model.get('name'));
+                    if (!name.endsWith('.' + ext)) {
+                        this.model.set('name', name + '.' + ext, {silent: true});
+                        this.model.set('fileName', this.model.get('name'));
+                    }
 
                     this.reRender();
                 }
