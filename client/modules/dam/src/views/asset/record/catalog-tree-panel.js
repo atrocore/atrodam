@@ -211,7 +211,7 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
                 data.advanced = {
                     collection: {
                         type: 'equals',
-                        field: 'collectionId',
+                        field: 'libraryId',
                         value: category.catalogId,
                         data: {
                             type: 'is',
