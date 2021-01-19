@@ -33,7 +33,6 @@ namespace Dam\Core\Validation\Items;
 
 use Dam\Core\Validation\Base;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Utils\Util;
 
 /**
  * Class Mime
@@ -45,15 +44,8 @@ class Mime extends Base
      */
     public function validate(): bool
     {
-        if (!empty($this->attachment->get('tmpPath'))) {
-            $path = '/tmp/' . Util::generateId() . $this->attachment->get('name');
-            file_put_contents($path, $this->attachment->get('contents'));
-        } else {
-            $path = $this->getFilePath();
-        }
-
         // get mime type
-        $mimeType = (string)mime_content_type($path);
+        $mimeType = (string)mime_content_type($this->getFilePath());
 
         if (isset($this->params['list'])) {
             return in_array($mimeType, $this->params['list']);

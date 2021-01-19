@@ -31,12 +31,8 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
-use Dam\Core\ConfigManager;
-use Dam\Core\Validation\Validator;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
-use Espo\Core\Exceptions\Forbidden;
-use Espo\ORM\Entity;
 use Imagick;
 use Treo\Core\FileStorage\Manager;
 
@@ -48,22 +44,76 @@ use Treo\Core\FileStorage\Manager;
 class Attachment extends \Espo\Services\Attachment
 {
     /**
-     * Attachment constructor.
+     * @param Imagick $imagick
+     *
+     * @return string|null
      */
-    public function __construct()
+    public static function getColorSpace(Imagick $imagick): ?string
     {
-        $this->addDependency("Validator");
-        $this->addDependency("DAMFileManager");
-        $this->addDependency("fileStorageManager");
-        $this->addDependency("ConfigManager");
-        $this->addDependency("filePathBuilder");
+        $colorId = $imagick->getImageColorspace();
 
-        parent::__construct();
+        if (!$colorId) {
+            return null;
+        }
+
+        foreach ((new \ReflectionClass($imagick))->getConstants() as $name => $value) {
+            if (stripos($name, "COLORSPACE_") !== false && $value == $colorId) {
+                $el = explode("_", $name);
+                array_shift($el);
+
+                return implode("_", $el);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createEntity($attachment)
+    {
+        $entity = parent::createEntity($attachment);
+
+        if (($attachment->parentType == 'Asset' || $attachment->relatedType == 'Asset') && $attachment->field == 'file' && empty($entity->isNew)) {
+            throw new BadRequest($this->getInjection('language')->translate('Such asset already exists.', 'exceptions', 'Asset'));
+        }
+
+        // validate
+        $this->validateAttachment($entity, $attachment);
+
+        return $entity;
+    }
+
+    /**
+     * @param \Dam\Entities\Attachment $entity
+     * @param \stdClass                $data
+     */
+    protected function validateAttachment(\Dam\Entities\Attachment $entity, \stdClass $data): void
+    {
+        $entity = clone $entity;
+
+        $entity->set('contents', $data->contents);
+
+        /** @var string $type */
+        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType'], 'File');
+        if (!empty($data->modelAttributes->type)) {
+            $type = $data->modelAttributes->type;
+        }
+
+        /** @var array $config */
+        $config = $this->getInjection("ConfigManager")->getByType([\Dam\Core\ConfigManager::getType($type)]);
+
+        // validate
+        foreach ($config['validations'] as $type => $value) {
+            $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
+        }
     }
 
     /**
      * @param      $attachment
      * @param null $path
+     *
      * @return array
      * @throws \ImagickException
      * @throws \ReflectionException
@@ -95,6 +145,7 @@ class Attachment extends \Espo\Services\Attachment
     /**
      * @param      $attachment
      * @param null $path
+     *
      * @return array
      */
     public function getFileInfo($attachment, $path = null): array
@@ -112,33 +163,8 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param $attachment
-     *
-     * @return mixed
-     * @throws \Espo\Core\Exceptions\BadRequest
-     * @throws \Espo\Core\Exceptions\Error
-     * @throws \Espo\Core\Exceptions\Forbidden
-     */
-    public function createEntity($attachment)
-    {
-        $entity = parent::createEntity($attachment);
-
-        try {
-            $this->validateAttachment($attachment, $entity);
-        } catch (\Exception $exception) {
-            $this->getFileManager()->removeFile([$entity->get('tmpPath')]);
-            /**@var $repo \Dam\Repositories\Attachment* */
-            $repo = $this->getRepository();
-            $repo->deleteFromDb($entity->id);
-
-            throw $exception;
-        }
-
-        return $entity;
-    }
-
-    /**
      * @param string $attachmentId
+     *
      * @return bool
      */
     public function toDelete(string $attachmentId)
@@ -178,6 +204,7 @@ class Attachment extends \Espo\Services\Attachment
     /**
      * @param \Dam\Entities\Attachment $attachment
      * @param string                   $newName
+     *
      * @return mixed
      */
     public function changeName(\Dam\Entities\Attachment $attachment, string $newName)
@@ -187,6 +214,7 @@ class Attachment extends \Espo\Services\Attachment
 
     /**
      * @param \Dam\Entities\Attachment $attachment
+     *
      * @return array|mixed
      * @throws Error
      * @throws \ImagickException
@@ -207,6 +235,7 @@ class Attachment extends \Espo\Services\Attachment
 
     /**
      * @param \Dam\Entities\Attachment $attachment
+     *
      * @return array
      * @throws Error
      * @throws \ImagickException
@@ -222,81 +251,15 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param $attachment
-     * @throws BadRequest
-     * @throws Error
-     * @throws Forbidden
+     * @inheritDoc
      */
-    protected function validateAttachment($attachment, $entity)
+    protected function init()
     {
-        if (!empty($attachment->file)) {
-            $arr      = explode(',', $attachment->file);
-            $contents = '';
-            if (count($arr) > 1) {
-                $contents = $arr[1];
-            }
+        parent::init();
 
-            $contents             = base64_decode($contents);
-            $attachment->contents = $contents;
-
-            $relatedEntityType = null;
-            $field             = null;
-            $role              = 'Attachment';
-            if (isset($attachment->parentType)) {
-                $relatedEntityType = $attachment->parentType;
-            } elseif (isset($attachment->relatedType)) {
-                $relatedEntityType = $attachment->relatedType;
-            }
-            if (isset($attachment->field)) {
-                $field = $attachment->field;
-            }
-
-            if (isset($attachment->role)) {
-                $role = $attachment->role;
-            }
-            if (!$relatedEntityType || !$field) {
-                throw new BadRequest("Params 'field' and 'parentType' not passed along with 'file'.");
-            }
-
-            $fieldType = $this->getMetadata()->get(['entityDefs', $relatedEntityType, 'fields', $field, 'type']);
-            if (!$fieldType) {
-                throw new Error("Field '{$field}' does not exist.");
-            }
-
-            if ($this->hasAcl($relatedEntityType)) {
-                throw new Forbidden("No access to " . $relatedEntityType . ".");
-            }
-
-            if (in_array($field, $this->getAcl()->getScopeForbiddenFieldList($relatedEntityType, 'edit'))) {
-                throw new Forbidden("No access to field '" . $field . "'.");
-            }
-
-            if ($role === 'Attachment') {
-                if (!in_array($fieldType, $this->attachmentFieldTypeList)) {
-                    throw new Error("Field type '{$fieldType}' is not allowed for attachment.");
-                }
-
-                if (isset($attachment->modelAttributes)) {
-
-                    $model   = $attachment->modelAttributes;
-                    $private = $model->private ? "private" : "public";
-
-                    $config = $this->getConfigManager()->getByType([ConfigManager::getType($model->type)]);
-
-                    foreach ($config['validations'] as $type => $value) {
-                        $this->getValidator()->validate($type, $entity, ($value[$private] ?? $value));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * @return Validator
-     */
-    protected function getValidator(): Validator
-    {
-        return $this->getInjection("Validator");
+        $this->addDependency("fileStorageManager");
+        $this->addDependency('ConfigManager');
+        $this->addDependency('Validator');
     }
 
     /**
@@ -337,70 +300,10 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param $relatedEntityType
-     *
-     * @return bool
-     */
-    private function hasAcl($relatedEntityType): bool
-    {
-        return !$this->getAcl()->checkScope($relatedEntityType,
-                'create') && !$this->getAcl()->checkScope($relatedEntityType, 'edit');
-    }
-
-    /**
-     * @return FileManager
-     */
-    protected function getFileManager(): FileManager
-    {
-        return $this->getInjection("DAMFileManager");
-    }
-
-    /**
      * @return Manager
      */
     protected function getFileStorageManager(): Manager
     {
         return $this->getInjection("fileStorageManager");
-    }
-
-    /**
-     * @return ConfigManager
-     */
-    protected function getConfigManager(): ConfigManager
-    {
-        return $this->getInjection("ConfigManager");
-    }
-
-    /**
-     * @return FilePathBuilder
-     */
-    protected function getFilePathBuilder(): FilePathBuilder
-    {
-        return $this->getInjection("filePathBuilder");
-    }
-
-    /**
-     * @param Imagick $imagick
-     *
-     * @return string|null
-     */
-    public static function getColorSpace(Imagick $imagick): ?string
-    {
-        $colorId = $imagick->getImageColorspace();
-
-        if (!$colorId) {
-            return null;
-        }
-
-        foreach ((new \ReflectionClass($imagick))->getConstants() as $name => $value) {
-            if (stripos($name, "COLORSPACE_") !== false && $value == $colorId) {
-                $el = explode("_", $name);
-                array_shift($el);
-
-                return implode("_", $el);
-            }
-        }
-
-        return null;
     }
 }

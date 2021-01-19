@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Core\Validation;
 
+use Dam\Core\Utils\Util;
 use Treo\Core\Container;
 use Treo\Core\ORM\EntityManager;
 
@@ -153,6 +154,15 @@ abstract class Base
      */
     protected function getFilePath(): string
     {
-        return $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
+        $path = $this->getEntityManager()->getRepository('Attachment')->getFilePath($this->attachment);
+
+        if (!file_exists($path)) {
+            $path = '/tmp/' . Util::generateId() . $this->attachment->get('name');
+            if (!file_exists($path)) {
+                file_put_contents($path, $this->attachment->get('contents'));
+            }
+        }
+
+        return $path;
     }
 }
