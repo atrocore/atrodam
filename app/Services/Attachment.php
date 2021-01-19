@@ -75,7 +75,7 @@ class Attachment extends \Espo\Services\Attachment
     {
         $entity = parent::createEntity($attachment);
 
-        if (($attachment->parentType == 'Asset' || $attachment->relatedType == 'Asset') && $attachment->field == 'file' && empty($entity->isNew)) {
+        if (($attachment->parentType == 'Asset' || $attachment->relatedType == 'Asset') && in_array($attachment->field, ['file', 'files']) && empty($entity->isNew)) {
             throw new BadRequest($this->getInjection('language')->translate('Such asset already exists.', 'exceptions', 'Asset'));
         }
 
