@@ -56,6 +56,6 @@ class Ratio extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest(sprintf($this->exception('Image must have side ratio of %s.'), $this->params));
+        throw new BadRequest(sprintf($this->exception('Image must have side ratio of %s'), $this->params));
     }
 }

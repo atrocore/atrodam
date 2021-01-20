@@ -57,6 +57,6 @@ class ColorDepth extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest(sprintf($this->exception('Color depth must be in the list %s.'), implode(", ", $this->params)));
+        throw new BadRequest(sprintf($this->exception('Color depth must be in the list %s'), implode(", ", $this->params)));
     }
 }

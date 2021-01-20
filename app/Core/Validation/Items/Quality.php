@@ -62,6 +62,6 @@ class Quality extends Base
      */
     public function onValidateFail()
     {
-        throw new BadRequest(sprintf($this->exception('Image quality must be between %s and %s.'), $this->params['min'], $this->params['max']));
+        throw new BadRequest(sprintf($this->exception('Image quality must be between %s and %s'), $this->params['min'], $this->params['max']));
     }
 }
