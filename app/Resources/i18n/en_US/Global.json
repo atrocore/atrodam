@@ -24,14 +24,14 @@
     "validationRules": "Validation Rules"
   },
   "exceptions": {
-    "Color depth must be in the list %s": "Color depth must be in the list %s.",
-    "Color space must be in the list %s": "Color space must be in the list %s.",
-    "Use only files with next extensions: %s": "Use only files with next extensions: %s.",
-    "Asset has incorrect MIME type": "Asset has incorrect MIME type.",
-    "Asset is not a PDF document": "Asset is not a PDF document.",
-    "Image quality must be between %s and %s": "Image quality must be between %s and %s.",
-    "Image must have side ratio of %s": "Image must have side ratio of %s.",
-    "Image must have width more than %spx and height more than %spx": "Image must have width more than %spx and height more than %spx.",
-    "Asset size should be between %skb and %skb": "Asset size should be between %skb and %skb."
+    "colorDepthValidationFailed": "Color depth of this asset is not allowed.",
+    "colorSpaceValidationFailed": "Color space of this asset is not allowed.",
+    "fileExtensionValidationFailed": "Use only files with next extensions: %s.",
+    "mimeTypeValidationFailed": "Asset has incorrect MIME type.",
+    "pdfValidationFailed": "Asset is not a PDF document.",
+    "imageQualityValidationFailed": "Image quality must be between %s and %s.",
+    "imageRatioValidationFailed": "Image must have side ratio of %s.",
+    "imageScaleValidationFailed": "Image must have width more than %spx and height more than %spx.",
+    "imageSizeValidationFailed": "Asset size should be between %skb and %skb."
   }
 }
