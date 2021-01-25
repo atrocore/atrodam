@@ -3,7 +3,7 @@
     "sort": "Sort",
     "Image": "Image",
     "File": "File",
-    "Mass Upload": "Mass Upload",
+    "massUpload": "Mass Upload",
     "uploaded": "uploaded"
   },
   "fields": {
@@ -38,11 +38,11 @@
     "relatedAssets": "Related Assets"
   },
   "messages": {
-    "Out of %s selected assets %s assets were uploaded.": "Out of %s selected assets %s assets were uploaded."
+    "outOfSelectedAssetsUploaded": "Out of %s selected assets %s assets were uploaded."
   },
   "exceptions": {
-    "Asset name is invalid.": "Asset name is invalid.",
-    "Such asset already exists.": "Such asset already exists.",
-    "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.": "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again."
+    "assetNameIsInvalid": "Asset name is invalid.",
+    "suchAssetAlreadyExists": "Such asset already exists.",
+    "assetIsAlreadyLinkedWithEntity": "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again."
   }
 }

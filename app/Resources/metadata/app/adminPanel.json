@@ -5,7 +5,7 @@
       {
         "url": "#AssetType",
         "label": "AssetTypes",
-        "description": "List of supported assets types"
+        "description": "listOfSupportedAssetsTypes"
       }
     ]
   }

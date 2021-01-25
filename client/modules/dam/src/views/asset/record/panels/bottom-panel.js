@@ -97,7 +97,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             });
 
             this.actionList.unshift({
-                label: this.translate('Mass Upload', 'labels', 'Asset'),
+                label: this.translate('massUpload', 'labels', 'Asset'),
                 action: 'massAssetCreate',
                 data: {
                     link: this.link

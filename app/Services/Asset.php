@@ -281,7 +281,7 @@ class Asset extends Base
         }
 
         if (count($data->filesIds) != $created) {
-            $entity->set('afterSaveMessage', sprintf('Out of %s selected assets %s assets were uploaded.', count($data->filesIds), $created), 'messages', 'Asset');
+            $entity->set('afterSaveMessage', sprintf($this->translate('outOfSelectedAssetsUploaded', 'messages', 'Asset'), count($data->filesIds), $created), 'messages', 'Asset');
         }
 
         return $entity;

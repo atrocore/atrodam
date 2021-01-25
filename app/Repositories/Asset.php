@@ -142,7 +142,7 @@ class Asset extends AbstractRepository
         $entity->set('name', $entity->get('file')->get('name'));
 
         if (empty(str_replace('/', '', (string)$entity->get('name')))) {
-            throw new BadRequest($this->translate('Asset name is invalid.', 'exceptions', 'Asset'));
+            throw new BadRequest($this->translate('assetNameIsInvalid', 'exceptions', 'Asset'));
         }
 
         parent::beforeSave($entity, $options);

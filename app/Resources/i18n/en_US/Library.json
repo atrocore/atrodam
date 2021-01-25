@@ -11,7 +11,7 @@
     "assetCategories": "Asset Categories"
   },
   "exceptions": {
-    "Library can be linked with a root category only.": "Library can be linked with a root category only.",
-    "Default library can't be deleted.": "Default library can't be deleted."
+    "libraryCanBeLinkedWithRootCategoryOnly": "Library can be linked with a root category only.",
+    "defaultLibraryCantBeDeleted": "Default library can't be deleted."
   }
 }
