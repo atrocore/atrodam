@@ -54,7 +54,7 @@ class AssetCategoryEntity extends AbstractListener
         $entity = $event->getArgument('entity');
 
         if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->getLanguage()->translate('Code is invalid', 'exceptions', 'Global'));
+            throw new BadRequest($this->getLanguage()->translate('codeInvalid', 'exceptions', 'Global'));
         }
 
         $parent = $entity->get('categoryParent');

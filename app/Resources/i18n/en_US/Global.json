@@ -23,6 +23,11 @@
     "AssetType": "Asset Types",
     "validationRules": "Validation Rules"
   },
+  "labels": {
+    "dragAndDropBtnText": "Drag & Drop",
+    "dragAndDropBtnTextSmall": "your assets here or",
+    "upload": "Upload"
+  },
   "exceptions": {
     "colorDepthValidationFailed": "Color depth of this asset is not allowed.",
     "colorSpaceValidationFailed": "Color space of this asset is not allowed.",

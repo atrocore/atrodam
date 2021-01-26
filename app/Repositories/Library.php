@@ -48,7 +48,7 @@ class Library extends AbstractRepository
     protected function beforeSave(Entity $entity, array $options = [])
     {
         if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->translate('Code is invalid', 'exceptions', 'Global'));
+            throw new BadRequest($this->translate('codeInvalid', 'exceptions', 'Global'));
         }
 
         parent::beforeSave($entity, $options);
