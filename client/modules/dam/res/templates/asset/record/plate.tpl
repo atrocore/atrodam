@@ -99,7 +99,7 @@
 </div>
 
 {{else}}
-    {{translate 'No Data'}}
+    {{translate 'noData'}}
 {{/if}}
 
 <style>

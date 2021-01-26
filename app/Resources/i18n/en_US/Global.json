@@ -26,7 +26,9 @@
   "labels": {
     "dragAndDropBtnText": "Drag & Drop",
     "dragAndDropBtnTextSmall": "your assets here or",
-    "upload": "Upload"
+    "upload": "Upload",
+    "attachFile": "Attach File",
+    "noData": "No Data"
   },
   "exceptions": {
     "colorDepthValidationFailed": "Color depth of this asset is not allowed.",

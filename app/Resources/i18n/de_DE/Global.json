@@ -33,6 +33,8 @@
     "dragAndDropBtnTextSmall": "Ihre Assets hierher oder",
     "upload": "Hochladen",
     "Preview": "Vorschau",
-    "Download": "Herunterladen"
+    "Download": "Herunterladen",
+    "attachFile": "Datei anhängen",
+    "noData": "Keine Daten"
   }
 }

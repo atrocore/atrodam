@@ -2,7 +2,7 @@
     <div class="clearfix attachment-control">
         {{#unless uploadFromFileSystemDisabled}}
         <div class="center-block drag-and-drop-files">
-            <label class="attach-file-label" title="{{translate 'Attach File'}}">
+            <label class="attach-file-label" title="{{translate 'attachFile'}}">
                 <span class="btn btn-default">
                     <span class="btn-text">{{translate 'dragAndDropBtnText'}}</span>
                     <span class="btn-text btn-text-small">{{translate 'dragAndDropBtnTextSmall'}}</span>
