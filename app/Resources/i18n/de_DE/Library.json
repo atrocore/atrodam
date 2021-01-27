@@ -13,7 +13,7 @@
     "assets": "Assets"
   },
   "exceptions": {
-    "Library can be linked with a root category only.": "Bibliothek kann nur mit einer Stammkategorie verknüpft werden.",
-    "Default library can't be deleted.": "Standardbibliothek kann nicht gelöscht werden."
+    "libraryCanBeLinkedWithRootCategoryOnly": "Bibliothek kann nur mit einer Stammkategorie verknüpft werden.",
+    "defaultLibraryCantBeDeleted": "Standardbibliothek kann nicht gelöscht werden."
   }
 }

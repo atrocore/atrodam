@@ -46,7 +46,7 @@
                                 <span class="fa fa-search form-control-feedback"></span>
                             </li>
                             {{else}}
-                            <li><div class="no-family-data">No Data</div></li>
+                            <li><div class="no-family-data">{{translate 'noData'}}</div></li>
                             {{/if}}
                             {{#each familiesAttributes}}
                             <li data-name="{{name}}" class="dropdown-submenu">

@@ -2,7 +2,7 @@
   "labels": {
     "Create Asset": "Asset erstellen",
     "sort": "Sortieren",
-    "Mass Upload": "Massenupload",
+    "massUpload": "Massenupload",
     "uploaded": "hochgeladen"
   },
   "links": {
@@ -42,11 +42,11 @@
     "preview": "Vorschau"
   },
   "messages": {
-    "Out of %s selected assets %s assets were uploaded.": "Von %s ausgewählten Assets wurden %s Assets hochgeladen."
+    "outOfSelectedAssetsUploaded": "Von %s ausgewählten Assets wurden %s Assets hochgeladen."
   },
   "exceptions": {
-    "Asset name is invalid.": "Asset-Name ist ungültig.",
-    "assetAlreadyExists": "Dieser Asset existiert bereits.",
-    "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen."
+    "assetNameIsInvalid": "Asset-Name ist ungültig.",
+    "suchAssetAlreadyExists": "Dieser Asset existiert bereits.",
+    "assetIsAlreadyLinkedWithEntity": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen."
   }
 }

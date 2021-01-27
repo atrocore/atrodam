@@ -75,9 +75,7 @@ class EntityManagerController extends AbstractListener
     protected function showErrorMessage(string $entity): void
     {
         throw new BadRequest(
-            $this->getLanguage()->translate(
-                sprintf("Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.", $entity), 'exceptions', 'Asset'
-            )
+            sprintf($this->getLanguage()->translate("assetIsAlreadyLinkedWithEntity", 'exceptions', 'Asset'), $entity)
         );
     }
 }

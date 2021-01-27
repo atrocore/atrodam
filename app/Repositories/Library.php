@@ -48,7 +48,7 @@ class Library extends AbstractRepository
     protected function beforeSave(Entity $entity, array $options = [])
     {
         if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->translate('Code is invalid', 'exceptions', 'Global'));
+            throw new BadRequest($this->translate('codeInvalid', 'exceptions', 'Global'));
         }
 
         parent::beforeSave($entity, $options);
@@ -61,7 +61,7 @@ class Library extends AbstractRepository
     protected function beforeRemove(Entity $entity, array $options = [])
     {
         if ($entity->get('id') === '1') {
-            throw new BadRequest($this->translate("Default library can't be deleted.", 'exceptions', 'Library'));
+            throw new BadRequest($this->translate("defaultLibraryCantBeDeleted", 'exceptions', 'Library'));
         }
 
         parent::beforeRemove($entity, $options);
@@ -75,7 +75,7 @@ class Library extends AbstractRepository
     protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
     {
         if ($relationName == "assetCategories" && !$this->isValidCategory($foreign)) {
-            throw new BadRequest($this->translate('Library can be linked with a root category only.', 'exceptions', 'Library'));
+            throw new BadRequest($this->translate('libraryCanBeLinkedWithRootCategoryOnly', 'exceptions', 'Library'));
         }
 
         parent::beforeRelate($entity, $relationName, $foreign, $data, $options);

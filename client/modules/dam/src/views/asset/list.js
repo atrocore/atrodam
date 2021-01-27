@@ -54,7 +54,7 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
                 acl: 'create',
                 aclScope: 'Asset',
                 action: 'massAssetCreate',
-                label: this.translate('Mass Upload', 'labels', 'Asset'),
+                label: this.translate('massUpload', 'labels', 'Asset'),
                 iconHtml: ''
             });
         },

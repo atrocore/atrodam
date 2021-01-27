@@ -4,6 +4,6 @@
     "Dam": "DAM"
   },
   "descriptions": {
-    "List of supported assets types": "Liste der unterstützten Asset-Typen"
+    "listOfSupportedAssetsTypes": "Liste der unterstützten Asset-Typen"
   }
 }

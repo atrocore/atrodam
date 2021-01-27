@@ -24,5 +24,5 @@
     {{/each}}
 </div>
 {{else}}
-<div class="list-container">{{translate 'No Data'}}</div>
+<div class="list-container">{{translate 'noData'}}</div>
 {{/if}}
