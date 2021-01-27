@@ -26,7 +26,7 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/fields/file', 'dam:views/fields/file',
+Espo.define('dam:views/asset/fields/file', 'views/fields/file',
     Dep => Dep.extend({
 
         setup() {

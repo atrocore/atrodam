@@ -33,6 +33,7 @@ namespace Dam\Services;
 
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
+use Espo\ORM\Entity;
 use Imagick;
 use Treo\Core\FileStorage\Manager;
 
@@ -75,9 +76,18 @@ class Attachment extends \Espo\Services\Attachment
     {
         $entity = parent::createEntity($attachment);
 
-        if (($attachment->parentType == 'Asset' || $attachment->relatedType == 'Asset') && in_array($attachment->field, ['file', 'files']) && empty($entity->isNew())) {
-            throw new BadRequest($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset'));
-        }
+        // validate
+        $this->validateAttachment($entity, $attachment);
+
+        return $entity;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function createByChunks(\stdClass $attachment): Entity
+    {
+        $entity = parent::createByChunks($attachment);
 
         // validate
         $this->validateAttachment($entity, $attachment);
@@ -86,11 +96,17 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param \Dam\Entities\Attachment $entity
-     * @param \stdClass                $data
+     * @param Entity    $entity
+     * @param \stdClass $data
+     *
+     * @throws BadRequest
      */
-    protected function validateAttachment(\Dam\Entities\Attachment $entity, \stdClass $data): void
+    protected function validateAttachment(Entity $entity, \stdClass $data): void
     {
+        if (($data->parentType == 'Asset' || $data->relatedType == 'Asset') && in_array($data->field, ['file', 'files']) && !empty($entity->getAsset())) {
+            throw new BadRequest($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset'));
+        }
+
         $entity = clone $entity;
 
         $entity->set('contents', $data->contents);
