@@ -179,45 +179,6 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param string $attachmentId
-     *
-     * @return bool
-     */
-    public function toDelete(string $attachmentId)
-    {
-        $entity = $this->getEntity($attachmentId);
-
-        if (!$entity) {
-            return false;
-        }
-
-        $entity->set("deleted", true);
-
-        return $this->getRepository()->save($entity);
-    }
-
-    public function deleteAttachment($attachmentId, $entityType = null)
-    {
-        $attachmentRepository = $this->getRepository();
-
-        $where = [
-            'id' => $attachmentId
-        ];
-
-        if ($entityType) {
-            $where["relatedType"] = $entityType;
-        }
-
-        $attachment = $attachmentRepository->where($where)->findOne();
-
-        if (!$attachment) {
-            return false;
-        }
-
-        return $attachmentRepository->remove($attachment);
-    }
-
-    /**
      * @param \Dam\Entities\Attachment $attachment
      * @param string                   $newName
      *
