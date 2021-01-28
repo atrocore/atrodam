@@ -36,7 +36,6 @@ use Dam\Entities\AssetCategory;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
-use PDO;
 use Treo\Core\EventManager\Event;
 
 /**
@@ -148,24 +147,6 @@ class AssetEntity extends AbstractListener
         if (!empty($attachment = $entity->get("file"))) {
             $this->getEntityManager()->removeEntity($attachment);
         }
-    }
-
-    /**
-     * @param $collectionId
-     * @param $categories
-     *
-     * @return bool
-     */
-    protected function isCorrectCategory($collectionId, $categories): bool
-    {
-        $pdo = $this->getEntityManager()->getPDO();
-
-        $sql = "SELECT 1 FROM collection_asset_category WHERE asset_category_id IN ('" . implode("','", $categories) . "') AND collection_id = '{$collectionId}'";
-
-        $prepare = $pdo->query($sql);
-        $res = $prepare->fetch(PDO::FETCH_ASSOC);
-
-        return $res ? true : false;
     }
 
     /**
