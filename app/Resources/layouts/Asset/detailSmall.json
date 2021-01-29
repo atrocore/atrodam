@@ -6,12 +6,20 @@
           "name": "type"
         },
         {
-          "name": "file"
+          "name": "library"
         }
       ],
       [
         {
+          "name": "file"
+        },
+        {
           "name": "name"
+        }
+      ],
+      [
+        {
+          "name": "isActive"
         },
         {
           "name": "private"
@@ -19,11 +27,15 @@
       ],
       [
         {
-          "name": "library"
-        },
-        {
-          "name": "tags"
+          "name": "tags",
+          "fullWidth": true
         }
+      ],
+      [
+        {
+          "name": "description"
+        },
+        false
       ]
     ],
     "style": "default",
