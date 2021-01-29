@@ -9,5 +9,8 @@
   },
   {
     "name": "type"
+  },
+  {
+    "name": "tags"
   }
 ]
