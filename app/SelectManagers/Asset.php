@@ -100,7 +100,7 @@ class Asset extends AbstractSelectManager
             $products = $category->getTreeAssets();
 
             $result['whereClause'][] = [
-                'id' => count($products > 0) ? array_column($products->toArray(), 'id') : [],
+                'id' => (count($products) > 0) ? array_column($products->toArray(), 'id') : [],
             ];
         }
     }
