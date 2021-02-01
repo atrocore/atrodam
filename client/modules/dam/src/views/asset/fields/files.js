@@ -36,12 +36,23 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         events: _.extend(Dep.prototype.events, {
                 'click a.remove-attachment': function (e) {
-                    $(e.currentTarget).parent().parent().remove();
+                    var $div = $(e.currentTarget).parent();
+                    let id = $div.attr('data-id');
+                    if (id) {
+                        $.ajax({
+                            type: 'DELETE',
+                            url: `Attachment/${id}?silent=true`,
+                            contentType: "application/json"
+                        })
+                    }
+                    $div.parent().remove();
                 }
             },
         ),
 
         files: {},
+
+        failedCount: 0,
 
         setup() {
             Dep.prototype.setup.call(this);
@@ -71,6 +82,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.isUploading = true;
 
             this.files = {};
+            this.failedCount = 0;
 
             this.model.trigger('updating-started');
 
@@ -98,7 +110,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             fileReader.onload = function (e) {
                 $.ajax({
                     type: 'POST',
-                    url: 'Attachment',
+                    url: 'Attachment?silent=true',
                     contentType: "application/json",
                     data: JSON.stringify({
                         name: file.name,
@@ -111,7 +123,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         modelAttributes: this.model.attributes
                     }),
                 }).done(function (attachment) {
-                    $attachmentBox.trigger('ready');
+                    $attachmentBox.parent().find('.uploading-message').remove();
                     $attachmentBox.attr('data-id', attachment.id);
 
                     this.files[attachment.id] = attachment.name;
@@ -127,17 +139,28 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             this.createAttachments(files);
                         }
                     }
-                }.bind(this)).error(function (data) {
-                    $attachmentBox.remove();
-                    this.totalCount--;
-                    if (!this.totalCount) {
-                        this.isUploading = false;
-                        this.$el.find('.uploading-message').remove();
-                    }
+                }.bind(this)).error(function (response) {
+                    let reason = response.getResponseHeader('X-Status-Reason') || this.translate('Failed');
 
-                    if (this.uploadedCount === this.totalCount) {
+                    $attachmentBox.parent().find('.uploading-message').html(reason);
+                    $attachmentBox.css('background-color', '#f2dede');
+
+                    this.totalCount--;
+                    this.failedCount++;
+
+                    if (this.totalCount === 0) {
                         this.isUploading = false;
                         this.afterAttachmentsUploaded.call(this);
+                    }
+
+                    if (this.isUploading) {
+                        if (this.uploadedCount === this.totalCount) {
+                            this.isUploading = false;
+                            this.afterAttachmentsUploaded.call(this);
+                        } else {
+                            this.afterAttachmentsUploaded.call(this);
+                            this.createAttachments(files);
+                        }
                     }
                 }.bind(this));
             }.bind(this);
@@ -153,6 +176,14 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 percentCompleted = this.getPercentCompleted();
             } else {
                 $progress.hide();
+
+                if (this.failedCount > 0) {
+                    let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
+                    message = message.replace('XX', this.failedCount);
+                    message = message.replace('YY', this.failedCount + this.uploadedCount);
+
+                    Espo.Ui.notify(message, 'error', 1000 * 120, true);
+                }
 
                 let filesIds = [];
                 $.each(this.files, function (fileId, fileName) {

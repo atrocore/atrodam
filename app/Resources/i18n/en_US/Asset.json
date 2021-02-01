@@ -38,6 +38,7 @@
     "relatedAssets": "Related Assets"
   },
   "messages": {
+    "notAllAssetsWereUploaded" : "XX of YY assets were not uploaded.",
     "outOfSelectedAssetsUploaded": "Out of %s selected assets %s assets were uploaded."
   },
   "exceptions": {

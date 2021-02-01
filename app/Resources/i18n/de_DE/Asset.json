@@ -42,6 +42,7 @@
     "preview": "Vorschau"
   },
   "messages": {
+    "notAllAssetsWereUploaded" : "XX von YY Assets wurden nicht hochgeladen.",
     "outOfSelectedAssetsUploaded": "Von %s ausgewählten Assets wurden %s Assets hochgeladen."
   },
   "exceptions": {
