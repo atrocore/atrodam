@@ -6,20 +6,24 @@
           "name": "type"
         },
         {
-          "name": "file"
+          "name": "library"
         }
       ],
       [
         {
-          "name": "name"
+          "name": "file"
         },
-        false
+        {
+          "name": "name"
+        }
       ],
       [
         {
-          "name": "private"
+          "name": "isActive"
         },
-        false
+        {
+          "name": "private"
+        }
       ],
       [
         {
@@ -29,11 +33,9 @@
       ],
       [
         {
-          "name": "library"
+          "name": "description"
         },
-        {
-          "name": "isActive"
-        }
+        false
       ]
     ],
     "style": "default",
