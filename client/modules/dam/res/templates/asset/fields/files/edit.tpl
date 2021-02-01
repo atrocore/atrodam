@@ -28,13 +28,9 @@
         </div>
         {{/if}}
     </div>
-    {{#if isUploading}}
-    <div class="progress">
-        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{percentCompleted}}%">
-            {{percentCompleted}}% {{translate 'uploaded' category='labels' scope='Asset'}}
-        </div>
+    <div class="progress" style="display:none">
+        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
-    {{/if}}
     <div class="attachments"></div>
 </div>
 <style>

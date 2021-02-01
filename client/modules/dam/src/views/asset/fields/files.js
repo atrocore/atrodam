@@ -26,19 +26,22 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/fields/files', 'views/fields/attachment-multiple',
-    Dep => Dep.extend({
+Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple', 'views/fields/file'], function (Dep, File) {
+
+    return Dep.extend({
 
         editTemplate: 'dam:asset/fields/files/edit',
 
         showPreviews: false,
 
-        data() {
-            return _.extend({}, Dep.prototype.data.call(this), {
-                isUploading: this.isUploading,
-                percentCompleted: this.getPercentCompleted()
-            });
-        },
+        events: _.extend(Dep.prototype.events, {
+                'click a.remove-attachment': function (e) {
+                    $(e.currentTarget).parent().parent().remove();
+                }
+            },
+        ),
+
+        files: {},
 
         setup() {
             Dep.prototype.setup.call(this);
@@ -50,107 +53,122 @@ Espo.define('dam:views/asset/fields/files', 'views/fields/attachment-multiple',
             return Math.round((100 / this.totalCount) * this.uploadedCount);
         },
 
+        getMaxUploadSize: function () {
+            return File.prototype.getMaxUploadSize.call(this);
+        },
+
         uploadFiles: function (files) {
+            const maxFileSize = this.getMaxUploadSize();
+
+            let fileList = [];
+            for (let i = 0; i < files.length; i++) {
+                fileList.push(files[i]);
+            }
+
             this.uploadedCount = 0;
-            this.totalCount = 0;
+            this.totalCount = fileList.length;
 
-            var exceedsMaxFileSize = false;
+            this.isUploading = true;
 
-            var maxFileSize = this.params.maxFileSize || 0;
-            var appMaxUploadSize = this.getHelper().getAppParam('maxUploadSize') || 0;
-            if (!maxFileSize || maxFileSize > appMaxUploadSize) {
-                maxFileSize = appMaxUploadSize;
-            }
+            this.files = {};
 
-            if (maxFileSize) {
-                for (var i = 0; i < files.length; i++) {
-                    var file = files[i];
-                    if (file.size > maxFileSize * 1024 * 1024) {
-                        exceedsMaxFileSize = true;
-                    }
-                }
-            }
-            if (exceedsMaxFileSize) {
-                var msg = this.translate('fieldMaxFileSizeError', 'messages')
-                    .replace('{field}', this.getLabelText())
-                    .replace('{max}', maxFileSize);
+            this.model.trigger('updating-started');
 
-                this.showValidationMessage(msg, 'label');
+            this.createAttachments(fileList);
+        },
+
+        createAttachments: function (files) {
+            if (files.length === 0) {
                 return;
             }
 
-            this.isUploading = true;
-            this.model.trigger('updating-started');
+            let file = files.shift();
 
-            this.getModelFactory().create('Attachment', function (model) {
-                var canceledList = [];
+            let $attachmentBox = this.addAttachmentBox(file.name, file.type);
 
-                var fileList = [];
-                for (var i = 0; i < files.length; i++) {
-                    fileList.push(files[i]);
-                    this.totalCount++;
+            $attachmentBox.find('.remove-attachment').on('click.uploading', function () {
+                this.totalCount--;
+                if (this.uploadedCount === this.totalCount) {
+                    this.isUploading = false;
+                    this.afterAttachmentsUploaded.call(this);
                 }
-
-                fileList.forEach(function (file) {
-                    var $attachmentBox = this.addAttachmentBox(file.name, file.type);
-
-                    $attachmentBox.find('.remove-attachment').on('click.uploading', function () {
-                        canceledList.push(attachment.cid);
-                        this.totalCount--;
-                        if (this.uploadedCount == this.totalCount) {
-                            this.isUploading = false;
-                            if (this.totalCount) {
-                                this.afterAttachmentsUploaded.call(this);
-                            }
-                        }
-                    }.bind(this));
-
-                    var attachment = model.clone();
-
-                    var fileReader = new FileReader();
-                    fileReader.onload = function (e) {
-                        attachment.set('name', file.name);
-                        attachment.set('type', file.type || 'text/plain');
-                        attachment.set('role', 'Attachment');
-                        attachment.set('size', file.size);
-                        attachment.set('parentType', 'Asset');
-                        attachment.set('file', e.target.result);
-                        attachment.set('field', this.name);
-                        attachment.set('modelAttributes', this.model.attributes);
-
-                        attachment.save({}, {timeout: 0}).then(function () {
-                            if (canceledList.indexOf(attachment.cid) === -1) {
-                                $attachmentBox.trigger('ready');
-                                this.pushAttachment(attachment);
-                                $attachmentBox.attr('data-id', attachment.id);
-                                this.uploadedCount++;
-                                if (this.uploadedCount == this.totalCount && this.isUploading) {
-                                    this.isUploading = false;
-                                    this.afterAttachmentsUploaded.call(this);
-                                }
-                            }
-                        }.bind(this)).fail(function () {
-                            $attachmentBox.remove();
-                            this.totalCount--;
-                            if (!this.totalCount) {
-                                this.isUploading = false;
-                                this.$el.find('.uploading-message').remove();
-                            }
-                            if (this.uploadedCount == this.totalCount && this.isUploading) {
-                                this.isUploading = false;
-                                this.afterAttachmentsUploaded.call(this);
-                            }
-                        }.bind(this));
-                    }.bind(this);
-                    fileReader.readAsDataURL(file);
-                }, this);
             }.bind(this));
+
+            let fileReader = new FileReader();
+            fileReader.onload = function (e) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'Attachment',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        name: file.name,
+                        type: file.type || 'text/plain',
+                        size: file.size,
+                        parentType: 'Asset',
+                        role: 'Attachment',
+                        file: e.target.result,
+                        field: this.name,
+                        modelAttributes: this.model.attributes
+                    }),
+                }).done(function (attachment) {
+                    $attachmentBox.trigger('ready');
+                    $attachmentBox.attr('data-id', attachment.id);
+
+                    this.files[attachment.id] = attachment.name;
+
+                    this.uploadedCount++;
+
+                    if (this.isUploading) {
+                        if (this.uploadedCount === this.totalCount) {
+                            this.isUploading = false;
+                            this.afterAttachmentsUploaded.call(this);
+                        } else {
+                            this.afterAttachmentsUploaded.call(this);
+                            this.createAttachments(files);
+                        }
+                    }
+                }.bind(this)).error(function (data) {
+                    $attachmentBox.remove();
+                    this.totalCount--;
+                    if (!this.totalCount) {
+                        this.isUploading = false;
+                        this.$el.find('.uploading-message').remove();
+                    }
+
+                    if (this.uploadedCount === this.totalCount) {
+                        this.isUploading = false;
+                        this.afterAttachmentsUploaded.call(this);
+                    }
+                }.bind(this));
+            }.bind(this);
+            fileReader.readAsDataURL(file);
         },
 
         afterAttachmentsUploaded() {
-            this.reRender();
-            this.model.trigger('updating-ended');
-        }
+            let $progress = $('.attachment-upload .progress');
+
+            let percentCompleted = 0;
+            if (this.isUploading) {
+                $progress.show();
+                percentCompleted = this.getPercentCompleted();
+            } else {
+                $progress.hide();
+
+                let filesIds = [];
+                $.each(this.files, function (fileId, fileName) {
+                    filesIds.push(fileId);
+                });
+
+                this.model.set('name', 'massUpload', {silent: true});
+                this.model.set('filesIds', filesIds, {silent: true});
+                this.model.set('filesNames', this.files, {silent: true});
+
+                this.model.trigger('updating-ended');
+            }
+
+            $progress.find('.progress-bar').css('width', percentCompleted + '%');
+            $progress.find('.progress-bar').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
+        },
 
     })
-);
+});
