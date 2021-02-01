@@ -46,11 +46,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         })
                     }
                     $div.parent().remove();
+
+                    this.attachmentBoxes[$div.data('hash')] = null;
                 }
             },
         ),
 
         files: {},
+
+        attachmentBoxes: {},
 
         failedCount: 0,
 
@@ -68,6 +72,24 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             return File.prototype.getMaxUploadSize.call(this);
         },
 
+        addFileBox: function (file) {
+            let $attachments = this.$attachments;
+            let removeLink = '<a href="javascript:" class="remove-attachment pull-right"><span class="fas fa-times"></span></a>';
+            let $att = $('<div>')
+                .attr('data-hash', file.size + '_hash_' + file.name)
+                .addClass('gray-box')
+                .append(removeLink)
+                .append($('<span class="preview">' + file.name + '</span>').css('width', 'cacl(100% - 30px)'));
+
+            let $container = $('<div>').append($att);
+            $attachments.append($container);
+
+            let $loading = $('<span class="small uploading-message">' + this.translate('Uploading...') + '</span>');
+            $container.append($loading);
+
+            return $att;
+        },
+
         uploadFiles: function (files) {
             const maxFileSize = this.getMaxUploadSize();
 
@@ -79,12 +101,16 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.uploadedCount = 0;
             this.totalCount = fileList.length;
 
-            this.isUploading = true;
-
             this.files = {};
             this.failedCount = 0;
 
             this.model.trigger('updating-started');
+
+            this.attachmentBoxes = {};
+            fileList.forEach(function (file) {
+                let $attachmentBox = this.addFileBox(file);
+                this.attachmentBoxes[$attachmentBox.data('hash')] = $attachmentBox;
+            }, this);
 
             this.createAttachments(fileList);
         },
@@ -96,15 +122,13 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             let file = files.shift();
 
-            let $attachmentBox = this.addAttachmentBox(file.name, file.type);
+            // if (this.attachmentBoxes[file.size + '_hash_' + file.name] === null) {
+            //     this.uploadedCount++;
+            //     this.createAttachments(files);
+            //     return;
+            // }
 
-            $attachmentBox.find('.remove-attachment').on('click.uploading', function () {
-                this.totalCount--;
-                if (this.uploadedCount === this.totalCount) {
-                    this.isUploading = false;
-                    this.afterAttachmentsUploaded.call(this);
-                }
-            }.bind(this));
+            let $attachmentBox = this.attachmentBoxes[file.size + '_hash_' + file.name];
 
             let fileReader = new FileReader();
             fileReader.onload = function (e) {
@@ -130,15 +154,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
                     this.uploadedCount++;
 
-                    if (this.isUploading) {
-                        if (this.uploadedCount === this.totalCount) {
-                            this.isUploading = false;
-                            this.afterAttachmentsUploaded.call(this);
-                        } else {
-                            this.afterAttachmentsUploaded.call(this);
-                            this.createAttachments(files);
-                        }
-                    }
+                    this.afterAttachmentUploaded(files);
                 }.bind(this)).error(function (response) {
                     let reason = response.getResponseHeader('X-Status-Reason') || this.translate('Failed');
 
@@ -148,32 +164,22 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     this.totalCount--;
                     this.failedCount++;
 
-                    if (this.totalCount === 0) {
-                        this.isUploading = false;
-                        this.afterAttachmentsUploaded.call(this);
-                    }
-
-                    if (this.isUploading) {
-                        if (this.uploadedCount === this.totalCount) {
-                            this.isUploading = false;
-                            this.afterAttachmentsUploaded.call(this);
-                        } else {
-                            this.afterAttachmentsUploaded.call(this);
-                            this.createAttachments(files);
-                        }
-                    }
+                    this.afterAttachmentUploaded(files);
                 }.bind(this));
             }.bind(this);
             fileReader.readAsDataURL(file);
         },
 
-        afterAttachmentsUploaded() {
+        afterAttachmentUploaded(files) {
             let $progress = $('.attachment-upload .progress');
 
             let percentCompleted = 0;
-            if (this.isUploading) {
+
+            let done = this.uploadedCount === this.totalCount || this.totalCount === 0;
+            if (!done) {
                 $progress.show();
                 percentCompleted = this.getPercentCompleted();
+                this.createAttachments(files);
             } else {
                 $progress.hide();
 
