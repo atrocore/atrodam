@@ -43,20 +43,21 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             type: 'DELETE',
                             url: `Attachment/${id}?silent=true`,
                             contentType: "application/json"
-                        })
+                        });
+
+                        let filesIds = [];
+                        (this.model.get('filesIds') || []).forEach(function (fileId) {
+                            if (fileId !== id) {
+                                filesIds.push(fileId);
+                            }
+                        });
+                        this.model.set('filesIds', filesIds, {silent: true});
                     }
                     this.ignoredNumbers.push($div.data('number'));
                     $div.parent().remove();
-
-                    this.uploadedCount++;
-                    this.afterAttachmentUploaded();
                 }
             },
         ),
-
-        attachmentBoxes: {},
-
-        failedCount: 0,
 
         setup() {
             Dep.prototype.setup.call(this);
@@ -77,7 +78,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         getPercentCompleted() {
-            return Math.round((100 / this.totalCount) * this.uploadedCount);
+            return Math.round((100 / this.totalSize) * this.uploadedSize);
         },
 
         getMaxUploadSize: function () {
@@ -111,24 +112,26 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         uploadFiles: function (files) {
+            this.totalSize = 0;
+            this.uploadedSize = 0;
             let fileList = [];
             let attachmentBoxes = [];
             for (let i = 0; i < files.length; i++) {
                 fileList.push(files[i]);
                 attachmentBoxes.push(this.addFileBox(files[i], i));
+                this.totalSize += files[i].size;
             }
 
             this.ignoredNumbers = [];
             this.uploadedCount = 0;
             this.failedCount = 0;
-            this.totalCount = fileList.length;
 
-            this.uploadedFiles = {};
             this.currentNumber = null;
 
             this.model.trigger('updating-started');
+            this.model.set('name', 'massUpload', {silent: true});
 
-            this.afterAttachmentUploaded();
+            this.updateProgress();
 
             this.createAttachments(fileList, attachmentBoxes);
         },
@@ -148,6 +151,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             let $attachmentBox = attachmentBoxes.shift();
 
             if (this.isCanceled()) {
+                this.uploadedSize += file.size;
+                this.updateProgress();
                 this.createAttachments(files, attachmentBoxes);
                 return;
             }
@@ -172,9 +177,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             modelAttributes: this.model.attributes
                         }),
                     }).done(function (response) {
+                        this.uploadedSize += file.size;
+                        this.updateProgress();
+
                         this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
                     }.bind(this)).error(function (response) {
-                        this.uploadFailed(response, $attachmentBox, files, attachmentBoxes);
+                        this.totalSize -= file.size;
+                        this.updateProgress();
+
+                        this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
                     }.bind(this));
                 }.bind(this);
                 fileReader.readAsDataURL(file);
@@ -222,12 +233,30 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         sendChunk: function (resolve, file, pieces, chunkId, $attachmentBox, files, attachmentBoxes) {
-            if (pieces.length === 0 || this.isCanceled()) {
+            if (pieces.length === 0) {
                 resolve();
                 return;
             }
 
             const item = pieces.shift();
+
+            // if is canceled
+            if (this.isCanceled()) {
+                this.pieceNumber++;
+                this.uploadedSize += item.piece.size;
+
+                this.updateProgress();
+
+                if (pieces.length > 0) {
+                    this.sendChunk(resolve, file, pieces, chunkId, $attachmentBox, files, attachmentBoxes);
+                }
+
+                if (this.pieceNumber === this.piecesTotal) {
+                    resolve();
+                }
+
+                return;
+            }
 
             const reader = new FileReader();
             reader.readAsDataURL(item.piece);
@@ -242,9 +271,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         start: item.start,
                         piece: reader.result,
                     }),
-                }).done(function (data) {
+                }).done(function (response) {
                     this.pieceNumber++;
+                    this.uploadedSize += item.piece.size;
+
                     this.setProgressMessage($attachmentBox);
+                    this.updateProgress();
 
                     if (pieces.length > 0) {
                         this.sendChunk(resolve, file, pieces, chunkId, $attachmentBox, files, attachmentBoxes);
@@ -254,7 +286,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         resolve();
                     }
                 }.bind(this)).error(function (response) {
-                    this.uploadFailed(response, $attachmentBox, files, attachmentBoxes);
+                    // @todo
+                    // this.totalSize -= file.size;
+                    // this.updateProgress();
+
+                    this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
                     resolve();
                 }.bind(this));
             }.bind(this)
@@ -284,7 +320,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.pieces = [];
                 this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
             }.bind(this)).error(function (response) {
-                this.uploadFailed(response, $attachmentBox, files, attachmentBoxes);
+                // @todo
+                // this.totalSize -= file.size;
+                // this.updateProgress();
+
+                this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
             }.bind(this));
         },
 
@@ -300,29 +340,45 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             if (attachment !== null) {
                 $attachmentBox.attr('data-id', attachment.id);
-                this.uploadedFiles[attachment.id] = attachment.name;
             }
+
+            let filesIds = this.model.get('filesIds') || [];
+            filesIds.push(attachment.id);
+
+            let filesNames = this.model.get('filesNames') || {};
+            filesNames[attachment.id] = attachment.name;
+
+            this.model.set('filesIds', filesIds, {silent: true});
+            this.model.set('filesNames', filesNames, {silent: true});
 
             this.uploadedCount++;
 
-            this.afterAttachmentUploaded(files, attachmentBoxes);
+            if (!this.isDone()) {
+                this.createAttachments(files, attachmentBoxes);
+            }
         },
 
-        uploadFailed: function (response, $attachmentBox, files, attachmentBoxes) {
+        uploadFailed: function (file, response, $attachmentBox, files, attachmentBoxes) {
             let reason = response.getResponseHeader('X-Status-Reason') || this.translate('Failed');
 
             $attachmentBox.parent().find('.uploading-message').html(reason);
             $attachmentBox.css('background-color', '#f2dede');
 
-            this.totalCount--;
             this.failedCount++;
 
-            this.afterAttachmentUploaded(files, attachmentBoxes);
+            if (!this.isDone()) {
+                this.createAttachments(files, attachmentBoxes);
+            }
         },
 
-        afterAttachmentUploaded(files, attachmentBoxes) {
-            let isDone = this.uploadedCount === this.totalCount || this.totalCount === 0;
-            if (isDone) {
+        isDone: function () {
+            return this.getPercentCompleted() === 100;
+        },
+
+        updateProgress: function () {
+            let percentCompleted = this.getPercentCompleted();
+
+            if (this.isDone()) {
                 if (this.failedCount > 0) {
                     let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
                     message = message.replace('XX', this.failedCount);
@@ -331,25 +387,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     Espo.Ui.notify(message, 'error', 1000 * 120, true);
                 }
 
-                let filesIds = [];
-                $.each(this.uploadedFiles, function (fileId, fileName) {
-                    filesIds.push(fileId);
-                });
-
-                this.model.set('name', 'massUpload', {silent: true});
-                this.model.set('filesIds', filesIds, {silent: true});
-                this.model.set('filesNames', this.uploadedFiles, {silent: true});
-
                 this.model.trigger('updating-ended');
-            } else {
-                if (files && attachmentBoxes) {
-                    this.createAttachments(files, attachmentBoxes);
-                }
-            }
-
-            let percentCompleted = this.getPercentCompleted();
-            if (percentCompleted < 1) {
-                percentCompleted = 1;
             }
 
             $('.attachment-upload .progress .progress-bar').css('width', percentCompleted + '%').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
