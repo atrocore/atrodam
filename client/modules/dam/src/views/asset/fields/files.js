@@ -69,13 +69,13 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.listenTo(this.model, "updating-started", function () {
                 $('.attachment-upload .progress').show();
                 $('.attachment-upload .btn-upload .btn').addClass('disabled');
-                $('.attachment-upload input.file').addClass('disabled').attr('disable', 'disabled');
+                $('.attachment-upload input.file').addClass('disabled').attr('type', 'hidden');
             });
 
             this.listenTo(this.model, "updating-ended", function () {
                 $('.attachment-upload .progress').hide();
                 $('.attachment-upload .btn-upload .btn').removeClass('disabled');
-                $('.attachment-upload input.file').removeClass('disabled').removeAttr('disable');
+                $('.attachment-upload input.file').removeClass('disabled').attr('type', 'file');
             });
         },
 
