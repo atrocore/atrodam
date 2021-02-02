@@ -140,32 +140,31 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             if (file.size > this.getMaxUploadSize() * 1024 * 1024) {
                 this.chunkCreateAttachments(file, $attachmentBox, files, attachmentBoxes);
-                return;
+            } else {
+                let fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'Attachment?silent=true',
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            name: file.name,
+                            type: file.type || 'text/plain',
+                            size: file.size,
+                            parentType: 'Asset',
+                            role: 'Attachment',
+                            file: e.target.result,
+                            field: this.name,
+                            modelAttributes: this.model.attributes
+                        }),
+                    }).done(function (response) {
+                        this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
+                    }.bind(this)).error(function (response) {
+                        this.uploadFailed(response, $attachmentBox, files, attachmentBoxes);
+                    }.bind(this));
+                }.bind(this);
+                fileReader.readAsDataURL(file);
             }
-
-            let fileReader = new FileReader();
-            fileReader.onload = function (e) {
-                $.ajax({
-                    type: 'POST',
-                    url: 'Attachment?silent=true',
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        name: file.name,
-                        type: file.type || 'text/plain',
-                        size: file.size,
-                        parentType: 'Asset',
-                        role: 'Attachment',
-                        file: e.target.result,
-                        field: this.name,
-                        modelAttributes: this.model.attributes
-                    }),
-                }).done(function (response) {
-                    this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
-                }.bind(this)).error(function (response) {
-                    this.uploadFailed(response, $attachmentBox, files, attachmentBoxes);
-                }.bind(this));
-            }.bind(this);
-            fileReader.readAsDataURL(file);
         },
 
         chunkCreateAttachments: function (file, $attachmentBox, files, attachmentBoxes) {
@@ -200,7 +199,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             Promise.all(promiseList).then(function () {
                 this.createByChunks(file, chunkId, $attachmentBox, files, attachmentBoxes);
-                this.createAttachments(files, attachmentBoxes);
             }.bind(this));
 
         },
@@ -250,6 +248,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         createByChunks: function (file, chunkId, $attachmentBox, files, attachmentBoxes) {
             if (this.pieces.length === 0 || this.isCanceled()) {
+                this.createAttachments(files, attachmentBoxes);
                 return;
             }
 
