@@ -76,7 +76,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 $('.attachment-upload .progress').hide();
                 $('.attachment-upload .btn-upload .btn').removeClass('disabled');
                 $('.attachment-upload input.file').removeClass('disabled').attr('type', 'file');
-            });
+
+                if (this.failedCount > 0) {
+                    let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
+                    message = message.replace('XX', this.failedCount);
+                    message = message.replace('YY', this.failedCount + this.uploadedCount);
+
+                    Espo.Ui.notify(message, 'error', 1000 * 120, true);
+                }
+            }.bind(this));
         },
 
         getPercentCompleted() {
@@ -185,7 +193,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
                         this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
                     }.bind(this)).error(function (response) {
-                        this.totalSize -= file.size;
+                        this.uploadedSize += file.size;
                         this.updateProgress();
 
                         this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
@@ -371,7 +379,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.uploadedCount++;
 
-            if (!this.isDone()) {
+            if (this.isDone()) {
+                this.model.trigger('updating-ended');
+            } else {
                 this.createAttachments(files, attachmentBoxes);
             }
         },
@@ -384,7 +394,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.failedCount++;
 
-            if (!this.isDone()) {
+            if (this.isDone()) {
+                this.model.trigger('updating-ended');
+            } else {
                 this.createAttachments(files, attachmentBoxes);
             }
         },
@@ -395,19 +407,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         updateProgress: function () {
             let percentCompleted = this.getPercentCompleted();
-
-            if (this.isDone()) {
-                if (this.failedCount > 0) {
-                    let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
-                    message = message.replace('XX', this.failedCount);
-                    message = message.replace('YY', this.failedCount + this.uploadedCount);
-
-                    Espo.Ui.notify(message, 'error', 1000 * 120, true);
-                }
-
-                this.model.trigger('updating-ended');
-            }
-
             $('.attachment-upload .progress .progress-bar').css('width', percentCompleted + '%').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
         },
 
