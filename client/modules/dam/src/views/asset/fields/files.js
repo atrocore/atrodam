@@ -139,7 +139,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         createAttachments: function (files, attachmentBoxes) {
-            if (files.length === 0) {
+            if (files.length === 0 || !this.isModalOpen()) {
                 return;
             }
 
@@ -236,7 +236,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             return this.ignoredNumbers.indexOf(this.currentNumber) !== -1;
         },
 
+        isModalOpen: function () {
+            return $('.attachment-upload').length > 0;
+        },
+
         sendChunk: function (resolve, file, pieces, chunkId, $attachmentBox, files, attachmentBoxes) {
+            if (!this.isModalOpen()) {
+                return;
+            }
+
             if (pieces.length === 0 || this.chunkFailedResponse) {
                 resolve();
                 return;
@@ -302,6 +310,10 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         createByChunks: function (file, chunkId, $attachmentBox, files, attachmentBoxes) {
+            if (!this.isModalOpen()) {
+                return;
+            }
+
             if (this.pieces.length === 0 || this.isCanceled()) {
                 this.createAttachments(files, attachmentBoxes);
                 return;
