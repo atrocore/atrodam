@@ -62,6 +62,18 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             Dep.prototype.setup.call(this);
 
             this.listenTo(this.model, "change:type", () => this.empty());
+
+            this.listenTo(this.model, "updating-started", function () {
+                $('.attachment-upload .progress').show();
+                $('.attachment-upload .btn-upload .btn').addClass('disabled');
+                $('.attachment-upload input.file').addClass('disabled').attr('disable', 'disabled');
+            });
+
+            this.listenTo(this.model, "updating-ended", function () {
+                $('.attachment-upload .progress').hide();
+                $('.attachment-upload .btn-upload .btn').removeClass('disabled');
+                $('.attachment-upload input.file').removeClass('disabled').removeAttr('disable');
+            });
         },
 
         getPercentCompleted() {
@@ -115,6 +127,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.currentNumber = null;
 
             this.model.trigger('updating-started');
+
+            this.afterAttachmentUploaded();
 
             this.createAttachments(fileList, attachmentBoxes);
         },
@@ -307,21 +321,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         afterAttachmentUploaded(files, attachmentBoxes) {
-            let $progress = $('.attachment-upload .progress');
-
-            let percentCompleted = 0;
-
-            let done = this.uploadedCount === this.totalCount || this.totalCount === 0;
-            if (!done) {
-                $progress.show();
-                percentCompleted = this.getPercentCompleted();
-
-                if (files && attachmentBoxes) {
-                    this.createAttachments(files, attachmentBoxes);
-                }
-            } else {
-                $progress.hide();
-
+            let isDone = this.uploadedCount === this.totalCount || this.totalCount === 0;
+            if (isDone) {
                 if (this.failedCount > 0) {
                     let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
                     message = message.replace('XX', this.failedCount);
@@ -340,10 +341,18 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.model.set('filesNames', this.uploadedFiles, {silent: true});
 
                 this.model.trigger('updating-ended');
+            } else {
+                if (files && attachmentBoxes) {
+                    this.createAttachments(files, attachmentBoxes);
+                }
             }
 
-            $progress.find('.progress-bar').css('width', percentCompleted + '%');
-            $progress.find('.progress-bar').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
+            let percentCompleted = this.getPercentCompleted();
+            if (percentCompleted < 1) {
+                percentCompleted = 1;
+            }
+
+            $('.attachment-upload .progress .progress-bar').css('width', percentCompleted + '%').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
         },
 
     })
