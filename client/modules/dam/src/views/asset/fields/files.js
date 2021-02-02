@@ -47,6 +47,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     }
                     this.ignoredNumbers.push($div.data('number'));
                     $div.parent().remove();
+
+                    this.uploadedCount++;
+                    this.afterAttachmentUploaded();
                 }
             },
         ),
@@ -131,8 +134,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             let $attachmentBox = attachmentBoxes.shift();
 
             if (this.isCanceled()) {
-                this.uploadedCount++;
-                this.afterAttachmentUploaded(files, attachmentBoxes);
+                this.createAttachments(files, attachmentBoxes);
                 return;
             }
 
@@ -198,6 +200,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             Promise.all(promiseList).then(function () {
                 this.createByChunks(file, chunkId, $attachmentBox, files, attachmentBoxes);
+                this.createAttachments(files, attachmentBoxes);
             }.bind(this));
 
         },
@@ -247,7 +250,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         createByChunks: function (file, chunkId, $attachmentBox, files, attachmentBoxes) {
             if (this.pieces.length === 0 || this.isCanceled()) {
-                this.uploadSuccess(null, $attachmentBox, files, attachmentBoxes);
                 return;
             }
 
@@ -314,7 +316,10 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             if (!done) {
                 $progress.show();
                 percentCompleted = this.getPercentCompleted();
-                this.createAttachments(files, attachmentBoxes);
+
+                if (files && attachmentBoxes) {
+                    this.createAttachments(files, attachmentBoxes);
+                }
             } else {
                 $progress.hide();
 
