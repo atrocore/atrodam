@@ -33,12 +33,8 @@
     </div>
     <div class="attachments"></div>
 </div>
-<style>
-    .attachment-upload .attachments {
-        max-height: 210px;
-        overflow: auto;
-    }
 
+<style type="text/css">
     .attachment-upload .progress {
         width: 50%;
     }

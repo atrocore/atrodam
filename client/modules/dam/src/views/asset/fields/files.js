@@ -45,6 +45,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             contentType: "application/json"
                         });
 
+                        this.uploadedCount--;
+
                         let filesIds = [];
                         (this.model.get('filesIds') || []).forEach(function (fileId) {
                             if (fileId !== id) {
@@ -105,7 +107,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             let $container = $('<div>').append($att);
             $attachments.append($container);
 
-            let $loading = $('<span class="small uploading-message">' + this.translate('Uploading...') + '</span>');
+            let $loading = $('<span class="small uploading-message">' + this.translate('Pending...') + '</span>');
             $container.append($loading);
 
             return $att;
@@ -149,6 +151,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             let file = files.shift();
             let $attachmentBox = attachmentBoxes.shift();
+            $attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...'));
 
             if (this.isCanceled()) {
                 this.uploadedSize += file.size;
@@ -200,6 +203,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.streams = this.getConfig().get('fileUploadStreamCount') || 3;
             this.piecesTotal = Math.ceil(file.size / sliceSize);
             this.pieceNumber = 0;
+            this.chunkFailedResponse = null;
 
             this.setProgressMessage($attachmentBox);
 
@@ -233,7 +237,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         sendChunk: function (resolve, file, pieces, chunkId, $attachmentBox, files, attachmentBoxes) {
-            if (pieces.length === 0) {
+            if (pieces.length === 0 || this.chunkFailedResponse) {
                 resolve();
                 return;
             }
@@ -264,7 +268,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             reader.onloadend = function () {
                 $.ajax({
                     type: 'POST',
-                    url: 'Attachment/action/CreateChunks',
+                    url: 'Attachment/action/CreateChunks?silent=true',
                     contentType: "application/json",
                     data: JSON.stringify({
                         chunkId: chunkId,
@@ -286,11 +290,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         resolve();
                     }
                 }.bind(this)).error(function (response) {
-                    // @todo
-                    // this.totalSize -= file.size;
-                    // this.updateProgress();
-
-                    this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
+                    this.uploadedSize += item.piece.size;
+                    while (pieces.length > 0) {
+                        this.uploadedSize += pieces.shift().piece.size;
+                    }
+                    this.updateProgress();
+                    this.chunkFailedResponse = response;
                     resolve();
                 }.bind(this));
             }.bind(this)
@@ -302,9 +307,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 return;
             }
 
+            this.pieces = [];
+            if (this.chunkFailedResponse) {
+                this.uploadFailed(file, this.chunkFailedResponse, $attachmentBox, files, attachmentBoxes);
+                return;
+            }
+
             $.ajax({
                 type: 'POST',
-                url: 'Attachment/action/CreateByChunks',
+                url: 'Attachment/action/CreateByChunks?silent=true',
                 contentType: "application/json",
                 data: JSON.stringify({
                     chunkId: chunkId,
@@ -317,13 +328,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     modelAttributes: this.model.attributes
                 }),
             }).done(function (response) {
-                this.pieces = [];
                 this.uploadSuccess(response, $attachmentBox, files, attachmentBoxes);
             }.bind(this)).error(function (response) {
-                // @todo
-                // this.totalSize -= file.size;
-                // this.updateProgress();
-
                 this.uploadFailed(file, response, $attachmentBox, files, attachmentBoxes);
             }.bind(this));
         },
@@ -359,7 +365,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         uploadFailed: function (file, response, $attachmentBox, files, attachmentBoxes) {
-            let reason = response.getResponseHeader('X-Status-Reason') || this.translate('Failed');
+            let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
 
             $attachmentBox.parent().find('.uploading-message').html(reason);
             $attachmentBox.css('background-color', '#f2dede');
@@ -372,7 +378,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         isDone: function () {
-            return this.getPercentCompleted() === 100;
+            return this.totalSize === this.uploadedSize;
         },
 
         updateProgress: function () {
