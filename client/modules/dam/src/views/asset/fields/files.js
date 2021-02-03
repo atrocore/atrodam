@@ -34,6 +34,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         showPreviews: false,
 
+        isUploading: false,
+
         events: _.extend(Dep.prototype.events, {
                 'click a.remove-attachment': function (e) {
                     let $div = $(e.currentTarget).parent();
@@ -79,6 +81,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.listenTo(this.model, "updating-started", function () {
                 $('.attachment-upload .progress').show();
+                this.isUploading = true;
             });
 
             this.listenTo(this.model, "updating-ended", function () {
@@ -90,6 +93,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
                     Espo.Ui.notify(message, 'error', 1000 * 120, true);
                 }
+
+                this.isUploading = false;
 
                 this.refreshVars();
             }.bind(this));
@@ -154,7 +159,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 }
             }
 
-            if (this.getUploadedSize() === 0) {
+            if (!this.isUploading) {
                 this.model.trigger('updating-started');
                 this.updateProgress();
                 this.createAttachments();
