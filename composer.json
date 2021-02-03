@@ -2,7 +2,7 @@
   "name": "atrocore/dam",
   "require": {
     "ext-fileinfo": "*",
-    "atrocore/core": "~1.1.0",
+    "atrocore/core": "~1.1.9",
     "atrocore/dam-common": "~1.2.0",
     "imal-h/pdf-box": "~1.3.1"
   },
