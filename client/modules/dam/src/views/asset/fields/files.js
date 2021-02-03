@@ -215,7 +215,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             const sliceSize = chunkFileSize * 1024 * 1024;
 
             this.streams = this.getConfig().get('fileUploadStreamCount') || 3;
-            this.chunkFailedResponse = null;
 
             this.setProgressMessage(file);
 
@@ -253,7 +252,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 return;
             }
 
-            if (pieces.length === 0 || this.chunkFailedResponse) {
+            if (pieces.length === 0) {
                 resolve();
                 return;
             }
@@ -274,7 +273,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         piece: reader.result,
                     }),
                 }).done(function (response) {
-                    if (!this.pushPieceSize(file.uniqueId, item.piece.size)) {
+                    if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
                         resolve();
                         return;
                     }
@@ -291,8 +290,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         resolve();
                     }
                 }.bind(this)).error(function (response) {
-                    // @todo do something
-
                     this.chunkFailedResponse = response;
                     resolve();
                 }.bind(this));
@@ -310,6 +307,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             }
 
             this.pieces = [];
+
             if (this.chunkFailedResponse) {
                 this.uploadFailed(file, this.chunkFailedResponse);
                 return;
@@ -372,7 +370,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
 
             file.attachmentBox.parent().find('.uploading-message').html(reason);
-            file.attachmentBox.css('background-color', '#f2dede');
+            file.attachmentBox.addClass('file-uploading-failed');
 
             this.failedCount++;
 

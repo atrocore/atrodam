@@ -38,4 +38,7 @@
     .attachment-upload .progress {
         width: 50%;
     }
+    .file-uploading-failed{
+        background-color: #f2dede !important;
+    }
 </style>
