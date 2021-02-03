@@ -66,7 +66,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     $div.parent().remove();
 
                     if (this.isDone()) {
-                        this.model.trigger('updating-ended');
+                        this.isUploading = false;
                     }
                 }
             },
@@ -373,6 +373,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             file.attachmentBox.parent().find('.uploading-message').html(reason);
             file.attachmentBox.addClass('file-uploading-failed');
+
+            delete this.uploadedSize[file.uniqueId];
+            delete this.filesSize[file.uniqueId];
+
+            this.updateProgress();
 
             if (this.isDone()) {
                 this.model.trigger('updating-ended');
