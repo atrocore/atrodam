@@ -80,6 +80,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.fileList = [];
             this.uploadedSize = {};
             this.filesSize = {};
+            this.uploadedChunks = {};
 
             this.listenTo(this.model, "change:type", () => this.empty());
 
@@ -153,6 +154,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     this.fileList.push(file);
                     this.filesSize[file.uniqueId] = file.size;
                     this.uploadedSize[file.uniqueId] = [];
+                    this.uploadedChunks[file.uniqueId] = [];
 
                     this.updateProgress();
                 }
@@ -267,37 +269,46 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             reader.readAsDataURL(item.piece);
 
             reader.onloadend = function () {
-                $.ajax({
-                    type: 'POST',
-                    url: 'Attachment/action/CreateChunks?silent=true',
-                    contentType: "application/json",
-                    data: JSON.stringify({
-                        chunkId: file.uniqueId,
-                        start: item.start,
-                        piece: reader.result,
-                    }),
-                }).done(function (response) {
-                    if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
+                if (this.uploadedChunks[file.uniqueId].indexOf(item.start.toString()) !== -1) {
+                    this.onChunkSaved(file, item, resolve, pieces);
+                } else {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'Attachment/action/CreateChunks?silent=true',
+                        contentType: "application/json",
+                        data: JSON.stringify({
+                            chunkId: file.uniqueId,
+                            start: item.start,
+                            piece: reader.result,
+                        }),
+                    }).done(function (response) {
+                        this.uploadedChunks[file.uniqueId] = response.chunks;
+                        this.onChunkSaved(file, item, resolve, pieces);
+                    }.bind(this)).error(function (response) {
+                        this.chunkFailedResponse = response;
                         resolve();
-                        return;
-                    }
-
-                    this.setProgressMessage(file);
-                    this.updateProgress();
-
-                    if (pieces.length > 0) {
-                        this.sendChunk(resolve, file, pieces);
-                    }
-
-                    let piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
-                    if (piecesSize === this.filesSize[file.uniqueId]) {
-                        resolve();
-                    }
-                }.bind(this)).error(function (response) {
-                    this.chunkFailedResponse = response;
-                    resolve();
-                }.bind(this));
+                    }.bind(this));
+                }
             }.bind(this)
+        },
+
+        onChunkSaved: function (file, item, resolve, pieces) {
+            if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
+                resolve();
+                return;
+            }
+
+            this.setProgressMessage(file);
+            this.updateProgress();
+
+            if (pieces.length > 0) {
+                this.sendChunk(resolve, file, pieces);
+            }
+
+            let piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
+            if (piecesSize === this.filesSize[file.uniqueId]) {
+                resolve();
+            }
         },
 
         createByChunks: function (file) {
@@ -360,6 +371,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.model.set('filesIds', filesIds, {silent: true});
             this.model.set('filesNames', filesNames, {silent: true});
+
+            this.updateProgress();
 
             if (this.isDone()) {
                 this.model.trigger('updating-ended');
