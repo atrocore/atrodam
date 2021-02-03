@@ -100,6 +100,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     }
                 }.bind(this), 100);
                 this.isUploading = false;
+                $('.attachment-upload .progress').hide();
             }.bind(this));
         },
 
@@ -371,8 +372,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.model.set('filesIds', filesIds, {silent: true});
             this.model.set('filesNames', filesNames, {silent: true});
-
-            this.updateProgress();
 
             if (this.isDone()) {
                 this.model.trigger('updating-ended');
