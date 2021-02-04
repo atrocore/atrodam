@@ -100,7 +100,18 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.uploadedChunks = {};
             this.failedFiles = {};
 
-            this.listenTo(this.model, "change:type", () => this.empty());
+            this.listenTo(this.model, "change:type", function () {
+                this.empty();
+
+                this.fileList = [];
+                this.uploadedSize = {};
+                this.finallyUploadedFiles = {};
+                this.filesSize = {};
+                this.uploadedChunks = {};
+                this.failedFiles = {};
+
+                this.model.trigger('updating-ended', {hideNotification: true});
+            });
 
             this.listenTo(this.model, "updating-started", function () {
                 this.isUploading = true;
