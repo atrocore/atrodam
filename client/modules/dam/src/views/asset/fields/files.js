@@ -145,7 +145,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         getMaxUploadSize: function () {
-            return File.prototype.getMaxUploadSize.call(this);
+            return File.prototype.getMaxUploadSize.call(this) * 1024 * 1024;
         },
 
         createFileUniqueHash: function (file) {
