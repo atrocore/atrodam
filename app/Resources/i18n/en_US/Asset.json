@@ -5,7 +5,7 @@
     "File": "File",
     "massUpload": "Mass Upload",
     "uploaded": "uploaded",
-    "retry": "retry"
+    "retry": "Retry?"
   },
   "fields": {
     "isActive": "Active",

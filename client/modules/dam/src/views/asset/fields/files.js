@@ -58,10 +58,10 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             }
                         });
                         this.model.set('filesIds', filesIds, {silent: true});
-                    } else {
-                        delete this.uploadedSize[hash];
-                        delete this.filesSize[hash];
                     }
+
+                    delete this.uploadedSize[hash];
+                    delete this.filesSize[hash];
 
                     this.updateProgress();
 
@@ -145,7 +145,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         getMaxUploadSize: function () {
-            return File.prototype.getMaxUploadSize.call(this);
+            return (this.getConfig().get('chunkFileSize') || 2) * 1024 * 1024;
         },
 
         createFileUniqueHash: function (file) {
@@ -209,6 +209,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.updateProgress();
                 this.createAttachments();
             }
+
+            // clear input
+            $('.attachment-upload input.file').val('');
         },
 
         createAttachments: function () {
@@ -230,9 +233,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...'));
 
-            let maxUploadSize = this.getMaxUploadSize() * 1024 * 1024;
-
-            if (file.size > maxUploadSize) {
+            if (file.size > this.getMaxUploadSize()) {
                 this.chunkCreateAttachments(file);
             } else {
                 let fileReader = new FileReader();
@@ -268,8 +269,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         chunkCreateAttachments: function (file) {
-            const chunkFileSize = this.getConfig().get('chunkFileSize') || 2;
-            const sliceSize = chunkFileSize * 1024 * 1024;
+            const sliceSize = this.getMaxUploadSize();
 
             this.streams = this.getConfig().get('fileUploadStreamCount') || 3;
 
@@ -439,7 +439,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.failedFiles[file.uniqueId] = file;
 
             let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
-            let html = `<a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a> ${reason}`;
+            let html = `${reason} <a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a>`;
 
             file.attachmentBox.parent().find('.uploading-message').html(html);
             file.attachmentBox.addClass('file-uploading-failed');
