@@ -356,8 +356,14 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.sendChunk(resolve, file, pieces);
             }
 
-            let piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
-            if (piecesSize === this.filesSize[file.uniqueId]) {
+            let piecesSize = 0;
+            if (this.isFileInList(file.uniqueId)) {
+                piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
+            }
+
+            let fileSize = typeof this.filesSize[file.uniqueId] !== 'undefined' ? this.filesSize[file.uniqueId] : 0;
+
+            if (piecesSize === fileSize) {
                 resolve();
             }
         },
@@ -403,8 +409,14 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         setProgressMessage: function (file) {
-            let piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
-            let total = this.filesSize[file.uniqueId] + this.finallyUploadedFiles[file.uniqueId];
+            let piecesSize = 0;
+            if (this.isFileInList(file.uniqueId)) {
+                piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
+            }
+
+            let fileSize = typeof this.filesSize[file.uniqueId] !== 'undefined' ? this.filesSize[file.uniqueId] : 0;
+
+            let total = fileSize + this.finallyUploadedFiles[file.uniqueId];
             let percent = piecesSize / total * 100;
 
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...') + ' <span class="uploading-progress-message">' + percent.toFixed(0) + '%</span>');
