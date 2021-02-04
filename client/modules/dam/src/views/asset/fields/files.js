@@ -208,7 +208,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         createAttachments: function () {
-            if (this.fileList.length === 0 || !this.isModalOpen() || !this.isUploading) {
+            if (!this.isModalOpen()) {
+                return;
+            }
+
+            if (this.fileList.length === 0 || !this.isUploading) {
+                this.model.trigger('updating-ended');
                 return;
             }
 
@@ -295,11 +300,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         sendChunk: function (resolve, file, pieces) {
-            if (!this.isModalOpen() || !this.isUploading) {
+            if (!this.isModalOpen()) {
                 return;
             }
 
-            if (pieces.length === 0) {
+            if (pieces.length === 0 || !this.isUploading) {
                 resolve();
                 return;
             }
@@ -353,11 +358,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         createByChunks: function (file) {
-            if (!this.isModalOpen() || !this.isUploading) {
+            if (!this.isModalOpen()) {
                 return;
             }
 
-            if (this.pieces.length === 0 || !this.isFileInList(file.uniqueId)) {
+            if (this.pieces.length === 0 || !this.isFileInList(file.uniqueId) || !this.isUploading) {
                 this.createAttachments();
                 return;
             }
