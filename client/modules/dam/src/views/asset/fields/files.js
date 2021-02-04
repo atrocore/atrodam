@@ -145,7 +145,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         getMaxUploadSize: function () {
-            return File.prototype.getMaxUploadSize.call(this) * 1024 * 1024;
+            return File.prototype.getMaxUploadSize.call(this);
         },
 
         createFileUniqueHash: function (file) {
@@ -230,7 +230,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...'));
 
-            if (file.size > this.getMaxUploadSize()) {
+            let maxUploadSize = this.getMaxUploadSize() * 1024 * 1024;
+
+            if (file.size > maxUploadSize) {
                 this.chunkCreateAttachments(file);
             } else {
                 let fileReader = new FileReader();
