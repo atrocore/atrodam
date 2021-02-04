@@ -180,6 +180,10 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             for (let i = 0; i < files.length; i++) {
                 let file = files[i];
 
+                if (file.type === '') {
+                    continue;
+                }
+
                 file['uniqueId'] = this.createFileUniqueHash(file);
 
                 if (!this.isFileInList(file['uniqueId'])) {
@@ -249,7 +253,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         this.pushPieceSize(file.uniqueId, file.size);
                         this.finallyUploadedFiles[file.uniqueId] = 0;
                         this.updateProgress();
-
                         this.uploadSuccess(file, response);
                     }.bind(this)).error(function (response) {
                         this.pushPieceSize(file.uniqueId, file.size);
@@ -421,11 +424,13 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.model.set('filesIds', filesIds, {silent: true});
             this.model.set('filesNames', filesNames, {silent: true});
 
-            if (this.isDone()) {
-                this.model.trigger('updating-ended');
-            } else {
-                this.createAttachments();
-            }
+            setTimeout(function () {
+                if (this.isDone()) {
+                    this.model.trigger('updating-ended');
+                } else {
+                    this.createAttachments();
+                }
+            }.bind(this), 100);
         },
 
         uploadFailed: function (file, response) {
@@ -442,11 +447,13 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.updateProgress();
 
-            if (this.isDone()) {
-                this.model.trigger('updating-ended');
-            } else {
-                this.createAttachments();
-            }
+            setTimeout(function () {
+                if (this.isDone()) {
+                    this.model.trigger('updating-ended');
+                } else {
+                    this.createAttachments();
+                }
+            }.bind(this), 100);
         },
 
         isDone: function () {
