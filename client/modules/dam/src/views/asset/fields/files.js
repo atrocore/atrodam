@@ -36,6 +36,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         isUploading: false,
 
+        finalPieceSize: 10 * 1024 * 1024,
+
         events: _.extend(Dep.prototype.events, {
                 'click a.remove-attachment': function (e) {
                     let $div = $(e.currentTarget).parent();
@@ -93,6 +95,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             this.fileList = [];
             this.uploadedSize = {};
+            this.finallyUploadedFiles = {};
             this.filesSize = {};
             this.uploadedChunks = {};
             this.failedFiles = {};
@@ -180,6 +183,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     this.filesSize[file.uniqueId] = file.size;
                     this.uploadedSize[file.uniqueId] = [];
                     this.uploadedChunks[file.uniqueId] = [];
+                    this.finallyUploadedFiles[file.uniqueId] = this.finalPieceSize;
 
                     this.updateProgress();
                 }
@@ -227,6 +231,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         }),
                     }).done(function (response) {
                         this.pushPieceSize(file.uniqueId, file.size);
+                        this.finallyUploadedFiles[file.uniqueId] = 0;
                         this.updateProgress();
 
                         this.uploadSuccess(file, response);
@@ -368,6 +373,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     modelAttributes: this.model.attributes
                 }),
             }).done(function (response) {
+                this.finallyUploadedFiles[file.uniqueId] = 0;
+                this.setProgressMessage(file);
                 this.uploadSuccess(file, response);
             }.bind(this)).error(function (response) {
                 this.uploadFailed(file, response);
@@ -376,7 +383,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         setProgressMessage: function (file) {
             let piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
-            let percent = piecesSize / this.filesSize[file.uniqueId] * 100;
+            let total = this.filesSize[file.uniqueId] + this.finallyUploadedFiles[file.uniqueId];
+            let percent = piecesSize / total * 100;
 
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...') + ' <span class="uploading-progress-message">' + percent.toFixed(0) + '%</span>');
         },
@@ -432,8 +440,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         getFilesSize: function () {
             let filesSize = 0;
             $.each(this.filesSize, function (hash, size) {
-                filesSize += size;
-            });
+                filesSize += size + this.finallyUploadedFiles[hash];
+            }.bind(this));
 
             return filesSize;
         },
