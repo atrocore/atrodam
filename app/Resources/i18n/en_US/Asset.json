@@ -4,7 +4,8 @@
     "Image": "Image",
     "File": "File",
     "massUpload": "Mass Upload",
-    "uploaded": "uploaded"
+    "uploaded": "uploaded",
+    "retry": "retry"
   },
   "fields": {
     "isActive": "Active",

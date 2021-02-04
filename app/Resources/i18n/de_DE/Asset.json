@@ -3,7 +3,8 @@
     "Create Asset": "Asset erstellen",
     "sort": "Sortieren",
     "massUpload": "Massenupload",
-    "uploaded": "hochgeladen"
+    "uploaded": "hochgeladen",
+    "retry": "erneut"
   },
   "links": {
     "renditions": "Derivate",

@@ -66,8 +66,22 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     $div.parent().remove();
 
                     if (this.isDone()) {
-                        this.isUploading = false;
+                        this.model.trigger('updating-ended', {hideNotification: true});
                     }
+                },
+
+                'click a.retry-upload': function (e) {
+                    let $a = $(e.currentTarget);
+                    let hash = $a.data('unique');
+
+                    let $div = $a.parent().parent();
+
+                    $div.find('.uploaded-file').removeClass('file-uploading-failed');
+                    $div.find('.uploading-message').html(this.translate('Pending...'));
+
+                    this.chunkFailedResponse = null;
+                    this.uploadFiles([this.failedFiles[hash]]);
+                    delete this.failedFiles[hash];
                 }
             },
         ),
@@ -81,6 +95,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.uploadedSize = {};
             this.filesSize = {};
             this.uploadedChunks = {};
+            this.failedFiles = {};
 
             this.listenTo(this.model, "change:type", () => this.empty());
 
@@ -88,17 +103,19 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.isUploading = true;
             });
 
-            this.listenTo(this.model, "updating-ended", function () {
-                setTimeout(function () {
-                    let failedCount = $('.file-uploading-failed').length;
-                    if (failedCount > 0) {
-                        let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
-                        message = message.replace('XX', failedCount);
-                        message = message.replace('YY', $('.uploaded-file').length);
+            this.listenTo(this.model, "updating-ended", function (data) {
+                if (!data || !data.hideNotification) {
+                    setTimeout(function () {
+                        let failedCount = $('.file-uploading-failed').length;
+                        if (failedCount > 0) {
+                            let message = this.translate('notAllAssetsWereUploaded', 'messages', 'Asset');
+                            message = message.replace('XX', failedCount);
+                            message = message.replace('YY', $('.uploaded-file').length);
 
-                        Espo.Ui.notify(message, 'error', 1000 * 120, true);
-                    }
-                }.bind(this), 100);
+                            Espo.Ui.notify(message, 'error', 1000 * 120, true);
+                        }
+                    }.bind(this), 100);
+                }
                 this.isUploading = false;
                 $('.attachment-upload .progress').hide();
             }.bind(this));
@@ -148,10 +165,17 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         uploadFiles: function (files) {
             for (let i = 0; i < files.length; i++) {
                 let file = files[i];
+
                 file['uniqueId'] = this.createFileUniqueHash(file);
 
                 if (!this.isFileInList(file['uniqueId'])) {
-                    file['attachmentBox'] = this.addFileBox(file);
+                    let $attachmentBox = $(`.uploaded-file[data-unique='${file['uniqueId']}']`);
+                    if ($attachmentBox.length > 0) {
+                        file['attachmentBox'] = $attachmentBox;
+                    } else {
+                        file['attachmentBox'] = this.addFileBox(file);
+                    }
+
                     this.fileList.push(file);
                     this.filesSize[file.uniqueId] = file.size;
                     this.uploadedSize[file.uniqueId] = [];
@@ -182,7 +206,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...'));
 
-            if (file.size > this.getMaxUploadSize() * 1024 * 1024) {
+            if (file.size > this.getMaxUploadSize()) {
                 this.chunkCreateAttachments(file);
             } else {
                 let fileReader = new FileReader();
@@ -381,9 +405,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         uploadFailed: function (file, response) {
-            let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
+            this.failedFiles[file.uniqueId] = file;
 
-            file.attachmentBox.parent().find('.uploading-message').html(reason);
+            let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
+            let html = `<a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a> ${reason}`;
+
+            file.attachmentBox.parent().find('.uploading-message').html(html);
             file.attachmentBox.addClass('file-uploading-failed');
 
             delete this.uploadedSize[file.uniqueId];
