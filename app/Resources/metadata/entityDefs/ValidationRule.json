@@ -94,7 +94,8 @@
       "required": false,
       "audited": false,
       "readOnly": false,
-      "tooltip": false
+      "tooltip": false,
+      "view": "dam:views/validation-rule/fields/int-size"
     },
     "max": {
       "notNull": false,
@@ -103,7 +104,8 @@
       "required": false,
       "audited": false,
       "readOnly": false,
-      "tooltip": false
+      "tooltip": false,
+      "view": "dam:views/validation-rule/fields/int-size"
     },
     "colorDepth": {
       "type": "array",

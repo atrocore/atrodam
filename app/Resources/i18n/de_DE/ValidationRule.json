@@ -19,6 +19,8 @@
     "assetType": "Asset-Typ"
   },
   "labels": {
-    "Create ValidationRule": "Validierungsregel erstellen"
+    "Create ValidationRule": "Validierungsregel erstellen",
+    "minSize": "Min, Kb",
+    "maxSize": "Max, Kb"
   }
 }
