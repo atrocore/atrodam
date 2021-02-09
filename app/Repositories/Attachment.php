@@ -67,21 +67,6 @@ class Attachment extends \Espo\Repositories\Attachment
     }
 
     /**
-     * @inheritDoc
-     */
-    public function afterSave(Entity $entity, array $options = [])
-    {
-        // get field type
-        $fieldType = $this->getMetadata()->get(['entityDefs', $entity->get('relatedType'), 'fields', $entity->get('field'), 'type']);
-
-        if ($entity->isNew() && $fieldType === 'asset') {
-            $this->createAsset($entity);
-        }
-
-        parent::afterSave($entity, $options);
-    }
-
-    /**
      * Create asset if it needs
      *
      * @param Entity $attachment

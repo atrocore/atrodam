@@ -79,6 +79,11 @@ class Attachment extends \Espo\Services\Attachment
         // validate
         $this->validateAttachment($entity, $attachment);
 
+        // create asset
+        if (empty($entity->getAsset())) {
+            $this->getRepository()->createAsset($entity);
+        }
+
         return $entity;
     }
 
@@ -91,6 +96,11 @@ class Attachment extends \Espo\Services\Attachment
 
         // validate
         $this->validateAttachment($entity, $attachment);
+
+        // create asset
+        if (empty($entity->getAsset())) {
+            $this->getRepository()->createAsset($entity);
+        }
 
         return $entity;
     }
@@ -115,6 +125,9 @@ class Attachment extends \Espo\Services\Attachment
         $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType'], 'File');
         if (!empty($data->modelAttributes->type)) {
             $type = $data->modelAttributes->type;
+        }
+        if (!empty($data->modelAttributes->attributeAssetType)) {
+            $type = $data->modelAttributes->attributeAssetType;
         }
 
         /** @var array $config */
