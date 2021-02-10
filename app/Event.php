@@ -33,7 +33,7 @@ namespace Dam;
 
 use Dam\Repositories\Attachment;
 use Treo\Core\ModuleManager\AbstractEvent;
-use Treo\Core\Utils\Config;
+use Espo\Core\Utils\Config;
 use Treo\Core\Utils\Metadata;
 
 /**
