@@ -80,9 +80,7 @@ class Attachment extends \Espo\Services\Attachment
         $this->validateAttachment($entity, $attachment);
 
         // create asset
-        if (empty($entity->getAsset())) {
-            $this->getRepository()->createAsset($entity);
-        }
+        $this->createAsset($entity, $attachment);
 
         return $entity;
     }
@@ -98,9 +96,7 @@ class Attachment extends \Espo\Services\Attachment
         $this->validateAttachment($entity, $attachment);
 
         // create asset
-        if (empty($entity->getAsset())) {
-            $this->getRepository()->createAsset($entity);
-        }
+        $this->createAsset($entity, $attachment);
 
         return $entity;
     }
@@ -295,5 +291,20 @@ class Attachment extends \Espo\Services\Attachment
     protected function getFileStorageManager(): Manager
     {
         return $this->getInjection("fileStorageManager");
+    }
+
+    /**
+     * @param Entity    $entity
+     * @param \stdClass $attachment
+     */
+    private function createAsset(Entity $entity, \stdClass $attachment): void
+    {
+        if (empty($entity->getAsset())) {
+            $type = null;
+            if (!empty($attachment->modelAttributes->attributeAssetType)) {
+                $type = $attachment->modelAttributes->attributeAssetType;
+            }
+            $this->getRepository()->createAsset($entity, false, $type);
+        }
     }
 }

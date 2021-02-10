@@ -69,23 +69,28 @@ class Attachment extends \Espo\Repositories\Attachment
     /**
      * Create asset if it needs
      *
-     * @param Entity $attachment
-     * @param bool   $skipValidation
+     * @param Entity      $attachment
+     * @param bool        $skipValidation
+     * @param string|null $type
      *
      * @throws Error
      * @throws Throwable
      */
-    public function createAsset(Entity $attachment, bool $skipValidation = false)
+    public function createAsset(Entity $attachment, bool $skipValidation = false, string $type = null)
     {
         if (!empty($this->where(['fileId' => $attachment->get('id')])->findOne())) {
             return;
+        }
+
+        if ($type === null) {
+            $type = $this->getMetadata()->get(['entityDefs', $attachment->get('relatedType'), 'fields', $attachment->get('field'), 'assetType']);
         }
 
         $asset = $this->getEntityManager()->getEntity('Asset');
         $asset->set('name', $attachment->get('name'));
         $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
         $asset->set('fileId', $attachment->get('id'));
-        $asset->set('type', $this->getMetadata()->get(['entityDefs', $attachment->get('relatedType'), 'fields', $attachment->get('field'), 'assetType']));
+        $asset->set('type', $type);
 
         try {
             if (!$skipValidation) {
