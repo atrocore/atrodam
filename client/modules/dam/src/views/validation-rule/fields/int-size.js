@@ -32,12 +32,22 @@ Espo.define('dam:views/validation-rule/fields/int-size', 'views/fields/int', fun
             Dep.prototype.setup.call(this);
 
             this.listenTo(this.model, 'change:type', function () {
-                if (this.model.get('type') === 'Size') {
-                    this.getLabelElement().text(this.translate(this.name + 'Size', 'labels', this.model.name));
-                } else {
-                    this.getLabelElement().text(this.getLabelText());
-                }
+                this.updateFieldLabel();
             }, this);
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            this.updateFieldLabel();
+        },
+
+        updateFieldLabel() {
+            if (this.model.get('type') === 'Size') {
+                this.getLabelElement().text(this.translate(this.name + 'Size', 'labels', this.model.name));
+            } else {
+                this.getLabelElement().text(this.getLabelText());
+            }
         }
     });
 });
