@@ -36,7 +36,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         isUploading: false,
 
-        finalPieceSize: 10 * 1024 * 1024,
+        finalPieceSize: 10 * 1024,
 
         events: _.extend(Dep.prototype.events, {
                 'click a.remove-attachment': function (e) {
@@ -450,8 +450,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         uploadFailed: function (file, response) {
             this.failedFiles[file.uniqueId] = file;
 
-            let reason = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
-            let html = `${reason} <a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a>`;
+            let html = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
+
+            if (response.status >= 500) {
+                html += ` <a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a>`;
+            }
 
             file.attachmentBox.parent().find('.uploading-message').html(html);
             file.attachmentBox.addClass('file-uploading-failed');
