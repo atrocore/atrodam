@@ -5,7 +5,8 @@
     "File": "File",
     "massUpload": "Mass Upload",
     "uploaded": "uploaded",
-    "retry": "Retry?"
+    "retry": "Retry?",
+    "withoutAnyCategory": "Without any category"
   },
   "fields": {
     "isActive": "Active",

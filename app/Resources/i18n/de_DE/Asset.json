@@ -4,7 +4,8 @@
     "sort": "Sortieren",
     "massUpload": "Massenupload",
     "uploaded": "hochgeladen",
-    "retry": "Erneut versuchen?"
+    "retry": "Erneut versuchen?",
+    "withoutAnyCategory": "Ohne Kategorie"
   },
   "links": {
     "renditions": "Derivate",
