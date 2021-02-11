@@ -131,7 +131,6 @@ class Attachment extends \Espo\Repositories\Attachment
     public function updateStorage(Entity $entity, string $path)
     {
         $entity->set("storageFilePath", $path);
-        $entity->set("tmpPath");
 
         return $this->save($entity);
     }

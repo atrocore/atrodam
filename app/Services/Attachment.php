@@ -259,11 +259,7 @@ class Attachment extends \Espo\Services\Attachment
             $attachment = $this->getRepository()->where(['id' => $attachment->get('sourceId')])->findOne();
         }
 
-        if ($attachment->get("tmpPath")) {
-            return $attachment->get("tmpPath");
-        } else {
-            return $this->getRepository()->getFilePath($attachment);
-        }
+        return $this->getRepository()->getFilePath($attachment);
     }
 
     /**
@@ -299,6 +295,10 @@ class Attachment extends \Espo\Services\Attachment
      */
     private function createAsset(Entity $entity, \stdClass $attachment): void
     {
+        if (!empty($attachment->relatedType) && $attachment->relatedType == 'Asset') {
+            return;
+        }
+
         if (empty($entity->getAsset())) {
             $type = null;
             if (!empty($attachment->modelAttributes->attributeAssetType)) {
