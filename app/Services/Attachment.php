@@ -299,6 +299,10 @@ class Attachment extends \Espo\Services\Attachment
             return;
         }
 
+        if (!empty($attachment->parentType) && $attachment->parentType == 'Asset') {
+            return;
+        }
+
         if (empty($entity->getAsset())) {
             $type = null;
             if (!empty($attachment->modelAttributes->attributeAssetType)) {
