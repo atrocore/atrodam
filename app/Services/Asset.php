@@ -32,7 +32,6 @@ declare(strict_types=1);
 namespace Dam\Services;
 
 use Dam\Core\ConfigManager;
-use Dam\Core\FileManager;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
@@ -298,14 +297,6 @@ class Asset extends Base
         $this->addDependency("language");
         $this->addDependency("ConfigManager");
         $this->addDependency('log');
-    }
-
-    /**
-     * @return FileManager
-     */
-    protected function getFileManager(): FileManager
-    {
-        return $this->getInjection("DAMFileManager");
     }
 
     /**
