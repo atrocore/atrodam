@@ -452,7 +452,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             let html = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
 
-            if (response.status >= 500) {
+            if (response.status !== 400) {
                 html += ` <a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a>`;
             }
 
