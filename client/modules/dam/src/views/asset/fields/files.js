@@ -60,6 +60,14 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         this.model.set('filesIds', filesIds, {silent: true});
                     }
 
+                    let fileList = [];
+                    this.fileList.forEach(function (file) {
+                        if (file.uniqueId !== hash) {
+                            fileList.push(file);
+                        }
+                    });
+
+                    this.fileList = fileList;
                     delete this.uploadedSize[hash];
                     delete this.filesSize[hash];
 
