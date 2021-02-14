@@ -293,13 +293,9 @@ class Attachment extends \Espo\Services\Attachment
      * @param Entity    $entity
      * @param \stdClass $attachment
      */
-    private function createAsset(Entity $entity, \stdClass $attachment): void
+    protected function createAsset(Entity $entity, \stdClass $attachment): void
     {
-        if (!empty($attachment->relatedType) && $attachment->relatedType == 'Asset') {
-            return;
-        }
-
-        if (!empty($attachment->parentType) && $attachment->parentType == 'Asset') {
+        if ($this->getMetadata()->get(['entityDefs', $attachment->relatedType, 'fields', $attachment->field, 'noAsset'], false)) {
             return;
         }
 
