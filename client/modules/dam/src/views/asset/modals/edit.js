@@ -31,6 +31,58 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
         fullFormDisabled: true,
 
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            if (this.options.relate) {
+                let button = {
+                    name: '',
+                    label: '',
+                    style: 'link'
+                };
+
+                if (this.options.layoutName === 'massCreateDetailSmall') {
+                    button.name = 'simpleUpload';
+                    button.label = this.translate('simpleUpload', 'labels', 'Asset');
+                } else {
+                    button.name = 'massUpload';
+                    button.label = this.translate('massUpload', 'labels', 'Asset');
+                }
+
+                this.addButton(button);
+            }
+        },
+
+        actionSimpleUpload() {
+            this.actionClose();
+            this.actionQuickCreate('detailSmall');
+        },
+
+        actionMassUpload() {
+            this.actionClose();
+            this.actionQuickCreate('massCreateDetailSmall');
+        },
+
+        actionQuickCreate(layout) {
+            let options = _.extend({
+                model: this.model,
+                scope: this.scope,
+                attributes: {}
+            }, this.options || {});
+            options.layoutName = layout;
+
+            this.notify('Loading...');
+            let viewName = this.getMetadata().get('clientDefs.' + this.scope + '.modalViews.edit') || 'views/modals/edit';
+
+            this.createView('quickCreate', viewName, options, function (view) {
+                view.render();
+                view.notify(false);
+                this.listenToOnce(view, 'after:save', function () {
+                    this.getParentView().actionRefresh();
+                }, this);
+            }.bind(this));
+        },
+
         actionSave() {
             this.notify('Saving...');
             const isNew = typeof this.model.id === 'undefined';
