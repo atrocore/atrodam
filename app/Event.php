@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam;
 
+use Dam\Migrations\V1Dot2Dot14;
 use Dam\Repositories\Attachment;
 use Treo\Core\ModuleManager\AbstractEvent;
 use Espo\Core\Utils\Config;
@@ -243,7 +244,7 @@ class Event extends AbstractEvent
 
         // insert video type
         $this->execute("INSERT INTO `asset_type` (`id`, `name`, `deleted`, `created_at`, `modified_at`, `created_by_id`, `modified_by_id`) VALUES ('603d0ed4662639434', 'Video', 0, '2021-03-01 00:00:00', '2021-03-01 00:00:00', '1', NULL)");
-        $this->execute("INSERT INTO `validation_rule` (`id`, `name`, `deleted`, `created_at`, `modified_at`, `is_active`, `type`, `ratio`, `validate_by`, `pattern`, `min`, `max`, `color_depth`, `color_space`, `min_width`, `min_height`, `extension`, `mime_list`, `created_by_id`, `modified_by_id`, `asset_type_id`) VALUES ('603d0f0435374022f', 'Extension', 0, '2021-03-01 15:57:56', '2021-03-01 15:57:56', 1, 'Extension', NULL, 'List', NULL, 0, NULL, NULL, NULL, NULL, NULL, '[\"mp4\",\"webm\",\"ogv\"]', NULL, '1', NULL, '603d0ed4662639434'),('603d0f4e8bd0a907e', 'Mime', 0, '2021-03-01 15:59:10', '2021-03-01 15:59:10', 1, 'Mime', NULL, 'List', NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, '[\"video\\/mp4\",\"video\\/webm\",\"video\\/ogg\"]', '1', NULL, '603d0ed4662639434')");
+        $this->execute("INSERT INTO `validation_rule` (`id`, `name`, `deleted`, `created_at`, `modified_at`, `is_active`, `type`, `ratio`, `validate_by`, `pattern`, `min`, `max`, `color_depth`, `color_space`, `min_width`, `min_height`, `extension`, `mime_list`, `created_by_id`, `modified_by_id`, `asset_type_id`) VALUES ('603d0f0435374022f', 'Extension', 0, '2021-03-01 15:57:56', '2021-03-01 15:57:56', 1, 'Extension', NULL, 'List', NULL, 0, NULL, NULL, NULL, NULL, NULL, '" . json_encode(V1Dot2Dot14::getVideoExtensions()) . "', NULL, '1', NULL, '603d0ed4662639434')");
     }
 
     /**
