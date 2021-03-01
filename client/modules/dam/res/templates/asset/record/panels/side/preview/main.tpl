@@ -7,8 +7,8 @@
 {{else}}
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        {{#if isVideo}}
-        <video src="{{originPath}}" controls width="100%"></video>
+        {{#if hasVideoPlayer}}
+          <video src="{{originPath}}" controls width="100%"></video>
         {{else}}
           {{#if isImage}}
             <a data-action="showImagePreview" data-id="{{fileId}}" href="{{originPath}}">

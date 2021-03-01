@@ -29,7 +29,9 @@
 Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:config"],
     (Dep, Config) => {
         return Dep.extend({
+
             template: "dam:asset/record/panels/side/preview/main",
+
             damConfig: null,
 
             events: {
@@ -56,17 +58,25 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
             },
 
             isVideo() {
-                const imageExtensions = this.getMetadata().get('dam.video.extensions') || [];
-                const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+                const extensions = this.getMetadata().get('dam.video.extensions') || [];
 
-                return $.inArray(fileExt, imageExtensions) !== -1;
+                return $.inArray(this.getFileNameExtension(), extensions) !== -1;
+            },
+
+            hasVideoPlayer() {
+                const extensions = this.getMetadata().get('dam.video.videoPlayerExtensions') || [];
+
+                return $.inArray(this.getFileNameExtension(), extensions) !== -1;
             },
 
             isImage() {
-                const imageExtensions = this.getMetadata().get('fields.asset.hasPreviewExtensions') || [];
-                const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+                const extensions = this.getMetadata().get('fields.asset.hasPreviewExtensions') || [];
 
-                return $.inArray(fileExt, imageExtensions) !== -1;
+                return $.inArray(this.getFileNameExtension(), extensions) !== -1;
+            },
+
+            getFileNameExtension() {
+                return (this.model.get('fileName') || '').split('.').pop().toLowerCase();
             },
 
             data() {
@@ -76,15 +86,22 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
                     isVideo: this.isVideo(),
+                    hasVideoPlayer: this.hasVideoPlayer() && this.model.get('filePathsData'),
                     isImage: this.isImage(),
                     icon: (!this.model.get('filePathsData')) ? 'download' : this.model.get('icon')
                 };
 
-                if (data.isVideo || data.isImage) {
+                if (data.hasVideoPlayer || data.isImage) {
                     data.icon = null;
                 }
 
                 return data
+            },
+
+            afterRender() {
+                Dep.prototype.afterRender.call(this);
+
+                this.$el.find('.row').append(`<div class="col-sm-12" style="text-align: left; margin-top: 10px"><span style="font-size: 12px">${this.translate('availableVideoFormats', 'labels', 'Asset')}</span></div>`);
             },
 
         });

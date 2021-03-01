@@ -6,7 +6,8 @@
     "massUpload": "Mass Upload",
     "uploaded": "uploaded",
     "retry": "Retry?",
-    "withoutAnyCategory": "Without any category"
+    "withoutAnyCategory": "Without any category",
+    "availableVideoFormats": "Available formats for video player: <a>mp4</a>, <a>webm</a> and <a>ogv</a>."
   },
   "fields": {
     "isActive": "Active",

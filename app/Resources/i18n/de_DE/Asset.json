@@ -5,7 +5,8 @@
     "massUpload": "Massenupload",
     "uploaded": "hochgeladen",
     "retry": "Erneut versuchen?",
-    "withoutAnyCategory": "Ohne Kategorie"
+    "withoutAnyCategory": "Ohne Kategorie",
+    "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>."
   },
   "links": {
     "renditions": "Derivate",
