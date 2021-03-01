@@ -85,7 +85,6 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                     thumbnailPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').thumbs.large,
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
-                    isVideo: this.isVideo(),
                     hasVideoPlayer: this.hasVideoPlayer() && this.model.get('filePathsData'),
                     isImage: this.isImage(),
                     icon: (!this.model.get('filePathsData')) ? 'download' : this.model.get('icon')
@@ -101,7 +100,9 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
             afterRender() {
                 Dep.prototype.afterRender.call(this);
 
-                this.$el.find('.row').append(`<div class="col-sm-12" style="text-align: left; margin-top: 10px"><span style="font-size: 12px">${this.translate('availableVideoFormats', 'labels', 'Asset')}</span></div>`);
+                if (this.isVideo() && !this.hasVideoPlayer() && this.model.get('filePathsData')) {
+                    this.$el.find('.row').append(`<div class="col-sm-12" style="text-align: left; margin-top: 10px"><span style="font-size: 12px">${this.translate('availableVideoFormats', 'labels', 'Asset')}</span></div>`);
+                }
             },
 
         });
