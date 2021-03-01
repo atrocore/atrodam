@@ -55,14 +55,36 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                 });
             },
 
+            isVideo() {
+                const imageExtensions = this.getMetadata().get('dam.video.extensions') || [];
+                const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+
+                return $.inArray(fileExt, imageExtensions) !== -1;
+            },
+
+            isImage() {
+                const imageExtensions = this.getMetadata().get('fields.asset.hasPreviewExtensions') || [];
+                const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+
+                return $.inArray(fileExt, imageExtensions) !== -1;
+            },
+
             data() {
-                return {
+                let data = {
                     originPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').download,
                     thumbnailPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').thumbs.large,
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
+                    isVideo: this.isVideo(),
+                    isImage: this.isImage(),
                     icon: (!this.model.get('filePathsData')) ? 'download' : this.model.get('icon')
                 };
+
+                if (data.isVideo || data.isImage) {
+                    data.icon = null;
+                }
+
+                return data
             },
 
         });

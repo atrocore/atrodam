@@ -7,9 +7,15 @@
 {{else}}
 <div class="row">
     <div class="col-sm-12" style="text-align: center">
-        <a data-action="showImagePreview" data-id="{{fileId}}" href="{{originPath}}">
-            <img src="{{thumbnailPath}}" class="img-fluid image-preview" alt="Responsive image">
-        </a>
+        {{#if isVideo}}
+        <video src="{{originPath}}" controls width="100%"></video>
+        {{else}}
+          {{#if isImage}}
+            <a data-action="showImagePreview" data-id="{{fileId}}" href="{{originPath}}">
+              <img src="{{thumbnailPath}}" class="img-fluid image-preview" alt="Responsive image">
+            </a>
+          {{/if}}
+        {{/if}}
     </div>
 </div>
 <style>
