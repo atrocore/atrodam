@@ -4,6 +4,7 @@
     "Image": "Image",
     "File": "File",
     "massUpload": "Mass Upload",
+    "simpleUpload": "Simple Upload",
     "uploaded": "uploaded",
     "retry": "Retry?",
     "withoutAnyCategory": "Without any category",
