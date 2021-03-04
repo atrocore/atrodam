@@ -396,13 +396,13 @@ class Asset extends Base
     /**
      * @inheritDoc
      */
-    protected function isValid($entity)
+    protected function checkRequiredFields(Entity $entity, \stdClass $data): bool
     {
         if ($this->isMassCreating($entity)) {
             return true;
         }
 
-        return parent::isValid($entity);
+        return parent::checkRequiredFields($entity, $data);
     }
 
     /**
