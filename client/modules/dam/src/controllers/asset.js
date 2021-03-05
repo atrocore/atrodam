@@ -33,6 +33,12 @@ Espo.define('dam:controllers/asset', 'controllers/record',
 
             defaultAction: 'list',
 
+            doAction(action, options) {
+                action = action ? action : this.getStorage().get('list-view', this.name);
+
+                Dep.prototype.doAction.call(this, action, options);
+            },
+
             beforePlate() {
                 this.handleCheckAccess('read');
             },
