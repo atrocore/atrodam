@@ -33,11 +33,19 @@ Espo.define('dam:controllers/asset', 'controllers/record',
 
             defaultAction: 'list',
 
+            doAction(action, options) {
+                action = action ? action : this.getStorage().get('list-view', this.name);
+
+                Dep.prototype.doAction.call(this, action, options);
+            },
+
             beforePlate() {
                 this.handleCheckAccess('read');
             },
 
             plate() {
+                this.getStorage().set('list-view', this.name, 'plate');
+
                 this.getCollection(function (collection) {
                     this.main(this.getViewName('plate'), {
                         scope: this.name,
@@ -45,5 +53,37 @@ Espo.define('dam:controllers/asset', 'controllers/record',
                     });
                 });
             },
+
+            list(options) {
+                var callback = options.callback;
+                var isReturn = options.isReturn;
+
+                this.getStorage().set('list-view', this.name, 'list');
+
+                if (this.getRouter().backProcessed) {
+                    isReturn = true;
+                }
+
+                var key = this.name + 'List';
+
+                if (!isReturn) {
+                    var stored = this.getStoredMainView(key);
+                    if (stored) {
+                        this.clearStoredMainView(key);
+                    }
+                }
+
+                this.getCollection(function (collection) {
+                    this.listenToOnce(this.baseController, 'action', function () {
+                        collection.abortLastFetch();
+                    }, this);
+
+                    this.main(this.getViewName('list'), {
+                        scope: this.name,
+                        collection: collection,
+                        params: options
+                    }, callback, isReturn, key);
+                }, this, false);
+            }
         });
     });
