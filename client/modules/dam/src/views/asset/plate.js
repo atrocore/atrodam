@@ -35,6 +35,8 @@ Espo.define('dam:views/asset/plate', 'dam:views/asset/list',
             Dep.prototype.setup.call(this);
 
             this.collection.maxSize = 20;
+
+            this.getStorage().set('list-view', 'Asset', 'plate');
         },
 
         getRecordViewName: function () {
