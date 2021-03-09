@@ -12,5 +12,6 @@
         "onlyRoot"
       ]
     }
-  }
+  },
+  "iconClass": "fas fa-book-open"
 }
