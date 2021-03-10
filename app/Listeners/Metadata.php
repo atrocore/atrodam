@@ -62,16 +62,18 @@ class Metadata extends AbstractListener
      */
     public function modify(Event $event)
     {
-        $data = $event->getArgument('data');
+        if ($this->getConfig()->get('isInstalled')) {
+            $data = $event->getArgument('data');
 
-        $data['fields']['asset']['types'] = $this->getAssetTypes();
-        $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
+            $data['fields']['asset']['types'] = $this->getAssetTypes();
+            $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
 
-        $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
+            $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
 
-        $this->updateRelationMetadata($data);
+            $this->updateRelationMetadata($data);
 
-        $event->setArgument('data', $data);
+            $event->setArgument('data', $data);
+        }
     }
 
     /**
