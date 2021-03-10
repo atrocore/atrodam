@@ -62,6 +62,10 @@ class Metadata extends AbstractListener
      */
     public function modify(Event $event)
     {
+        if (!$this->getConfig()->get('isInstalled', false)) {
+            return;
+        }
+
         $data = $event->getArgument('data');
 
         $data['fields']['asset']['types'] = $this->getAssetTypes();
