@@ -63,44 +63,7 @@ Please, [ask](https://atrodam.com/contact), if you want to know more.
 
 ### Installation
 
-> The Installation guide is based on **Ubuntu**. Of course, you can use any Unix-based system, but make sure that your OS supports the following commands.<br/>
-
-To create your new AtroDAM application, first make sure you are using PHP 7.1 or above and have [Composer](https://getcomposer.org/download/) installed.
-
-1. Create your new project by running one of the following commands.
-
-   If you don't need the demo data, run:
-   ```
-   composer create-project atrocore/skeleton-dam-no-demo my-atrodam-project
-   ```
-   If you need the demo data, run:
-    ```
-   composer create-project atrocore/skeleton-dam my-atrodam-project
-   ```
-2. Change recursively the user and group ownership for project files: 
-   ```
-   chown -R webserver_user:webserver_user my-atrodam-project/
-   ```
-   >**webserver_user** – depends on your webserver and can be one of the following: www, www-data, apache, etc.   
-
-3. Change the permissions for project files: 
-   ```
-    find . -type d -exec chmod 755 {} + && find . -type f -exec chmod 644 {} +;
-    find data custom upload -type d -exec chmod 775 {} + && find data custom upload -type f -exec chmod 664 {} +
-   ```
-
-4. Configure the crontab as described below.
-
-   4.1. Run the following command:
-      ```
-      crontab -e -u webserver_user
-      ```
-   4.2. Add the following configuration:
-      ```
-      * * * * * /usr/bin/php /var/www/my-atrodam-project/index.php cron
-      ```      
-
-5. Install AtroPIM following the installation wizard in the web interface. Go to http://YOUR_PROJECT/
+Installation guide you can find [here](https://github.com/atrocore/atrocore-docs/blob/master/en/administration/installation.md).
 
 ## License
 
