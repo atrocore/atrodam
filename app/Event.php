@@ -31,18 +31,15 @@ declare(strict_types=1);
 
 namespace Dam;
 
-use Dam\Migrations\V1Dot2Dot14;
 use Dam\Repositories\Attachment;
-use Treo\Core\ModuleManager\AbstractEvent;
 use Espo\Core\Utils\Config;
+use Treo\Core\ModuleManager\AfterInstallAfterDelete;
 use Treo\Core\Utils\Metadata;
 
 /**
  * Class Event
- *
- * @package Dam
  */
-class Event extends AbstractEvent
+class Event extends AfterInstallAfterDelete
 {
     /**
      * @var array
@@ -95,11 +92,6 @@ class Event extends AbstractEvent
      */
     public function afterDelete(): void
     {
-        // delete global search
-        $this->deleteGlobalSearchEntities();
-
-        // delete menu items
-        $this->deleteMenuItems();
     }
 
     /**
@@ -146,25 +138,6 @@ class Event extends AbstractEvent
         $this->getConfig()->save();
     }
 
-    /**
-     * Delete global search entities
-     */
-    protected function deleteGlobalSearchEntities(): void
-    {
-        $globalSearchEntityList = [];
-        foreach ($this->getConfig()->get("globalSearchEntityList", []) as $entity) {
-            if (!in_array($entity, $this->searchEntities)) {
-                $globalSearchEntityList[] = $entity;
-            }
-        }
-
-        // set to config
-        $this->getConfig()->set('globalSearchEntityList', $globalSearchEntityList);
-
-        // save
-        $this->getConfig()->save();
-    }
-
 
     /**
      * Add menu items
@@ -176,6 +149,15 @@ class Event extends AbstractEvent
         $quickCreateList = $this->getConfig()->get("quickCreateList", []);
         $twoLevelTabList = $this->getConfig()->get("twoLevelTabList", []);
 
+        $twoLevelTabListItems = [];
+        foreach ($twoLevelTabList as $item) {
+            if (is_string($item)) {
+                $twoLevelTabListItems[] = $item;
+            } else {
+                $twoLevelTabListItems = array_merge($twoLevelTabListItems, $item->items);
+            }
+        }
+
         foreach ($this->menuItems as $item) {
             if (!in_array($item, $tabList)) {
                 $tabList[] = $item;
@@ -183,7 +165,7 @@ class Event extends AbstractEvent
             if (!in_array($item, $quickCreateList)) {
                 $quickCreateList[] = $item;
             }
-            if (!in_array($item, $twoLevelTabList)) {
+            if (!in_array($item, $twoLevelTabListItems)) {
                 $twoLevelTabList[] = $item;
             }
         }
@@ -191,42 +173,6 @@ class Event extends AbstractEvent
         // set to config
         $this->getConfig()->set('tabList', $tabList);
         $this->getConfig()->set('quickCreateList', $quickCreateList);
-        $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
-
-        // save
-        $this->getConfig()->save();
-    }
-
-    /**
-     * Delete menu items
-     */
-    protected function deleteMenuItems()
-    {
-        // for tabList
-        $tabList = [];
-        foreach ($this->getConfig()->get("tabList", []) as $entity) {
-            if (!in_array($entity, $this->menuItems)) {
-                $tabList[] = $entity;
-            }
-        }
-        $this->getConfig()->set('tabList', $tabList);
-
-        // for quickCreateList
-        $quickCreateList = [];
-        foreach ($this->getConfig()->get("quickCreateList", []) as $entity) {
-            if (!in_array($entity, $this->menuItems)) {
-                $quickCreateList[] = $entity;
-            }
-        }
-        $this->getConfig()->set('quickCreateList', $quickCreateList);
-
-        // for twoLevelTabList
-        $twoLevelTabList = [];
-        foreach ($this->getConfig()->get("twoLevelTabList", []) as $entity) {
-            if (!in_array($entity, $this->menuItems)) {
-                $twoLevelTabList[] = $entity;
-            }
-        }
         $this->getConfig()->set('twoLevelTabList', $twoLevelTabList);
 
         // save
