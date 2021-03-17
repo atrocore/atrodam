@@ -32,7 +32,7 @@ Espo.define('dam:views/login', 'class-replace!dam:views/login',
         getLogoSrc: function () {
             const companyLogoId = this.getConfig().get('companyLogoId');
             if (!companyLogoId) {
-                return this.getBasePath() + 'client/modules/dam/img/dam_logo_white.svg';
+                return this.getBasePath() + 'client/modules/dam/img/dam_logo_dark.svg';
             }
             return this.getBasePath() + '?entryPoint=LogoImage&id='+companyLogoId+'&t=' + companyLogoId;
         }
