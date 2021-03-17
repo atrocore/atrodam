@@ -35,8 +35,10 @@ use Dam\Core\ConfigManager;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\NotFound;
 use Espo\Core\Templates\Services\Base;
+use Espo\Core\Utils\Json;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
+use Treo\Core\EventManager\Event;
 
 /**
  * Class Asset
@@ -96,6 +98,16 @@ class Asset extends Base
      */
     public function getEntityAssets(string $scope, string $id): array
     {
+        $event = $this
+            ->getInjection('eventManager')
+            ->dispatch(
+                'AssetService',
+                'beforeGetEntityAssets',
+                new Event(['scope' => $scope, 'id' => $id])
+        );
+        $id = $event->getArgument('id');
+        $scope = $event->getArgument('scope');
+
         $entity = $this->getEntityManager()->getEntity($scope, $id);
         if (empty($entity)) {
             throw new NotFound();
@@ -297,6 +309,7 @@ class Asset extends Base
         $this->addDependency("language");
         $this->addDependency("ConfigManager");
         $this->addDependency('log');
+        $this->addDependency('eventManager');
     }
 
     /**

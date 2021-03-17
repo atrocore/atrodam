@@ -41,6 +41,8 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
         },
 
         setup() {
+            Dep.prototype.setup.call(this);
+
             this.link = this._getAssetLink();
             this.scope = this.options.defs.entityName;
 
@@ -76,47 +78,19 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
         },
 
         actionButtonList() {
-
-            this.buttonList.push({
-                title: this.translate('clickToRefresh', 'messages', 'Global'),
-                action: 'refresh',
-                link: this.link,
-                acl: 'read',
-                aclScope: this.scope,
-                html: '<span class="fas fa-sync"></span>'
-            });
-
-            this.actionList.unshift({
-                label: 'Select',
-                action: this.defs.selectAction || 'selectRelated',
-                data: {
-                    link: this.link
-                },
-                acl: 'edit',
-                aclScope: this.model.name
-            });
-
-            this.actionList.unshift({
-                label: this.translate('massUpload', 'labels', 'Asset'),
-                action: 'massAssetCreate',
-                data: {
-                    link: this.link
-                },
-                acl: 'create',
-                aclScope: this.model.name
-            });
-
-            this.buttonList.push({
-                title: 'Create',
-                action: this.defs.createAction || 'createRelated',
-                link: this.link,
-                acl: 'create',
-                aclScope: this.scope,
-                html: '<span class="fas fa-plus"></span>',
-                data: {
-                    link: this.link
+            if (this.defs.create) {
+                if (this.getAcl().check(this.scope, 'create') && !~['User', 'Team'].indexOf()) {
+                    this.actionList.push({
+                        label: this.translate('massUpload', 'labels', 'Asset'),
+                        action: 'massAssetCreate',
+                        data: {
+                            link: this.link
+                        },
+                        acl: 'create',
+                        aclScope: this.model.name
+                    });
                 }
-            });
+            }
         },
 
         actionMassAssetCreate: function (data) {
