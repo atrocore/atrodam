@@ -135,12 +135,18 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             message = message.replace('YY', $('.uploaded-file').length);
 
                             Espo.Ui.notify(message, 'error', 1000 * 120, true);
+
+                            this.afterShowNotification();
                         }
                     }.bind(this), 100);
                 }
                 this.isUploading = false;
                 $('.attachment-upload .progress').hide();
             }.bind(this));
+        },
+
+        afterShowNotification: function () {
+
         },
 
         getPercentCompleted: function () {
