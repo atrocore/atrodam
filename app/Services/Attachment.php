@@ -130,8 +130,10 @@ class Attachment extends \Espo\Services\Attachment
         $config = $this->getInjection("ConfigManager")->getByType([\Dam\Core\ConfigManager::getType($type)]);
 
         // validate
-        foreach ($config['validations'] as $type => $value) {
-            $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
+        if (!empty($config['validations'])) {
+            foreach ($config['validations'] as $type => $value) {
+                $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
+            }
         }
     }
 
