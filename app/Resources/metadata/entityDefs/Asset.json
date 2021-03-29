@@ -199,7 +199,8 @@
       "audited": false,
       "readOnly": false,
       "tooltip": false,
-      "prohibitedEmptyValue": true
+      "prohibitedEmptyValue": true,
+      "view": "dam:views/asset/fields/asset-type"
     },
     "file": {
       "type": "file",

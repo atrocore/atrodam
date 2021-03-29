@@ -1,4 +1,3 @@
-<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -27,35 +26,22 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-declare(strict_types=1);
+Espo.define('dam:views/asset/fields/asset-type', 'views/fields/enum',
+    Dep => Dep.extend({
 
-namespace Dam\Repositories;
+        setup() {
+            if (this.mode === 'edit') {
+                this.ajaxGetRequest(`AssetType?select=name&sortBy=name&asc=true&silent=true`, {}, {async: false}).then(response => {
+                    if (response.total && response.total > 0) {
+                        this.params.options = [];
+                        response.list.forEach(assetType => {
+                            this.params.options.push(assetType.name);
+                        });
+                    }
+                });
+            }
 
-use Dam\Listeners\Metadata;
-use Espo\ORM\Entity;
-
-/**
- * Class AssetType
- */
-class AssetType extends \Espo\Core\Templates\Repositories\Base
-{
-    /**
-     * @inheritDoc
-     */
-    protected function afterSave(Entity $entity, array $options = [])
-    {
-        Metadata::updateCacheFile($this->getPDO());
-
-        parent::afterSave($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function afterRemove(Entity $entity, array $options = [])
-    {
-        Metadata::updateCacheFile($this->getPDO());
-
-        parent::afterRemove($entity, $options);
-    }
-}
+            Dep.prototype.setup.call(this);
+        },
+    })
+);
