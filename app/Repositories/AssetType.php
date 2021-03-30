@@ -31,7 +31,6 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
-use Dam\Listeners\Metadata;
 use Espo\ORM\Entity;
 
 /**
@@ -44,7 +43,7 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
      */
     protected function afterSave(Entity $entity, array $options = [])
     {
-        Metadata::updateCacheFile($this->getPDO());
+        $this->clearCache();
 
         parent::afterSave($entity, $options);
     }
@@ -54,8 +53,26 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
      */
     protected function afterRemove(Entity $entity, array $options = [])
     {
-        Metadata::updateCacheFile($this->getPDO());
+        $this->clearCache();
 
         parent::afterRemove($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('dataManager');
+    }
+
+    /**
+     * Clearing cache
+     */
+    protected function clearCache(): void
+    {
+        $this->getInjection('dataManager')->clearCache();
     }
 }

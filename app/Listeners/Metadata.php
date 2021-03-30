@@ -47,26 +47,6 @@ class Metadata extends AbstractListener
     protected const CACHE_FILE = 'data/cache/asset_types.json';
 
     /**
-     * Update asset type cache file
-     *
-     * @param \Pdo $pdo
-     */
-    public static function updateCacheFile(\Pdo $pdo): void
-    {
-        try {
-            $sth = $pdo
-                ->prepare("SELECT name FROM asset_type WHERE deleted=0");
-            $sth->execute();
-            $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
-
-            Util::createDir('data/cache');
-            file_put_contents(self::CACHE_FILE, Json::encode($types));
-        } catch (\Throwable $e) {
-            // ignore
-        }
-    }
-
-    /**
      * @param Event $event
      */
     public function modify(Event $event)
@@ -94,7 +74,17 @@ class Metadata extends AbstractListener
     {
         $types = [];
         if (!file_exists(self::CACHE_FILE)) {
-            self::updateCacheFile($this->getContainer()->get('pdo'));
+            try {
+                $sth = $this->getContainer()->get('pdo')
+                    ->prepare("SELECT name FROM asset_type WHERE deleted=0");
+                $sth->execute();
+                $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
+
+                Util::createDir('data/cache');
+                file_put_contents(self::CACHE_FILE, Json::encode($types));
+            } catch (\Throwable $e) {
+                // ignore
+            }
         } else {
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
