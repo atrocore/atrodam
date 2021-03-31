@@ -78,7 +78,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 view.render();
                 view.notify(false);
                 this.listenToOnce(view, 'after:save', function () {
-                    this.getParentView().actionRefresh();
+                    $('button[data-action="refresh"][data-panel="assets"]').click();
                 }, this);
             }.bind(this));
         },
