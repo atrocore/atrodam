@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
+use Dam\Core\Exceptions\SuchAssetAlreadyExists;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
@@ -109,8 +110,8 @@ class Attachment extends \Espo\Services\Attachment
      */
     protected function validateAttachment(Entity $entity, \stdClass $data): void
     {
-        if (($data->parentType == 'Asset' || $data->relatedType == 'Asset') && in_array($data->field, ['file', 'files']) && !empty($entity->getAsset())) {
-            throw new BadRequest($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset'));
+        if (($data->parentType == 'Asset' || $data->relatedType == 'Asset') && in_array($data->field, ['file', 'files']) && !empty($asset = $entity->getAsset())) {
+            throw (new SuchAssetAlreadyExists($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset')))->setAsset($asset);
         }
 
         $entity = clone $entity;

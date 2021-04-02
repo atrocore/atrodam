@@ -124,6 +124,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
             this.notify('Loading...');
             this.createView('massCreate', 'dam:views/asset/modals/edit', {
+                name: 'massCreate',
                 scope: 'Asset',
                 relate: {
                     model: this.model,
@@ -144,17 +145,30 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
 
         actionRefresh() {
             if (this.collection) {
-                this.blocks = [];
                 this.collection.fetch().then(() => {
+                    this.blocks = [];
+
                     this.collection.forEach((model) => {
                         if (model.get('assets').length > 0) {
                             this.blocks.push(model.get("name"));
-                            this._createTypeBlock(model, false);
                         }
                     });
-                    setTimeout(() => {
+
+                    if (this.blocks.length > 0) {
+                        new Promise(resolve => {
+                            this.blocks.forEach((name, key) => {
+                                if ((key + 1) === this.blocks.length) {
+                                    this._createTypeBlock(this.collection.get(name), false, resolve);
+                                } else {
+                                    this._createTypeBlock(this.collection.get(name), false);
+                                }
+                            });
+                        }).then(() => {
+                            this.reRender();
+                        });
+                    } else {
                         this.reRender();
-                    }, 300);
+                    }
                 });
             }
         },

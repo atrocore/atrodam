@@ -86,18 +86,51 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
         actionSave() {
             this.notify('Saving...');
             const isNew = typeof this.model.id === 'undefined';
-            this.model.save().then(response => {
-                this.trigger('after:save', this.model);
-                this.dialog.close();
 
-                if (response.afterSaveMessage) {
-                    Espo.Ui.notify(response.afterSaveMessage, 'success', 1000 * 60 * 60, true);
-                } else if (isNew) {
-                    this.notify('Created', 'success');
-                } else {
-                    this.notify('Saved', 'success');
-                }
-            });
+            if (this.model.get('filesIds') && this.model.get('filesIds').length > 0) {
+                let count = this.model.get('filesIds').length;
+                this.model.save().then(response => {
+                    new Promise(resolve => {
+                        this.relateExistedAssets(resolve);
+                    }).then(() => {
+                        this.trigger('after:save', this.model);
+                        this.dialog.close();
+                        if (count > 20) {
+                            Espo.Ui.notify(this.translate('assetsAdded', 'messages', 'Asset'), 'success', 1000 * 60, true);
+                        } else {
+                            this.notify('Created', 'success');
+                        }
+                    });
+                });
+            } else if (this.options.relate) {
+                new Promise(resolve => {
+                    this.relateExistedAssets(resolve);
+                }).then(() => {
+                    this.trigger('after:save', this.model);
+                    this.dialog.close();
+                    this.notify('Linked', 'success');
+                });
+            } else {
+                this.dialog.close();
+                this.notify(false);
+            }
+        },
+
+        relateExistedAssets(resolve) {
+            if (this.options.relate && this.model.get('assetsForRelate')) {
+                let ids = [];
+                $.each(this.model.get('assetsForRelate'), (hash, id) => {
+                    ids.push(id);
+                });
+
+                console.log(ids)
+
+                this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
         },
     })
 );

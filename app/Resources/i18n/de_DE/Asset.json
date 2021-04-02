@@ -7,7 +7,8 @@
     "uploaded": "hochgeladen",
     "retry": "Erneut versuchen?",
     "withoutAnyCategory": "Ohne Kategorie",
-    "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>."
+    "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>.",
+    "massCreateAssets": "Erstellen Sie Assets"
   },
   "links": {
     "renditions": "Derivate",
@@ -48,7 +49,7 @@
   "messages": {
     "assetCouldNotBeUploaded": "Asset konnte nicht hochgeladen werden.",
     "notAllAssetsWereUploaded": "XX von YY Assets wurden nicht hochgeladen.",
-    "outOfSelectedAssetsUploaded": "Von %s ausgewählten Assets wurden %s Assets hochgeladen."
+    "assetsAdded": "Assets werden hinzugefügt und werden in wenigen Augenblicken verfügbar sein."
   },
   "exceptions": {
     "assetNameIsInvalid": "Asset-Name ist ungültig.",
