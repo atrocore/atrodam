@@ -258,9 +258,6 @@ class Asset extends Base
      */
     protected function massCreateAssets(\stdClass $data): Entity
     {
-        // update timeout limit
-        set_time_limit(60 * 5);
-
         $entity = $this->getRepository()->get();
 
         $created = 0;
@@ -289,10 +286,6 @@ class Asset extends Base
             } catch (\Throwable $e) {
                 $created--;
             }
-        }
-
-        if (count($data->filesIds) != $created) {
-            $entity->set('afterSaveMessage', sprintf($this->translate('outOfSelectedAssetsUploaded', 'messages', 'Asset'), count($data->filesIds), $created), 'messages', 'Asset');
         }
 
         return $entity;

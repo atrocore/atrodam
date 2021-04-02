@@ -128,7 +128,6 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 scope: 'Asset',
                 relate: {
                     model: this.model,
-                    scope: this.scope,
                     link: foreignLink,
                 },
                 attributes: {},

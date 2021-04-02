@@ -88,19 +88,17 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             const isNew = typeof this.model.id === 'undefined';
 
             if (this.model.get('filesIds') && this.model.get('filesIds').length > 0) {
+                let count = this.model.get('filesIds').length;
                 this.model.save().then(response => {
                     new Promise(resolve => {
                         this.relateExistedAssets(resolve);
                     }).then(() => {
                         this.trigger('after:save', this.model);
                         this.dialog.close();
-
-                        if (response.afterSaveMessage) {
-                            Espo.Ui.notify(response.afterSaveMessage, 'success', 1000 * 60 * 60, true);
-                        } else if (isNew) {
-                            this.notify('Created', 'success');
+                        if (count > 20) {
+                            Espo.Ui.notify(this.translate('assetsAdded', 'messages', 'Asset'), 'success', 1000 * 60, true);
                         } else {
-                            this.notify('Saved', 'success');
+                            this.notify('Created', 'success');
                         }
                     });
                 });
@@ -110,7 +108,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 }).then(() => {
                     this.trigger('after:save', this.model);
                     this.dialog.close();
-                    this.notify('Saved', 'success');
+                    this.notify('Linked', 'success');
                 });
             }
         },
@@ -122,7 +120,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     ids.push(id);
                 });
 
-                this.ajaxPostRequest(`${this.options.relate.scope}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
+                this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
                     resolve();
                 });
             } else {

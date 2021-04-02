@@ -44,7 +44,7 @@
   "messages": {
     "assetCouldNotBeUploaded": "Asset could not be uploaded.",
     "notAllAssetsWereUploaded" : "XX of YY assets were not uploaded.",
-    "outOfSelectedAssetsUploaded": "Out of %s selected assets %s assets were uploaded."
+    "assetsAdded": "Assets have been added and will be available in a few moments."
   },
   "exceptions": {
     "assetNameIsInvalid": "Asset name is invalid.",
