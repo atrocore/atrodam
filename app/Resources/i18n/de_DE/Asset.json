@@ -7,7 +7,8 @@
     "uploaded": "hochgeladen",
     "retry": "Erneut versuchen?",
     "withoutAnyCategory": "Ohne Kategorie",
-    "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>."
+    "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>.",
+    "massCreateAssets": "Erstellen Sie Assets"
   },
   "links": {
     "renditions": "Derivate",

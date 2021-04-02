@@ -1,3 +1,4 @@
 {
-  "Attachment": "\\Dam\\Services\\Attachment"
+  "Attachment": "\\Dam\\Services\\Attachment",
+  "QueueManagerMassCreateAssets": "\\Dam\\Services\\QueueManagerMassCreateAssets"
 }

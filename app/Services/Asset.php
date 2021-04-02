@@ -53,6 +53,35 @@ class Asset extends Base
     protected $mandatorySelectAttributeList = ['fileId', 'type'];
 
     /**
+     * @param \stdClass $data
+     * @param string    $fileId
+     *
+     * @return \stdClass
+     */
+    public static function preparePostDataForMassCreateAssets(\stdClass $data, string $fileId): \stdClass
+    {
+        // get file name
+        $fileName = $data->filesNames->$fileId;
+
+        // parse name
+        $parts = explode('.', $fileName);
+
+        // get asset name
+        $assetName = array_shift($parts);
+
+        $postData = clone $data;
+        $postData->fileId = $fileId;
+        $postData->fileName = $fileName;
+        $postData->name = $assetName;
+
+        unset($postData->filesIds);
+        unset($postData->filesNames);
+        unset($postData->filesTypes);
+
+        return $postData;
+    }
+
+    /**
      * @inheritDoc
      */
     public function prepareEntityForOutput(Entity $entity)
@@ -104,7 +133,7 @@ class Asset extends Base
                 'AssetService',
                 'beforeGetEntityAssets',
                 new Event(['scope' => $scope, 'id' => $id])
-        );
+            );
         $id = $event->getArgument('id');
         $scope = $event->getArgument('scope');
 
@@ -260,31 +289,19 @@ class Asset extends Base
     {
         $entity = $this->getRepository()->get();
 
-        $created = 0;
+        if (count($data->filesIds) > 20) {
+            $name = $this->getInjection('language')->translate('massCreateAssets', 'labels', 'Assets');
+            $this->getInjection('queueManager')->push($name, 'QueueManagerMassCreateAssets', ['data' => $data]);
+
+            return $entity;
+        }
+
         foreach ($data->filesIds as $fileId) {
-            // get file name
-            $fileName = $data->filesNames->$fileId;
-
-            // parse name
-            $parts = explode('.', $fileName);
-
-            // get asset name
-            $assetName = array_shift($parts);
-
-            $postData = clone $data;
-            $postData->fileId = $fileId;
-            $postData->fileName = $fileName;
-            $postData->name = $assetName;
-
-            unset($postData->filesIds);
-            unset($postData->filesNames);
-            unset($postData->filesTypes);
-
-            $created++;
+            $postData = self::preparePostDataForMassCreateAssets($data, $fileId);
             try {
                 $entity = parent::createEntity($postData);
             } catch (\Throwable $e) {
-                $created--;
+                $GLOBALS['log']->error("ERROR in massCreateAssets: " . $e->getMessage() . ' | ' . $e->getTraceAsString());
             }
         }
 
@@ -303,6 +320,7 @@ class Asset extends Base
         $this->addDependency("ConfigManager");
         $this->addDependency('log');
         $this->addDependency('eventManager');
+        $this->addDependency('queueManager');
     }
 
     /**
