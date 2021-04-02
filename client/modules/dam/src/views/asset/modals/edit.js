@@ -86,18 +86,48 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
         actionSave() {
             this.notify('Saving...');
             const isNew = typeof this.model.id === 'undefined';
-            this.model.save().then(response => {
-                this.trigger('after:save', this.model);
-                this.dialog.close();
 
-                if (response.afterSaveMessage) {
-                    Espo.Ui.notify(response.afterSaveMessage, 'success', 1000 * 60 * 60, true);
-                } else if (isNew) {
-                    this.notify('Created', 'success');
-                } else {
+            if (this.model.get('filesIds') && this.model.get('filesIds').length > 0) {
+                this.model.save().then(response => {
+                    new Promise(resolve => {
+                        this.relateExistedAssets(resolve);
+                    }).then(() => {
+                        this.trigger('after:save', this.model);
+                        this.dialog.close();
+
+                        if (response.afterSaveMessage) {
+                            Espo.Ui.notify(response.afterSaveMessage, 'success', 1000 * 60 * 60, true);
+                        } else if (isNew) {
+                            this.notify('Created', 'success');
+                        } else {
+                            this.notify('Saved', 'success');
+                        }
+                    });
+                });
+            } else {
+                new Promise(resolve => {
+                    this.relateExistedAssets(resolve);
+                }).then(() => {
+                    this.trigger('after:save', this.model);
+                    this.dialog.close();
                     this.notify('Saved', 'success');
-                }
-            });
+                });
+            }
+        },
+
+        relateExistedAssets(resolve) {
+            if (this.model.get('assetsForRelate')) {
+                let ids = [];
+                $.each(this.model.get('assetsForRelate'), (hash, id) => {
+                    ids.push(id);
+                });
+
+                this.ajaxPostRequest(`${this.options.relate.scope}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
+                    resolve();
+                });
+            } else {
+                resolve();
+            }
         },
     })
 );

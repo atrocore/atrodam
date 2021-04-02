@@ -38,6 +38,8 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
         finalPieceSize: 10 * 1024,
 
+        toLink: {},
+
         events: _.extend(Dep.prototype.events, {
                 'click a.remove-attachment': function (e) {
                     let $div = $(e.currentTarget).parent();
@@ -70,6 +72,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     this.fileList = fileList;
                     delete this.uploadedSize[hash];
                     delete this.filesSize[hash];
+
+                    let assetsForRelate = this.model.get('assetsForRelate') || {};
+                    if (assetsForRelate[hash]) {
+                        delete assetsForRelate[hash];
+                        this.model.set('assetsForRelate', assetsForRelate, {silent: true});
+                    }
 
                     this.updateProgress();
 
@@ -465,6 +473,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.failedFiles[file.uniqueId] = file;
 
             let html = response.getResponseHeader('X-Status-Reason') || this.translate('assetCouldNotBeUploaded', 'messages', 'Asset');
+
+            if (response.getResponseHeader('X-Status-Reason-Data')) {
+                let assetsForRelate = this.model.get('assetsForRelate') || {};
+                assetsForRelate[file.uniqueId] = response.getResponseHeader('X-Status-Reason-Data');
+                this.model.set('assetsForRelate', assetsForRelate, {silent: true});
+            }
 
             if (response.status !== 400) {
                 html += ` <a href="javascript:" class="retry-upload" data-unique="${file.uniqueId}">${this.translate('retry', 'labels', 'Asset')}</a>`;
