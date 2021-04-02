@@ -102,7 +102,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                         }
                     });
                 });
-            } else {
+            } else if (this.options.relate) {
                 new Promise(resolve => {
                     this.relateExistedAssets(resolve);
                 }).then(() => {
@@ -110,15 +110,20 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     this.dialog.close();
                     this.notify('Linked', 'success');
                 });
+            } else {
+                this.dialog.close();
+                this.notify(false);
             }
         },
 
         relateExistedAssets(resolve) {
-            if (this.model.get('assetsForRelate')) {
+            if (this.options.relate && this.model.get('assetsForRelate')) {
                 let ids = [];
                 $.each(this.model.get('assetsForRelate'), (hash, id) => {
                     ids.push(id);
                 });
+
+                console.log(ids)
 
                 this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
                     resolve();
