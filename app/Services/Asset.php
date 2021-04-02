@@ -290,7 +290,7 @@ class Asset extends Base
         $entity = $this->getRepository()->get();
 
         if (count($data->filesIds) > 20) {
-            $name = $this->getInjection('language')->translate('massCreateAssets', 'labels', 'Assets');
+            $name = $this->getInjection('language')->translate('massCreateAssets', 'labels', 'Asset');
             $this->getInjection('queueManager')->push($name, 'QueueManagerMassCreateAssets', ['data' => $data]);
 
             return $entity;
