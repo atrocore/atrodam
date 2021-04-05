@@ -85,10 +85,17 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
         actionSave() {
             this.notify('Saving...');
-            const isNew = typeof this.model.id === 'undefined';
 
-            if (this.model.get('filesIds') && this.model.get('filesIds').length > 0) {
-                let count = this.model.get('filesIds').length;
+            let filesIds = [];
+            if (this.model.get('fileId')) {
+                filesIds.push(this.model.get('fileId'));
+            } else if (this.model.get('filesIds') && this.model.get('filesIds').length > 0) {
+                filesIds = this.model.get('filesIds');
+            }
+
+            let count = filesIds.length;
+
+            if (count > 0) {
                 this.model.save().then(response => {
                     new Promise(resolve => {
                         this.relateExistedAssets(resolve);
@@ -122,8 +129,6 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 $.each(this.model.get('assetsForRelate'), (hash, id) => {
                     ids.push(id);
                 });
-
-                console.log(ids)
 
                 this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
                     resolve();

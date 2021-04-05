@@ -82,13 +82,21 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
             data() {
                 let data = {
                     originPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').download,
-                    thumbnailPath: (!this.model.get('filePathsData')) ? null : this.model.get('filePathsData').thumbs.large,
+                    thumbnailPath: null,
                     fileId: this.model.get('fileId'),
                     path: this.options.el,
                     hasVideoPlayer: this.hasVideoPlayer() && this.model.get('filePathsData'),
                     isImage: this.isImage(),
-                    icon: (!this.model.get('filePathsData')) ? 'download' : this.model.get('icon')
+                    icon: this.model.get('icon')
                 };
+
+                if (this.model.get('filePathsData') && this.model.get('filePathsData').thumbs && this.model.get('filePathsData').thumbs.large) {
+                    data.thumbnailPath = this.model.get('filePathsData').thumbs.large;
+                }
+
+                if (data.isImage && !data.thumbnailPath && data.fileId) {
+                    data.thumbnailPath = `?entryPoint=image&id=${data.fileId}`;
+                }
 
                 if (data.hasVideoPlayer || data.isImage) {
                     data.icon = null;
@@ -99,6 +107,12 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
 
             afterRender() {
                 Dep.prototype.afterRender.call(this);
+
+                if (this.model.get('filesIds') || (!this.isImage() && !this.isVideo())) {
+                    this.$el.parent().hide();
+                } else {
+                    this.$el.parent().show();
+                }
 
                 if (this.isVideo() && !this.hasVideoPlayer() && this.model.get('filePathsData')) {
                     this.$el.find('.row').append(`<div class="col-sm-12" style="text-align: left; margin-top: 10px"><span style="font-size: 12px">${this.translate('availableVideoFormats', 'labels', 'Asset')}</span></div>`);
