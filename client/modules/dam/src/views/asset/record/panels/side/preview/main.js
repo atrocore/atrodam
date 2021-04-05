@@ -95,7 +95,11 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
                 }
 
                 if (data.isImage && !data.thumbnailPath && data.fileId) {
-                    data.thumbnailPath = `?entryPoint=image&id=${data.fileId}`;
+                    this.ajaxGetRequest(`Attachment/${data.fileId}`, {}, {async: false}).then(response => {
+                        if (response.pathsData) {
+                            data.thumbnailPath = response.pathsData.thumbs.large;
+                        }
+                    });
                 }
 
                 if (data.hasVideoPlayer || data.isImage) {
@@ -108,7 +112,7 @@ Espo.define('dam:views/asset/record/panels/side/preview/main', ['view', "dam:con
             afterRender() {
                 Dep.prototype.afterRender.call(this);
 
-                if (this.model.get('filesIds') || (!this.isImage() && !this.isVideo())) {
+                if ((!this.isImage() && !this.isVideo()) || (this.model.get('filesIds') && this.model.get('filesIds').length > 0)) {
                     this.$el.parent().hide();
                 } else {
                     this.$el.parent().show();
