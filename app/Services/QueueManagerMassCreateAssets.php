@@ -32,6 +32,7 @@ declare(strict_types=1);
 namespace Dam\Services;
 
 use Espo\Core\Utils\Json;
+use Espo\ORM\Entity;
 use Espo\Services\QueueManagerBase;
 
 /**
@@ -58,5 +59,13 @@ class QueueManagerMassCreateAssets extends QueueManagerBase
         }
 
         return true;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getNotificationMessage(Entity $queueItem): string
+    {
+        return '';
     }
 }
