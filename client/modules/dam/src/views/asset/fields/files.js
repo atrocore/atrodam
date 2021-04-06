@@ -203,7 +203,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 let file = files[i];
 
                 if (file.type === '') {
-                    continue;
+                    file.type = 'text/plain';
                 }
 
                 file['uniqueId'] = this.createFileUniqueHash(file);
