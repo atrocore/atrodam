@@ -137,5 +137,11 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 resolve();
             }
         },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            $('.btn-link').prev('.btn').addClass('last');
+        }
     })
 );
