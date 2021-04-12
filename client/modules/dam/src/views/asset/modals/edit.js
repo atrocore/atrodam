@@ -141,7 +141,15 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
         afterRender() {
             Dep.prototype.afterRender.call(this);
 
-            $('.btn-link').prev('.btn').addClass('last');
+            let buttonLink = $('.main-btn-group > .btn-link');
+
+            if (buttonLink) {
+                let prev = buttonLink.prev('.btn');
+
+                if (prev && !prev.hasClass('last')) {
+                    prev.addClass('last');
+                }
+            }
         }
     })
 );
