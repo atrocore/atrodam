@@ -135,6 +135,14 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
             if ($(window).width() <= 767 || !!this.getStorage().get('catalog-tree-panel', this.scope)) {
                 this.actionCollapsePanel();
             }
+
+            if (!this.getStorage().get('catalog-tree-panel', this.scope) && !this.model) {
+                let pageHeader = this.$el.parents('#main').find('.page-header');
+                pageHeader.addClass('collapsed');
+
+                let listContainer = this.$el.parents('#main').find('.list-container');
+                listContainer.addClass('collapsed');
+            }
         },
 
         selectCategoryButtonApplyFilter(button, filterParams) {
@@ -250,6 +258,8 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
             let categoryPanel = this.$el.find('.category-panel');
             let button = this.$el.find('button[data-action="collapsePanel"]');
             let listContainer = this.$el.parent('#main').find('.list-container');
+            let pageHeader = this.$el.parents('#main').find('.page-header');
+
             if (categoryPanel.hasClass('hidden') && !forceHide) {
                 categoryPanel.removeClass('hidden');
                 button.removeClass('collapsed');
@@ -257,8 +267,10 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
                 button.find('span.toggle-icon-right').addClass('hidden');
                 this.$el.removeClass('catalog-tree-panel-hidden');
                 this.$el.addClass('col-xs-12 col-lg-3');
+                pageHeader.removeClass('not-collapsed');
+                pageHeader.addClass('collapsed');
                 listContainer.removeClass('hidden-catalog-tree-panel');
-                listContainer.addClass('col-xs-12 col-lg-9');
+                listContainer.addClass('col-xs-12 col-lg-9 collapsed');
                 this.getStorage().set('catalog-tree-panel', this.scope, '');
             } else {
                 categoryPanel.addClass('hidden');
@@ -267,7 +279,9 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
                 button.find('span.toggle-icon-right').removeClass('hidden');
                 this.$el.removeClass('col-xs-12 col-lg-3');
                 this.$el.addClass('catalog-tree-panel-hidden');
-                listContainer.removeClass('col-xs-12 col-lg-9');
+                pageHeader.addClass('not-collapsed');
+                pageHeader.removeClass('collapsed');
+                listContainer.removeClass('col-xs-12 col-lg-9 collapsed');
                 listContainer.addClass('hidden-catalog-tree-panel');
                 this.getStorage().set('catalog-tree-panel', this.scope, 'collapsed');
             }
