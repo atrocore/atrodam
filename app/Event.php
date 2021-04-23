@@ -34,7 +34,7 @@ namespace Dam;
 use Dam\Repositories\Attachment;
 use Espo\Core\Utils\Config;
 use Treo\Core\ModuleManager\AfterInstallAfterDelete;
-use Treo\Core\Utils\Metadata;
+use Espo\Core\Utils\Metadata;
 
 /**
  * Class Event
