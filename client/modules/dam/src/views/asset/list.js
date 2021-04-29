@@ -57,8 +57,6 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
                 label: this.translate('massUpload', 'labels', 'Asset'),
                 iconHtml: ''
             });
-
-            this.getStorage().set('list-view', 'Asset', 'list');
         },
 
         actionMassAssetCreate() {

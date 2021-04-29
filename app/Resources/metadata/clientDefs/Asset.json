@@ -67,17 +67,17 @@
       "buttons": [
         {
           "acl": "read",
+          "name": "list",
           "label": "",
           "link": "#Asset/list",
-          "style": "primary",
           "title": "List",
           "iconHtml": "<span class=\"fa fa-list\"></span>"
         },
         {
           "acl": "read",
+          "name": "plate",
           "label": "",
           "link": "#Asset/plate",
-          "style": "default",
           "title": "Plate",
           "iconHtml": "<span class=\"fa fa-th\"></span>"
         }
@@ -87,17 +87,17 @@
       "buttons": [
         {
           "acl": "read",
+          "name": "list",
           "label": "",
           "link": "#Asset/list",
-          "style": "default",
           "title": "List",
           "iconHtml": "<span class=\"fa fa-list\"></span>"
         },
         {
           "acl": "read",
+          "name": "plate",
           "label": "",
           "link": "#Asset/plate",
-          "style": "primary",
           "title": "Plate",
           "iconHtml": "<span class=\"fa fa-th\"></span>"
         }
