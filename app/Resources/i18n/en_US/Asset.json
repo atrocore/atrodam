@@ -12,6 +12,7 @@
     "massCreateAssets": "Create assets"
   },
   "fields": {
+    "url": "URL",
     "isActive": "Active",
     "image": "Image",
     "relatedAssets": "Related Assets",

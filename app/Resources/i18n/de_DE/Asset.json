@@ -21,6 +21,7 @@
     "relatedAssets": "Verwandte Assets"
   },
   "fields": {
+    "url": "URL",
     "type": "Typ",
     "renditions": "Derivate",
     "isActive": "Aktiv",

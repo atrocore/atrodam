@@ -26,6 +26,19 @@
       "importDisabled": true,
       "exportDisabled": true
     },
+    "url": {
+      "type": "varchar",
+      "notStorable": true,
+      "default": null,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "layoutFiltersDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": false
+    },
     "afterSaveMessage": {
       "type": "text",
       "notStorable": true,
@@ -122,21 +135,15 @@
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
-      "importDisabled": true
-    },
-    "path": {
-      "type": "varchar",
-      "emHidden": true,
-      "hidden": true,
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "layoutListDisabled": true
+      "importDisabled": true,
+      "exportDisabled": true
     },
     "assetCategories": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "importDisabled": true,
+      "exportDisabled": true,
       "noLoad": true
     },
     "name": {
@@ -151,9 +158,6 @@
       "rows": 4,
       "lengthOfCut": 400,
       "isMultilang": true
-    },
-    "metaData": {
-      "type": "text"
     },
     "createdAt": {
       "type": "datetime",
@@ -209,7 +213,8 @@
       "audited": false,
       "tooltip": false,
       "view": "dam:views/asset/fields/file",
-      "layoutMassUpdateDisabled": true
+      "layoutMassUpdateDisabled": true,
+      "exportDisabled": true
     },
     "files": {
       "type": "attachmentMultiple",
@@ -219,7 +224,8 @@
       "noAsset": true,
       "tooltip": false,
       "notStorable": true,
-      "view": "dam:views/asset/fields/files"
+      "view": "dam:views/asset/fields/files",
+      "exportDisabled": true
     },
     "size": {
       "type": "unit",
@@ -234,6 +240,7 @@
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "importDisabled": true,
+      "exportDisabled": true,
       "noLoad": true
     }
   },

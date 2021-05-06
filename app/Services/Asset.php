@@ -92,6 +92,13 @@ class Asset extends Base
         if (!empty($file)) {
             $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
         }
+
+        if (!empty($entity->get('fileId'))) {
+            $url = rtrim($this->getConfig()->get('siteUrl', ''), '/');
+            $url .= '/';
+            $url .= $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'))['download'];
+            $entity->set('url', $url);
+        }
     }
 
     /**
