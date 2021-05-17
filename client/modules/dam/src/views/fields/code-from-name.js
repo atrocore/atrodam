@@ -45,9 +45,51 @@ Espo.define('dam:views/fields/code-from-name', 'dam:views/fields/varchar-with-pa
                 }
             });
         },
-        
+
         transformToPattern(value) {
-            return value.toLowerCase().replace(/ /g, '_').replace(/[^a-z_0-9]/g, '');
+            let result = value
+                .toLowerCase()
+                .replace(/ /g, '_');
+
+            return this.replaceDiacriticalCharacters(result).replace(/[^a-z_0-9]/gu, '');
+        },
+
+        replaceDiacriticalCharacters(value) {
+            let diacritalSymbolsReplaceMap = {
+                'a': 'ÀÁÂÃÄÅÆĀĂĄàáâãäåæāăą',
+                'c': 'ÇĆĈĊČçćĉċč',
+                'd': 'ĎĐďđ',
+                'e': 'ÈÉÊËÐĒĔĖĘĚèéêëðēĕėęě',
+                'g': 'ĜĞĠĢĝğġģ',
+                'h': 'ĤĦĥħ',
+                'i': 'ÌÍÎÏĨĪĬĮİĲìíîïĩīĭįıĳ',
+                'j': 'Ĵĵ',
+                'k': 'Ķķĸ',
+                'l': 'ĹĻĽĿŁĺļľŀł',
+                'n': 'ÑŃŅŇŊñńņňŉŋ',
+                'o': 'ÒÓÔÕÖØŌŎŐŒòóôõöøōŏőœ',
+                'p': 'Þþ',
+                'r': 'ŔŖŘŕŗř',
+                's': 'ßŚŜŞŠśŝşšſ',
+                't': 'ŢŤŦţťŧ',
+                'u': 'ÙÚÛÜŨŪŬŮŰŲùúûüũūŭůűų',
+                'w': 'Ŵŵ',
+                'y': 'ÝŶŸýÿŷ',
+                'z': 'ŹŻŽźżž'
+            };
+
+            let replaceMap = {};
+            for (let letter in diacritalSymbolsReplaceMap) {
+                let replaces = diacritalSymbolsReplaceMap[letter];
+
+                for (let j = 0; j < replaces.length; j++) {
+                    replaceMap[replaces[j]] = letter;
+                }
+            }
+
+            return value.replace(/[^\u0000-\u007F]/g, function (l) {
+                return replaceMap[l] || '';
+            })
         }
         
     })
