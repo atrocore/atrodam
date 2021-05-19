@@ -26,15 +26,10 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset-type/list', 'views/list',
+Espo.define('dam:views/asset-type/header', 'views/header',
     (Dep) => Dep.extend({
 
-        headerView: 'dam:views/asset-type/header',
-
-        getHeader() {
-            return  `<a href="#Admin">${this.translate('Administration', 'labels', 'Admin')}</a><span class="subsection">${this.translate('Dam', 'labels', 'Admin')}</span>` + this.translate('AssetTypes', 'labels', 'Admin');
-        },
+        template: 'dam:asset-type/header',
 
     })
 );
-
