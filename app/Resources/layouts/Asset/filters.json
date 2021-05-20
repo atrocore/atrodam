@@ -1,4 +1,17 @@
 [
     "name",
-    "type"
+    "type",
+    "isActive",
+    "private",
+    "assetCategories",
+    "tags",
+    "library",
+    "height",
+    "width",
+    "orientation",
+    "size",
+    "colorSpace",
+    "colorDepth",
+    "modifiedAt",
+    "modifiedBy"
 ]
