@@ -9,7 +9,7 @@
     "withoutAnyCategory": "Ohne Kategorie",
     "availableVideoFormats": "Verfügbare Formate für den Videoplayer: <a>mp4</a>, <a>webm</a> und <a>ogv</a>.",
     "massCreateAssets": "Erstellen Sie Assets",
-    "typeCategoryToSearch": "den zu suchenden Kategorienamen eintippen"
+    "typeCategoryToSearch": "Kategorie eingeben"
   },
   "links": {
     "renditions": "Derivate",
