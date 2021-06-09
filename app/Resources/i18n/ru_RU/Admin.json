@@ -1,0 +1,9 @@
+{
+  "labels": {
+    "AssetTypes": "Asset Types",
+    "Dam": "DAM"
+  },
+  "descriptions": {
+    "listOfSupportedAssetsTypes": "List of supported assets types"
+  }
+}

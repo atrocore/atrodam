@@ -1,0 +1,44 @@
+{
+  "scopeNames": {
+    "Asset": "Asset",
+    "Rendition": "Rendition",
+    "RenditionMetaData": "Rendition Meta Data",
+    "Library": "Library",
+    "AssetVariant": "Asset Variant",
+    "AssetCategory": "Asset Category",
+    "AssetMetaData": "Asset Meta Data",
+    "AssetVersion": "Asset Version",
+    "RenditionVersion": "Rendition Version",
+    "AssetType": "Asset Type",
+    "ValidationRule": "Validation Rule"
+  },
+  "scopeNamesPlural": {
+    "Library": "Libraries",
+    "Asset": "Assets",
+    "AssetVersion": "Asset Versions",
+    "AssetVariant": "Asset Variants",
+    "AssetCategory": "Asset Category",
+    "AssetMetaData": "Asset Meta Data",
+    "RenditionVersion": "Rendition Version",
+    "AssetType": "Asset Types",
+    "validationRules": "Validation Rules"
+  },
+  "labels": {
+    "dragAndDropBtnText": "Drag & Drop",
+    "dragAndDropBtnTextSmall": "your assets here or",
+    "upload": "Upload",
+    "attachFile": "Attach File",
+    "noData": "No Data"
+  },
+  "exceptions": {
+    "colorDepthValidationFailed": "Color depth of this asset is not allowed.",
+    "colorSpaceValidationFailed": "Color space of this asset is not allowed.",
+    "fileExtensionValidationFailed": "Use only files with next extensions: %s.",
+    "mimeTypeValidationFailed": "Asset has incorrect MIME type.",
+    "pdfValidationFailed": "Asset is not a PDF document.",
+    "imageQualityValidationFailed": "Image quality must be between %s and %s.",
+    "imageRatioValidationFailed": "Image must have side ratio of %s.",
+    "imageScaleValidationFailed": "Image must have width more than %spx and height more than %spx.",
+    "imageSizeValidationFailed": "Asset size should be between %skb and %skb."
+  }
+}

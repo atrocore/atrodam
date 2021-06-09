@@ -1,0 +1,57 @@
+{
+  "labels": {
+    "sort": "Sort",
+    "Image": "Image",
+    "File": "File",
+    "massUpload": "Mass Upload",
+    "simpleUpload": "Simple Upload",
+    "uploaded": "uploaded",
+    "retry": "Retry?",
+    "withoutAnyCategory": "Without any category",
+    "availableVideoFormats": "Available formats for video player: <a>mp4</a>, <a>webm</a> and <a>ogv</a>.",
+    "massCreateAssets": "Create assets",
+    "typeCategoryToSearch": "Type category to search"
+  },
+  "fields": {
+    "url": "URL",
+    "isActive": "Active",
+    "image": "Image",
+    "relatedAssets": "Related Assets",
+    "assetCategories": "Asset Categories",
+    "assetMetaDatas": "Asset Meta Datas",
+    "assetVersions": "Asset Versions",
+    "type": "Type",
+    "library": "Library",
+    "colorDepth": "Color Depth",
+    "colorSpace": "Color Space",
+    "file": "File",
+    "files": "Files",
+    "height": "Height",
+    "metaData": "Meta Data",
+    "orientation": "Orientation",
+    "renditions": "Renditions",
+    "size": "Size",
+    "sizeUnit": "Size Unit",
+    "tags": "Tags",
+    "width": "Width",
+    "private": "Private",
+    "preview": "Preview"
+  },
+  "links": {
+    "assetCategories": "Asset Categories",
+    "assetMetaDatas": "Asset Meta Datas",
+    "assetVersions": "Asset Versions",
+    "renditions": "Renditions",
+    "relatedAssets": "Related Assets"
+  },
+  "messages": {
+    "assetCouldNotBeUploaded": "Asset could not be uploaded.",
+    "notAllAssetsWereUploaded" : "XX of YY assets were not uploaded.",
+    "assetsAdded": "Assets have been added and will be available in a few moments."
+  },
+  "exceptions": {
+    "assetNameIsInvalid": "Asset name is invalid.",
+    "suchAssetAlreadyExists": "Such asset already exists.",
+    "assetIsAlreadyLinkedWithEntity": "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again."
+  }
+}
