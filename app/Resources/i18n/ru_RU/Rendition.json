@@ -1,29 +1,29 @@
 {
     "fields": {
-        "type": "Type",
-        "image": "Image",
-        "file": "File",
-        "private": "Private",
-        "width": "Width",
-        "height": "Height",
-        "size": "Size",
-        "colorDepth": "Color Depth",
-        "colorSpace": "Color Space",
-        "orientation": "Orientation",
-        "asset": "Asset",
-        "assetMetaDatas": "Asset Meta Datas",
-        "nameOfFile": "File Name",
-        "renditionVersions": "Rendition Versions",
-        "sizeUnit": "Unit Size"
+        "type": "Тип",
+        "image": "Изображение",
+        "file": "Файл",
+        "private": "Приватный",
+        "width": "Ширина",
+        "height": "Высота",
+        "size": "Размер",
+        "colorDepth": "Глубина цвета",
+        "colorSpace": "Цветовое пространство",
+        "orientation": "Ориентация",
+        "asset": "Ассет",
+        "assetMetaDatas": "Мета данные ассета",
+        "nameOfFile": "Имя файла",
+        "renditionVersions": "Версии преобразования",
+        "sizeUnit": "Размер блока"
     },
     "links": {
-        "asset": "Asset",
-        "assetMetaDatas": "Asset Meta Datas",
-        "renditionVersions": "Rendition Versions",
-        "renditionMetaDatas": "Meta Data"
+        "asset": "Ассет",
+        "assetMetaDatas": "Мета данные ассета",
+        "renditionVersions": "Версии преобразования",
+        "renditionMetaDatas": "Мета данные"
     },
     "labels": {
-        "Create Rendition": "Create Rendition"
+        "Create Rendition": "Начать преобразование"
     },
     "options": {
         "type": {
