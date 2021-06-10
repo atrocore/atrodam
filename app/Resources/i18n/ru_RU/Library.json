@@ -1,17 +1,17 @@
 {
   "fields": {
-    "assets": "Assets",
-    "code": "Code",
-    "isActive": "Active",
-    "assetCategories": "Asset Categories"
+    "assets": "Ассеты",
+    "code": "Код",
+    "isActive": "Активный",
+    "assetCategories": "Категории ассета"
   },
   "links": {
-    "assets": "Assets",
-    "asset": "Asset",
-    "assetCategories": "Asset Categories"
+    "assets": "Ассеты",
+    "asset": "Ассет",
+    "assetCategories": "Категории ассета"
   },
   "exceptions": {
-    "libraryCanBeLinkedWithRootCategoryOnly": "Library can be linked with a root category only.",
-    "defaultLibraryCantBeDeleted": "Default library can't be deleted."
+    "libraryCanBeLinkedWithRootCategoryOnly": "Библиотеку можно связать только с корневой категорией.",
+    "defaultLibraryCantBeDeleted": "Библиотеку, используемую по умолчанию, нельзя удалить."
   }
 }
