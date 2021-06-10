@@ -29,7 +29,7 @@
     "height": "Высота",
     "metaData": "Meta Data",
     "orientation": "Ориентация",
-    "renditions": "Связи",
+    "renditions": "Преобразование",
     "size": "Размер",
     "sizeUnit": "Ед. измерения размера",
     "tags": "Теги",
@@ -41,7 +41,7 @@
     "assetCategories": "Категории ассета",
     "assetMetaDatas": "Мета данные ассета",
     "assetVersions": "Версии ассета",
-    "renditions": "Передача изображения",
+    "renditions": "Преобразование",
     "relatedAssets": "Связанные ассеты"
   },
   "messages": {
