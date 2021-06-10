@@ -19,7 +19,7 @@
     "AssetVariant": "Варианты ассета",
     "AssetCategory": "Категория ассета",
     "AssetMetaData": "Мета данные ассета",
-    "RenditionVersion": "Rendition Version",
+    "RenditionVersion": "Версия преобразования",
     "AssetType": "Типы ассета",
     "validationRules": "Правила проверки"
   },
