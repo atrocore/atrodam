@@ -1,26 +1,26 @@
 {
   "fields": {
-    "validateBy": "Validate By",
-    "isActive": "Active",
-    "assetType": "Asset Type",
-    "type": "Type",
-    "ratio": "Ratio",
-    "pattern": "Pattern",
-    "min": "Min",
-    "max": "Max",
-    "colorDepth": "Color Depth",
-    "colorSpace": "Color Space",
-    "minWidth": "Width",
-    "minHeight": "Height",
-    "extension": "Extension",
-    "mimeList": "List"
+    "validateBy": "Проверено",
+    "isActive": "Активный",
+    "assetType": "Тип ассета",
+    "type": "Тип",
+    "ratio": "Соотношение",
+    "pattern": "Шаблон",
+    "min": "Мин.",
+    "max": "Макс.",
+    "colorDepth": "Глубина цвета",
+    "colorSpace": "Цветовое пространство",
+    "minWidth": "Ширина",
+    "minHeight": "Высота",
+    "extension": "Расширение",
+    "mimeList": "Список"
   },
   "links": {
-    "assetType": "Asset Type"
+    "assetType": "Тип ассета"
   },
   "labels": {
-    "Create ValidationRule": "Create Validation Rule",
-    "minSize": "Min, Kb",
-    "maxSize": "Max, Kb"
+    "Create ValidationRule": "Создать правило проверки",
+    "minSize": "Мин., Kb",
+    "maxSize": "Макс, Kb"
   }
 }
