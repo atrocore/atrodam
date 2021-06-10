@@ -1,10 +1,10 @@
 {
     "fields": {
-        "asset": "Asset",
-        "rendition": "Rendition",
-        "value": "Value"
+        "asset": "Ассет",
+        "rendition": "Преобразование",
+        "value": "Значение"
     },
     "labels": {
-        "Create AssetMetaData": "Create Asset Meta Data"
+        "Create AssetMetaData": "Создать мета данные ассета"
     }
 }
