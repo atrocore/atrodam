@@ -1,11 +1,11 @@
 {
   "fields": {
-    "validationRules": "Validation Rules"
+    "validationRules": "Правила проверки"
   },
   "links": {
-    "validationRules": "Validation Rules"
+    "validationRules": "Правила проверки"
   },
   "labels": {
-    "Create AssetType": "Create Asset Type"
+    "Create AssetType": "Создать тип ассета"
   }
 }
