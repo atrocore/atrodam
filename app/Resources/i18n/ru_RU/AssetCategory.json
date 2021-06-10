@@ -1,19 +1,19 @@
 {
     "fields": {
-        "code": "Code",
-        "isActive": "Active",
-        "categories": "Categories",
-        "assets": "Assets",
-        "categoryRoute": "Category Route",
-        "categoryRouteName": "Сategory Tree",
-        "categoryParent": "Parent Category"
+        "code": "Код",
+        "isActive": "Активный",
+        "categories": "Категории",
+        "assets": "Ассеты",
+        "categoryRoute": "Корневая категория",
+        "categoryRouteName": "Дерево категорий",
+        "categoryParent": "Родительская категория"
     },
     "links": {
-        "categories": "Categories",
-        "categoryParent": "Parent Category",
-        "assets": "Assets"
+        "categories": "Категории",
+        "categoryParent": "Родительская категория",
+        "assets": "Ассеты"
     },
     "labels": {
-        "Create AssetCategory": "Create Asset Category"
+        "Create AssetCategory": "Создать ассет категории"
     }
 }
