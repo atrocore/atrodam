@@ -1,9 +1,9 @@
 {
   "labels": {
-    "AssetTypes": "Asset Types",
+    "AssetTypes": "Типы ассета",
     "Dam": "DAM"
   },
   "descriptions": {
-    "listOfSupportedAssetsTypes": "List of supported assets types"
+    "listOfSupportedAssetsTypes": "Список поддерживаемых типов ассета"
   }
 }
