@@ -20,7 +20,7 @@
   },
   "labels": {
     "Create ValidationRule": "Создать правило проверки",
-    "minSize": "Мин., Kb",
-    "maxSize": "Макс, Kb"
+    "minSize": "Мин., Кб",
+    "maxSize": "Макс, Кб"
   }
 }
