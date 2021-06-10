@@ -1,44 +1,44 @@
 {
   "scopeNames": {
-    "Asset": "Asset",
-    "Rendition": "Rendition",
-    "RenditionMetaData": "Rendition Meta Data",
-    "Library": "Library",
-    "AssetVariant": "Asset Variant",
-    "AssetCategory": "Asset Category",
-    "AssetMetaData": "Asset Meta Data",
-    "AssetVersion": "Asset Version",
-    "RenditionVersion": "Rendition Version",
-    "AssetType": "Asset Type",
-    "ValidationRule": "Validation Rule"
+    "Asset": "Ассет",
+    "Rendition": "Преобразование",
+    "RenditionMetaData": "Преобразование мета данные",
+    "Library": "Библиотека",
+    "AssetVariant": "Вариант ассета",
+    "AssetCategory": "Категория ассета",
+    "AssetMetaData": "Мета данные ассета",
+    "AssetVersion": "Версия ассета",
+    "RenditionVersion": "Версия преобразования",
+    "AssetType": "Тип ассета",
+    "ValidationRule": "Правило проверки"
   },
   "scopeNamesPlural": {
-    "Library": "Libraries",
-    "Asset": "Assets",
-    "AssetVersion": "Asset Versions",
-    "AssetVariant": "Asset Variants",
-    "AssetCategory": "Asset Category",
-    "AssetMetaData": "Asset Meta Data",
+    "Library": "Библиотеки",
+    "Asset": "Ассеты",
+    "AssetVersion": "Версии ассета",
+    "AssetVariant": "Варианты ассета",
+    "AssetCategory": "Категория ассета",
+    "AssetMetaData": "Мета данные ассета",
     "RenditionVersion": "Rendition Version",
-    "AssetType": "Asset Types",
-    "validationRules": "Validation Rules"
+    "AssetType": "Типы ассета",
+    "validationRules": "Правила проверки"
   },
   "labels": {
-    "dragAndDropBtnText": "Drag & Drop",
-    "dragAndDropBtnTextSmall": "your assets here or",
-    "upload": "Upload",
-    "attachFile": "Attach File",
-    "noData": "No Data"
+    "dragAndDropBtnText": "Перетяните",
+    "dragAndDropBtnTextSmall": "Ваши ассеты или",
+    "upload": "Загрузка",
+    "attachFile": "Прикрепить файл",
+    "noData": "Нет данных"
   },
   "exceptions": {
-    "colorDepthValidationFailed": "Color depth of this asset is not allowed.",
-    "colorSpaceValidationFailed": "Color space of this asset is not allowed.",
-    "fileExtensionValidationFailed": "Use only files with next extensions: %s.",
-    "mimeTypeValidationFailed": "Asset has incorrect MIME type.",
-    "pdfValidationFailed": "Asset is not a PDF document.",
-    "imageQualityValidationFailed": "Image quality must be between %s and %s.",
-    "imageRatioValidationFailed": "Image must have side ratio of %s.",
-    "imageScaleValidationFailed": "Image must have width more than %spx and height more than %spx.",
-    "imageSizeValidationFailed": "Asset size should be between %skb and %skb."
+    "colorDepthValidationFailed": "Глубина цвета этого ассета недопустима.",
+    "colorSpaceValidationFailed": "Цветовое пространство этого ассета недопустимо.",
+    "fileExtensionValidationFailed": "Используйте файлы только со след. расширением: %s.",
+    "mimeTypeValidationFailed": "У ассета неправильный тип MIME.",
+    "pdfValidationFailed": "Ассет не является PDF документом.",
+    "imageQualityValidationFailed": "Качество изображения должно быть между %s и %s.",
+    "imageRatioValidationFailed": "Изображение должно иметь соотношение сторон %s.",
+    "imageScaleValidationFailed": "Изображение должно иметь ширину более %spx и высоту более чем %spx.",
+    "imageSizeValidationFailed": "Размер ассета должен быть между %skb и %skb."
   }
 }
