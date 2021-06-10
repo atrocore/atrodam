@@ -14,7 +14,7 @@
         "assetMetaDatas": "Мета данные ассета",
         "nameOfFile": "Имя файла",
         "renditionVersions": "Версии преобразования",
-        "sizeUnit": "Размер блока"
+        "sizeUnit": "Ед. измерения размера"
     },
     "links": {
         "asset": "Ассет",
