@@ -56,7 +56,8 @@
       "audited": false,
       "readOnly": false,
       "tooltip": false,
-      "view": "dam:views/fields/code-from-name"
+      "view": "dam:views/fields/code-from-name",
+      "pattern": "^[a-z_0-9]+$"
     },
     "isActive": {
       "notNull": true,

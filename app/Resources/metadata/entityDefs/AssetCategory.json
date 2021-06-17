@@ -68,7 +68,8 @@
       "tooltip": false,
       "emHidden": true,
       "layoutMassUpdateDisabled": true,
-      "view": "dam:views/fields/code-from-name"
+      "view": "dam:views/fields/code-from-name",
+      "pattern": "^[a-z_0-9]+$"
     },
     "isActive": {
       "notNull": true,
