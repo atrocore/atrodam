@@ -89,36 +89,7 @@ class Download extends \Espo\EntryPoints\Download
             throw new NotFound();
         }
 
-        $outputFileName = $attachment->get('name');
-        $outputFileName = str_replace("\"", "\\\"", $outputFileName);
-
-        $type = $attachment->get('type');
-
-        $disposition = 'attachment';
-        if (in_array($type, $this->fileTypesToShowInline) && $this->showInline()) {
-            $disposition = 'inline';
-        }
-
-        header('Content-Description: File Transfer');
-        if ($type) {
-            header('Content-Type: ' . $type);
-        }
-        header("Content-Disposition: " . $disposition . ";filename=\"" . $outputFileName . "\"");
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($fileName));
-        header('Content-Transfer-Encoding: binary');
-
-        $chunkSize = 1024 * 1024;
-        $handle = fopen($fileName, 'rb');
-        while (!feof($handle)) {
-            $buffer = fread($handle, $chunkSize);
-            echo $buffer;
-            ob_flush();
-            flush();
-        }
-        fclose($handle);
+        header("Location: $fileName", true, 302);
         exit;
     }
 
