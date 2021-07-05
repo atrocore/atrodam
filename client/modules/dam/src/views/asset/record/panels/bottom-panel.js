@@ -76,7 +76,6 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
         },
 
         actionButtonList() {
-
             this.buttonList.push({
                 title: this.translate('clickToRefresh', 'messages', 'Global'),
                 action: 'refresh',
