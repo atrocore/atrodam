@@ -82,7 +82,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 action: 'refresh',
                 link: this.link,
                 acl: 'read',
-                aclScope: this.scope,
+                aclScope: 'Asset',
                 html: '<span class="fas fa-sync"></span>'
             });
 
@@ -93,7 +93,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     link: this.link
                 },
                 acl: 'edit',
-                aclScope: this.model.name
+                aclScope: 'Asset'
             });
 
             this.actionList.unshift({
@@ -103,7 +103,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     link: this.link
                 },
                 acl: 'create',
-                aclScope: this.model.name
+                aclScope: 'Asset'
             });
 
             this.buttonList.push({
@@ -111,7 +111,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 action: this.defs.createAction || 'createRelated',
                 link: this.link,
                 acl: 'create',
-                aclScope: this.scope,
+                aclScope: 'Asset',
                 html: '<span class="fas fa-plus"></span>',
                 data: {
                     link: this.link
