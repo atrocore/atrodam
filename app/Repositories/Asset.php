@@ -87,6 +87,10 @@ class Asset extends AbstractRepository
      */
     public function updateSortOrder(string $scope, string $entityId, array $ids): bool
     {
+        if (method_exists($this->getEntityManager()->getRepository($scope), 'updateSortOrder')) {
+            return $this->getEntityManager()->getRepository($scope)->updateSortOrder($entityId, $ids);
+        }
+
         $relation = $this->getMetadata()->get(['entityDefs', $scope, 'links', 'assets']);
         if (empty($relation['foreign']) || empty($relation['relationName'])) {
             return false;
