@@ -60,6 +60,11 @@ Please, [ask](https://atrodam.com/contact), if you want to know more.
 
 Installation Guide is available [here](https://github.com/atrocore/atrocore-docs/blob/master/en/administration/installation.md).
 
+### Demo
+- URL: https://demo.atrodam.com/
+- Login: admin
+- Password: admin
+
 ## License
 
 AtroDAM is published under the GNU GPLv3 [license](https://github.com/atrocore/atrodam/blob/master/LICENSE.txt).
