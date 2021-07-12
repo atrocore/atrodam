@@ -214,6 +214,7 @@
       "tooltip": false,
       "view": "dam:views/asset/fields/file",
       "layoutMassUpdateDisabled": true,
+      "importDisabled": true,
       "exportDisabled": true
     },
     "files": {
@@ -225,6 +226,7 @@
       "tooltip": false,
       "notStorable": true,
       "view": "dam:views/asset/fields/files",
+      "importDisabled": true,
       "exportDisabled": true
     },
     "size": {
