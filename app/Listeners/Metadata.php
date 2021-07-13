@@ -111,7 +111,7 @@ class Metadata extends AbstractListener
                         'type'    => 'int',
                         'default' => 100000
                     ];
-                    $data['entityDefs'][$scope]['fields'][$link]['columns']['assetSorting'] = 'sorting';
+                    $data['entityDefs'][$scope]['fields'][$link]['columns']['sorting'] = 'assetSorting';
                     $data['entityDefs'][$scope]['fields']['assetSorting'] = [
                         'type'                      => 'int',
                         'notStorable'               => true,
