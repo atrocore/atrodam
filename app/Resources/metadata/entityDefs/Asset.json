@@ -58,7 +58,8 @@
       "readOnly": true,
       "disableFormatting": false,
       "audited": false,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "width": {
       "type": "int",
@@ -66,7 +67,8 @@
       "readOnly": true,
       "disableFormatting": false,
       "audited": false,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "colorSpace": {
       "type": "varchar",
@@ -74,7 +76,8 @@
       "trim": true,
       "readOnly": true,
       "audited": false,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "colorDepth": {
       "type": "varchar",
@@ -82,7 +85,8 @@
       "trim": true,
       "readOnly": true,
       "audited": false,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "orientation": {
       "type": "varchar",
@@ -90,7 +94,8 @@
       "trim": true,
       "readOnly": true,
       "audited": false,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "isActive": {
       "notNull": true,
@@ -151,7 +156,8 @@
       "required": true,
       "trim": true,
       "isMultilang": false,
-      "view": "dam:views/asset/fields/name"
+      "view": "dam:views/asset/fields/name",
+      "importDisabled": true
     },
     "description": {
       "type": "text",
@@ -161,11 +167,13 @@
     },
     "createdAt": {
       "type": "datetime",
-      "readOnly": true
+      "readOnly": true,
+      "importDisabled": true
     },
     "modifiedAt": {
       "type": "datetime",
-      "readOnly": true
+      "readOnly": true,
+      "importDisabled": true
     },
     "createdBy": {
       "type": "link",
@@ -235,7 +243,8 @@
       "measure": "File Size",
       "audited": false,
       "readOnly": true,
-      "tooltip": false
+      "tooltip": false,
+      "importDisabled": true
     },
     "relatedAssets": {
       "type": "linkMultiple",
