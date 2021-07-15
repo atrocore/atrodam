@@ -118,7 +118,13 @@ class Asset extends Base
      */
     public function createEntity($data)
     {
-        if (!empty($data->filesIds)) {
+        $entity = $this->getRepository()->get();
+        $entity->set($data);
+
+        // Are all required fields filled ?
+        $this->checkRequiredFields($entity, $data);
+
+        if ($this->isMassCreating($entity)) {
             return $this->massCreateAssets($data);
         }
 
@@ -402,38 +408,14 @@ class Asset extends Base
             && !$this->skipEntityAssets($key);
     }
 
-    /**
-     * @param string $name
-     *
-     * @return string
-     */
     protected function attributeMapping(string $name): string
     {
         return $this->getConfigManager()->get(["attributeMapping", $name, "field"]) ?? $name;
     }
 
-    /**
-     * @param string $label
-     * @param string $category
-     * @param string $scope
-     *
-     * @return string
-     */
     protected function translate(string $label, string $category, string $scope): string
     {
         return $this->getInjection("language")->translate($label, $category, $scope);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function checkRequiredFields(Entity $entity, \stdClass $data): bool
-    {
-        if ($this->isMassCreating($entity)) {
-            return true;
-        }
-
-        return parent::checkRequiredFields($entity, $data);
     }
 
     /**

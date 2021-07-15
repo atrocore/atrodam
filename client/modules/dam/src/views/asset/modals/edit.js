@@ -86,6 +86,12 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
         actionSave() {
             this.notify('Saving...');
 
+            if (this.getView('edit').validate()) {
+                this.notify('Not valid', 'error');
+                this.trigger('cancel:save');
+                return;
+            }
+
             let filesIds = [];
             if (this.model.get('fileId')) {
                 filesIds.push(this.model.get('fileId'));
