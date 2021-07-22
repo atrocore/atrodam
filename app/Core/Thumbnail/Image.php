@@ -31,8 +31,8 @@ declare(strict_types=1);
 
 namespace Dam\Core\Thumbnail;
 
+use Dam\Core\Utils\PDFLib;
 use Espo\Entities\Attachment;
-use ImalH\PDFLib\PDFLib;
 
 /**
  * Class Pdf
