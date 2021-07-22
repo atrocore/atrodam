@@ -306,7 +306,7 @@
       "entity": "AssetCategory",
       "audited": false,
       "entityAsset": false,
-      "disableMassRelation": true
+      "disableMassRelation": false
     },
     "relatedAssets": {
       "type": "hasMany",
