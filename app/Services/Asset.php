@@ -170,6 +170,18 @@ class Asset extends Base
                 if (!empty($item['fileName'])) {
                     $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
                     $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
+
+                    $assetCategories = $this
+                        ->getEntityManager()
+                        ->getRepository('AssetCategory')
+                        ->select(['id', 'name'])
+                        ->join('assets')
+                        ->where(['assets.id' => $item['id']])
+                        ->find()
+                        ->toArray();
+
+                    $item['assetCategoriesIds'] = array_column($assetCategories, 'id');
+                    $item['assetCategoriesNames'] = array_column($assetCategories, 'name', 'id');
                 }
             }
             unset($item);
