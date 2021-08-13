@@ -53,7 +53,7 @@ class Metadata extends AbstractListener
         if ($this->getConfig()->get('isInstalled', false)) {
             $typesData = $this->getAssetTypes();
 
-            $data['fields']['asset']['types'] = array_merge(['File'], array_column($typesData, 'name'));
+            $data['fields']['asset']['types'] = array_column($typesData, 'name');
 
             $data['entityDefs']['Asset']['fields']['type']['options'] = array_column($typesData, 'name');
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
@@ -75,13 +75,20 @@ class Metadata extends AbstractListener
 
     protected function getAssetTypes(): array
     {
+        /** @var \PDO $pdo */
+        $pdo = $this->getContainer()->get('pdo');
+
         try {
-            $sth = $this->getContainer()->get('pdo')
-                ->prepare("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC");
-            $sth->execute();
-            $types = $sth->fetchAll(\PDO::FETCH_ASSOC);
+            $types = $pdo
+                ->query("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC")
+                ->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\Throwable $e) {
             $types = [];
+        }
+
+        if (!in_array('File', array_column($types, 'name'))) {
+            $types[] = ['id' => 'file', 'name' => 'File', 'is_default' => false];
+            $pdo->exec("DELETE FROM asset_type WHERE id='file';INSERT INTO asset_type (id, name, sort_order) VALUE ('file', 'File', 999)");
         }
 
         return $types;

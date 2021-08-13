@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
+use Espo\Core\Exceptions\BadRequest;
 use Treo\Core\EventManager\Event;
 
 /**
@@ -57,6 +58,10 @@ class FieldManagerController extends AbstractListener
             if (property_exists($data, 'optionsIds')) {
                 $options = (array)$data->options;
                 $optionsIds = (array)$data->optionsIds;
+
+                if (!in_array('file', $optionsIds)){
+                    throw new BadRequest($this->getLanguage()->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
+                }
 
                 foreach ($optionsIds as $k => $id) {
                     $assetType = $repository->get($id);

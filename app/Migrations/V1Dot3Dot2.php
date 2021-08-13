@@ -42,6 +42,7 @@ class V1Dot3Dot2 extends V1Dot2Dot14
     public function up(): void
     {
         $this->execute("ALTER TABLE `asset_type` ADD sort_order INT DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD is_default TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci");
+        $this->execute("ALTER TABLE `asset_type` DROP INDEX IDX_NAME, ADD UNIQUE INDEX UNIQ_68BA92E15E237E06EB3B4E33 (name, deleted)");
 
         $ids = $this->getPDO()->query("SELECT id FROM `asset_type` WHERE deleted=0")->fetchAll(\PDO::FETCH_COLUMN);
         foreach ($ids as $k => $id) {
@@ -55,5 +56,6 @@ class V1Dot3Dot2 extends V1Dot2Dot14
     public function down(): void
     {
         $this->execute("ALTER TABLE `asset_type` DROP sort_order, DROP is_default");
+        $this->execute("ALTER TABLE `asset_type` DROP INDEX UNIQ_68BA92E15E237E06EB3B4E33, ADD INDEX IDX_NAME (name, deleted)");
     }
 }
