@@ -1,6 +1,8 @@
 {
   "fields": {
-    "validationRules": "Правила проверки"
+    "validationRules": "Правила проверки",
+    "sortOrder": "Порядок сортировки",
+    "isDefault": "Тип по умолчанию"
   },
   "links": {
     "validationRules": "Правила проверки"

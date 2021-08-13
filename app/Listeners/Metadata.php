@@ -56,10 +56,24 @@ class Metadata extends AbstractListener
         $this->updateRelationMetadata($data);
 
         if ($this->getConfig()->get('isInstalled', false)) {
-            $data['fields']['asset']['types'] = $this->getAssetTypes();
-            $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
-            $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
+            $typesData = $this->getAssetTypes();
+
+            $data['fields']['asset']['types'] = array_merge(['File'], array_column($typesData, 'name'));
+
+            $data['entityDefs']['Asset']['fields']['type']['options'] = array_column($typesData, 'name');
+            $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
+            foreach ($typesData as $k => $item) {
+                if ($k === 0) {
+                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
+                }
+
+                if (!empty($item['is_default'])) {
+                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
+                }
+            }
         }
+
+        $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
 
         $event->setArgument('data', $data);
     }
@@ -73,9 +87,9 @@ class Metadata extends AbstractListener
         if (!file_exists(self::CACHE_FILE)) {
             try {
                 $sth = $this->getContainer()->get('pdo')
-                    ->prepare("SELECT name FROM asset_type WHERE deleted=0");
+                    ->prepare("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC");
                 $sth->execute();
-                $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
+                $types = $sth->fetchAll(\PDO::FETCH_ASSOC);
 
                 Util::createDir('data/cache');
                 file_put_contents(self::CACHE_FILE, Json::encode($types));
@@ -86,7 +100,7 @@ class Metadata extends AbstractListener
             $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
         }
 
-        return array_merge(['File'], $types);
+        return $types;
     }
 
     /**

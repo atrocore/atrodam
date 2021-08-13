@@ -29,62 +29,31 @@
 
 declare(strict_types=1);
 
-namespace Dam\Repositories;
-
-use Espo\ORM\Entity;
+namespace Dam\Migrations;
 
 /**
- * Class AssetType
+ * Migration for version 1.3.2
  */
-class AssetType extends \Espo\Core\Templates\Repositories\Base
+class V1Dot3Dot2 extends V1Dot2Dot14
 {
     /**
      * @inheritDoc
      */
-    protected function beforeSave(Entity $entity, array $options = [])
+    public function up(): void
     {
-        if ($entity->isAttributeChanged('isDefault')) {
-            $this->getEntityManager()->nativeQuery("UPDATE `asset_type` SET is_default=0 WHERE 1");
+        $this->execute("ALTER TABLE `asset_type` ADD sort_order INT DEFAULT NULL COLLATE utf8mb4_unicode_ci, ADD is_default TINYINT(1) DEFAULT '0' NOT NULL COLLATE utf8mb4_unicode_ci");
+
+        $ids = $this->getPDO()->query("SELECT id FROM `asset_type` WHERE deleted=0")->fetchAll(\PDO::FETCH_COLUMN);
+        foreach ($ids as $k => $id) {
+            $this->execute("UPDATE `asset_type` SET sort_order=$k WHERE id='$id'");
         }
-
-        parent::beforeSave($entity, $options);
     }
 
     /**
      * @inheritDoc
      */
-    protected function afterSave(Entity $entity, array $options = [])
+    public function down(): void
     {
-        $this->clearCache();
-
-        parent::afterSave($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function afterRemove(Entity $entity, array $options = [])
-    {
-        $this->clearCache();
-
-        parent::afterRemove($entity, $options);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function init()
-    {
-        parent::init();
-
-        $this->addDependency('dataManager');
-    }
-
-    /**
-     * Clearing cache
-     */
-    protected function clearCache(): void
-    {
-        $this->getInjection('dataManager')->clearCache();
+        $this->execute("ALTER TABLE `asset_type` DROP sort_order, DROP is_default");
     }
 }

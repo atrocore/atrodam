@@ -1,6 +1,8 @@
 {
   "fields": {
-    "validationRules": "Validierungsregel"
+    "validationRules": "Validierungsregel",
+    "sortOrder": "Sortierung",
+    "isDefault": "Standardtyp"
   },
   "links": {
     "validationRules": "Validierungsregel"

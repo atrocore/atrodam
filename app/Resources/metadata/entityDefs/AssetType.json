@@ -29,6 +29,13 @@
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
       "importDisabled": true
+    },
+    "sortOrder": {
+      "type": "int"
+    },
+    "isDefault": {
+      "type": "bool",
+      "default": false
     }
   },
   "links": {
