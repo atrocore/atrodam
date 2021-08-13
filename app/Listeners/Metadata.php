@@ -52,23 +52,17 @@ class Metadata extends AbstractListener
 
         if ($this->getConfig()->get('isInstalled', false)) {
             $typesData = $this->getAssetTypes();
-
             $data['fields']['asset']['types'] = array_column($typesData, 'name');
-
-            $data['entityDefs']['Asset']['fields']['type']['options'] = array_column($typesData, 'name');
+            $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
+            $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
+            $data['entityDefs']['Asset']['fields']['type']['default'] = 'File';
             foreach ($typesData as $k => $item) {
-                if ($k === 0) {
-                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
-                }
-
                 if (!empty($item['is_default'])) {
                     $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
                 }
             }
         }
-
-        $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
 
         $event->setArgument('data', $data);
     }
