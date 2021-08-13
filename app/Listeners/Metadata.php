@@ -57,7 +57,7 @@ class Metadata extends AbstractListener
             $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
             $data['entityDefs']['Asset']['fields']['type']['default'] = 'File';
-            foreach ($typesData as $k => $item) {
+            foreach ($typesData as $item) {
                 if (!empty($item['is_default'])) {
                     $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
                 }
