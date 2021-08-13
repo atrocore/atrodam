@@ -42,11 +42,6 @@ use Treo\Core\EventManager\Event;
 class Metadata extends AbstractListener
 {
     /**
-     * @var string
-     */
-    protected const CACHE_FILE = 'data/cache/asset_types.json';
-
-    /**
      * @param Event $event
      */
     public function modify(Event $event)
@@ -78,26 +73,15 @@ class Metadata extends AbstractListener
         $event->setArgument('data', $data);
     }
 
-    /**
-     * @return array
-     */
     protected function getAssetTypes(): array
     {
-        $types = [];
-        if (!file_exists(self::CACHE_FILE)) {
-            try {
-                $sth = $this->getContainer()->get('pdo')
-                    ->prepare("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC");
-                $sth->execute();
-                $types = $sth->fetchAll(\PDO::FETCH_ASSOC);
-
-                Util::createDir('data/cache');
-                file_put_contents(self::CACHE_FILE, Json::encode($types));
-            } catch (\Throwable $e) {
-                // ignore
-            }
-        } else {
-            $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
+        try {
+            $sth = $this->getContainer()->get('pdo')
+                ->prepare("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC");
+            $sth->execute();
+            $types = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            $types = [];
         }
 
         return $types;
