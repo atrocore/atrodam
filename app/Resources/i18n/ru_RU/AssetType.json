@@ -1,9 +1,14 @@
 {
   "fields": {
-    "validationRules": "Правила проверки"
+    "validationRules": "Правила проверки",
+    "sortOrder": "Порядок сортировки",
+    "isDefault": "Тип по умолчанию"
   },
   "links": {
     "validationRules": "Правила проверки"
+  },
+  "exceptions": {
+    "fileAssetTypeIsRequired": "Тип 'Файл' должен существовать всегда."
   },
   "labels": {
     "Create AssetType": "Создать тип ассета"

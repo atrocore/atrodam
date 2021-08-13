@@ -31,6 +31,7 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
 /**
@@ -41,11 +42,39 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
     /**
      * @inheritDoc
      */
+    protected function beforeSave(Entity $entity, array $options = [])
+    {
+        if ($entity->isAttributeChanged('isDefault')) {
+            $this->getEntityManager()->nativeQuery("UPDATE `asset_type` SET is_default=0 WHERE 1");
+        }
+
+        if ($entity->isAttributeChanged('name') && $entity->getFetched('name') == 'File') {
+            throw new BadRequest($this->getInjection('language')->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
+        }
+
+        parent::beforeSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
     protected function afterSave(Entity $entity, array $options = [])
     {
         $this->clearCache();
 
         parent::afterSave($entity, $options);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function beforeRemove(Entity $entity, array $options = [])
+    {
+        if ($entity->get('name') == 'File') {
+            throw new BadRequest($this->getInjection('language')->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
+        }
+
+        parent::beforeRemove($entity, $options);
     }
 
     /**
@@ -66,6 +95,7 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
         parent::init();
 
         $this->addDependency('dataManager');
+        $this->addDependency('language');
     }
 
     /**

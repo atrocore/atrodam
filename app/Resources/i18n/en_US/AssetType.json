@@ -1,9 +1,14 @@
 {
   "fields": {
-    "validationRules": "Validation Rules"
+    "validationRules": "Validation Rules",
+    "sortOrder": "Sort Order",
+    "isDefault": "Default type"
   },
   "links": {
     "validationRules": "Validation Rules"
+  },
+  "exceptions": {
+    "fileAssetTypeIsRequired": "The 'File' asset type must always exist."
   },
   "labels": {
     "Create AssetType": "Create Asset Type"

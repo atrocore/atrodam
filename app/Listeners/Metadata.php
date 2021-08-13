@@ -42,11 +42,6 @@ use Treo\Core\EventManager\Event;
 class Metadata extends AbstractListener
 {
     /**
-     * @var string
-     */
-    protected const CACHE_FILE = 'data/cache/asset_types.json';
-
-    /**
      * @param Event $event
      */
     public function modify(Event $event)
@@ -56,37 +51,41 @@ class Metadata extends AbstractListener
         $this->updateRelationMetadata($data);
 
         if ($this->getConfig()->get('isInstalled', false)) {
-            $data['fields']['asset']['types'] = $this->getAssetTypes();
+            $typesData = $this->getAssetTypes();
+            $data['fields']['asset']['types'] = array_column($typesData, 'name');
             $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
             $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
+            $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
+            $data['entityDefs']['Asset']['fields']['type']['default'] = 'File';
+            foreach ($typesData as $item) {
+                if (!empty($item['is_default'])) {
+                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
+                }
+            }
         }
 
         $event->setArgument('data', $data);
     }
 
-    /**
-     * @return array
-     */
     protected function getAssetTypes(): array
     {
-        $types = [];
-        if (!file_exists(self::CACHE_FILE)) {
-            try {
-                $sth = $this->getContainer()->get('pdo')
-                    ->prepare("SELECT name FROM asset_type WHERE deleted=0");
-                $sth->execute();
-                $types = $sth->fetchAll(\PDO::FETCH_COLUMN);
+        /** @var \PDO $pdo */
+        $pdo = $this->getContainer()->get('pdo');
 
-                Util::createDir('data/cache');
-                file_put_contents(self::CACHE_FILE, Json::encode($types));
-            } catch (\Throwable $e) {
-                // ignore
-            }
-        } else {
-            $types = Json::decode(file_get_contents(self::CACHE_FILE), true);
+        try {
+            $types = $pdo
+                ->query("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC")
+                ->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\Throwable $e) {
+            $types = [];
         }
 
-        return array_merge(['File'], $types);
+        if (!in_array('File', array_column($types, 'name'))) {
+            $types[] = ['id' => 'file', 'name' => 'File', 'is_default' => false];
+            $pdo->exec("DELETE FROM asset_type WHERE id='file';INSERT INTO asset_type (id, name, sort_order) VALUE ('file', 'File', 999)");
+        }
+
+        return $types;
     }
 
     /**

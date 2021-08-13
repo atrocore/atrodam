@@ -3,6 +3,7 @@
     "name": {
       "type": "varchar",
       "required": true,
+      "unique": true,
       "trim": true
     },
     "createdAt": {
@@ -29,6 +30,13 @@
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
       "importDisabled": true
+    },
+    "sortOrder": {
+      "type": "int"
+    },
+    "isDefault": {
+      "type": "bool",
+      "default": false
     }
   },
   "links": {

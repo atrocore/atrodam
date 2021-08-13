@@ -1,9 +1,14 @@
 {
   "fields": {
-    "validationRules": "Validierungsregel"
+    "validationRules": "Validierungsregel",
+    "sortOrder": "Sortierung",
+    "isDefault": "Standardtyp"
   },
   "links": {
     "validationRules": "Validierungsregel"
+  },
+  "exceptions": {
+    "fileAssetTypeIsRequired": "Der Asset-Typ 'Datei' muss immer vorhanden sein."
   },
   "labels": {
     "Create AssetType": "Asset-Typ erstellen"
