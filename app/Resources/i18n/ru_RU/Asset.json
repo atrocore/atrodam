@@ -10,7 +10,8 @@
     "withoutAnyCategory": "Без категории",
     "availableVideoFormats": "Доступные форматы для видео-плеера: <a>mp4</a>, <a>webm</a> и <a>ogv</a>.",
     "massCreateAssets": "Создать ассеты",
-    "typeCategoryToSearch": "Введите категорию для поиска"
+    "typeCategoryToSearch": "Введите категорию для поиска",
+    "assetPreview": "Предварительный просмотр ассета"
   },
   "fields": {
     "url": "URL",
