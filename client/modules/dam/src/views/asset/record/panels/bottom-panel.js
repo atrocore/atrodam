@@ -44,6 +44,8 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             this.link = this._getAssetLink();
             this.scope = this.options.defs.entityName;
 
+            this.title = this.title || this.translate(this.link, 'links', this.model.name);
+
             this.getGroupsInfo();
             if (this.link) {
                 this.actionButtonList();
