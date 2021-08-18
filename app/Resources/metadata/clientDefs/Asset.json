@@ -3,7 +3,7 @@
     "edit": [
       {
         "name": "preview",
-        "label": "",
+        "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
@@ -15,21 +15,21 @@
       },
       {
         "name": "preview",
-        "label": "",
+        "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
     "detailSmall": [
       {
         "name": "preview",
-        "label": "",
+        "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ],
     "editSmall": [
       {
         "name": "preview",
-        "label": "",
+        "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
       }
     ]
