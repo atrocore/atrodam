@@ -149,7 +149,7 @@
       "layoutMassUpdateDisabled": true,
       "importDisabled": true,
       "exportDisabled": true,
-      "noLoad": true
+      "noLoad": false
     },
     "name": {
       "type": "varchar",
