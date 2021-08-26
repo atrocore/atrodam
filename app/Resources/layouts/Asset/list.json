@@ -5,6 +5,7 @@
   },
   {
     "name": "preview",
+    "notSortable": true,
     "align": "center"
   },
   {

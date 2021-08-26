@@ -116,14 +116,6 @@ Espo.define('dam:views/asset/record/list', 'dam:views/record/list',
                 this.getRouter().dispatch(scope, 'edit', options);
             }
         },
-
-        _getHeaderDefs() {
-
-            for (var i in this.listLayout) {
-                this.listLayout[i].notSortable = true;
-            }
-
-            return Dep.prototype._getHeaderDefs.call(this);
-        }
+        
     })
 );
