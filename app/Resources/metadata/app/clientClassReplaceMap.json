@@ -1,8 +1,4 @@
 {
-  "views/login": [
-    "__APPEND__",
-    "dam"
-  ],
   "views/admin/link-manager/modals/edit": [
     "dam"
   ]
