@@ -153,7 +153,7 @@
     },
     "name": {
       "type": "varchar",
-      "required": true,
+      "required": false,
       "trim": true,
       "isMultilang": false,
       "view": "dam:views/asset/fields/name",
