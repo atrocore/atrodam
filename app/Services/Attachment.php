@@ -36,6 +36,7 @@ use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\ORM\Entity;
 use Imagick;
+use Treo\Core\FilePathBuilder;
 use Treo\Core\FileStorage\Manager;
 
 /**
@@ -68,6 +69,39 @@ class Attachment extends \Espo\Services\Attachment
         }
 
         return null;
+    }
+
+    public function createEntityByUrl(string $url): \Dam\Entities\Attachment
+    {
+        $attachment = new \stdClass();
+        $attachment->name = basename($url);
+        $attachment->relatedType = 'Asset';
+        $attachment->field = 'file';
+        $attachment->storageFilePath = $this->getEntityManager()->getRepository('Attachment')->getDestPath(FilePathBuilder::UPLOAD);
+        $attachment->storageThumbPath = $this->getEntityManager()->getRepository('Attachment')->getDestPath(FilePathBuilder::UPLOAD);
+
+        $fullPath = $this->getConfig()->get('filesPath', 'upload/files/') . $attachment->storageFilePath;
+        if (!file_exists($fullPath)) {
+            mkdir($fullPath, 0777, true);
+        }
+
+        $attachment->fileName = $fullPath . '/' . $attachment->name;
+
+        $file = fopen($url, 'r');
+        if ($file) {
+            file_put_contents($attachment->fileName, $file);
+        }
+
+        if (!file_exists($attachment->fileName)) {
+            throw new Error("File '$url' download failed.");
+        }
+
+        $entity = parent::createEntity($attachment);
+
+        // validate
+        $this->validateAttachment($entity, $attachment);
+
+        return $entity;
     }
 
     /**

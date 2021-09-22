@@ -142,6 +142,12 @@ class Asset extends AbstractRepository
             $entity->set('type', 'File');
         }
 
+        if (!empty($url = $entity->get('url'))) {
+            $attachment = $this->getInjection('serviceFactory')->create('Attachment')->createEntityByUrl((string)$url);
+            $entity->set('fileId', $attachment->get('id'));
+            $entity->set('fileName', $attachment->get('name'));
+        }
+
         // prepare name
         $entity->set('name', $entity->get('file')->get('name'));
 
@@ -150,5 +156,12 @@ class Asset extends AbstractRepository
         }
 
         parent::beforeSave($entity, $options);
+    }
+
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('serviceFactory');
     }
 }
