@@ -147,8 +147,8 @@
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "importDisabled": true,
-      "exportDisabled": true,
+      "importDisabled": false,
+      "exportDisabled": false,
       "noLoad": false
     },
     "name": {
