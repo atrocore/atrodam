@@ -1,9 +1,11 @@
 {
   "labels": {
     "AssetTypes": "Asset-Typen",
-    "Dam": "DAM"
+    "Dam": "DAM",
+    "GeneralSetting": "Allgemeine Einstellungen"
   },
   "descriptions": {
-    "listOfSupportedAssetsTypes": "Liste der unterstützten Asset-Typen"
+    "listOfSupportedAssetsTypes": "Liste der unterstützten Asset-Typen",
+    "damSettings": "DAM Systemeinstellungen"
   }
 }

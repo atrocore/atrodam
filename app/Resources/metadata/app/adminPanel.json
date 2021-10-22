@@ -6,6 +6,11 @@
         "url": "#AssetType",
         "label": "AssetTypes",
         "description": "listOfSupportedAssetsTypes"
+      },
+      {
+        "url": "#Admin/moduleSettings/id=dam:views_settings_edit",
+        "label": "GeneralSetting",
+        "description": "damSettings"
       }
     ]
   }

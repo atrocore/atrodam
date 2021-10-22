@@ -153,6 +153,10 @@ class Asset extends AbstractRepository
             $entity->set('name', $entity->get('file')->get('name'));
         }
 
+        if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\s\r\n=,]{1,254}$/", (string)$entity->get('name'))) {
+            throw new BadRequest($this->translate('fileNameNotValid', 'exceptions', 'Asset'));
+        }
+
         if (empty(str_replace('/', '', (string)$entity->get('name')))) {
             throw new BadRequest($this->translate('assetNameIsInvalid', 'exceptions', 'Asset'));
         }
