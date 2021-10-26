@@ -58,6 +58,7 @@
     "wrongUrl": "Falsche URL '%s'.",
     "assetNameIsInvalid": "Asset-Name ist ungültig.",
     "suchAssetAlreadyExists": "Dieser Asset existiert bereits.",
-    "assetIsAlreadyLinkedWithEntity": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen."
+    "assetIsAlreadyLinkedWithEntity": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen.",
+    "fileNameNotValid": "Der Deteiname ist ungültig."
   }
 }

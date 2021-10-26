@@ -1,0 +1,8 @@
+{
+  "fields": {
+    "fileNameRegexPattern": "Filename Regex Pattern"
+  },
+  "tooltips": {
+    "fileNameRegexPattern": "To enable only small letters with max. 24-symbol length use \"/^[a-z]{1,24}$/\"."
+  }
+}
