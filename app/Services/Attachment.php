@@ -71,7 +71,7 @@ class Attachment extends \Espo\Services\Attachment
         return null;
     }
 
-    public function createEntityByUrl(string $url): \Dam\Entities\Attachment
+    public function createEntityByUrl(string $url, bool $validateAttachment = true): \Dam\Entities\Attachment
     {
         $attachment = new \stdClass();
         $attachment->name = basename($url);
@@ -98,8 +98,9 @@ class Attachment extends \Espo\Services\Attachment
 
         $entity = parent::createEntity($attachment);
 
-        // validate
-        $this->validateAttachment($entity, $attachment);
+        if ($validateAttachment) {
+            $this->validateAttachment($entity, $attachment);
+        }
 
         return $entity;
     }

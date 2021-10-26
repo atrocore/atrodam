@@ -51,6 +51,7 @@
     "assetsAdded": "Ассеты добавлены и будут доступны через несколько минут."
   },
   "exceptions": {
+    "wrongUrl": "Неправильный URL '%s'.",
     "assetNameIsInvalid": "Название ассета неправильное.",
     "suchAssetAlreadyExists": "Такой ассет уже существует",
     "assetIsAlreadyLinkedWithEntity": "Сущность 'Asset' уже связна с сущностью '%s'. Вы не можете снова связать эти сущности.",

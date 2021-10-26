@@ -55,6 +55,7 @@
     "assetsAdded": "Assets werden hinzugefügt und werden in wenigen Augenblicken verfügbar sein."
   },
   "exceptions": {
+    "wrongUrl": "Falsche URL '%s'.",
     "assetNameIsInvalid": "Asset-Name ist ungültig.",
     "suchAssetAlreadyExists": "Dieser Asset existiert bereits.",
     "assetIsAlreadyLinkedWithEntity": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen.",

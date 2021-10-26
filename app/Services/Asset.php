@@ -118,6 +118,20 @@ class Asset extends Base
      */
     public function createEntity($data)
     {
+        if (property_exists($data, 'url') && !empty($data->url)) {
+            if (empty($attachment = $this->getService('Attachment')->createEntityByUrl($data->url, false))) {
+                throw new BadRequest(sprintf($this->translate('wrongUrl', 'exceptions', 'Asset'), $data->url));
+            }
+            unset($data->url);
+
+            if (!empty($asset = $this->getEntityManager()->getRepository('Asset')->select(['id'])->where(['fileId' => $attachment->get('id')])->findOne())) {
+                return $this->readEntity($asset->get('id'));
+            }
+
+            $data->name = $attachment->get('name');
+            $data->fileId = $attachment->get('id');
+        }
+
         $entity = $this->getRepository()->get();
         $entity->set($data);
 
