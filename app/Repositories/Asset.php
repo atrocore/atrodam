@@ -151,12 +151,6 @@ class Asset extends AbstractRepository
         // prepare name
         if (empty($entity->get('name'))) {
             $entity->set('name', $entity->get('file')->get('name'));
-        } elseif ($entity->isAttributeChanged('name') && $entity->get('name') != $entity->get('file')->get('name')) {
-            $parts = explode('.', $entity->get('file')->get('name'));
-
-            if (count($parts) > 1) {
-                $entity->set('name', $entity->get('name') . '.' . array_pop($parts));
-            }
         }
 
         if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\s\r\n=,]{1,254}$/", (string)$entity->get('name'))) {

@@ -146,14 +146,16 @@ class Attachment extends \Espo\Repositories\Attachment
     {
         $path = $this->getFilePath($attachment);
 
-        setlocale(LC_ALL, 'en_US.UTF-8');
-        $pathInfo = pathinfo($path);
-        $newFileInfo = pathinfo($newFile);
-        if ($pathInfo['basename'] == $newFileInfo['basename']) {
+        $pathParts = explode('/', $path);
+        $fileName = array_pop($pathParts);
+
+        if ($fileName == $newFile) {
             return true;
         }
 
-        $attachment->setName($newFileInfo['filename']);
+        $newFileParts = explode('.', $newFile);
+
+        $attachment->setName(array_shift($newFileParts));
 
         if ($this->getFileManager()->move($path, $this->getFilePath($attachment))) {
             return $this->save($attachment) ? true : false;

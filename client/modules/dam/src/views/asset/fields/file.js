@@ -50,18 +50,9 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
                 }
             });
 
-            this.listenTo(this.model, "after:save", function () {
-                let link = $('div[data-name="file"] div.field a');
-                let download = $('div[data-name="file"] > a.pull-right:not(.inline-edit-link)');
-
-                if (link) {
-                    link.attr('href', this.model.get('url'));
-                }
-
-                if (download) {
-                    download.attr('href', this.model.get('url'));
-                }
-            }.bind(this));
+            this.listenTo(this.model, "after:save", () => {
+                this.reRender();
+            });
         }
     })
 );
