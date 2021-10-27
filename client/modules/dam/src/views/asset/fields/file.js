@@ -49,6 +49,10 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
                     this.reRender();
                 }
             });
+
+            this.listenTo(this.model, "after:save", () => {
+                this.reRender();
+            });
         }
     })
 );

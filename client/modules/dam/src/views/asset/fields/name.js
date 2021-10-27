@@ -42,6 +42,15 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
             this.fileName = this._getFileName();
 
             this.registerListeners();
+
+            this.listenTo(this.model, 'before:save', function (attrs) {
+                let name = attrs[this.name] || null;
+                let filename = attrs['fileName'] || null;
+
+                if (name && filename && name !== filename) {
+                    attrs[this.name] = filename;
+                }
+            }.bind(this));
         },
 
         data() {
