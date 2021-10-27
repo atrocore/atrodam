@@ -145,6 +145,8 @@ class Attachment extends \Espo\Repositories\Attachment
     public function renameFile(Entity $attachment, string $newFile): bool
     {
         $path = $this->getFilePath($attachment);
+
+        setlocale(LC_ALL, 'en_US.UTF-8');
         $pathInfo = pathinfo($path);
         $newFileInfo = pathinfo($newFile);
         if ($pathInfo['basename'] == $newFileInfo['basename']) {

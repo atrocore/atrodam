@@ -2,7 +2,7 @@
   "labels": {
     "AssetTypes": "Asset Types",
     "Dam": "DAM",
-    "GeneralSetting": "General Setting"
+    "GeneralSetting": "General Settings"
   },
   "descriptions": {
     "listOfSupportedAssetsTypes": "List of supported assets types",
