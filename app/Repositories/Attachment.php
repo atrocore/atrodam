@@ -154,8 +154,9 @@ class Attachment extends \Espo\Repositories\Attachment
         }
 
         $newFileParts = explode('.', $newFile);
+        array_pop($newFileParts);
 
-        $attachment->setName(array_shift($newFileParts));
+        $attachment->setName(implode('.', $newFileParts));
 
         if ($this->getFileManager()->move($path, $this->getFilePath($attachment))) {
             return $this->save($attachment) ? true : false;
