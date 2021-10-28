@@ -55,6 +55,7 @@
     "assetNameIsInvalid": "Название ассета неправильное.",
     "suchAssetAlreadyExists": "Такой ассет уже существует",
     "assetIsAlreadyLinkedWithEntity": "Сущность 'Asset' уже связна с сущностью '%s'. Вы не можете снова связать эти сущности.",
-    "fileNameNotValid": "Имя файла недействительно."
+    "fileNameNotValid": "Имя файла недействительно.",
+    "fileNameNotValidByUserRegex": "Имя файла недействительно. Он должен соответствовать регулярному выражению '%s'."
   }
 }
