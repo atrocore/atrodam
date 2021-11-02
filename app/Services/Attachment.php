@@ -100,7 +100,7 @@ class Attachment extends \Espo\Services\Attachment
         fclose($fp);
 
         if (!in_array($responseCode, [200, 201]) || !file_exists($attachment->fileName)) {
-            throw new Error("File '$url' download failed.");
+            throw new Error(sprintf($this->getInjection('language')->translate('urlDownloadFailed', 'exceptions', 'Asset'), $url));
         }
 
         $entity = parent::createEntity($attachment);

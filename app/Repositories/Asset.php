@@ -134,6 +134,10 @@ class Asset extends AbstractRepository
      */
     protected function beforeSave(Entity $entity, array $options = [])
     {
+        if (empty($file = $entity->get('file'))) {
+            throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+        }
+
         // set defaults
         if (empty($entity->get('libraryId'))) {
             $entity->set('libraryId', '1');
@@ -142,15 +146,9 @@ class Asset extends AbstractRepository
             $entity->set('type', 'File');
         }
 
-        if (!empty($url = $entity->get('url'))) {
-            $attachment = $this->getInjection('serviceFactory')->create('Attachment')->createEntityByUrl((string)$url);
-            $entity->set('fileId', $attachment->get('id'));
-            $entity->set('fileName', $attachment->get('name'));
-        }
-
         // prepare name
         if (empty($entity->get('name'))) {
-            $entity->set('name', $entity->get('file')->get('name'));
+            $entity->set('name', $file->get('name'));
         }
 
         if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\s\r\n=,]{1,254}$/", (string)$entity->get('name'))) {
@@ -162,12 +160,5 @@ class Asset extends AbstractRepository
         }
 
         parent::beforeSave($entity, $options);
-    }
-
-    protected function init()
-    {
-        parent::init();
-
-        $this->addDependency('serviceFactory');
     }
 }

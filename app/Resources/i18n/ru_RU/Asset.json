@@ -51,6 +51,8 @@
     "assetsAdded": "Ассеты добавлены и будут доступны через несколько минут."
   },
   "exceptions": {
+    "urlDownloadFailed": "Загрузка для '%s' не удалась.",
+    "noAttachmentExist": "Ассет бес аттачмента существовать не может.",
     "wrongUrl": "Неправильный URL '%s'.",
     "assetNameIsInvalid": "Название ассета неправильное.",
     "suchAssetAlreadyExists": "Такой ассет уже существует",

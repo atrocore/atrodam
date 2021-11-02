@@ -55,6 +55,8 @@
     "assetsAdded": "Assets werden hinzugefügt und werden in wenigen Augenblicken verfügbar sein."
   },
   "exceptions": {
+    "urlDownloadFailed": "Download für '%s' fehlgeschlagen.",
+    "noAttachmentExist": "Asset ohne Anhang kann nicht existieren.",
     "wrongUrl": "Falsche URL '%s'.",
     "assetNameIsInvalid": "Asset-Name ist ungültig.",
     "suchAssetAlreadyExists": "Dieser Asset existiert bereits.",
