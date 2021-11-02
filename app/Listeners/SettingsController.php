@@ -1,3 +1,4 @@
+<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -26,33 +27,30 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/fields/file', 'views/fields/file',
-    Dep => Dep.extend({
+declare(strict_types=1);
 
-        setup() {
-            Dep.prototype.setup.call(this);
+namespace Dam\Listeners;
 
-            this.listenTo(this.model, "change:type", () => {
-                this.deleteAttachment();
-            });
+use Espo\Core\Exceptions\BadRequest;
+use Treo\Core\EventManager\Event;
 
-            this.listenTo(this.model, "change:name", () => {
-                if (this.model.get('name')) {
-                    const name = this.model.get('name');
-                    const ext = (this.model.get('fileName') || '').split('.').pop();
+/**
+ * SettingsController class
+ */
+class SettingsController extends \Treo\Listeners\AbstractListener
+{
+    /**
+     * @param Event $event
+     *
+     * @throws BadRequest
+     * @throws \Espo\Core\Exceptions\Error
+     */
+    public function beforeActionUpdate(Event $event): void
+    {
+        $data = $event->getArgument('data');
 
-                    if (!name.endsWith('.' + ext)) {
-                        this.model.set('name', name + '.' + ext, {silent: true});
-                        this.model.set('fileName', this.model.get('name'));
-                    }
-
-                    this.reRender();
-                }
-            });
-
-            this.listenTo(this.model, "after:save", () => {
-                this.reRender();
-            });
+        if (!empty($data->fileNameRegexPattern) && !preg_match('/^\/((?:(?:[^?+*{}()[\]\\\\|]+|\\\\.|\[(?:\^?\\\\.|\^[^\\\\]|[^\\\\^])(?:[^\]\\\\]+|\\\\.)*\]|\((?:\?[:=!]|\?<[=!]|\?>)?(?1)??\)|\(\?(?:R|[+-]?\d+)\))(?:(?:[?+*]|\{\d+(?:,\d*)?\})[?+]?)?|\|)*)\/[gmixsuAJD]*$/', $data->fileNameRegexPattern)) {
+            throw new BadRequest($this->getLanguage()->translate('regexNotValid', 'exceptions', 'FieldManager'));
         }
-    })
-);
+    }
+}

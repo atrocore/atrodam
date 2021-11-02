@@ -1,0 +1,13 @@
+[
+  {
+    "label": "File Settings",
+    "rows": [
+      [
+        {
+          "name": "fileNameRegexPattern"
+        },
+        false
+      ]
+    ]
+  }
+]

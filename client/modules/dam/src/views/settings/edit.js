@@ -26,33 +26,22 @@
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  */
 
-Espo.define('dam:views/asset/fields/file', 'views/fields/file',
-    Dep => Dep.extend({
+Espo.define('dam:views/settings/edit', 'views/settings/edit', function (Dep) {
 
-        setup() {
-            Dep.prototype.setup.call(this);
+    return Dep.extend({
 
-            this.listenTo(this.model, "change:type", () => {
-                this.deleteAttachment();
-            });
+        scope: 'Settings',
 
-            this.listenTo(this.model, "change:name", () => {
-                if (this.model.get('name')) {
-                    const name = this.model.get('name');
-                    const ext = (this.model.get('fileName') || '').split('.').pop();
+        recordView: 'dam:views/admin/settings',
 
-                    if (!name.endsWith('.' + ext)) {
-                        this.model.set('name', name + '.' + ext, {silent: true});
-                        this.model.set('fileName', this.model.get('name'));
-                    }
-
-                    this.reRender();
-                }
-            });
-
-            this.listenTo(this.model, "after:save", () => {
-                this.reRender();
+        setupHeader: function () {
+            this.createView('header', this.headerView, {
+                model: this.model,
+                el: '#main > .header',
+                template: 'dam:admin/settings/headers/settings'
             });
         }
-    })
-);
+
+    });
+
+});

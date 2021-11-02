@@ -1,0 +1,9 @@
+{
+  "fields": {
+    "fileNameRegexPattern": {
+      "type": "varchar",
+      "default": "/^[^\\\\\\/:\\*\\\"\\?<>%|\\s,]{1,64}/",
+      "tooltip": true
+    }
+  }
+}

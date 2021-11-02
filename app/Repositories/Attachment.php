@@ -145,13 +145,18 @@ class Attachment extends \Espo\Repositories\Attachment
     public function renameFile(Entity $attachment, string $newFile): bool
     {
         $path = $this->getFilePath($attachment);
-        $pathInfo = pathinfo($path);
-        $newFileInfo = pathinfo($newFile);
-        if ($pathInfo['basename'] == $newFileInfo['basename']) {
+
+        $pathParts = explode('/', $path);
+        $fileName = array_pop($pathParts);
+
+        if ($fileName == $newFile) {
             return true;
         }
 
-        $attachment->setName($newFileInfo['filename']);
+        $newFileParts = explode('.', $newFile);
+        array_pop($newFileParts);
+
+        $attachment->setName(implode('.', $newFileParts));
 
         if ($this->getFileManager()->move($path, $this->getFilePath($attachment))) {
             return $this->save($attachment) ? true : false;
