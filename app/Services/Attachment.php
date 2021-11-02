@@ -87,12 +87,19 @@ class Attachment extends \Espo\Services\Attachment
 
         $attachment->fileName = $fullPath . '/' . $attachment->name;
 
-        $file = fopen($url, 'r');
-        if ($file) {
-            file_put_contents($attachment->fileName, $file);
-        }
+        // load file from url
+        set_time_limit(0);
+        $fp = fopen($attachment->fileName, 'w+');
+        $ch = curl_init(str_replace(" ", "%20", $url));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 50);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
+        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        fclose($fp);
 
-        if (!file_exists($attachment->fileName)) {
+        if (!in_array($responseCode, [200, 201]) || !file_exists($attachment->fileName)) {
             throw new Error("File '$url' download failed.");
         }
 
