@@ -50,6 +50,9 @@ AtroDAM has a REST API and can be integrated with any third-party system. The ou
 
 Please, [ask](https://atrodam.com/contact), if you want to know more.
 
+## Documentation
+Please visit our Help Center: https://help.atrocore.com/
+
 ## Requirements
 
 - Unix-based system. Ubuntu is recommended.
