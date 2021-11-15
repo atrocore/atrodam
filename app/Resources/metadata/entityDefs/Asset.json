@@ -156,8 +156,7 @@
       "required": false,
       "trim": true,
       "isMultilang": false,
-      "view": "dam:views/asset/fields/name",
-      "importDisabled": true
+      "view": "dam:views/asset/fields/name"
     },
     "description": {
       "type": "text",
