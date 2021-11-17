@@ -51,6 +51,7 @@
     "assetsAdded": "Assets have been added and will be available in a few moments."
   },
   "exceptions": {
+    "fileExtensionCannotBeChanged": "File extension cannot be changed.",
     "urlDownloadFailed": "Download for '%s' failed.",
     "noAttachmentExist": "Asset without attachment cannot exist.",
     "wrongUrl": "Wrong URL '%s'.",

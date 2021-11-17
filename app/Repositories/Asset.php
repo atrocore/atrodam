@@ -158,6 +158,10 @@ class Asset extends AbstractRepository
             $attachmentParts = explode('.', (string)$file->get('name'));
             $attachmentExt = array_pop($attachmentParts);
 
+            if (!empty($assetExt) && $assetExt !== $attachmentExt) {
+                throw new BadRequest($this->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
+            }
+
             $entity->set('name', implode('.', $assetParts) . '.' . $attachmentExt);
         }
 
