@@ -55,6 +55,7 @@
     "assetsAdded": "Assets werden hinzugefügt und werden in wenigen Augenblicken verfügbar sein."
   },
   "exceptions": {
+    "fileExtensionCannotBeChanged": "Die Dateierweiterung kann nicht geändert werden.",
     "urlDownloadFailed": "Download für '%s' fehlgeschlagen.",
     "noAttachmentExist": "Asset ohne Anhang kann nicht existieren.",
     "wrongUrl": "Falsche URL '%s'.",
