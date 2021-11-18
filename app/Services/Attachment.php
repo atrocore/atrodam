@@ -73,6 +73,10 @@ class Attachment extends \Espo\Services\Attachment
 
     public function createEntityByUrl(string $url, bool $validateAttachment = true): \Dam\Entities\Attachment
     {
+        // cleaning URL
+        $url = parse_url($url);
+        $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
+
         $attachment = new \stdClass();
         $attachment->name = basename($url);
         $attachment->relatedType = 'Asset';
