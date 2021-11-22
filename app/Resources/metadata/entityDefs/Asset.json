@@ -196,6 +196,7 @@
     "private": {
       "notNull": true,
       "type": "bool",
+      "notStorable": true,
       "default": false,
       "audited": false,
       "readOnly": false,

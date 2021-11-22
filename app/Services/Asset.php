@@ -91,6 +91,7 @@ class Asset extends Base
         $file = $entity->get('file');
         if (!empty($file)) {
             $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
+            $entity->set('private', $file->get('private'));
         }
 
         if (!empty($entity->get('fileId'))) {

@@ -45,18 +45,6 @@ use Throwable;
 class Attachment extends \Espo\Repositories\Attachment
 {
     /**
-     * @inheritDoc
-     */
-    public function isPrivate(Entity $entity): bool
-    {
-        if (!empty($asset = $entity->getAsset())) {
-            return $asset->get('private');
-        }
-
-        return parent::isPrivate($entity);
-    }
-
-    /**
      * @param Entity $entity
      *
      * @return Asset|null
