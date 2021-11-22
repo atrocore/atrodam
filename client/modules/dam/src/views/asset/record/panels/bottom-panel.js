@@ -139,7 +139,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 view.notify(false);
                 this.listenToOnce(view, 'after:save', function () {
                     this.actionRefresh();
-                    this.model.trigger('after:relate');
+                    this.model.trigger('after:relate', this.link, this.defs);
                 }, this);
             });
         },
@@ -191,7 +191,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                     contentType: 'application/json',
                     success: function () {
                         this.notify('Unlinked', 'success');
-                        this.model.trigger('after:unrelate');
+                        this.model.trigger('after:unrelate', this.link, this.defs);
                     }.bind(this),
                     error: function () {
                         this.notify('Error occurred', 'error');

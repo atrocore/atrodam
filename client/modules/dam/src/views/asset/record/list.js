@@ -94,6 +94,18 @@ Espo.define('dam:views/asset/record/list', 'dam:views/record/list',
                         }
 
                         this.trigger('after:quickEditSave', m);
+
+                        let panelName = 'assets';
+                        let parent = this.getParentView();
+                        if (parent) {
+                            let panel = parent.getParentView();
+
+                            if (panel && panel.link) {
+                                panelName = panel.link;
+                            }
+                        }
+
+                        $('.panel-navigation .nav a[data-name="' + panelName + '"]').click();
                     }, this);
                 }, this);
             } else {
