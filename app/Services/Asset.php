@@ -92,13 +92,11 @@ class Asset extends Base
         if (!empty($file)) {
             $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
             $entity->set('private', $file->get('private'));
-        }
 
-        if (!empty($entity->get('fileId'))) {
-            $url = rtrim($this->getConfig()->get('siteUrl', ''), '/');
-            $url .= '/';
-            $url .= $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'))['download'];
-            $entity->set('url', $url);
+            $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'));
+            if (!empty($pathData['download'])) {
+                $entity->set('url', $pathData['download']);
+            }
         }
     }
 
@@ -185,6 +183,9 @@ class Asset extends Base
                 if (!empty($item['fileName'])) {
                     $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
                     $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
+                    if (!empty($item['filePathsData']['download'])) {
+                        $item['url'] = $this->prepareUrl($item['filePathsData']['download']);
+                    }
 
                     $assetCategories = $this
                         ->getEntityManager()
@@ -361,6 +362,11 @@ class Asset extends Base
         $this->addDependency('log');
         $this->addDependency('eventManager');
         $this->addDependency('queueManager');
+    }
+
+    protected function prepareUrl(string $downloadPath): string
+    {
+        return rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $downloadPath;
     }
 
     /**
