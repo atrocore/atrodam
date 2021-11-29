@@ -156,7 +156,7 @@ class Attachment extends \Espo\Repositories\Attachment
 
     public function beforeSave(Entity $entity, array $options = [])
     {
-        if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\s\r\n=,]{1,254}$/", (string)$entity->get('name'))) {
+        if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\r\n=,]{1,254}$/", (string)$entity->get('name'))) {
             throw new BadRequest($this->translate('fileNameNotValid', 'exceptions', 'Asset'));
         }
 
