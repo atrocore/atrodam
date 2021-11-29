@@ -55,7 +55,6 @@
     "urlDownloadFailed": "Загрузка для '%s' не удалась.",
     "noAttachmentExist": "Ассет бес аттачмента существовать не может.",
     "wrongUrl": "Неправильный URL '%s'.",
-    "assetNameIsInvalid": "Название ассета неправильное.",
     "suchAssetAlreadyExists": "Такой ассет уже существует",
     "assetIsAlreadyLinkedWithEntity": "Сущность 'Asset' уже связна с сущностью '%s'. Вы не можете снова связать эти сущности.",
     "fileNameNotValid": "Имя файла недействительно.",

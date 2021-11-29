@@ -59,7 +59,6 @@
     "urlDownloadFailed": "Download für '%s' fehlgeschlagen.",
     "noAttachmentExist": "Asset ohne Anhang kann nicht existieren.",
     "wrongUrl": "Falsche URL '%s'.",
-    "assetNameIsInvalid": "Asset-Name ist ungültig.",
     "suchAssetAlreadyExists": "Dieser Asset existiert bereits.",
     "assetIsAlreadyLinkedWithEntity": "Entität 'Asset' ist bereits mit der Entität '%s' verknüpft. Sie können diese Entitäten nicht erneut verknüpfen.",
     "fileNameNotValid": "Dateiname ist ungültig.",

@@ -55,7 +55,6 @@
     "urlDownloadFailed": "Download for '%s' failed.",
     "noAttachmentExist": "Asset without attachment cannot exist.",
     "wrongUrl": "Wrong URL '%s'.",
-    "assetNameIsInvalid": "Asset name is invalid.",
     "suchAssetAlreadyExists": "Such asset already exists.",
     "assetIsAlreadyLinkedWithEntity": "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.",
     "fileNameNotValid": "Filename is not valid.",

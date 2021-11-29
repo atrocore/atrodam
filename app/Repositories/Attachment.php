@@ -32,6 +32,7 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Dam\Core\ConfigManager;
+use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Dam\Entities\Asset;
 use Espo\ORM\Entity;
@@ -151,6 +152,15 @@ class Attachment extends \Espo\Repositories\Attachment
         }
 
         return false;
+    }
+
+    public function beforeSave(Entity $entity, array $options = [])
+    {
+        if (!preg_match("/^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\s\.])[^\\\\\/:\*\"\?<>%|\s\r\n=,]{1,254}$/", (string)$entity->get('name'))) {
+            throw new BadRequest($this->translate('fileNameNotValid', 'exceptions', 'Asset'));
+        }
+
+        parent::beforeSave($entity, $options);
     }
 
     /**
