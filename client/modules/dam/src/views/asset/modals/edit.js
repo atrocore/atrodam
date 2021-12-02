@@ -136,9 +136,13 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     ids.push(id);
                 });
 
-                this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
+                if (ids.length > 0) {
+                    this.ajaxPostRequest(`${this.options.relate.model.urlRoot}/${this.options.relate.model.get('id')}/assets`, {"ids": ids}).then(success => {
+                        resolve();
+                    });
+                } else {
                     resolve();
-                });
+                }
             } else {
                 resolve();
             }
