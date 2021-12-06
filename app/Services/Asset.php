@@ -67,7 +67,7 @@ class Asset extends Base
         $parts = explode('.', $fileName);
 
         // get asset name
-        $assetName = array_shift($parts);
+        $assetName = implode('.', $parts);
 
         $postData = clone $data;
         $postData->fileId = $fileId;
