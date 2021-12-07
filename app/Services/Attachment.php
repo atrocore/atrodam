@@ -103,7 +103,7 @@ class Attachment extends \Espo\Services\Attachment
         curl_close($ch);
         fclose($fp);
 
-        if (!in_array($responseCode, [200, 201]) || !file_exists($attachment->fileName)) {
+        if (!empty($responseCode) && !in_array($responseCode, [200, 201]) || !file_exists($attachment->fileName)) {
             throw new Error(sprintf($this->getInjection('language')->translate('urlDownloadFailed', 'exceptions', 'Asset'), $url));
         }
 
