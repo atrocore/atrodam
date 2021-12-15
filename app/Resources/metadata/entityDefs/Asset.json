@@ -9,7 +9,7 @@
       "layoutListDisabled": true,
       "layoutListSmallDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "layoutFiltersDisabled": true,
+      "layoutFilterDisabled": true,
       "importDisabled": true,
       "exportDisabled": true
     },
@@ -22,7 +22,7 @@
       "layoutListDisabled": true,
       "layoutListSmallDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "layoutFiltersDisabled": true,
+      "layoutFilterDisabled": true,
       "importDisabled": true,
       "exportDisabled": true
     },
@@ -35,7 +35,7 @@
       "layoutListDisabled": true,
       "layoutListSmallDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "layoutFiltersDisabled": true,
+      "layoutFilterDisabled": true,
       "importDisabled": false,
       "exportDisabled": false
     },
@@ -48,7 +48,7 @@
       "layoutListDisabled": true,
       "layoutListSmallDisabled": true,
       "layoutMassUpdateDisabled": true,
-      "layoutFiltersDisabled": true,
+      "layoutFilterDisabled": true,
       "importDisabled": true,
       "exportDisabled": true
     },
