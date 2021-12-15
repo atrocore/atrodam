@@ -118,7 +118,7 @@ class Metadata extends AbstractListener
                         'layoutDetailDisabled'      => true,
                         'layoutDetailSmallDisabled' => true,
                         'layoutMassUpdateDisabled'  => true,
-                        'layoutFilterDisabled'     => true,
+                        'filterDisabled'     => true,
                         'importDisabled'            => true,
                         'exportDisabled'            => true,
                     ];
