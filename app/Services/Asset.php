@@ -95,7 +95,7 @@ class Asset extends Base
 
             $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'));
             if (!empty($pathData['download'])) {
-                $entity->set('url', $pathData['download']);
+                $entity->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
             }
         }
     }
