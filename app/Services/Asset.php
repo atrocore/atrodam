@@ -123,7 +123,7 @@ class Asset extends Base
             }
             unset($data->url);
 
-            if (!empty($asset = $this->getEntityManager()->getRepository('Asset')->select(['id'])->where(['fileId' => $attachment->get('id')])->findOne())) {
+            if (!empty($asset = $this->getEntityManager()->getRepository('Asset')->select(['id', 'type'])->where(['fileId' => $attachment->get('id')])->findOne())) {
                 if (property_exists($data, 'type') && $data->type !== $asset->get('type')) {
                     throw new BadRequest(sprintf($this->translate('assetExistWithOtherType', 'exceptions', 'Asset'), $data->url));
                 }
