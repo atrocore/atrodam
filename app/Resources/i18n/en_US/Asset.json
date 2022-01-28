@@ -51,6 +51,7 @@
     "assetsAdded": "Assets have been added and will be available in a few moments."
   },
   "exceptions": {
+    "assetExistWithOtherType": "Asset '%s' exists already with other asset type.",
     "fileExtensionCannotBeChanged": "File extension cannot be changed.",
     "urlDownloadFailed": "Download for '%s' failed.",
     "noAttachmentExist": "Asset without attachment cannot exist.",

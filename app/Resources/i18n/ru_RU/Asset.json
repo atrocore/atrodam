@@ -51,6 +51,7 @@
     "assetsAdded": "Ассеты добавлены и будут доступны через несколько минут."
   },
   "exceptions": {
+    "assetExistWithOtherType": "Ассет '%s' уже существует с другим типом.",
     "fileExtensionCannotBeChanged": "Расширение файла не может быть изменено.",
     "urlDownloadFailed": "Загрузка для '%s' не удалась.",
     "noAttachmentExist": "Ассет бес аттачмента существовать не может.",
