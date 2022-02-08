@@ -112,7 +112,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.uploadedSize = {};
             this.finallyUploadedFiles = {};
             this.filesSize = {};
-            this.uploadedChunks = {};
             this.failedFiles = {};
 
             this.listenTo(this.model, "change:type", function () {
@@ -122,7 +121,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.uploadedSize = {};
                 this.finallyUploadedFiles = {};
                 this.filesSize = {};
-                this.uploadedChunks = {};
                 this.failedFiles = {};
 
                 this.model.trigger('updating-ended', {hideNotification: true});
@@ -218,7 +216,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     this.fileList.push(file);
                     this.filesSize[file.uniqueId] = file.size;
                     this.uploadedSize[file.uniqueId] = [];
-                    this.uploadedChunks[file.uniqueId] = [];
                     this.finallyUploadedFiles[file.uniqueId] = this.finalPieceSize;
 
                     this.updateProgress();
@@ -369,8 +366,10 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 }).done(response => {
                     if (response.attachment) {
                         this.pieces = [];
+                        this.uploadedSize[file.uniqueId] = [this.filesSize[file.uniqueId]];
                         this.finallyUploadedFiles[file.uniqueId] = 0;
                         this.setProgressMessage(file);
+                        this.updateProgress();
                         this.uploadSuccess(file, response.attachment);
                         resolve();
                     } else {
