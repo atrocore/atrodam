@@ -306,19 +306,23 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
 
             let promiseList = [];
-            promiseList.push(new Promise(resolve => {
-                let stream = 1;
-                while (stream <= this.streams) {
-                    let pieces = [];
-                    this.pieces.forEach(row => {
-                        if (row.stream === stream) {
-                            pieces.push(row);
-                        }
-                    });
-                    this.sendChunk(file, pieces, resolve);
-                    stream++;
+
+            let stream = 1;
+            while (stream <= this.streams) {
+                let pieces = [];
+                this.pieces.forEach(row => {
+                    if (row.stream === stream) {
+                        pieces.push(row);
+                    }
+                });
+
+                if (pieces.length > 0) {
+                    promiseList.push(new Promise(resolve => {
+                        this.sendChunk(file, pieces, resolve);
+                    }));
                 }
-            }));
+                stream++;
+            }
 
             Promise.all(promiseList).then(() => {
                 callback();
@@ -345,69 +349,41 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             reader.readAsDataURL(item.piece);
 
             reader.onloadend = () => {
-                if (this.uploadedChunks[file.uniqueId].indexOf(item.start.toString()) !== -1) {
-                    this.onChunkSaved(file, item, pieces, resolve);
-                } else {
-                    $.ajax({
-                        type: 'POST',
-                        url: 'Attachment/action/CreateChunks?silent=true',
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            chunkId: file.uniqueId,
-                            start: item.start,
-                            piece: reader.result,
-                            piecesCount: this.pieces.length,
-                            name: file.name,
-                            type: file.type || 'text/plain',
-                            size: file.size,
-                            role: 'Attachment',
-                            relatedType: this.model.name,
-                            field: this.name,
-                            modelAttributes: this.model.attributes
-                        }),
-                    }).done(response => {
-                        this.uploadedChunks[file.uniqueId] = response.chunks;
-                        this.onChunkSaved(file, item, pieces, resolve);
-                        if (response.attachment) {
-                            this.createByChunks(file, response.attachment);
-                            resolve();
-                        }
-                    }).error(response => {
-                        this.uploadFailed(file, response);
+                $.ajax({
+                    type: 'POST',
+                    url: 'Attachment/action/CreateChunks?silent=true',
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        chunkId: file.uniqueId,
+                        start: item.start,
+                        piece: reader.result,
+                        piecesCount: this.pieces.length,
+                        name: file.name,
+                        type: file.type || 'text/plain',
+                        size: file.size,
+                        role: 'Attachment',
+                        relatedType: this.model.name,
+                        field: this.name,
+                        modelAttributes: this.model.attributes
+                    }),
+                }).done(response => {
+                    if (response.attachment) {
+                        this.pieces = [];
+                        this.finallyUploadedFiles[file.uniqueId] = 0;
+                        this.setProgressMessage(file);
+                        this.uploadSuccess(file, response.attachment);
                         resolve();
-                    });
-                }
+                    } else {
+                        this.pushPieceSize(file.uniqueId, item.piece.size);
+                        this.setProgressMessage(file);
+                        this.updateProgress();
+                        this.sendChunk(file, pieces, resolve);
+                    }
+                }).error(response => {
+                    this.uploadFailed(file, response);
+                    resolve();
+                });
             }
-        },
-
-        onChunkSaved: function (file, item, pieces, resolve) {
-            if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
-                resolve();
-                return;
-            }
-
-            this.setProgressMessage(file);
-            this.updateProgress();
-
-            if (pieces.length > 0) {
-                this.sendChunk(file, pieces, resolve);
-            }
-        },
-
-        createByChunks: function (file, attachmentEntity) {
-            if (!this.isModalOpen()) {
-                return;
-            }
-
-            if (this.pieces.length === 0 || !this.isFileInList(file.uniqueId) || !this.isUploading) {
-                return;
-            }
-
-            this.pieces = [];
-
-            this.finallyUploadedFiles[file.uniqueId] = 0;
-            this.setProgressMessage(file);
-            this.uploadSuccess(file, attachmentEntity);
         },
 
         setProgressMessage: function (file) {
