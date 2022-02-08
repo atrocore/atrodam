@@ -255,10 +255,12 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             file.attachmentBox.parent().find('.uploading-message').html(this.translate('Uploading...'));
 
             if (file.size > this.getMaxUploadSize()) {
-                this.chunkCreateAttachments(file);
+                this.chunkCreateAttachments(file, () => {
+                    this.createAttachments();
+                });
             } else {
                 let fileReader = new FileReader();
-                fileReader.onload = function (e) {
+                fileReader.onload = e => {
                     $.ajax({
                         type: 'POST',
                         url: 'Attachment?silent=true',
@@ -273,23 +275,24 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             field: this.name,
                             modelAttributes: this.model.attributes
                         }),
-                    }).done(function (response) {
+                    }).done(response => {
                         this.pushPieceSize(file.uniqueId, file.size);
                         this.finallyUploadedFiles[file.uniqueId] = 0;
                         this.updateProgress();
                         this.uploadSuccess(file, response);
-                    }.bind(this)).error(function (response) {
+                        this.createAttachments();
+                    }).error(response => {
                         this.pushPieceSize(file.uniqueId, file.size);
                         this.updateProgress();
-
                         this.uploadFailed(file, response);
-                    }.bind(this));
-                }.bind(this);
+                        this.createAttachments();
+                    });
+                };
                 fileReader.readAsDataURL(file);
             }
         },
 
-        chunkCreateAttachments: function (file) {
+        chunkCreateAttachments: function (file, callback) {
             const sliceSize = this.getMaxUploadSize();
 
             this.streams = this.getConfig().get('fileUploadStreamCount') || 3;
@@ -301,29 +304,38 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.createFilePieces(file, sliceSize, 0, 1);
             this.piecesCount = this.pieces.length;
 
-            let stream = 1;
-            while (stream <= this.streams) {
-                let pieces = [];
-                this.pieces.forEach(function (row) {
-                    if (row.stream === stream) {
-                        pieces.push(row);
-                    }
-                });
-                this.sendChunk(file, pieces);
-                stream++;
-            }
+
+            let promiseList = [];
+            promiseList.push(new Promise(resolve => {
+                let stream = 1;
+                while (stream <= this.streams) {
+                    let pieces = [];
+                    this.pieces.forEach(row => {
+                        if (row.stream === stream) {
+                            pieces.push(row);
+                        }
+                    });
+                    this.sendChunk(file, pieces, resolve);
+                    stream++;
+                }
+            }));
+
+            Promise.all(promiseList).then(() => {
+                callback();
+            });
         },
 
         isModalOpen: function () {
             return $('.attachment-upload').length > 0;
         },
 
-        sendChunk: function (file, pieces) {
+        sendChunk: function (file, pieces, resolve) {
             if (!this.isModalOpen()) {
                 return;
             }
 
             if (pieces.length === 0 || !this.isUploading) {
+                resolve();
                 return;
             }
 
@@ -332,9 +344,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             const reader = new FileReader();
             reader.readAsDataURL(item.piece);
 
-            reader.onloadend = function () {
+            reader.onloadend = () => {
                 if (this.uploadedChunks[file.uniqueId].indexOf(item.start.toString()) !== -1) {
-                    this.onChunkSaved(file, item, pieces);
+                    this.onChunkSaved(file, item, pieces, resolve);
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -353,21 +365,24 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             field: this.name,
                             modelAttributes: this.model.attributes
                         }),
-                    }).done(function (response) {
+                    }).done(response => {
                         this.uploadedChunks[file.uniqueId] = response.chunks;
-                        this.onChunkSaved(file, item, pieces);
+                        this.onChunkSaved(file, item, pieces, resolve);
                         if (response.attachment) {
                             this.createByChunks(file, response.attachment);
+                            resolve();
                         }
-                    }.bind(this)).error(function (response) {
+                    }).error(response => {
                         this.uploadFailed(file, response);
-                    }.bind(this));
+                        resolve();
+                    });
                 }
-            }.bind(this)
+            }
         },
 
-        onChunkSaved: function (file, item, pieces) {
+        onChunkSaved: function (file, item, pieces, resolve) {
             if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
+                resolve();
                 return;
             }
 
@@ -375,7 +390,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.updateProgress();
 
             if (pieces.length > 0) {
-                this.sendChunk(file, pieces);
+                this.sendChunk(file, pieces, resolve);
             }
         },
 
@@ -385,7 +400,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             }
 
             if (this.pieces.length === 0 || !this.isFileInList(file.uniqueId) || !this.isUploading) {
-                this.createAttachments();
                 return;
             }
 
@@ -429,8 +443,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             setTimeout(function () {
                 if (this.isDone()) {
                     this.model.trigger('updating-ended');
-                } else {
-                    this.createAttachments();
                 }
             }.bind(this), 100);
         },
@@ -461,8 +473,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             setTimeout(function () {
                 if (this.isDone()) {
                     this.model.trigger('updating-ended');
-                } else {
-                    this.createAttachments();
                 }
             }.bind(this), 100);
         },
