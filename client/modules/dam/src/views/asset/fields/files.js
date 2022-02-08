@@ -97,7 +97,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                     $div.find('.uploaded-file').removeClass('file-uploading-failed');
                     $div.find('.uploading-message').html(this.translate('Pending...'));
 
-                    this.chunkFailedResponse = null;
                     this.uploadFiles([this.failedFiles[hash]]);
                     delete this.failedFiles[hash];
                 }
@@ -361,7 +360,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             this.createByChunks(file, response.attachment);
                         }
                     }.bind(this)).error(function (response) {
-                        this.chunkFailedResponse = response;
+                        this.uploadFailed(file, response);
                     }.bind(this));
                 }
             }.bind(this)
@@ -391,11 +390,6 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             }
 
             this.pieces = [];
-
-            if (this.chunkFailedResponse) {
-                this.uploadFailed(file, this.chunkFailedResponse);
-                return;
-            }
 
             this.finallyUploadedFiles[file.uniqueId] = 0;
             this.setProgressMessage(file);
