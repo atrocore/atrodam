@@ -300,39 +300,31 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             // create file pieces
             this.pieces = [];
             this.createFilePieces(file, sliceSize, 0, 1);
+            this.piecesCount = this.pieces.length;
 
-            let promiseList = [];
-            promiseList.push(new Promise(function (resolve) {
-                let stream = 1;
-                while (stream <= this.streams) {
-                    let pieces = [];
-                    this.pieces.forEach(function (row) {
-                        if (row.stream === stream) {
-                            pieces.push(row);
-                        }
-                    });
-                    this.sendChunk(resolve, file, pieces);
-                    stream++;
-                }
-            }.bind(this)));
-
-            Promise.all(promiseList).then(function () {
-                this.createByChunks(file);
-            }.bind(this));
-
+            let stream = 1;
+            while (stream <= this.streams) {
+                let pieces = [];
+                this.pieces.forEach(function (row) {
+                    if (row.stream === stream) {
+                        pieces.push(row);
+                    }
+                });
+                this.sendChunk(file, pieces);
+                stream++;
+            }
         },
 
         isModalOpen: function () {
             return $('.attachment-upload').length > 0;
         },
 
-        sendChunk: function (resolve, file, pieces) {
+        sendChunk: function (file, pieces) {
             if (!this.isModalOpen()) {
                 return;
             }
 
             if (pieces.length === 0 || !this.isUploading) {
-                resolve();
                 return;
             }
 
@@ -343,7 +335,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
 
             reader.onloadend = function () {
                 if (this.uploadedChunks[file.uniqueId].indexOf(item.start.toString()) !== -1) {
-                    this.onChunkSaved(file, item, resolve, pieces);
+                    this.onChunkSaved(file, item, pieces);
                 } else {
                     $.ajax({
                         type: 'POST',
@@ -353,21 +345,30 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                             chunkId: file.uniqueId,
                             start: item.start,
                             piece: reader.result,
+                            piecesCount: this.pieces.length,
+                            name: file.name,
+                            type: file.type || 'text/plain',
+                            size: file.size,
+                            role: 'Attachment',
+                            relatedType: this.model.name,
+                            field: this.name,
+                            modelAttributes: this.model.attributes
                         }),
                     }).done(function (response) {
                         this.uploadedChunks[file.uniqueId] = response.chunks;
-                        this.onChunkSaved(file, item, resolve, pieces);
+                        this.onChunkSaved(file, item, pieces);
+                        if (response.attachment) {
+                            this.createByChunks(file, response.attachment);
+                        }
                     }.bind(this)).error(function (response) {
                         this.chunkFailedResponse = response;
-                        resolve();
                     }.bind(this));
                 }
             }.bind(this)
         },
 
-        onChunkSaved: function (file, item, resolve, pieces) {
+        onChunkSaved: function (file, item, pieces) {
             if (!this.pushPieceSize(file.uniqueId, item.piece.size) || file.attachmentBox.hasClass('file-uploading-failed')) {
-                resolve();
                 return;
             }
 
@@ -375,22 +376,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.updateProgress();
 
             if (pieces.length > 0) {
-                this.sendChunk(resolve, file, pieces);
-            }
-
-            let piecesSize = 0;
-            if (this.isFileInList(file.uniqueId)) {
-                piecesSize = this.uploadedSize[file.uniqueId].reduce((a, b) => a + b, 0);
-            }
-
-            let fileSize = typeof this.filesSize[file.uniqueId] !== 'undefined' ? this.filesSize[file.uniqueId] : 0;
-
-            if (piecesSize === fileSize) {
-                resolve();
+                this.sendChunk(file, pieces);
             }
         },
 
-        createByChunks: function (file) {
+        createByChunks: function (file, attachmentEntity) {
             if (!this.isModalOpen()) {
                 return;
             }
@@ -407,27 +397,9 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 return;
             }
 
-            $.ajax({
-                type: 'POST',
-                url: 'Attachment/action/CreateByChunks?silent=true',
-                contentType: "application/json",
-                data: JSON.stringify({
-                    chunkId: file.uniqueId,
-                    name: file.name,
-                    type: file.type || 'text/plain',
-                    size: file.size,
-                    role: 'Attachment',
-                    relatedType: this.model.name,
-                    field: this.name,
-                    modelAttributes: this.model.attributes
-                }),
-            }).done(function (response) {
-                this.finallyUploadedFiles[file.uniqueId] = 0;
-                this.setProgressMessage(file);
-                this.uploadSuccess(file, response);
-            }.bind(this)).error(function (response) {
-                this.uploadFailed(file, response);
-            }.bind(this));
+            this.finallyUploadedFiles[file.uniqueId] = 0;
+            this.setProgressMessage(file);
+            this.uploadSuccess(file, attachmentEntity);
         },
 
         setProgressMessage: function (file) {
