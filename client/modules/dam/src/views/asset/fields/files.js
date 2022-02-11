@@ -328,7 +328,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         },
 
         isModalOpen: function () {
-            return $('.attachment-upload').length > 0;
+            return $('.attachment-upload').is(':visible');
         },
 
         sendChunk: function (file, pieces, resolve) {
