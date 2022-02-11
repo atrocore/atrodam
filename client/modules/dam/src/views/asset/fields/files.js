@@ -301,6 +301,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             this.createFilePieces(file, sliceSize, 0, 1);
             this.piecesCount = this.pieces.length;
 
+            this.uploadedChunks = [];
 
             let promiseList = [];
 
@@ -346,6 +347,15 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             reader.readAsDataURL(item.piece);
 
             reader.onloadend = () => {
+                // if chunk already uploaded
+                if (this.uploadedChunks.includes(item.start.toString())) {
+                    this.pushPieceSize(file.uniqueId, item.piece.size);
+                    this.setProgressMessage(file);
+                    this.updateProgress();
+                    this.sendChunk(file, pieces, resolve);
+                    return;
+                }
+
                 $.ajax({
                     type: 'POST',
                     url: 'Attachment/action/CreateChunks?silent=true',
@@ -364,6 +374,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                         modelAttributes: this.model.attributes
                     }),
                 }).done(response => {
+                    this.uploadedChunks = response.chunks;
                     if (response.attachment) {
                         this.pieces = [];
                         this.uploadedSize[file.uniqueId] = [this.filesSize[file.uniqueId]];
