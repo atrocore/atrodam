@@ -491,7 +491,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             let $progress = $('.attachment-upload .progress .progress-bar');
             let percentCompleted = this.getPercentCompleted();
 
-            if (percentCompleted !== 0 && percentCompleted !== 100) {
+            if (percentCompleted !== 100) {
                 percentCompleted = Math.round(percentCompleted);
                 $progress.parent().show();
                 $progress.css('width', percentCompleted + '%').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
