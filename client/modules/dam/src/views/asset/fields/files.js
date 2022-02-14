@@ -336,7 +336,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 return;
             }
 
-            if (pieces.length === 0 || !this.isUploading) {
+            if (pieces.length === 0 || !this.isUploading || !this.filesSize[file.uniqueId]) {
                 resolve();
                 return;
             }
@@ -494,7 +494,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
             if (percentCompleted !== 100) {
                 percentCompleted = Math.round(percentCompleted);
                 $progress.parent().show();
-                $progress.css('width', percentCompleted + '%').html(percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
+                $progress.css('width', percentCompleted + '%').html('&nbsp;' + percentCompleted + '% ' + this.translate('uploaded', 'labels', 'Asset'));
             } else {
                 $progress.parent().hide();
             }
