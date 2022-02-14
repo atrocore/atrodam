@@ -36,7 +36,11 @@
 
 <style type="text/css">
     .attachment-upload .progress {
-        width: 50%;
+        white-space: nowrap;
+        width: 100%;
+    }
+    .attachment-upload .progress .progress-bar {
+        color: black;
     }
     .file-uploading-failed{
         background-color: #f2dede !important;
