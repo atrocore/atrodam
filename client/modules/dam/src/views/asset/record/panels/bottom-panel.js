@@ -227,6 +227,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 model: model,
                 el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
                 sort: this.sort,
+                relationName: this.defs.name,
                 show: show
             }, view => {
                 if (typeof callback === "function") {

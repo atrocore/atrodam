@@ -119,9 +119,10 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             }
 
             let hashParts = window.location.hash.split('/view/');
-            if (typeof hashParts[1] !== 'undefined') {
-                attrs._relatingEntity = hashParts[0].replace('#', '');
-                attrs._relatingEntityId = hashParts[1];
+            if (typeof hashParts[1] !== 'undefined' && this.model.defs._relationName) {
+                attrs._relationName = this.model.defs._relationName;
+                attrs._relationEntity = hashParts[0].replace('#', '');
+                attrs._relationEntityId = hashParts[1];
             }
 
             if (count > 0) {
