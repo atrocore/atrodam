@@ -109,8 +109,7 @@ class Metadata extends AbstractListener
                         'type'    => 'int',
                         'default' => 100000
                     ];
-                    $data['entityDefs'][$scope]['fields'][$link]['columns']['sorting'] = 'assetSorting';
-                    $data['entityDefs'][$scope]['fields']['assetSorting'] = [
+                    $data['entityDefs']['Asset']['fields']['sorting'] = [
                         'type'                      => 'int',
                         'notStorable'               => true,
                         'layoutListDisabled'        => true,
@@ -118,7 +117,23 @@ class Metadata extends AbstractListener
                         'layoutDetailDisabled'      => true,
                         'layoutDetailSmallDisabled' => true,
                         'layoutMassUpdateDisabled'  => true,
-                        'filterDisabled'     => true,
+                        'filterDisabled'            => true,
+                        'importDisabled'            => true,
+                        'exportDisabled'            => true,
+                    ];
+
+                    $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
+                        'type' => 'bool'
+                    ];
+                    $data['entityDefs']['Asset']['fields']['isMainImage'] = [
+                        'type'                      => 'bool',
+                        'notStorable'               => true,
+                        'layoutListDisabled'        => true,
+                        'layoutListSmallDisabled'   => true,
+                        'layoutDetailDisabled'      => true,
+                        'layoutDetailSmallDisabled' => true,
+                        'layoutMassUpdateDisabled'  => true,
+                        'filterDisabled'            => true,
                         'importDisabled'            => true,
                         'exportDisabled'            => true,
                     ];

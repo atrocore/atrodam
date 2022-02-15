@@ -14,6 +14,8 @@
     "assetPreview": "Asset Preview"
   },
   "fields": {
+    "sorting": "Sorting",
+    "isMainImage": "Main Image",
     "url": "URL",
     "isActive": "Active",
     "image": "Image",
