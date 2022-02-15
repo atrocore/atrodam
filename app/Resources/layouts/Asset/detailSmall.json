@@ -39,6 +39,14 @@
       ],
       [
         {
+          "name": "isMainImage"
+        },
+        {
+          "name": "sorting"
+        }
+      ],
+      [
+        {
           "name": "assetCategories"
         },
         false

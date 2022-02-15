@@ -13,6 +13,28 @@
       "importDisabled": true,
       "exportDisabled": true
     },
+    "sorting": {
+      "type": "int",
+      "notStorable": true,
+      "relatingEntityField": ["Foo"],
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
+    "isMainImage": {
+      "type": "bool",
+      "notStorable": true,
+      "layoutListDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
     "icon": {
       "type": "varchar",
       "notStorable": true,

@@ -63,7 +63,7 @@ class Asset extends AbstractRepository
         $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
         $id = $entity->get('id');
 
-        $sql = "SELECT a.*, at.id as fileId, at.name as fileName
+        $sql = "SELECT a.*, at.id as fileId, at.name as fileName, r.is_main_image as isMainImage, r.sorting
                 FROM $relationTableName r 
                 LEFT JOIN asset a ON a.id=r.asset_id
                 LEFT JOIN attachment at ON at.id=a.file_id 

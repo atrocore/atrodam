@@ -93,6 +93,8 @@ class Metadata extends AbstractListener
      */
     protected function updateRelationMetadata(array &$data)
     {
+        $scopes = [];
+
         foreach ($data['entityDefs'] as $scope => $defs) {
             if (empty($defs['links']) || !empty($data['scopes'][$scope]['skipAssetSorting'])) {
                 continue 1;
@@ -109,33 +111,15 @@ class Metadata extends AbstractListener
                         'type'    => 'int',
                         'default' => 100000
                     ];
-                    $data['entityDefs']['Asset']['fields']['sorting'] = [
-                        'type'                      => 'int',
-                        'notStorable'               => true,
-                        'layoutListDisabled'        => true,
-                        'layoutListSmallDisabled'   => true,
-                        'layoutDetailDisabled'      => true,
-                        'layoutMassUpdateDisabled'  => true,
-                        'filterDisabled'            => true,
-                        'importDisabled'            => true,
-                        'exportDisabled'            => true,
-                    ];
-
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
                         'type' => 'bool'
                     ];
-                    $data['entityDefs']['Asset']['fields']['isMainImage'] = [
-                        'type'                      => 'bool',
-                        'notStorable'               => true,
-                        'layoutListDisabled'        => true,
-                        'layoutDetailDisabled'      => true,
-                        'layoutMassUpdateDisabled'  => true,
-                        'filterDisabled'            => true,
-                        'importDisabled'            => true,
-                        'exportDisabled'            => true,
-                    ];
+                    $scopes[] = $scope;
                 }
             }
         }
+
+        $data['entityDefs']['Asset']['fields']['sorting']['relatingEntityField'] = $scopes;
+        $data['entityDefs']['Asset']['fields']['isMainImage']['relatingEntityField'] = $scopes;
     }
 }
