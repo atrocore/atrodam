@@ -121,6 +121,11 @@ class Metadata extends AbstractListener
                         'readOnly'       => true,
                         'importDisabled' => true
                     ];
+                    $data['entityDefs'][$scope]['links']['mainImage'] = [
+                        'type'        => 'belongsTo',
+                        'entity'      => 'Attachment',
+                        'skipOrmDefs' => true
+                    ];
                     $scopes[] = $scope;
                 }
             }
