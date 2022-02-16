@@ -33,7 +33,6 @@ namespace Dam\Listeners;
 
 use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
-use Espo\ORM\EntityCollection;
 use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
 
@@ -41,8 +40,61 @@ class Service extends AbstractListener
 {
     public function loadPreviewForCollection(Event $event): void
     {
-        /** @var EntityCollection $entity */
         $collection = $event->getArgument('collection');
+
+        if (count($collection) === 0) {
+            return;
+        }
+
+        $entityType = $collection[0]->getEntityType();
+
+        if (empty($this->getMetadata()->get(['entityDefs', $entityType, 'fields', 'mainImage']))) {
+            return;
+        }
+
+        $ids = array_column($collection->toArray(), 'id');
+
+        foreach ($this->getMetadata()->get(['entityDefs', $entityType, 'links'], []) as $link => $linkData) {
+            if (empty($linkData['type']) || $linkData['type'] !== 'hasMany' || empty($linkData['entity']) || $linkData['entity'] !== 'Asset' || empty($linkData['relationName'])) {
+                continue 1;
+            }
+
+            $tableName = Util::toUnderScore($linkData['relationName']);
+            $field = Util::toUnderScore(lcfirst($entityType));
+
+            $query = "SELECT a.file_id as attachmentId, r.{$field}_id as entityId
+                      FROM `$tableName` r 
+                      LEFT JOIN `asset` a ON a.id=r.asset_id
+                      WHERE r.is_main_image=1 
+                        AND r.{$field}_id IN ('" . implode("','", $ids) . "')";
+
+            $records = $this
+                ->getEntityManager()
+                ->getPDO()
+                ->query($query)
+                ->fetchAll(\PDO::FETCH_ASSOC);
+
+            if (empty($records)) {
+                continue 1;
+            }
+
+            foreach ($collection as $entity) {
+                if (!empty($entity->get('mainImageId'))) {
+                    continue 1;
+                }
+
+                $entity->set('mainImageId', null);
+                $entity->set('mainImageName', null);
+
+                foreach ($records as $record) {
+                    if ($entity->get('id') === $record['entityId']) {
+                        $entity->set('mainImageId', $record['attachmentId']);
+                        $entity->set('mainImageName', $record['attachmentId']);
+                        break 1;
+                    }
+                }
+            }
+        }
     }
 
     public function prepareEntityForOutput(Event $event): void
