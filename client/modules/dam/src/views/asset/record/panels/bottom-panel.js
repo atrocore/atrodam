@@ -206,22 +206,13 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             const entityId = pathData.pop();
 
             this.notify('Saving...');
-            this.ajaxPostRequest(`${entityName}/action/SetAsMainImage`, {
-                entityId: entityId,
-                assetId: data.asset_id,
-                scope: data.scope
-            }).then(response => {
+            this.ajaxPutRequest(`Asset/${data.asset_id}`, {
+                isMainImage: true,
+                _relationEntity: entityName,
+                _relationEntityId: entityId,
+                _relationName: this.panelName
+            }).done(() => {
                 this.notify('Saved', 'success');
-
-                if (response.length) {
-                    this.model.set('imagePathsData', response.imagePathsData);
-                    this.model.set('imageName', response.imageName);
-                    this.model.set('imageId', response.imageId);
-                }
-            }).done(function () {
-                if (this.getParentView() && this.getParentView().getParentView()) {
-                    this.getParentView().getParentView().model.fetch();
-                }
                 this.actionRefresh();
             });
         },
