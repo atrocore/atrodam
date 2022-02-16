@@ -58,6 +58,10 @@ class Service extends AbstractListener
             return;
         }
 
+        $entity->set('mainImageId', null);
+        $entity->set('mainImageName', null);
+        $entity->set('mainImagePathsData', null);
+
         foreach ($this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links'], []) as $link => $linkData) {
             if (empty($linkData['type']) || $linkData['type'] !== 'hasMany' || empty($linkData['entity']) || $linkData['entity'] !== 'Asset' || empty($linkData['relationName'])) {
                 continue 1;
