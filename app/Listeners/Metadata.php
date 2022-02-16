@@ -109,9 +109,10 @@ class Metadata extends AbstractListener
 
                     foreach (['edit', 'detail', 'detailSmall'] as $mode) {
                         $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
-                            'name'  => 'mainImage',
-                            'label' => 'mainImage',
-                            'view'  => 'dam:views/asset/fields/main-image'
+                            'name'    => 'mainImage',
+                            'unshift' => true,
+                            'label'   => 'mainImage',
+                            'view'    => 'dam:views/asset/fields/main-image'
                         ];
                     }
 
