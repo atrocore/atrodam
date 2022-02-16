@@ -24,6 +24,7 @@
     "isMainImage": {
       "type": "bool",
       "notStorable": true,
+      "view": "dam:views/asset/fields/is-main-image",
       "layoutMassUpdateDisabled": true,
       "filterDisabled": true,
       "importDisabled": true,
