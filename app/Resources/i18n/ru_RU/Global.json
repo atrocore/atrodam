@@ -27,6 +27,7 @@
     "validationRules": "Правила проверки"
   },
   "labels": {
+    "mainImage": "Основное изображение",
     "dragAndDropBtnText": "Перетяните",
     "dragAndDropBtnTextSmall": "Ваши ассеты или",
     "upload": "Загрузка",

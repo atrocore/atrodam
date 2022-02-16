@@ -107,6 +107,14 @@ class Metadata extends AbstractListener
                         $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
                     }
 
+                    foreach (['edit', 'detail', 'detailSmall'] as $mode) {
+                        $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
+                            'name'  => 'mainImage',
+                            'label' => 'mainImage',
+                            'view'  => 'dam:views/asset/fields/main-image'
+                        ];
+                    }
+
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
                         'type'    => 'int',
                         'default' => 100000
