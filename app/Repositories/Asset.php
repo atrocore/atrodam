@@ -42,6 +42,23 @@ use Espo\ORM\Entity;
  */
 class Asset extends AbstractRepository
 {
+    public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
+    {
+        if ($re1 === 'Product') {
+            echo '<pre>';
+            print_r('112233');
+            die();
+        }
+
+        if (!empty($setData['isMainImage'])) {
+            $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
+            $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
+            $this->getPDO()->exec($query);
+        }
+
+        parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
+    }
+
     /**
      * @param Entity $entity
      * @param string $type

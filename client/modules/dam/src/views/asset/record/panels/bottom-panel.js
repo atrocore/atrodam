@@ -200,6 +200,32 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             }, this);
         },
 
+        actionSetAsMainImage: function (data) {
+            const pathData = window.location.hash.replace('#', '').split('/view/');
+            const entityName = pathData.shift();
+            const entityId = pathData.pop();
+
+            this.notify('Saving...');
+            this.ajaxPostRequest(`${entityName}/action/SetAsMainImage`, {
+                entityId: entityId,
+                assetId: data.asset_id,
+                scope: data.scope
+            }).then(response => {
+                this.notify('Saved', 'success');
+
+                if (response.length) {
+                    this.model.set('imagePathsData', response.imagePathsData);
+                    this.model.set('imageName', response.imageName);
+                    this.model.set('imageId', response.imageId);
+                }
+            }).done(function () {
+                if (this.getParentView() && this.getParentView().getParentView()) {
+                    this.getParentView().getParentView().model.fetch();
+                }
+                this.actionRefresh();
+            });
+        },
+
         _getAssetLink() {
             let links = this.model.defs.links;
             for (let key in links) {

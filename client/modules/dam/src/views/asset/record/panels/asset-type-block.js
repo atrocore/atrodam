@@ -28,10 +28,14 @@
 
 Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
     Dep => Dep.extend({
+
         template: "dam:asset/record/panels/asset-type-block",
+
         sort: false,
+
         show: true,
-        rowActionsView: 'views/record/row-actions/relationship-no-remove',
+
+        rowActionsView: 'dam:views/asset/record/row-actions/relationship',
 
         setup() {
             Dep.prototype.setup.call(this);

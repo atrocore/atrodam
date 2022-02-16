@@ -16,7 +16,6 @@
     "sorting": {
       "type": "int",
       "notStorable": true,
-      "relatingEntityField": ["Foo"],
       "layoutMassUpdateDisabled": true,
       "filterDisabled": true,
       "importDisabled": true,
