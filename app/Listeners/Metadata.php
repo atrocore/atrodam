@@ -114,6 +114,13 @@ class Metadata extends AbstractListener
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
                         'type' => 'bool'
                     ];
+                    $data['entityDefs'][$scope]['fields']['mainImage'] = [
+                        'type'           => 'image',
+                        'notStorable'    => true,
+                        'previewSize'    => 'medium',
+                        'readOnly'       => true,
+                        'importDisabled' => true
+                    ];
                     $scopes[] = $scope;
                 }
             }

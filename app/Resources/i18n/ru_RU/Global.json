@@ -1,5 +1,8 @@
 {
   "scopeNames": {
+    "fields": {
+      "mainImage": "Основное изображение"
+    },
     "Asset": "Ассет",
     "Rendition": "Преобразование",
     "RenditionMetaData": "Преобразование мета данные",

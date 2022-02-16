@@ -1,4 +1,7 @@
 {
+  "fields": {
+    "mainImage": "Main Image"
+  },
   "scopeNames": {
     "Asset": "Asset",
     "Rendition": "Rendition",
