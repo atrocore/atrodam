@@ -211,7 +211,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 _relationEntity: entityName,
                 _relationEntityId: entityId,
                 _relationName: this.panelName
-            }).done(() => {
+            }).done(asset => {
                 this.notify('Saved', 'success');
                 this.actionRefresh();
             });
