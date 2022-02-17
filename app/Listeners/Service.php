@@ -66,7 +66,8 @@ class Service extends AbstractListener
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
                       WHERE r.is_main_image=1 
-                        AND r.{$field}_id IN ('" . implode("','", $ids) . "')";
+                        AND r.{$field}_id IN ('" . implode("','", $ids) . "')
+                        AND r.deleted=0";
 
             $records = $this
                 ->getEntityManager()
@@ -126,7 +127,8 @@ class Service extends AbstractListener
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
                       WHERE r.is_main_image=1 
-                        AND r.{$field}_id='{$entity->get('id')}'";
+                        AND r.{$field}_id='{$entity->get('id')}'
+                        AND r.deleted=0";
 
             $attachmentId = $this
                 ->getEntityManager()
