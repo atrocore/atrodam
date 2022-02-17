@@ -191,6 +191,14 @@ class Asset extends Base
 
                 $relatedAssetsArray[] = $assetArray;
             }
+
+            // sorting
+            usort($relatedAssetsArray, function ($a, $b) {
+                if ($a['sorting'] == $b['sorting']) {
+                    return 0;
+                }
+                return ($a['sorting'] < $b['sorting']) ? -1 : 1;
+            });
         }
 
         $list = [];
