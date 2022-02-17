@@ -178,34 +178,29 @@ class Asset extends Base
         // sorting types
         sort($types);
 
+        $relatedAssetsArray = [];
+
+        $relatedAssets = $this->getService($scope)->findLinkedEntities($id, 'assets', []);
+        if (!empty($relatedAssets['total'])) {
+            foreach ($relatedAssets['collection'] as $asset) {
+                $assetCategories = $asset->get('assetCategories')->toArray();
+
+                $assetArray = $asset->toArray();
+                $assetArray['assetCategoriesIds'] = array_column($assetCategories, 'id');
+                $assetArray['assetCategoriesNames'] = array_column($assetCategories, 'name', 'id');
+
+                $relatedAssetsArray[] = $assetArray;
+            }
+        }
+
         $list = [];
         foreach ($types as $type) {
-            $assets = $this->getRepository()->findRelatedAssetsByType($entity, $type);
-
-            // prepare assets
-            foreach ($assets as &$item) {
-                if (!empty($item['fileName'])) {
-                    $item['icon'] = $this->prepareAssetIcon((string)$item['type'], (string)$item['fileName']);
-                    $item['filePathsData'] = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($item['fileId']);
-                    if (!empty($item['filePathsData']['download'])) {
-                        $item['url'] = $this->prepareUrl($item['filePathsData']['download']);
-                    }
-
-                    $assetCategories = $this
-                        ->getEntityManager()
-                        ->getRepository('AssetCategory')
-                        ->select(['id', 'name'])
-                        ->join('assets')
-                        ->where(['assets.id' => $item['id']])
-                        ->find()
-                        ->toArray();
-
-                    $item['assetCategoriesIds'] = array_column($assetCategories, 'id');
-                    $item['assetCategoriesNames'] = array_column($assetCategories, 'name', 'id');
+            $assets = [];
+            foreach ($relatedAssetsArray as $assetArray) {
+                if ($assetArray['type'] === $type) {
+                    $assets[] = $assetArray;
                 }
             }
-            unset($item);
-
             $list[] = [
                 'id'     => $type,
                 'name'   => $type,
