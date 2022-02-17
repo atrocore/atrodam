@@ -44,7 +44,26 @@ class Asset extends AbstractRepository
 {
     public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
     {
-        if (!empty($setData['isMainImage']) && $re1 !== 'Product') {
+        if ($re1 === 'Product') {
+            if (empty($setData['channel'])) {
+                $channel = $this->getEntityManager()->getRepository('Product')->getAssetData($re1Id, $re2Id)['channel'];
+            } else {
+                $channel = $setData['channel'];
+            }
+
+            if (empty($channel)) {
+                $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0 AND (channel IS NULL OR channel='')";
+                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
+                $this->getPDO()->exec($query);
+
+
+            }
+
+            parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
+            return;
+        }
+
+        if (!empty($setData['isMainImage'])) {
             $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
             $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
             $this->getPDO()->exec($query);
