@@ -15,7 +15,7 @@
     "setAsMainImage": "Set as Main Image"
   },
   "fields": {
-    "sorting": "Sorting",
+    "sorting": "Sort Order",
     "isMainImage": "Main Image",
     "url": "URL",
     "isActive": "Active",

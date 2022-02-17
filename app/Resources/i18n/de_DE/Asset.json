@@ -24,7 +24,7 @@
     "relatedAssets": "Verwandte Assets"
   },
   "fields": {
-    "sorting": "Sortierung",
+    "sorting": "Sortierreihenfolge",
     "isMainImage": "Hauptbild",
     "url": "URL",
     "type": "Typ",
