@@ -39,17 +39,17 @@
       ],
       [
         {
+          "name": "assetCategories"
+        },
+        false
+      ],
+      [
+        {
           "name": "isMainImage"
         },
         {
           "name": "sorting"
         }
-      ],
-      [
-        {
-          "name": "assetCategories"
-        },
-        false
       ]
     ],
     "style": "default",
