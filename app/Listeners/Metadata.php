@@ -127,8 +127,7 @@ class Metadata extends AbstractListener
                         'type'           => 'image',
                         'notStorable'    => true,
                         'previewSize'    => 'medium',
-                        'readOnly'       => true,
-                        'importDisabled' => true
+                        'readOnly'       => true
                     ];
                     $data['entityDefs'][$scope]['links']['mainImage'] = [
                         'type'        => 'belongsTo',
