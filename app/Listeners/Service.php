@@ -52,47 +52,39 @@ class Service extends AbstractListener
             return;
         }
 
+        if (empty($linkData = $this->getAssetRelationWithMainImage($entityType))) {
+            return;
+        }
+
         $ids = array_column($collection->toArray(), 'id');
 
-        foreach ($this->getMetadata()->get(['entityDefs', $entityType, 'links'], []) as $link => $linkData) {
-            if (empty($linkData['type']) || $linkData['type'] !== 'hasMany' || empty($linkData['entity']) || $linkData['entity'] !== 'Asset' || empty($linkData['relationName'])) {
+        $tableName = Util::toUnderScore($linkData['relationName']);
+        $field = Util::toUnderScore(lcfirst($entityType));
+
+        $query = "SELECT a.file_id as attachmentId, r.{$field}_id as entityId
+                  FROM `$tableName` r 
+                  LEFT JOIN `asset` a ON a.id=r.asset_id
+                  WHERE r.is_main_image=1 
+                    AND r.{$field}_id IN ('" . implode("','", $ids) . "')
+                    AND r.deleted=0";
+
+        if (empty($records = $this->getEntityManager()->getPDO()->query($query)->fetchAll(\PDO::FETCH_ASSOC))) {
+            return;
+        }
+
+        foreach ($collection as $entity) {
+            if (!empty($entity->get('mainImageId'))) {
                 continue 1;
             }
 
-            $tableName = Util::toUnderScore($linkData['relationName']);
-            $field = Util::toUnderScore(lcfirst($entityType));
+            $entity->set('mainImageId', null);
+            $entity->set('mainImageName', null);
 
-            $query = "SELECT a.file_id as attachmentId, r.{$field}_id as entityId
-                      FROM `$tableName` r 
-                      LEFT JOIN `asset` a ON a.id=r.asset_id
-                      WHERE r.is_main_image=1 
-                        AND r.{$field}_id IN ('" . implode("','", $ids) . "')
-                        AND r.deleted=0";
-
-            $records = $this
-                ->getEntityManager()
-                ->getPDO()
-                ->query($query)
-                ->fetchAll(\PDO::FETCH_ASSOC);
-
-            if (empty($records)) {
-                continue 1;
-            }
-
-            foreach ($collection as $entity) {
-                if (!empty($entity->get('mainImageId'))) {
-                    continue 1;
-                }
-
-                $entity->set('mainImageId', null);
-                $entity->set('mainImageName', null);
-
-                foreach ($records as $record) {
-                    if ($entity->get('id') === $record['entityId']) {
-                        $entity->set('mainImageId', $record['attachmentId']);
-                        $entity->set('mainImageName', $record['attachmentId']);
-                        break 1;
-                    }
+            foreach ($records as $record) {
+                if ($entity->get('id') === $record['entityId']) {
+                    $entity->set('mainImageId', $record['attachmentId']);
+                    $entity->set('mainImageName', $record['attachmentId']);
+                    break 1;
                 }
             }
         }
@@ -100,10 +92,21 @@ class Service extends AbstractListener
 
     public function prepareEntityForOutput(Event $event): void
     {
-        /** @var Entity $entity */
-        $entity = $event->getArgument('entity');
+        $this->setMainImage($event->getArgument('entity'));
+    }
 
+    public function beforeCheckingIsEntityUpdated(Event $event): void
+    {
+        $this->setMainImage($event->getArgument('entity'));
+    }
+
+    protected function setMainImage(Entity $entity): void
+    {
         if (empty($this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'fields', 'mainImage']))) {
+            return;
+        }
+
+        if (empty($linkData = $this->getAssetRelationWithMainImage($entity->getEntityType()))) {
             return;
         }
 
@@ -115,34 +118,39 @@ class Service extends AbstractListener
         $entity->set('mainImageName', null);
         $entity->set('mainImagePathsData', null);
 
-        foreach ($this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links'], []) as $link => $linkData) {
-            if (empty($linkData['type']) || $linkData['type'] !== 'hasMany' || empty($linkData['entity']) || $linkData['entity'] !== 'Asset' || empty($linkData['relationName'])) {
-                continue 1;
-            }
+        $tableName = Util::toUnderScore($linkData['relationName']);
+        $field = Util::toUnderScore(lcfirst($entity->getEntityType()));
 
-            $tableName = Util::toUnderScore($linkData['relationName']);
-            $field = Util::toUnderScore(lcfirst($entity->getEntityType()));
-
-            $query = "SELECT a.file_id 
+        $query = "SELECT a.file_id 
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
                       WHERE r.is_main_image=1 
                         AND r.{$field}_id='{$entity->get('id')}'
                         AND r.deleted=0";
 
-            $attachmentId = $this
-                ->getEntityManager()
-                ->getPDO()
-                ->query($query)
-                ->fetch(\PDO::FETCH_COLUMN);
-
-            if (empty($attachmentId)) {
-                continue 1;
-            }
-
-            $entity->set('mainImageId', $attachmentId);
-            $entity->set('mainImageName', $attachmentId);
-            $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
+        if (empty($attachmentId = $this->getEntityManager()->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN))) {
+            return;
         }
+
+        $entity->set('mainImageId', $attachmentId);
+        $entity->set('mainImageName', $attachmentId);
+        $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
+    }
+
+    protected function getAssetRelationWithMainImage(string $entityType): array
+    {
+        foreach ($this->getMetadata()->get(['entityDefs', $entityType, 'links'], []) as $link => $linkData) {
+            if (
+                !empty($linkData['type'])
+                && $linkData['type'] === 'hasMany'
+                && !empty($linkData['entity'])
+                && $linkData['entity'] === 'Asset'
+                && !empty($linkData['relationName'])
+            ) {
+                return $linkData;
+            }
+        }
+
+        return [];
     }
 }
