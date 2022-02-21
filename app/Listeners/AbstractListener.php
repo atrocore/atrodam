@@ -75,4 +75,22 @@ abstract class AbstractListener extends \Treo\Listeners\AbstractListener
 
         return empty($entity);
     }
+
+    protected function getAssetRelationWithMainImage(string $entityType): array
+    {
+        foreach ($this->getMetadata()->get(['entityDefs', $entityType, 'links'], []) as $link => $linkData) {
+            if (
+                !empty($linkData['type'])
+                && $linkData['type'] === 'hasMany'
+                && !empty($linkData['entity'])
+                && $linkData['entity'] === 'Asset'
+                && !empty($linkData['relationName'])
+            ) {
+                $linkData['linkName'] = $link;
+                return $linkData;
+            }
+        }
+
+        return [];
+    }
 }

@@ -33,7 +33,6 @@ namespace Dam\Listeners;
 
 use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
-use Treo\Listeners\AbstractListener;
 use Treo\Core\EventManager\Event;
 
 class Service extends AbstractListener
@@ -135,22 +134,5 @@ class Service extends AbstractListener
         $entity->set('mainImageId', $attachmentId);
         $entity->set('mainImageName', $attachmentId);
         $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
-    }
-
-    protected function getAssetRelationWithMainImage(string $entityType): array
-    {
-        foreach ($this->getMetadata()->get(['entityDefs', $entityType, 'links'], []) as $link => $linkData) {
-            if (
-                !empty($linkData['type'])
-                && $linkData['type'] === 'hasMany'
-                && !empty($linkData['entity'])
-                && $linkData['entity'] === 'Asset'
-                && !empty($linkData['relationName'])
-            ) {
-                return $linkData;
-            }
-        }
-
-        return [];
     }
 }
