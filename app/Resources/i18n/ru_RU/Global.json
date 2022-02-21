@@ -1,5 +1,8 @@
 {
   "scopeNames": {
+    "fields": {
+      "mainImage": "Основное изображение"
+    },
     "Asset": "Ассет",
     "Rendition": "Преобразование",
     "RenditionMetaData": "Преобразование мета данные",
@@ -24,6 +27,7 @@
     "validationRules": "Правила проверки"
   },
   "labels": {
+    "mainImage": "Основное изображение",
     "dragAndDropBtnText": "Перетяните",
     "dragAndDropBtnTextSmall": "Ваши ассеты или",
     "upload": "Загрузка",

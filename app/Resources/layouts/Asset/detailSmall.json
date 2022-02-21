@@ -42,6 +42,14 @@
           "name": "assetCategories"
         },
         false
+      ],
+      [
+        {
+          "name": "isMainImage"
+        },
+        {
+          "name": "sorting"
+        }
       ]
     ],
     "style": "default",

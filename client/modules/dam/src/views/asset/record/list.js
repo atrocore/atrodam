@@ -32,6 +32,8 @@ Espo.define('dam:views/asset/record/list', 'dam:views/record/list',
         setup() {
             Dep.prototype.setup.call(this);
 
+            this.relationName = this.options.relationName;
+
             // refresh after edit
             this.listenTo(this, 'after:quickEditSave', function () {
                 if (this.options.panel) {
@@ -52,6 +54,8 @@ Espo.define('dam:views/asset/record/list', 'dam:views/record/list',
             if (!data.scope && !model) {
                 return;
             }
+
+            model.defs['_relationName'] = this.relationName;
 
             var scope = data.scope || model.name || this.scope;
 

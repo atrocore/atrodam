@@ -101,8 +101,32 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
             let count = filesIds.length;
 
+            let editView = this.getView('edit');
+            let formData = editView.fetch();
+
+            let attrs = formData;
+
+            if (!this.model.isNew()) {
+                let initialAttributes = editView.attributes;
+                initialAttributes['name'] = initialAttributes.name.split('.').shift();
+
+                for (let name in formData) {
+                    if (_.isEqual(initialAttributes[name], formData[name])) {
+                        continue;
+                    }
+                    (attrs || (attrs = {}))[name] = formData[name];
+                }
+            }
+
+            let hashParts = window.location.hash.split('/view/');
+            if (typeof hashParts[1] !== 'undefined' && this.model.defs._relationName) {
+                attrs._relationName = this.model.defs._relationName;
+                attrs._relationEntity = hashParts[0].replace('#', '');
+                attrs._relationEntityId = hashParts[1];
+            }
+
             if (count > 0) {
-                this.model.save().then(response => {
+                this.model.save(attrs).then(response => {
                     new Promise(resolve => {
                         this.relateExistedAssets(resolve);
                     }).then(() => {
@@ -111,7 +135,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                         if (count > 20) {
                             Espo.Ui.notify(this.translate('assetsAdded', 'messages', 'Asset'), 'success', 1000 * 60, true);
                         } else {
-                            this.notify('Created', 'success');
+                            this.notify('Saved', 'success');
                         }
                     });
                 });

@@ -13,6 +13,23 @@
       "importDisabled": true,
       "exportDisabled": true
     },
+    "sorting": {
+      "type": "int",
+      "notStorable": true,
+      "layoutMassUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
+    "isMainImage": {
+      "type": "bool",
+      "notStorable": true,
+      "view": "dam:views/asset/fields/is-main-image",
+      "layoutMassUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
     "icon": {
       "type": "varchar",
       "notStorable": true,

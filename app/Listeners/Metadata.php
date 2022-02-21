@@ -93,6 +93,8 @@ class Metadata extends AbstractListener
      */
     protected function updateRelationMetadata(array &$data)
     {
+        $scopes = [];
+
         foreach ($data['entityDefs'] as $scope => $defs) {
             if (empty($defs['links']) || !empty($data['scopes'][$scope]['skipAssetSorting'])) {
                 continue 1;
@@ -105,25 +107,39 @@ class Metadata extends AbstractListener
                         $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
                     }
 
+                    foreach (['edit', 'detail', 'detailSmall'] as $mode) {
+                        $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
+                            'name'    => 'mainImage',
+                            'unshift' => true,
+                            'label'   => 'mainImage',
+                            'view'    => 'dam:views/asset/fields/main-image'
+                        ];
+                    }
+
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
                         'type'    => 'int',
                         'default' => 100000
                     ];
-                    $data['entityDefs'][$scope]['fields'][$link]['columns']['sorting'] = 'assetSorting';
-                    $data['entityDefs'][$scope]['fields']['assetSorting'] = [
-                        'type'                      => 'int',
-                        'notStorable'               => true,
-                        'layoutListDisabled'        => true,
-                        'layoutListSmallDisabled'   => true,
-                        'layoutDetailDisabled'      => true,
-                        'layoutDetailSmallDisabled' => true,
-                        'layoutMassUpdateDisabled'  => true,
-                        'filterDisabled'     => true,
-                        'importDisabled'            => true,
-                        'exportDisabled'            => true,
+                    $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
+                        'type' => 'bool'
                     ];
+                    $data['entityDefs'][$scope]['fields']['mainImage'] = [
+                        'type'           => 'image',
+                        'notStorable'    => true,
+                        'previewSize'    => 'medium',
+                        'readOnly'       => true
+                    ];
+                    $data['entityDefs'][$scope]['links']['mainImage'] = [
+                        'type'        => 'belongsTo',
+                        'entity'      => 'Attachment',
+                        'skipOrmDefs' => true
+                    ];
+                    $scopes[] = $scope;
                 }
             }
         }
+
+        $data['entityDefs']['Asset']['fields']['sorting']['relatingEntityField'] = $scopes;
+        $data['entityDefs']['Asset']['fields']['isMainImage']['relatingEntityField'] = $scopes;
     }
 }

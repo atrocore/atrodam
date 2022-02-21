@@ -28,6 +28,7 @@
 
 Espo.define('dam:views/asset/fields/preview', 'view',
     Dep => Dep.extend({
+
         template: "dam:asset/fields/preview/list",
 
         events: {
@@ -54,11 +55,21 @@ Espo.define('dam:views/asset/fields/preview', 'view',
                 "icon": this.model.get('icon')
             };
         },
-        setup() {
-            Dep.prototype.setup.call(this);
-        },
+
         getTimestamp() {
             return (Math.random() * 10000000000).toFixed();
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            if (this.$el && this.model.get('isMainImage')) {
+                let mainImage = $('<div class="main-image"></div>');
+                if (this.model.get('isGlobalMainImage')) {
+                    mainImage.addClass('global-main-image');
+                }
+                this.$el.append(mainImage);
+            }
         }
     })
 );

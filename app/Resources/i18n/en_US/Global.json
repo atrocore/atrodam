@@ -1,4 +1,7 @@
 {
+  "fields": {
+    "mainImage": "Main Image"
+  },
   "scopeNames": {
     "Asset": "Asset",
     "Rendition": "Rendition",
@@ -24,6 +27,7 @@
     "validationRules": "Validation Rules"
   },
   "labels": {
+    "mainImage": "Main Image",
     "dragAndDropBtnText": "Drag & Drop",
     "dragAndDropBtnTextSmall": "your assets here or",
     "upload": "Upload",

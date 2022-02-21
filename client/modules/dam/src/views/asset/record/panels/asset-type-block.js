@@ -28,10 +28,14 @@
 
 Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
     Dep => Dep.extend({
+
         template: "dam:asset/record/panels/asset-type-block",
+
         sort: false,
+
         show: true,
-        rowActionsView: 'views/record/row-actions/relationship-no-remove',
+
+        rowActionsView: 'dam:views/asset/record/row-actions/relationship',
 
         setup() {
             Dep.prototype.setup.call(this);
@@ -68,6 +72,7 @@ Espo.define('dam:views/asset/record/panels/asset-type-block', 'view',
                         el: this.options.el + ' .list-container',
                         layoutName: this.getMetadata().get(`clientDefs.${this.model.get('entityName')}.relationshipPanels.assets.layoutName`, 'listSmall'),
                         dragableListRows: this.sort,
+                        relationName: this.options.relationName,
                         listRowsOrderSaveUrl: `Asset/action/assetsSortOrder?entity=${this.model.get('entityName')}&id=${this.model.get('entityId')}`,
                         listLayout: null,
                         skipBuildRows: true,

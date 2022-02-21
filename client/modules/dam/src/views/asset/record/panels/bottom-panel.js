@@ -200,6 +200,23 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
             }, this);
         },
 
+        actionSetAsMainImage: function (data) {
+            const pathData = window.location.hash.replace('#', '').split('/view/');
+            const entityName = pathData.shift();
+            const entityId = pathData.pop();
+
+            this.notify('Saving...');
+            this.ajaxPutRequest(`Asset/${data.asset_id}`, {
+                isMainImage: true,
+                _relationEntity: entityName,
+                _relationEntityId: entityId,
+                _relationName: this.panelName
+            }).done(asset => {
+                this.notify('Saved', 'success');
+                this.actionRefresh();
+            });
+        },
+
         _getAssetLink() {
             let links = this.model.defs.links;
             for (let key in links) {
@@ -227,6 +244,7 @@ Espo.define('dam:views/asset/record/panels/bottom-panel', 'treo-core:views/recor
                 model: model,
                 el: this.options.el + ' .group[data-name="' + model.get("name") + '"]',
                 sort: this.sort,
+                relationName: this.defs.name,
                 show: show
             }, view => {
                 if (typeof callback === "function") {

@@ -42,40 +42,22 @@ use Espo\ORM\Entity;
  */
 class Asset extends AbstractRepository
 {
-    /**
-     * @param Entity $entity
-     * @param string $type
-     *
-     * @return array
-     */
-    public function findRelatedAssetsByType(Entity $entity, string $type): array
+    public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
     {
-        if (method_exists($this->getEntityManager()->getRepository($entity->getEntityType()), 'findRelatedAssetsByType')) {
-            return $this->getEntityManager()->getRepository($entity->getEntityType())->findRelatedAssetsByType($entity, $type);
+        /**
+         * For main image
+         */
+        if (method_exists($this->getEntityManager()->getRepository($re1), 'updateMainImageRelationData')) {
+            $this->getEntityManager()->getRepository($re1)->updateMainImageRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
+        } else {
+            if (!empty($setData['isMainImage'])) {
+                $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
+                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
+                $this->getPDO()->exec($query);
+            }
         }
 
-        $relation = $this->getMetadata()->get(['entityDefs', $entity->getEntityType(), 'links', 'assets']);
-        if (empty($relation['foreign']) || empty($relation['relationName'])) {
-            return [];
-        }
-
-        $relationTableName = Util::toUnderScore($relation['relationName']);
-        $entityTableName = Util::toUnderScore(lcfirst($entity->getEntityType()));
-        $id = $entity->get('id');
-
-        $sql = "SELECT a.*, at.id as fileId, at.name as fileName
-                FROM $relationTableName r 
-                LEFT JOIN asset a ON a.id=r.asset_id
-                LEFT JOIN attachment at ON at.id=a.file_id 
-                WHERE 
-                      r.deleted=0 
-                  AND a.deleted=0
-                  AND at.deleted=0 
-                  AND a.type='$type' 
-                  AND r.{$entityTableName}_id='$id' 
-                ORDER BY r.sorting ASC";
-
-        return $this->findByQuery($sql)->toArray();
+        parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
     }
 
     /**
