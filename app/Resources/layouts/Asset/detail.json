@@ -36,12 +36,6 @@
           "name": "description"
         },
         false
-      ],
-      [
-        {
-          "name": "assetCategories"
-        },
-        false
       ]
     ],
     "style": "default",
