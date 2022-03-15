@@ -24,6 +24,8 @@
  *
  *  In accordance with Section 7(b) of the GNU General Public License version 3,
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
+ *
+ * This software is not allowed to be used in Russia and Belarus.
  */
 
 Espo.define('dam:views/asset_category/record/panels/assets', 'views/record/panels/relationship',
