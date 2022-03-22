@@ -18,8 +18,7 @@
       "notStorable": true,
       "layoutMassUpdateDisabled": true,
       "filterDisabled": true,
-      "importDisabled": true,
-      "exportDisabled": true
+      "importDisabled": true
     },
     "isMainImage": {
       "type": "bool",
