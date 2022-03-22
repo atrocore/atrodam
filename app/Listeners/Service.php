@@ -35,10 +35,25 @@ namespace Dam\Listeners;
 
 use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
+use Espo\ORM\EntityCollection;
 use Treo\Core\EventManager\Event;
 
 class Service extends AbstractListener
 {
+    public function afterFindLinkedEntities(Event $event): void
+    {
+        $result = $event->getArgument('result');
+
+        if (empty($result['total'])) {
+            return;
+        }
+
+        if ($result['collection'][0]->getEntityType() === 'Asset') {
+            $result['collection'] = $this->sortEntityAssets($result['collection']);
+            $event->setArgument('result', $result);
+        }
+    }
+
     public function loadPreviewForCollection(Event $event): void
     {
         $collection = $event->getArgument('collection');
@@ -136,5 +151,32 @@ class Service extends AbstractListener
         $entity->set('mainImageId', $attachmentId);
         $entity->set('mainImageName', $attachmentId);
         $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
+    }
+
+    protected function sortEntityAssets(EntityCollection $collection): EntityCollection
+    {
+        $assetTypes = $this->getMetadata()->get('fields.asset.types', []);
+        sort($assetTypes);
+        $sortedCollection = new EntityCollection();
+        foreach ($assetTypes as $assetType) {
+            $typeAssets = [];
+            foreach ($collection as $asset) {
+                if ($asset->get('type') === $assetType) {
+                    $typeAssets[] = $asset;
+                }
+            }
+            usort($typeAssets, function ($a, $b) {
+                if ($a->get('sorting') == $b->get('sorting')) {
+                    return 0;
+                }
+                return ($a->get('sorting') < $b->get('sorting')) ? -1 : 1;
+            });
+
+            foreach ($typeAssets as $typeAsset) {
+                $sortedCollection->append($typeAsset);
+            }
+        }
+
+        return $sortedCollection;
     }
 }
