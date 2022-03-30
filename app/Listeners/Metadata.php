@@ -143,5 +143,7 @@ class Metadata extends AbstractListener
 
         $data['entityDefs']['Asset']['fields']['sorting']['relatingEntityField'] = $scopes;
         $data['entityDefs']['Asset']['fields']['isMainImage']['relatingEntityField'] = $scopes;
+
+        $data['app']['nonInheritedFields'][] = 'mainImage';
     }
 }
