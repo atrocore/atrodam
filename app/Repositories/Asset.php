@@ -54,7 +54,7 @@ class Asset extends AbstractRepository
         } else {
             if (!empty($setData['isMainImage'])) {
                 $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
-                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "=" . $this->getPDO()->quote($re1Id);
+                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
                 $this->getPDO()->exec($query);
             }
         }

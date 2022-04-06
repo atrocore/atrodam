@@ -38,12 +38,6 @@ use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\ORM\Entity;
 use Treo\Core\EventManager\Event;
 
-/**
- * Class AssetCategoryEntity
- *
- * @package Dam\Listenersя вроде с сегод
- *
- */
 class AssetCategoryEntity extends AbstractListener
 {
     /**
@@ -57,12 +51,6 @@ class AssetCategoryEntity extends AbstractListener
 
         if (!$this->isValidCode($entity)) {
             throw new BadRequest($this->getLanguage()->translate('codeInvalid', 'exceptions', 'Global'));
-        }
-
-        $parent = $entity->get('categoryParent');
-
-        if ($parent && $this->hasAssets($parent)) {
-            throw new BadRequest($this->getLanguage()->translate('Category have assets', 'exceptions', 'Global'));
         }
 
         if ($this->isChange($entity)) {
@@ -343,15 +331,4 @@ class AssetCategoryEntity extends AbstractListener
 
         return $repository->where(["id" => $entity->getFetched('categoryParentId')])->findOne();
     }
-
-    /**
-     * @param Entity $entity
-     *
-     * @return bool
-     */
-    private function hasAssets(Entity $entity): bool
-    {
-        return $assets = $entity->get('assets')->toArray() ? true : false;
-    }
-
 }
