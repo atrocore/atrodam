@@ -160,6 +160,15 @@ class Asset extends Base
         return parent::updateEntity($id, $data);
     }
 
+    protected function updateRelationData(Entity $entity, \stdClass $data): void
+    {
+        if (property_exists($data, '_relationEntityId') && property_exists($data, 'sorting') && $data->sorting === null) {
+            $data->sorting = $this->getRepository()->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
+        }
+
+        parent::updateRelationData($entity, $data);
+    }
+
     /**
      * @param \Dam\Entities\Asset $asset
      *

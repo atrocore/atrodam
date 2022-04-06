@@ -52,18 +52,13 @@ class Service extends AbstractListener
         /** @var Entity $entity */
         $entity = $event->getArgument('entity');
 
-        /** @var string $link */
-        $link = $event->getArgument('link');
+        $data = new \stdClass();
+        $data->_relationEntity = $entity->getEntityType();
+        $data->_relationEntityId = $entity->get('id');
+        $data->_relationName = $event->getArgument('link');
+        $data->sorting = $this->getEntityManager()->getRepository('Asset')->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
 
-        $count = count($entity->getLinkMultipleIdList($link));
-
-        $inputData = new \stdClass();
-        $inputData->sorting = ($count - 1) * 10;
-        $inputData->_relationEntity = $entity->getEntityType();
-        $inputData->_relationEntityId = $entity->get('id');
-        $inputData->_relationName = $link;
-
-        $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $inputData);
+        $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $data);
     }
 
     public function loadPreviewForCollection(Event $event): void

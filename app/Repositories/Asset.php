@@ -44,6 +44,22 @@ use Espo\ORM\Entity;
  */
 class Asset extends AbstractRepository
 {
+    public function getNextSorting(string $entityType, string $link, string $entityId): int
+    {
+        $relationName = $this->getMetadata()->get(['entityDefs', $entityType, 'links', $link, 'relationName']);
+
+        $table = $this->getEntityManager()->getQuery()->toDb($relationName);
+        $column = $this->getEntityManager()->getQuery()->toDb("{$entityType}Id");
+        $entityId = $this->getPDO()->quote($entityId);
+
+        $max = $this
+            ->getPDO()
+            ->query("SELECT sorting FROM `$table` WHERE $column=$entityId AND deleted=0 ORDER BY sorting DESC LIMIT 0,1")
+            ->fetch(\PDO::FETCH_COLUMN);
+
+        return empty($max) ? 0 : $max + 10;
+    }
+
     public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
     {
         /**

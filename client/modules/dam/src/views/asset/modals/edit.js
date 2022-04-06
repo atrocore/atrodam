@@ -120,6 +120,10 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 }
             }
 
+            if (this.options.relate && this.options.relate.model) {
+                this.model.defs['_relationName'] = this.options.relate.model.defs['_relationName'];
+            }
+
             let hashParts = window.location.hash.split('/view/');
             if (typeof hashParts[1] !== 'undefined' && this.model.defs._relationName) {
                 attrs._relationName = this.model.defs._relationName;
