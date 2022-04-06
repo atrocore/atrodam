@@ -40,18 +40,30 @@ use Treo\Core\EventManager\Event;
 
 class Service extends AbstractListener
 {
-    public function afterFindLinkedEntities(Event $event): void
+    public function afterLinkEntity(Event $event): void
     {
-        $result = $event->getArgument('result');
+        /** @var Entity $foreignEntity */
+        $foreignEntity = $event->getArgument('foreignEntity');
 
-        if (empty($result['total'])) {
+        if ($foreignEntity->getEntityType() !== 'Asset') {
             return;
         }
 
-        if ($result['collection'][0]->getEntityType() === 'Asset') {
-            $result['collection'] = $this->sortEntityAssets($result['collection']);
-            $event->setArgument('result', $result);
-        }
+        /** @var Entity $entity */
+        $entity = $event->getArgument('entity');
+
+        /** @var string $link */
+        $link = $event->getArgument('link');
+
+        $count = count($entity->getLinkMultipleIdList($link));
+
+        $inputData = new \stdClass();
+        $inputData->sorting = ($count - 1) * 10;
+        $inputData->_relationEntity = $entity->getEntityType();
+        $inputData->_relationEntityId = $entity->get('id');
+        $inputData->_relationName = $link;
+
+        $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $inputData);
     }
 
     public function loadPreviewForCollection(Event $event): void
@@ -151,32 +163,5 @@ class Service extends AbstractListener
         $entity->set('mainImageId', $attachmentId);
         $entity->set('mainImageName', $attachmentId);
         $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
-    }
-
-    protected function sortEntityAssets(EntityCollection $collection): EntityCollection
-    {
-        $assetTypes = $this->getMetadata()->get('fields.asset.types', []);
-        sort($assetTypes);
-        $sortedCollection = new EntityCollection();
-        foreach ($assetTypes as $assetType) {
-            $typeAssets = [];
-            foreach ($collection as $asset) {
-                if ($asset->get('type') === $assetType) {
-                    $typeAssets[] = $asset;
-                }
-            }
-            usort($typeAssets, function ($a, $b) {
-                if ($a->get('sorting') == $b->get('sorting')) {
-                    return 0;
-                }
-                return ($a->get('sorting') < $b->get('sorting')) ? -1 : 1;
-            });
-
-            foreach ($typeAssets as $typeAsset) {
-                $sortedCollection->append($typeAsset);
-            }
-        }
-
-        return $sortedCollection;
     }
 }

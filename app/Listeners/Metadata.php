@@ -108,6 +108,9 @@ class Metadata extends AbstractListener
                         'isActive'  => true,
                         'sortField' => 'sorting'
                     ];
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['sortBy'] = 'sorting';
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
+
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/record/panels/assets";
 
                     foreach (['edit', 'detail', 'detailSmall'] as $mode) {
