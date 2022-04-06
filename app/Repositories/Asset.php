@@ -54,7 +54,7 @@ class Asset extends AbstractRepository
         } else {
             if (!empty($setData['isMainImage'])) {
                 $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
-                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "_id=" . $this->getPDO()->quote($re1Id);
+                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "=" . $this->getPDO()->quote($re1Id);
                 $this->getPDO()->exec($query);
             }
         }
@@ -65,17 +65,19 @@ class Asset extends AbstractRepository
     public function updateSortOrder(string $entityId, array $assetsIds, string $scope, string $link): bool
     {
         $relationName = $this->getMetadata()->get(['entityDefs', $scope, 'links', $link, 'relationName']);
-
-//
+        if (empty($relationName)) {
+            throw new BadRequest("No 'relationName' for relation.");
+        }
 
         $table = $this->getEntityManager()->getQuery()->toDb($relationName);
+        $column = $this->getEntityManager()->getQuery()->toDb("{$scope}Id");
         $entityId = $this->getPDO()->quote($entityId);
 
-//        foreach ($assetsIds as $k => $assetId) {
-//            $assetId = $this->getPDO()->quote($assetId);
-//            $sortOrder = $k * 10;
-//            $this->getPDO()->exec("UPDATE `$table` SET sorting=$sortOrder WHERE asset_id=$assetId AND entity_id=$entityId AND deleted=0");
-//        }
+        foreach ($assetsIds as $k => $assetId) {
+            $assetId = $this->getPDO()->quote($assetId);
+            $sorting = $k * 10;
+            $this->getPDO()->exec("UPDATE `$table` SET sorting=$sorting WHERE asset_id=$assetId AND $column=$entityId AND deleted=0");
+        }
 
         return true;
     }
