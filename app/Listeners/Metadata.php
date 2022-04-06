@@ -106,7 +106,7 @@ class Metadata extends AbstractListener
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
 
                     if (empty($data['clientDefs'][$scope]['relationshipPanels'][$link]['view'])) {
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
+//                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
                     }
 
                     foreach (['edit', 'detail', 'detailSmall'] as $mode) {
@@ -119,8 +119,7 @@ class Metadata extends AbstractListener
                     }
 
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                        'type'    => 'int',
-                        'default' => 100000
+                        'type'    => 'int'
                     ];
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
                         'type' => 'bool'

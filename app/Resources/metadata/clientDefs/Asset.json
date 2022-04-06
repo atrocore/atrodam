@@ -59,8 +59,7 @@
   "recordViews": {
     "plate": "dam:views/asset/record/plate",
     "plateItem": "dam:views/asset/record/plate-item",
-    "detail": "dam:views/asset/record/detail",
-    "list": "dam:views/asset/record/list"
+    "detail": "dam:views/asset/record/detail"
   },
   "menu": {
     "list": {
@@ -204,15 +203,6 @@
       "select": false,
       "create": false,
       "view": "dam:views/asset/record/panels/relations/asset-meta-data/main"
-    },
-    "relatedAssets": {
-      "selectBoolFilterList": [
-        "notEntity",
-        "onlyActive",
-        "notSelected"
-      ],
-      "view": "dam:views/asset/record/panels/related-assets",
-      "selectAction": "selectRelatedEntity"
     }
   }
 }
