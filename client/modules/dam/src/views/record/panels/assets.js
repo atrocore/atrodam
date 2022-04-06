@@ -1,4 +1,3 @@
-<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -29,10 +28,24 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-declare(strict_types=1);
+Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship',
+    Dep => Dep.extend({
 
-namespace Dam\Controllers;
+        // setup() {
+        //     this.bottomView = this.getMetadata().get(`clientDefs.${this.scope}.bottomView.${this.type}`) || this.bottomView;
+        //
+        //     Dep.prototype.setup.call(this);
+        // },
+        //
+        // afterRender() {
+        //     Dep.prototype.afterRender.call(this);
+        //
+        //     let parentView = this.getParentView();
+        //     if (parentView.options.params && parentView.options.params.setEditMode) {
+        //         this.actionEdit();
+        //     }
+        // },
 
-class Asset extends AbstractController
-{
-}
+    })
+);
+

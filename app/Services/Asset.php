@@ -150,94 +150,14 @@ class Asset extends Base
         return parent::createEntity($data);
     }
 
-    /**
-     * @param string $scope
-     * @param string $id
-     *
-     * @return array
-     * @throws NotFound
-     */
-    public function getEntityAssets(string $scope, string $id): array
+    public function updateEntity($id, $data)
     {
-        $event = $this
-            ->getInjection('eventManager')
-            ->dispatch(
-                'AssetService',
-                'beforeGetEntityAssets',
-                new Event(['scope' => $scope, 'id' => $id])
-            );
-        $id = $event->getArgument('id');
-        $scope = $event->getArgument('scope');
-
-        $entity = $this->getEntityManager()->getEntity($scope, $id);
-        if (empty($entity)) {
-            throw new NotFound();
+        if (property_exists($data, '_sortedIds') && property_exists($data, '_id') && property_exists($data, '_scope') && property_exists($data, '_link')) {
+            $this->getRepository()->updateSortOrder($data->_id, $data->_sortedIds, $data->_scope, $data->_link);
+            return $this->getEntity($id);
         }
 
-        // get asset types
-        $types = $this->getMetadata()->get('fields.asset.types', []);
-
-        // sorting types
-        sort($types);
-
-        $relatedAssetsArray = [];
-
-        $relatedAssets = $this->getService($scope)->findLinkedEntities($id, 'assets', []);
-        if (!empty($relatedAssets['total'])) {
-            foreach ($relatedAssets['collection'] as $asset) {
-                $assetCategories = $asset->get('assetCategories')->toArray();
-
-                $assetArray = $asset->toArray();
-                $assetArray['assetCategoriesIds'] = array_column($assetCategories, 'id');
-                $assetArray['assetCategoriesNames'] = array_column($assetCategories, 'name', 'id');
-
-                $relatedAssetsArray[] = $assetArray;
-            }
-
-            // sorting
-            usort($relatedAssetsArray, function ($a, $b) {
-                if ($a['sorting'] == $b['sorting']) {
-                    return 0;
-                }
-                return ($a['sorting'] < $b['sorting']) ? -1 : 1;
-            });
-        }
-
-        $list = [];
-        foreach ($types as $type) {
-            $assets = [];
-            foreach ($relatedAssetsArray as $assetArray) {
-                if ($assetArray['type'] === $type) {
-                    $assets[] = $assetArray;
-                }
-            }
-            $list[] = [
-                'id'     => $type,
-                'name'   => $type,
-                'assets' => $assets
-            ];
-        }
-
-        return [
-            'count' => count($list),
-            'list'  => $list
-        ];
-    }
-
-    /**
-     * @param string $scope
-     * @param string $entityId
-     * @param array  $data
-     *
-     * @return bool
-     */
-    public function updateAssetsSortOrder(string $scope, string $entityId, array $data): bool
-    {
-        if (!empty($data['ids']) && is_array($data['ids'])) {
-            return $this->getRepository()->updateSortOrder($scope, $entityId, $data['ids']);
-        }
-
-        return true;
+        return parent::updateEntity($id, $data);
     }
 
     /**

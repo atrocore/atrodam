@@ -62,31 +62,20 @@ class Asset extends AbstractRepository
         parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
     }
 
-    /**
-     * @param string $scope
-     * @param string $entityId
-     * @param array  $ids
-     *
-     * @return bool
-     */
-    public function updateSortOrder(string $scope, string $entityId, array $ids): bool
+    public function updateSortOrder(string $entityId, array $assetsIds, string $scope, string $link): bool
     {
-        if (method_exists($this->getEntityManager()->getRepository($scope), 'updateSortOrder')) {
-            return $this->getEntityManager()->getRepository($scope)->updateSortOrder($entityId, $ids);
-        }
+        $relationName = $this->getMetadata()->get(['entityDefs', $scope, 'links', $link, 'relationName']);
 
-        $relation = $this->getMetadata()->get(['entityDefs', $scope, 'links', 'assets']);
-        if (empty($relation['foreign']) || empty($relation['relationName'])) {
-            return false;
-        }
+//
 
-        $relationTableName = Util::toUnderScore($relation['relationName']);
-        $entityTableName = Util::toUnderScore(lcfirst($scope));
+        $table = $this->getEntityManager()->getQuery()->toDb($relationName);
+        $entityId = $this->getPDO()->quote($entityId);
 
-        foreach ($ids as $k => $id) {
-            $sorting = $k * 10;
-            $this->getEntityManager()->nativeQuery("UPDATE $relationTableName SET sorting=$sorting WHERE asset_id='$id' AND {$entityTableName}_id='$entityId' AND deleted=0");
-        }
+//        foreach ($assetsIds as $k => $assetId) {
+//            $assetId = $this->getPDO()->quote($assetId);
+//            $sortOrder = $k * 10;
+//            $this->getPDO()->exec("UPDATE `$table` SET sorting=$sortOrder WHERE asset_id=$assetId AND entity_id=$entityId AND deleted=0");
+//        }
 
         return true;
     }
