@@ -31,7 +31,45 @@
 Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship',
     Dep => Dep.extend({
 
-        actionSetAsMainImage: function (data) {
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            this.actionList.unshift({
+                label: this.translate('massUpload', 'labels', 'Asset'),
+                action: 'massAssetCreate',
+                data: {
+                    link: this.link
+                },
+                acl: 'create',
+                aclScope: 'Asset'
+            });
+        },
+
+        actionMassAssetCreate(data) {
+            const foreignLink = this.model.defs['links'][data.link].foreign;
+
+            this.notify('Loading...');
+            this.createView('massCreate', 'dam:views/asset/modals/edit', {
+                name: 'massCreate',
+                scope: 'Asset',
+                relate: {
+                    model: this.model,
+                    link: foreignLink,
+                },
+                attributes: {},
+                fullFormDisabled: true,
+                layoutName: 'massCreateDetailSmall'
+            }, view => {
+                view.render();
+                view.notify(false);
+                this.listenToOnce(view, 'after:save', () => {
+                    this.actionRefresh();
+                    this.model.trigger('after:relate', this.link, this.defs);
+                });
+            });
+        },
+
+        actionSetAsMainImage(data) {
             const pathData = window.location.hash.replace('#', '').split('/view/');
 
             let inputData = {
