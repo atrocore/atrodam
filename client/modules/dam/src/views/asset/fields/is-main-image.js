@@ -31,10 +31,20 @@
 Espo.define('dam:views/asset/fields/is-main-image', 'views/fields/bool',
     Dep => Dep.extend({
 
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            this.listenTo(this.model, 'change:fileName', () => {
+                this.reRender();
+            });
+        },
+
         afterRender() {
             Dep.prototype.afterRender.call(this);
 
-            if (!this.isImage()) {
+            if (this.isImage()) {
+                this.show();
+            } else {
                 this.hide();
             }
         },
