@@ -52,10 +52,16 @@ class Asset extends AbstractRepository
         $column = $this->getEntityManager()->getQuery()->toDb("{$entityType}Id");
         $entityId = $this->getPDO()->quote($entityId);
 
-        $max = $this
-            ->getPDO()
-            ->query("SELECT sorting FROM `$table` WHERE $column=$entityId AND deleted=0 ORDER BY sorting DESC LIMIT 0,1")
-            ->fetch(\PDO::FETCH_COLUMN);
+        $query = "SELECT r.sorting 
+                  FROM `$table` r 
+                  LEFT JOIN asset a ON a.id=r.asset_id 
+                  WHERE r.{$column}=$entityId 
+                    AND r.deleted=0 
+                    AND a.deleted=0 
+                  ORDER BY r.sorting DESC 
+                  LIMIT 0,1";
+
+        $max = $this->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN);
 
         return empty($max) ? 0 : $max + 10;
     }
