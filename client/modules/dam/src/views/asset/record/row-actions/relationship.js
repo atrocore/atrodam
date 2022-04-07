@@ -28,27 +28,34 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship',
+Espo.define('dam:views/asset/record/row-actions/relationship', 'views/record/row-actions/relationship',
     Dep => Dep.extend({
 
-        actionSetAsMainImage: function (data) {
-            const pathData = window.location.hash.replace('#', '').split('/view/');
+        getActionList: function () {
+            let list = Dep.prototype.getActionList.call(this);
 
-            let inputData = {
-                isMainImage: true,
-                _relationEntity: pathData.shift(),
-                _relationEntityId: pathData.pop(),
-                _relationName: this.panelName
-            };
+            if (this.isImage() && this.options.acl.edit) {
+                list.unshift({
+                    action: 'setAsMainImage',
+                    label: this.translate('setAsMainImage', 'labels', 'Asset'),
+                    data: {
+                        asset_id: this.model.id,
+                        entity_id: this.model.get('entityId'),
+                        entity_name: this.model.get('entityName'),
+                        scope: this.model.get('scope')
+                    }
+                });
+            }
 
-            this.notify('Saving...');
-            this.ajaxPutRequest(`Asset/${data.asset_id}`, inputData).done(asset => {
-                this.model.trigger('asset:saved');
-                this.notify('Saved', 'success');
-                this.actionRefresh();
-            });
+            return list;
+        },
+
+        isImage() {
+            const imageExtensions = this.getMetadata().get('dam.image.extensions') || [];
+            const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+
+            return $.inArray(fileExt, imageExtensions) !== -1;
         },
 
     })
 );
-

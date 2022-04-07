@@ -112,6 +112,7 @@ class Metadata extends AbstractListener
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
 
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/record/panels/assets";
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['rowActionsView'] = "dam:views/asset/record/row-actions/relationship";
 
                     foreach (['edit', 'detail', 'detailSmall'] as $mode) {
                         $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
