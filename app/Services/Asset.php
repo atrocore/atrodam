@@ -75,6 +75,7 @@ class Asset extends Base
         $postData->fileId = $fileId;
         $postData->fileName = $fileName;
         $postData->name = $assetName;
+        $postData->sorting = null;
 
         unset($postData->filesIds);
         unset($postData->filesNames);
