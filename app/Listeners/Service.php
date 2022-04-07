@@ -144,12 +144,15 @@ class Service extends AbstractListener
         $tableName = Util::toUnderScore($linkData['relationName']);
         $field = Util::toUnderScore(lcfirst($entity->getEntityType()));
 
-        $query = "SELECT a.file_id 
+        $query = "SELECT at.id 
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
+                      LEFT JOIN `attachment` at ON at.id=a.file_id
                       WHERE r.is_main_image=1 
                         AND r.{$field}_id='{$entity->get('id')}'
-                        AND r.deleted=0";
+                        AND r.deleted=0
+                        AND a.deleted=0
+                        AND at.deleted=0";
 
         if (empty($attachmentId = $this->getEntityManager()->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN))) {
             return;

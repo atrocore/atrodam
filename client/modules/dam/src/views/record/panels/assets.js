@@ -34,9 +34,10 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
         setup() {
             Dep.prototype.setup.call(this);
 
-            this.listenTo(this.model, 'asset:saved', () => {
-                this.model.fetch()
-            });
+            // this.listenTo(this.model, 'asset:saved after:relate after:unrelate', () => {
+            //     console.log(this.model)
+            //     this.model.fetch();
+            // });
         },
 
     })
