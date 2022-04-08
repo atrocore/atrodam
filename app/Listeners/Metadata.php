@@ -104,10 +104,15 @@ class Metadata extends AbstractListener
             foreach ($defs['links'] as $link => $linkData) {
                 if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['dragDrop'] = [
+                        'isActive'  => true,
+                        'sortField' => 'sorting'
+                    ];
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['sortBy'] = 'sorting';
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
 
-                    if (empty($data['clientDefs'][$scope]['relationshipPanels'][$link]['view'])) {
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/asset/record/panels/bottom-panel";
-                    }
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/record/panels/assets";
+                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['rowActionsView'] = "dam:views/asset/record/row-actions/relationship";
 
                     foreach (['edit', 'detail', 'detailSmall'] as $mode) {
                         $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
@@ -119,17 +124,16 @@ class Metadata extends AbstractListener
                     }
 
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                        'type'    => 'int',
-                        'default' => 100000
+                        'type' => 'int'
                     ];
                     $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
                         'type' => 'bool'
                     ];
                     $data['entityDefs'][$scope]['fields']['mainImage'] = [
-                        'type'           => 'image',
-                        'notStorable'    => true,
-                        'previewSize'    => 'medium',
-                        'readOnly'       => true
+                        'type'        => 'image',
+                        'notStorable' => true,
+                        'previewSize' => 'medium',
+                        'readOnly'    => true
                     ];
                     $data['entityDefs'][$scope]['links']['mainImage'] = [
                         'type'        => 'belongsTo',

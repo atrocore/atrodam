@@ -53,6 +53,18 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
                 this.addButton(button);
             }
+
+            this.listenTo(this, 'after:save', model => {
+                this.getParentModel().trigger('asset:saved');
+            });
+        },
+
+        getParentModel() {
+            if (this.getParentView() && this.getParentView().model) {
+                return this.getParentView().model;
+            }
+
+            return this.getParentView().getParentView().model;
         },
 
         actionSimpleUpload() {
@@ -118,6 +130,10 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     }
                     (attrs || (attrs = {}))[name] = formData[name];
                 }
+            }
+
+            if (this.options.relate && this.options.relate.model) {
+                this.model.defs['_relationName'] = this.options.relate.model.defs['_relationName'];
             }
 
             let hashParts = window.location.hash.split('/view/');

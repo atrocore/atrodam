@@ -40,18 +40,25 @@ use Treo\Core\EventManager\Event;
 
 class Service extends AbstractListener
 {
-    public function afterFindLinkedEntities(Event $event): void
+    public function afterLinkEntity(Event $event): void
     {
-        $result = $event->getArgument('result');
+        /** @var Entity $foreignEntity */
+        $foreignEntity = $event->getArgument('foreignEntity');
 
-        if (empty($result['total'])) {
+        if ($foreignEntity->getEntityType() !== 'Asset') {
             return;
         }
 
-        if ($result['collection'][0]->getEntityType() === 'Asset') {
-            $result['collection'] = $this->sortEntityAssets($result['collection']);
-            $event->setArgument('result', $result);
-        }
+        /** @var Entity $entity */
+        $entity = $event->getArgument('entity');
+
+        $data = new \stdClass();
+        $data->_relationEntity = $entity->getEntityType();
+        $data->_relationEntityId = $entity->get('id');
+        $data->_relationName = $event->getArgument('link');
+        $data->sorting = $this->getEntityManager()->getRepository('Asset')->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
+
+        $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $data);
     }
 
     public function loadPreviewForCollection(Event $event): void
@@ -137,12 +144,15 @@ class Service extends AbstractListener
         $tableName = Util::toUnderScore($linkData['relationName']);
         $field = Util::toUnderScore(lcfirst($entity->getEntityType()));
 
-        $query = "SELECT a.file_id 
+        $query = "SELECT at.id 
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
+                      LEFT JOIN `attachment` at ON at.id=a.file_id
                       WHERE r.is_main_image=1 
                         AND r.{$field}_id='{$entity->get('id')}'
-                        AND r.deleted=0";
+                        AND r.deleted=0
+                        AND a.deleted=0
+                        AND at.deleted=0";
 
         if (empty($attachmentId = $this->getEntityManager()->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN))) {
             return;
@@ -151,32 +161,5 @@ class Service extends AbstractListener
         $entity->set('mainImageId', $attachmentId);
         $entity->set('mainImageName', $attachmentId);
         $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
-    }
-
-    protected function sortEntityAssets(EntityCollection $collection): EntityCollection
-    {
-        $assetTypes = $this->getMetadata()->get('fields.asset.types', []);
-        sort($assetTypes);
-        $sortedCollection = new EntityCollection();
-        foreach ($assetTypes as $assetType) {
-            $typeAssets = [];
-            foreach ($collection as $asset) {
-                if ($asset->get('type') === $assetType) {
-                    $typeAssets[] = $asset;
-                }
-            }
-            usort($typeAssets, function ($a, $b) {
-                if ($a->get('sorting') == $b->get('sorting')) {
-                    return 0;
-                }
-                return ($a->get('sorting') < $b->get('sorting')) ? -1 : 1;
-            });
-
-            foreach ($typeAssets as $typeAsset) {
-                $sortedCollection->append($typeAsset);
-            }
-        }
-
-        return $sortedCollection;
     }
 }

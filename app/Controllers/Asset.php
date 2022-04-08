@@ -33,58 +33,6 @@ declare(strict_types=1);
 
 namespace Dam\Controllers;
 
-use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Exceptions\Forbidden;
-use Slim\Http\Request;
-
-/**
- * Class Asset
- *
- * @package Dam\Controllers
- */
 class Asset extends AbstractController
 {
-    /**
-     * @param array     $params
-     * @param \stdClass $data
-     * @param Request   $request
-     *
-     * @return array
-     * @throws BadRequest
-     * @throws Forbidden
-     */
-    public function actionEntityAssets($params, $data, Request $request): array
-    {
-        if (!$request->isGet() || empty($request->get('entity')) || empty($request->get('id'))) {
-            throw new BadRequest();
-        }
-
-        if (!$this->getAcl()->check($this->name, 'read')) {
-            throw new Forbidden();
-        }
-
-        return $this->getRecordService()->getEntityAssets((string)$request->get('entity'), (string)$request->get('id'));
-    }
-
-    /**
-     * @param array     $params
-     * @param \stdClass $data
-     * @param Request   $request
-     *
-     * @return array
-     * @throws BadRequest
-     * @throws Forbidden
-     */
-    public function actionAssetsSortOrder($params, $data, Request $request)
-    {
-        if (!$request->isPut() || empty($request->get('entity')) || empty($request->get('id')) || empty($data)) {
-            throw new BadRequest();
-        }
-
-        if (!$this->getAcl()->check($this->name, 'edit')) {
-            throw new Forbidden();
-        }
-
-        return $this->getRecordService()->updateAssetsSortOrder((string)$request->get('entity'), (string)$request->get('id'), get_object_vars($data));
-    }
 }

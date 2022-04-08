@@ -34,9 +34,8 @@ Espo.define('dam:views/asset/fields/main-image', 'views/fields/image',
         setup() {
             Dep.prototype.setup.call(this);
 
-            this.listenTo(this.model, 'after:unrelate', () => {
-                this.model.fetch();
-                this.reRender();
+            this.listenTo(this.model, 'asset:saved after:unrelate', () => {
+                this.model.fetch().then(() => this.reRender());
             });
         },
 

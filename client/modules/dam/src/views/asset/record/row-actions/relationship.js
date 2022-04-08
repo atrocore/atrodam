@@ -28,9 +28,8 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/record/row-actions/relationship', 'views/record/row-actions/relationship-no-remove', function (Dep) {
-
-    return Dep.extend({
+Espo.define('dam:views/asset/record/row-actions/relationship', 'views/record/row-actions/relationship',
+    Dep => Dep.extend({
 
         getActionList: function () {
             let list = Dep.prototype.getActionList.call(this);
@@ -58,7 +57,5 @@ Espo.define('dam:views/asset/record/row-actions/relationship', 'views/record/row
             return $.inArray(fileExt, imageExtensions) !== -1;
         },
 
-    });
-
-});
-
+    })
+);
