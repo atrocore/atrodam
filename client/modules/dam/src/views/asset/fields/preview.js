@@ -66,11 +66,11 @@ Espo.define('dam:views/asset/fields/preview', 'view',
             Dep.prototype.afterRender.call(this);
 
             if (this.$el && this.model.get('isMainImage')) {
-                let mainImage = $('<div class="main-image"></div>');
-                if (this.model.get('isGlobalMainImage')) {
-                    mainImage.addClass('global-main-image');
+                if (this.model.get('isGlobalMainImage') === true) {
+                    this.$el.append('<div class="main-image global-main-image"></div>');
+                } else {
+                    this.$el.append('<div class="main-image"></div>');
                 }
-                this.$el.append(mainImage);
             }
         }
     })
