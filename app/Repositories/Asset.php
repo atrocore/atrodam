@@ -68,17 +68,20 @@ class Asset extends AbstractRepository
 
     public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
     {
-        /**
-         * For main image
-         */
-        if (method_exists($this->getEntityManager()->getRepository($re1), 'updateMainImageRelationData')) {
-            $this->getEntityManager()->getRepository($re1)->updateMainImageRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
-        } else {
-            if (!empty($setData['isMainImage'])) {
-                $query = "UPDATE `" . Util::toUnderScore($relationName) . "` SET is_main_image=0 WHERE deleted=0";
-                $query .= " AND " . Util::toUnderScore(lcfirst($re1)) . "=" . $this->getPDO()->quote($re1Id);
-                $this->getPDO()->exec($query);
-            }
+        $scope = ucfirst(str_replace('asset', '', strtolower($relationName)));
+        $foreignRepository = $this->getEntityManager()->getRepository($scope);
+
+        if (!empty($foreignRepository) && method_exists($foreignRepository, 'updateMainImageRelationData')) {
+            $foreignRepository->updateMainImageRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
+            parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
+            return;
+        }
+
+        if (!empty($setData['isMainImage'])) {
+            $table = $this->getEntityManager()->getQuery()->toDb($relationName);
+            $column = $this->getEntityManager()->getQuery()->toDb($re1);
+            $entityId = $this->getPDO()->quote($re1Id);
+            $this->getPDO()->exec("UPDATE `$table` SET is_main_image=0 WHERE deleted=0 AND $column=$entityId");
         }
 
         parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
