@@ -55,36 +55,6 @@ class Asset extends Base
     protected $mandatorySelectAttributeList = ['fileId', 'type'];
 
     /**
-     * @param \stdClass $data
-     * @param string    $fileId
-     *
-     * @return \stdClass
-     */
-    public static function preparePostDataForMassCreateAssets(\stdClass $data, string $fileId): \stdClass
-    {
-        // get file name
-        $fileName = $data->filesNames->$fileId;
-
-        // parse name
-        $parts = explode('.', $fileName);
-
-        // get asset name
-        $assetName = implode('.', $parts);
-
-        $postData = clone $data;
-        $postData->fileId = $fileId;
-        $postData->fileName = $fileName;
-        $postData->name = $assetName;
-        $postData->sorting = null;
-
-        unset($postData->filesIds);
-        unset($postData->filesNames);
-        unset($postData->filesTypes);
-
-        return $postData;
-    }
-
-    /**
      * @inheritDoc
      */
     public function prepareEntityForOutput(Entity $entity)
@@ -195,7 +165,7 @@ class Asset extends Base
 
         $asset->set(
             [
-                "size"     => round($fileInfo['size'] / 1024, 1),
+                "size" => round($fileInfo['size'] / 1024, 1),
                 "sizeUnit" => "kb",
             ]
         );
@@ -260,28 +230,27 @@ class Asset extends Base
         return $this->getRepository()->unlinkAsset($main, $foreign);
     }
 
-    /**
-     * @param \stdClass $data
-     *
-     * @return Entity
-     */
     protected function massCreateAssets(\stdClass $data): Entity
     {
         $entity = $this->getRepository()->get();
 
-        if (count($data->filesIds) > 20) {
-            $name = $this->getInjection('language')->translate('massCreateAssets', 'labels', 'Asset');
-            $this->getInjection('queueManager')->push($name, 'QueueManagerMassCreateAssets', ['data' => $data]);
-
-            return $entity;
-        }
-
         foreach ($data->filesIds as $fileId) {
-            $postData = self::preparePostDataForMassCreateAssets($data, $fileId);
+            $fileName = $data->filesNames->$fileId;
+
+            $postData = clone $data;
+            $postData->fileId = $fileId;
+            $postData->fileName = $fileName;
+            $postData->name = $fileName;
+            $postData->sorting = null;
+
+            unset($postData->filesIds);
+            unset($postData->filesNames);
+            unset($postData->filesTypes);
+
             try {
                 $entity = parent::createEntity($postData);
             } catch (\Throwable $e) {
-                $GLOBALS['log']->error("ERROR in massCreateAssets: " . $e->getMessage() . ' | ' . $e->getTraceAsString());
+                $GLOBALS['log']->error("ERROR in massCreateAssets: " . $e->getMessage());
             }
         }
 

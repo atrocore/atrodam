@@ -46,7 +46,10 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
         },
 
         actionMassAssetCreate(data) {
-            const foreignLink = this.model.defs['links'][data.link].foreign;
+            const link = data.link;
+            const foreignLink = this.model.defs['links'][link].foreign;
+
+            this.model.defs['_relationName'] = link;
 
             this.notify('Loading...');
             this.createView('massCreate', 'dam:views/asset/modals/edit', {

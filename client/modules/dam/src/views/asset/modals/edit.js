@@ -55,7 +55,9 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             }
 
             this.listenTo(this, 'after:save', model => {
-                this.getParentModel().trigger('asset:saved');
+                if (this.getParentModel()) {
+                    this.getParentModel().trigger('asset:saved');
+                }
             });
         },
 
