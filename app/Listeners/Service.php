@@ -84,12 +84,14 @@ class Service extends AbstractListener
         $tableName = Util::toUnderScore($linkData['relationName']);
         $field = Util::toUnderScore(lcfirst($entityType));
 
-        $query = "SELECT a.file_id as attachmentId, r.{$field}_id as entityId
+        $query = "SELECT a1.id as attachmentId, a1.name as attachmentName, r.{$field}_id as entityId
                   FROM `$tableName` r 
                   LEFT JOIN `asset` a ON a.id=r.asset_id
+                  LEFT JOIN `attachment` a1 ON a1.id=a.file_id
                   WHERE r.is_main_image=1 
                     AND r.{$field}_id IN ('" . implode("','", $ids) . "')
-                    AND r.deleted=0";
+                    AND r.deleted=0
+                    AND a1.deleted=0";
 
         if (empty($records = $this->getEntityManager()->getPDO()->query($query)->fetchAll(\PDO::FETCH_ASSOC))) {
             return;
@@ -106,7 +108,7 @@ class Service extends AbstractListener
             foreach ($records as $record) {
                 if ($entity->get('id') === $record['entityId']) {
                     $entity->set('mainImageId', $record['attachmentId']);
-                    $entity->set('mainImageName', $record['attachmentId']);
+                    $entity->set('mainImageName', $record['attachmentName']);
                     break 1;
                 }
             }
@@ -144,22 +146,22 @@ class Service extends AbstractListener
         $tableName = Util::toUnderScore($linkData['relationName']);
         $field = Util::toUnderScore(lcfirst($entity->getEntityType()));
 
-        $query = "SELECT at.id 
+        $query = "SELECT a1.id, a1.name 
                       FROM `$tableName` r 
                       LEFT JOIN `asset` a ON a.id=r.asset_id
-                      LEFT JOIN `attachment` at ON at.id=a.file_id
+                      LEFT JOIN `attachment` a1 ON a1.id=a.file_id
                       WHERE r.is_main_image=1 
                         AND r.{$field}_id='{$entity->get('id')}'
                         AND r.deleted=0
                         AND a.deleted=0
-                        AND at.deleted=0";
+                        AND a1.deleted=0";
 
-        if (empty($attachmentId = $this->getEntityManager()->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN))) {
+        if (empty($record = $this->getEntityManager()->getPDO()->query($query)->fetch(\PDO::FETCH_ASSOC))) {
             return;
         }
 
-        $entity->set('mainImageId', $attachmentId);
-        $entity->set('mainImageName', $attachmentId);
-        $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachmentId));
+        $entity->set('mainImageId', $record['id']);
+        $entity->set('mainImageName', $record['name']);
+        $entity->set('mainImagePathsData', $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($record['id']));
     }
 }
