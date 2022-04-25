@@ -42,23 +42,27 @@ class Service extends AbstractListener
 {
     public function afterLinkEntity(Event $event): void
     {
+        /** @var Entity $entity */
+        $entity = $event->getArgument('entity');
+
         /** @var Entity $foreignEntity */
         $foreignEntity = $event->getArgument('foreignEntity');
 
-        if ($foreignEntity->getEntityType() !== 'Asset') {
+        if ($foreignEntity->getEntityType() !== 'Asset' || $entity->getEntityType() === 'AssetCategory') {
             return;
         }
-
-        /** @var Entity $entity */
-        $entity = $event->getArgument('entity');
 
         $data = new \stdClass();
         $data->_relationEntity = $entity->getEntityType();
         $data->_relationEntityId = $entity->get('id');
         $data->_relationName = $event->getArgument('link');
-        $data->sorting = $this->getEntityManager()->getRepository('Asset')->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
 
-        $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $data);
+        try {
+            $data->sorting = $this->getEntityManager()->getRepository('Asset')->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
+            $this->getService('Asset')->updateEntity($foreignEntity->get('id'), $data);
+        } catch (\Throwable $e) {
+            $GLOBALS['log']->error('UPDATE SORTING FAILED: ' . $e->getMessage());
+        }
     }
 
     public function loadPreviewForCollection(Event $event): void
