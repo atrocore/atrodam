@@ -121,11 +121,8 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             let formData = editView.fetch();
 
             let attrs = formData;
-
             if (!this.model.isNew()) {
                 let initialAttributes = editView.attributes;
-                initialAttributes['name'] = initialAttributes.name.split('.').shift();
-
                 for (let name in formData) {
                     if (_.isEqual(initialAttributes[name], formData[name])) {
                         continue;
@@ -133,6 +130,8 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     (attrs || (attrs = {}))[name] = formData[name];
                 }
             }
+            attrs['name'] = this.model.get('name');
+            attrs['_silentMode'] = true;
 
             if (this.options.relate && this.options.relate.model) {
                 this.model.defs['_relationName'] = this.options.relate.model.defs['_relationName'];
@@ -145,19 +144,29 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 attrs._relationEntityId = hashParts[1];
             }
 
+            let self = this;
             if (count > 0) {
-                this.model.save(attrs).then(response => {
-                    new Promise(resolve => {
-                        this.relateExistedAssets(resolve);
-                    }).then(() => {
-                        this.trigger('after:save', this.model);
-                        this.dialog.close();
-                        if (count > 20) {
-                            Espo.Ui.notify(this.translate('assetsAdded', 'messages', 'Asset'), 'success', 1000 * 60, true);
+                this.model.save(attrs, {
+                    patch: !this.model.isNew(),
+                    success(response) {
+                        new Promise(resolve => self.relateExistedAssets(resolve)).then(() => {
+                            self.trigger('after:save', self.model);
+                            self.dialog.close();
+                            if (count > 20) {
+                                Espo.Ui.notify(self.translate('assetsAdded', 'messages', 'Asset'), 'success', 1000 * 60, true);
+                            } else {
+                                self.notify('Saved', 'success');
+                            }
+                        });
+                    },
+                    error(e, xhr) {
+                        if (xhr.status === 304) {
+                            Espo.Ui.notify(self.translate('notModified', 'messages'), 'warning', 1000 * 60 * 60 * 2, true);
                         } else {
-                            this.notify('Saved', 'success');
+                            let statusReason = xhr.responseText || '';
+                            Espo.Ui.notify(`${self.translate("Error")} ${xhr.status}: ${statusReason}`, "error", 1000 * 60 * 60 * 2, true);
                         }
-                    });
+                    }
                 });
             } else if (this.options.relate) {
                 new Promise(resolve => {
