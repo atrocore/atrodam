@@ -61,6 +61,7 @@
     "suchAssetAlreadyExists": "Such asset already exists.",
     "assetIsAlreadyLinkedWithEntity": "Entity 'Asset' is already linked with entity '%s'. You can't link these entities again.",
     "fileNameNotValid": "Filename is not valid.",
+    "suchFileNameNotValid": "Filename '%s' is not valid.",
     "fileNameNotValidByUserRegex": "Filename is not valid. It should match the regex '%s'."
   }
 }
