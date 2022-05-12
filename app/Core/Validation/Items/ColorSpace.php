@@ -36,7 +36,7 @@ namespace Dam\Core\Validation\Items;
 use Dam\Core\Validation\Base;
 use Espo\Core\Exceptions\BadRequest;
 use ReflectionClass;
-use Treo\Core\Container;
+use Espo\Core\Container;
 
 /**
  * Class ColorSpace

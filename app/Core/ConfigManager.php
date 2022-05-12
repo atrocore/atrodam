@@ -33,7 +33,7 @@ declare(strict_types=1);
 
 namespace Dam\Core;
 
-use Treo\Core\Container;
+use Espo\Core\Container;
 
 /**
  * Class ConfigManager

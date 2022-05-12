@@ -35,7 +35,7 @@ namespace Dam\Core\Validation;
 
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
-use Treo\Core\Container;
+use Espo\Core\Container;
 
 /**
  * Class Validator

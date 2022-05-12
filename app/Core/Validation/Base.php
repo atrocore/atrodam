@@ -34,7 +34,7 @@ declare(strict_types=1);
 namespace Dam\Core\Validation;
 
 use Espo\Core\Utils\Util;
-use Treo\Core\Container;
+use Espo\Core\Container;
 use Treo\Core\ORM\EntityManager;
 
 /**
