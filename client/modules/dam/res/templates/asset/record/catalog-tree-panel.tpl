@@ -24,3 +24,4 @@
     <div class="no-data">{{translate 'noData'}}</div>
     {{/if}}
 </div>
+<div class="category-panel-resizer"></div>

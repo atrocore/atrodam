@@ -28,7 +28,7 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
+Espo.define('dam:views/asset/record/catalog-tree-panel', 'views/record/panels/tree-panel',
     Dep => Dep.extend({
 
         template: 'dam:asset/record/catalog-tree-panel',
@@ -60,6 +60,8 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'view',
 
         setup() {
             this.scope = this.options.scope || this.scope;
+            this.currentWidth = this.getStorage().get('panelWidth', this.scope) || this.minWidth;
+
             this.wait(true);
 
             this.getFullEntity('Library', {select: 'name,assetCategoriesIds,assetCategoriesNames'}, catalogs => {
