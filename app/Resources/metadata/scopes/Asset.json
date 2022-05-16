@@ -19,9 +19,9 @@
   "type": "Base",
   "module": "Dam",
   "object": true,
-  "hasAssignedUser": true,
-  "hasTeam": true,
-  "hasOwner": true,
+  "hasOwner": false,
+  "hasAssignedUser": false,
+  "hasTeam": false,
   "skipAssetSorting": true,
   "addRelationEnabled": true
 }
