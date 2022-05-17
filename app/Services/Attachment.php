@@ -75,12 +75,23 @@ class Attachment extends \Espo\Services\Attachment
 
     public function createEntityByUrl(string $url, bool $validateAttachment = true): \Dam\Entities\Attachment
     {
-        // cleaning URL
-        $url = parse_url($url);
-        $url = $url['scheme'] . '://' . $url['host'] . $url['path'];
+        // prepare url
+        $url = str_replace(" ", "%20", $url);
+
+        // parse url
+        $parsedUrl = parse_url($url);
+
+        // prepare filename
+        $filename = basename($parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $parsedUrl['path']);
+        if (isset($parsedUrl['query'])) {
+            parse_str($parsedUrl['query'], $query);
+            if (!empty($query['filename'])) {
+                $filename = $query['filename'];
+            }
+        }
 
         $attachment = new \stdClass();
-        $attachment->name = basename($url);
+        $attachment->name = $filename;
         $attachment->relatedType = 'Asset';
         $attachment->field = 'file';
         $attachment->storageFilePath = $this->getEntityManager()->getRepository('Attachment')->getDestPath(FilePathBuilder::UPLOAD);
@@ -96,7 +107,7 @@ class Attachment extends \Espo\Services\Attachment
         // load file from url
         set_time_limit(0);
         $fp = fopen($attachment->fileName, 'w+');
-        $ch = curl_init(str_replace(" ", "%20", $url));
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 50);
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
