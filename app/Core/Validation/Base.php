@@ -35,7 +35,7 @@ namespace Dam\Core\Validation;
 
 use Espo\Core\Utils\Util;
 use Espo\Core\Container;
-use Treo\Core\ORM\EntityManager;
+use Espo\Core\ORM\EntityManager;
 
 /**
  * Class Base
