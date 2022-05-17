@@ -149,6 +149,8 @@ Espo.define('dam:views/asset/record/catalog-tree-panel', 'views/record/panels/tr
             }
         },
 
+        buildTree() {},
+
         selectCategoryButtonApplyFilter(button, filterParams) {
             this.selectCategoryButton(button);
             if ($(window).width() <= 767) {
