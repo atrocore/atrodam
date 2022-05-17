@@ -347,12 +347,6 @@
       "columns": [
         "type"
       ]
-    },
-    "assignedUser": {
-      "columns": [
-        "assignedUserId",
-        "deleted"
-      ]
     }
   }
 }
