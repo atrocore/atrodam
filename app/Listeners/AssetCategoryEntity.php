@@ -49,7 +49,7 @@ class AssetCategoryEntity extends AbstractListener
     {
         $entity = $event->getArgument('entity');
 
-        if (!$this->isValidCode($entity)) {
+        if (!empty($entity->get('code')) && !$this->isValidCode($entity)) {
             throw new BadRequest($this->getLanguage()->translate('codeInvalid', 'exceptions', 'Global'));
         }
 
