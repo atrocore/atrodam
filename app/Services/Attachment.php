@@ -75,9 +75,6 @@ class Attachment extends \Espo\Services\Attachment
 
     public function createEntityByUrl(string $url, bool $validateAttachment = true): \Dam\Entities\Attachment
     {
-        // prepare url
-        $url = str_replace(" ", "%20", $url);
-
         // parse url
         $parsedUrl = parse_url($url);
 
@@ -107,7 +104,7 @@ class Attachment extends \Espo\Services\Attachment
         // load file from url
         set_time_limit(0);
         $fp = fopen($attachment->fileName, 'w+');
-        $ch = curl_init($url);
+        $ch = curl_init(str_replace(" ", "%20", $url));
         curl_setopt($ch, CURLOPT_TIMEOUT, 50);
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
