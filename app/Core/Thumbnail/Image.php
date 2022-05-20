@@ -39,7 +39,7 @@ use Espo\Entities\Attachment;
 /**
  * Class Pdf
  */
-class Image extends \Treo\Core\Thumbnail\Image
+class Image extends \Espo\Core\Thumbnail\Image
 {
     /**
      * @inheritDoc
