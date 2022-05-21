@@ -1,5 +1,0 @@
-{
-  "Validator": "Dam\\Core\\Loaders\\ValidatorLoader",
-  "ConfigManager": "Dam\\Core\\Loaders\\ConfigManagerLoader",
-  "Thumbnail": "Dam\\Core\\Loaders\\ThumbnailLoader"
-}

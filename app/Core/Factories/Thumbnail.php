@@ -31,22 +31,16 @@
 
 declare(strict_types=1);
 
-namespace Dam\Core\Loaders;
+namespace Dam\Core\Factories;
 
-use Dam\Core\ConfigManager;
-use Treo\Core\Loaders\Base;
+use Dam\Core\Thumbnail\Image;
+use Espo\Core\Container;
+use Espo\Core\Interfaces\Factory;
 
-/**
- * Class ConfigManagerLoader
- * @package Dam\Core\Loaders
- */
-class ConfigManagerLoader extends Base
+class Thumbnail implements Factory
 {
-    /**
-     * @return ConfigManager
-     */
-    public function load()
+    public function create(Container $container)
     {
-        return new ConfigManager($this->getContainer());
+        return new Image($container);
     }
 }

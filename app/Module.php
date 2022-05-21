@@ -49,6 +49,15 @@ class Module extends AbstractModule
         return 5119;
     }
 
+    public function onLoad()
+    {
+        parent::onLoad();
+
+        $this->container->setClassAlias('configManager', \Dam\Core\Factories\ConfigManager::class);
+        $this->container->setClassAlias('thumbnail', \Dam\Core\Factories\Thumbnail::class);
+        $this->container->setClassAlias('validator', \Dam\Core\Factories\Validator::class);
+    }
+
     /**
      * @inheritdoc
      */

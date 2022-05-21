@@ -31,22 +31,15 @@
 
 declare(strict_types=1);
 
-namespace Dam\Core\Loaders;
+namespace Dam\Core\Factories;
 
-use Dam\Core\Validation\Validator;
-use Treo\Core\Loaders\Base;
+use Espo\Core\Container;
+use Espo\Core\Interfaces\Factory;
 
-/**
- * Class ValidatorLoader
- * @package Dam\Core\Loaders
- */
-class ValidatorLoader extends Base
+class Validator implements Factory
 {
-    /**
-     * @return Validator
-     */
-    public function load()
+    public function create(Container $container)
     {
-        return new Validator($this->getContainer());
+        return new \Dam\Core\Validation\Validator($container);
     }
 }

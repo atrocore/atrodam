@@ -31,20 +31,15 @@
 
 declare(strict_types=1);
 
-namespace Dam\Core\Loaders;
+namespace Dam\Core\Factories;
 
-use Dam\Core\Thumbnail\Image;
+use Espo\Core\Container;
+use Espo\Core\Interfaces\Factory;
 
-/**
- * Class ThumbnailLoader
- */
-class ThumbnailLoader extends \Treo\Core\Loaders\Base
+class ConfigManager implements Factory
 {
-    /**
-     * @inheritdoc
-     */
-    public function load()
+    public function create(Container $container)
     {
-        return new Image($this->getContainer());
+        return new \Dam\Core\ConfigManager($container);
     }
 }
