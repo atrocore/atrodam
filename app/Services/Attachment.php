@@ -36,10 +36,10 @@ namespace Dam\Services;
 use Dam\Core\Exceptions\SuchAssetAlreadyExists;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
+use Espo\Core\FilePathBuilder;
+use Espo\Core\FileStorage\Manager;
 use Espo\ORM\Entity;
 use Imagick;
-use Treo\Core\FilePathBuilder;
-use Treo\Core\FileStorage\Manager;
 
 /**
  * Class Attachment
