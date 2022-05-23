@@ -33,10 +33,8 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
-use Espo\Core\Utils\Json;
-use Espo\Core\Utils\Util;
-use Treo\Listeners\AbstractListener;
-use Treo\Core\EventManager\Event;
+use Espo\Listeners\AbstractListener;
+use Espo\Core\EventManager\Event;
 
 /**
  * Class Metadata
@@ -104,42 +102,50 @@ class Metadata extends AbstractListener
             foreach ($defs['links'] as $link => $linkData) {
                 if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['dragDrop'] = [
-                        'isActive'  => true,
-                        'sortField' => 'sorting'
-                    ];
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['sortBy'] = 'sorting';
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
-
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/record/panels/assets";
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['rowActionsView'] = "dam:views/asset/record/row-actions/relationship";
 
-                    foreach (['edit', 'detail', 'detailSmall'] as $mode) {
-                        $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
-                            'name'    => 'mainImage',
-                            'unshift' => true,
-                            'label'   => 'mainImage',
-                            'view'    => 'dam:views/asset/fields/main-image'
+                    if (!empty($linkData['relationName'])) {
+                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['dragDrop'] = [
+                            'isActive'  => true,
+                            'sortField' => 'sorting'
+                        ];
+
+                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['sortBy'] = 'sorting';
+                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
+
+                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['rowActionsView'] = "dam:views/asset/record/row-actions/relationship";
+
+                        foreach (['edit', 'detail', 'detailSmall'] as $mode) {
+                            $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
+                                'name'    => 'mainImage',
+                                'unshift' => true,
+                                'label'   => 'mainImage',
+                                'view'    => 'dam:views/asset/fields/main-image'
+                            ];
+                        }
+
+                        $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
+                            'type' => 'int'
+                        ];
+
+                        $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
+                            'type' => 'bool'
+                        ];
+
+                        $data['entityDefs'][$scope]['fields']['mainImage'] = [
+                            'type'        => 'image',
+                            'notStorable' => true,
+                            'previewSize' => 'medium',
+                            'readOnly'    => true
+                        ];
+
+                        $data['entityDefs'][$scope]['links']['mainImage'] = [
+                            'type'        => 'belongsTo',
+                            'entity'      => 'Attachment',
+                            'skipOrmDefs' => true
                         ];
                     }
 
-                    $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                        'type' => 'int'
-                    ];
-                    $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
-                        'type' => 'bool'
-                    ];
-                    $data['entityDefs'][$scope]['fields']['mainImage'] = [
-                        'type'        => 'image',
-                        'notStorable' => true,
-                        'previewSize' => 'medium',
-                        'readOnly'    => true
-                    ];
-                    $data['entityDefs'][$scope]['links']['mainImage'] = [
-                        'type'        => 'belongsTo',
-                        'entity'      => 'Attachment',
-                        'skipOrmDefs' => true
-                    ];
                     $scopes[] = $scope;
                 }
             }

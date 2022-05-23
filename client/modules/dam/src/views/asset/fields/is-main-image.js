@@ -42,7 +42,19 @@ Espo.define('dam:views/asset/fields/is-main-image', 'views/fields/bool',
         afterRender() {
             Dep.prototype.afterRender.call(this);
 
-            if (this.isImage()) {
+            let inRelatingEntities = false;
+
+            let relatingEntities = this.getMetadata().get(['entityDefs', 'Asset', 'fields', 'isMainImage', 'relatingEntityField']);
+            if (relatingEntities) {
+                if (this.mode === 'edit' || this.mode === 'detail') {
+                    let entityType = window.location.hash.split('/').shift().replace('#', '');
+                    if (relatingEntities.includes(entityType)) {
+                        inRelatingEntities = true;
+                    }
+                }
+            }
+
+            if (inRelatingEntities && this.isImage()) {
                 this.show();
             } else {
                 this.hide();
