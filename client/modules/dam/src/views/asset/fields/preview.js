@@ -66,10 +66,12 @@ Espo.define('dam:views/asset/fields/preview', 'view',
             Dep.prototype.afterRender.call(this);
 
             if (this.$el && this.model.get('isMainImage')) {
+                const parent = this.$el.parent();
+
+                parent.addClass('main-image');
+
                 if (this.model.get('isGlobalMainImage') === true) {
-                    this.$el.append('<div class="main-image global-main-image"></div>');
-                } else {
-                    this.$el.append('<div class="main-image"></div>');
+                    parent.addClass('global-main-image');
                 }
             }
         }
