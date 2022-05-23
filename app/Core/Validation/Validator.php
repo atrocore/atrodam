@@ -35,39 +35,17 @@ namespace Dam\Core\Validation;
 
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
-use Espo\Core\Container;
+use Espo\Core\Injectable;
 
-/**
- * Class Validator
- * @package Dam\Core\Validation
- */
-class Validator
+class Validator extends Injectable
 {
-    /**
-     * @var array
-     */
     private $instances = [];
-    /**
-     * @var Container
-     */
-    private $container;
 
-    /**
-     * Validator constructor.
-     * @param Container $container
-     */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->container = $container;
+        $this->addDependency('container');
     }
 
-    /**
-     * @param string $validatorName
-     * @param        $attachment
-     * @param        $params
-     * @throws BadRequest
-     * @throws Error
-     */
     public function validate(string $validatorName, $attachment, $params)
     {
         $className = $this->getMetadata()->get(['app', 'config', 'validations', 'classMap', $validatorName]);
@@ -85,7 +63,7 @@ class Validator
         }
 
         if (!isset($this->instances[$className])) {
-            $this->instances[$className] = new $className($this->container);
+            $this->instances[$className] = new $className($this->getInjection('container'));
         }
 
         if (!$this->instances[$className]->setAttachment($attachment)->setParams($params)->validate()) {
@@ -93,11 +71,8 @@ class Validator
         }
     }
 
-    /**
-     * @return mixed
-     */
     protected function getMetadata()
     {
-        return $this->container->get('metadata');
+        return $this->getInjection('container')->get('metadata');
     }
 }

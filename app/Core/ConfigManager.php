@@ -33,35 +33,17 @@ declare(strict_types=1);
 
 namespace Dam\Core;
 
-use Espo\Core\Container;
+use Espo\Core\Injectable;
 
-/**
- * Class ConfigManager
- *
- * @package Dam\Core
- */
-class ConfigManager
+class ConfigManager extends Injectable
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * @var
-     */
     protected $config;
 
     const PATH_TO_DAM = "data/dam";
 
-    /**
-     * ConfigManager constructor.
-     *
-     * @param Container $container
-     */
-    public function __construct(Container $container)
+    public function __construct()
     {
-        $this->container = $container;
+        $this->addDependency('entityManager');
     }
 
     /**
@@ -155,8 +137,7 @@ class ConfigManager
             ];
 
             $types = $this
-                ->container
-                ->get('entityManager')
+                ->getInjection('entityManager')
                 ->getRepository('AssetType')
                 ->find();
 
