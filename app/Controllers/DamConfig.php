@@ -43,6 +43,6 @@ class DamConfig extends AbstractController
      */
     public function actionRead($params, $data, $request)
     {
-        return $this->getContainer()->get("ConfigManager")->getConfig();
+        return $this->getContainer()->get("configManager")->getConfig();
     }
 }

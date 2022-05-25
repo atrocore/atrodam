@@ -85,10 +85,10 @@ class Attachment extends \Espo\Repositories\Attachment
 
         try {
             if (!$skipValidation) {
-                $config = $this->getInjection("ConfigManager")->getByType([ConfigManager::getType($asset->get('type'))]);
+                $config = $this->getInjection("configManager")->getByType([ConfigManager::getType($asset->get('type'))]);
                 if (!empty($config['validations']) && is_array($config['validations'])) {
                     foreach ($config['validations'] as $type => $value) {
-                        $this->getInjection('Validator')->validate($type, $attachment, ($value['private'] ?? $value));
+                        $this->getInjection('validator')->validate($type, $attachment, ($value['private'] ?? $value));
                     }
                 }
             }
@@ -107,9 +107,8 @@ class Attachment extends \Espo\Repositories\Attachment
     {
         parent::init();
 
-        $this->addDependency("DAMFileManager");
-        $this->addDependency("Validator");
-        $this->addDependency("ConfigManager");
+        $this->addDependency("validator");
+        $this->addDependency("configManager");
     }
 
     /**

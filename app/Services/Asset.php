@@ -264,9 +264,8 @@ class Asset extends Base
     {
         parent::init();
 
-        $this->addDependency("DAMFileManager");
         $this->addDependency("language");
-        $this->addDependency("ConfigManager");
+        $this->addDependency("configManager");
         $this->addDependency('log');
         $this->addDependency('eventManager');
         $this->addDependency('queueManager');
@@ -282,7 +281,7 @@ class Asset extends Base
      */
     protected function getConfigManager(): ConfigManager
     {
-        return $this->getInjection("ConfigManager");
+        return $this->getInjection("configManager");
     }
 
     /**

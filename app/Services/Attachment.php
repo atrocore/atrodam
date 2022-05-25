@@ -184,12 +184,12 @@ class Attachment extends \Espo\Services\Attachment
         }
 
         /** @var array $config */
-        $config = $this->getInjection("ConfigManager")->getByType([\Dam\Core\ConfigManager::getType($type)]);
+        $config = $this->getInjection("configManager")->getByType([\Dam\Core\ConfigManager::getType($type)]);
 
         // validate
         if (!empty($config['validations'])) {
             foreach ($config['validations'] as $type => $value) {
-                $this->getInjection('Validator')->validate($type, $entity, ($value['private'] ?? $value));
+                $this->getInjection('validator')->validate($type, $entity, ($value['private'] ?? $value));
             }
         }
     }
@@ -302,9 +302,9 @@ class Attachment extends \Espo\Services\Attachment
     {
         parent::init();
 
-        $this->addDependency("fileStorageManager");
-        $this->addDependency('ConfigManager');
-        $this->addDependency('Validator');
+        $this->addDependency('fileStorageManager');
+        $this->addDependency('configManager');
+        $this->addDependency('validator');
     }
 
     /**
