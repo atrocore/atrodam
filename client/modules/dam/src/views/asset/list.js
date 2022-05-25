@@ -96,7 +96,7 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
 
                     const header = content.find('.page-header');
                     const filters = content.find('.advanced-filters');
-                    const listContainer = content.find('.list-container');
+                    const listContainer = content.find('#main > .list-container');
 
                     header.outerWidth(main.width() - width - 9);
                     header.css('marginLeft', width + 'px');
