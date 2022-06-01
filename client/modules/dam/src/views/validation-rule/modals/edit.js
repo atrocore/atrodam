@@ -28,7 +28,7 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/validation-rule/modals/edit', 'treo-core:views/modals/edit', function (Dep) {
+Espo.define('dam:views/validation-rule/modals/edit', 'views/modals/edit', function (Dep) {
 
     return Dep.extend({
 
