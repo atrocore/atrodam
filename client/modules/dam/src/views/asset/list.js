@@ -91,25 +91,29 @@ Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
                     this.collection.fetch();
                 });
                 this.listenTo(view, 'tree-width-changed', function (width) {
-                    const content = $('#content');
-                    const main = content.find('#main');
+                    if ($('.catalog-tree-panel').length) {
+                        const content = $('#content');
+                        const main = content.find('#main');
 
-                    const header = content.find('.page-header');
-                    const filters = content.find('.advanced-filters');
-                    const listContainer = content.find('#main > .list-container');
+                        const header = content.find('.page-header');
+                        const filters = content.find('.advanced-filters');
+                        const listContainer = content.find('#main > .list-container');
 
-                    header.outerWidth(main.width() - width - 9);
-                    header.css('marginLeft', width + 'px');
+                        header.outerWidth(main.width() - width - 9);
+                        header.css('marginLeft', width + 'px');
 
-                    filters.outerWidth(main.width() - width - 9);
+                        filters.outerWidth(main.width() - width - 9);
 
-                    listContainer.outerWidth(main.width() - width - 9);
-                    listContainer.css('marginLeft', (width - 1) + 'px');
+                        listContainer.outerWidth(main.width() - width - 9);
+                        listContainer.css('marginLeft', (width - 1) + 'px');
+                    }
                 });
                 this.listenTo(view, 'tree-width-unset', function () {
-                    $('.page-header').css({'width': 'unset', 'marginLeft': 'unset'});
-                    $('.advanced-filters').css({'width': 'unset'});
-                    $('.list-container').css({'width': 'unset', 'marginLeft': 'unset'});
+                    if ($('.catalog-tree-panel').length) {
+                        $('.page-header').css({'width': 'unset', 'marginLeft': 'unset'});
+                        $('.advanced-filters').css({'width': 'unset'});
+                        $('.list-container').css({'width': 'unset', 'marginLeft': 'unset'});
+                    }
                 })
             });
         },
