@@ -28,7 +28,7 @@
  * This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/modals/select-records', "treo-core:views/modals/select-records", function (Dep) {
+Espo.define('dam:views/asset/modals/select-records', "views/modals/select-records", function (Dep) {
     return Dep.extend({
 
         boolFilterData: {
