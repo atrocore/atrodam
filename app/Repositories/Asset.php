@@ -134,8 +134,24 @@ class Asset extends AbstractRepository
      */
     protected function beforeSave(Entity $entity, array $options = [])
     {
-        if (empty($file = $entity->get('file'))) {
+        $file = $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'));
+        if (empty($file)) {
             throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+        }
+
+        // set default type
+        if (empty($entity->get('type'))) {
+            $entity->set('type', 'File');
+        }
+
+        // validate asset if type changed
+        if (!$entity->isNew() && $entity->isAttributeChanged('type')) {
+            $config = $this->getInjection("configManager")->getByType([\Dam\Core\ConfigManager::getType($entity->get('type'))]);
+            if (!empty($config['validations'])) {
+                foreach ($config['validations'] as $type => $value) {
+                    $this->getInjection('validator')->validate($type, clone $file, ($value['private'] ?? $value));
+                }
+            }
         }
 
         // set defaults
@@ -165,19 +181,100 @@ class Asset extends AbstractRepository
             $entity->set('name', implode('.', $assetParts) . '.' . $attachmentExt);
         }
 
+        // update file info
+        if ($entity->isAttributeChanged('fileId')) {
+            $this->getInjection('serviceFactory')->create('Asset')->getFileInfo($entity);
+        }
+
+        // rename file
+        if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
+            $this->getInjection('serviceFactory')->create('Attachment')->changeName($file, $entity->get('name'));
+        }
+
         parent::beforeSave($entity, $options);
     }
 
     protected function afterSave(Entity $entity, array $options = [])
     {
         if ($entity->isAttributeChanged('private')) {
-            $file = $entity->get('file');
+            $file = $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'));
             if (!empty($file)) {
                 $file->set('private', $entity->get('private'));
                 $this->getEntityManager()->saveEntity($file);
             }
         }
 
+        // update metadata
+        if ($entity->isAttributeChanged('fileId')) {
+            $this->getInjection('serviceFactory')->create('Asset')->updateMetaData($entity);
+        }
+
         parent::afterSave($entity, $options);
+    }
+
+    protected function afterRemove(Entity $entity, array $options = [])
+    {
+        if (!empty($attachment = $entity->get("file"))) {
+            $this->getEntityManager()->removeEntity($attachment);
+        }
+
+        parent::afterRemove($entity, $options);
+    }
+
+    protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
+    {
+        if (is_string($foreign) && $relationName === "assetsLeft") {
+            $foreign = $this->getEntityManager()->getEntity("Asset", $foreign);
+        }
+
+        // check any relation for inactive assets
+        if (!$entity->get("isActive")) {
+            throw new BadRequest($this->getInjection('language')->translate("CantAddInActive", 'exceptions', 'Asset'));
+        }
+
+        // create leftAsset relation
+        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
+            $this->getInjection('serviceFactory')->create('Asset')->linkToAsset($entity, $foreign);
+        }
+
+        // check join with last (list) category
+        if ($relationName === "assetCategories" && $this->hasChildCategory($foreign)) {
+            throw new BadRequest($this->getInjection('language')->translate("Category is not last", 'exceptions', 'Global'));
+        }
+
+        parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
+    }
+
+    protected function beforeUnrelate(Entity $entity, $relationName, $foreign, array $options = [])
+    {
+        // remove leftAsset relation
+        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
+            $this->getInjection('serviceFactory')->create('Asset')->unlinkToAsset($entity, $foreign);
+        }
+
+        parent::beforeUnrelate($entity, $relationName, $foreign, $options);
+    }
+
+    private function hasChildCategory($entity): bool
+    {
+        if (is_string($entity)) {
+            $entity = $this->getEntityManager()->getRepository("AssetCategory")->where(['id' => $entity])->findOne();
+        }
+
+        if (!is_object($entity)) {
+            return false;
+        }
+
+        return $entity->get('hasChild');
+    }
+
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('configManager');
+        $this->addDependency('validator');
+        $this->addDependency('serviceFactory');
+        $this->addDependency('language');
     }
 }

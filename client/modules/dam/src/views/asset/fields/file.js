@@ -34,10 +34,6 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
         setup() {
             Dep.prototype.setup.call(this);
 
-            this.listenTo(this.model, "change:type", () => {
-                this.deleteAttachment();
-            });
-
             this.listenTo(this.model, "change:name", () => {
                 if (this.model.get('name')) {
                     const name = this.model.get('name');

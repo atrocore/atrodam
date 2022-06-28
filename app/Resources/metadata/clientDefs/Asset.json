@@ -166,16 +166,6 @@
           ]
         }
       },
-      "type": {
-        "readOnly": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "id"
-            }
-          ]
-        }
-      },
       "size": {
         "visible": {
           "conditionGroup": [
