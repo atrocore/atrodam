@@ -1,11 +1,12 @@
 {
   "fields": {
-    "validationRules": "Validation Rules",
-    "sortOrder": "Sort Order",
-    "isDefault": "Default type"
+    "validationRules": "Validation rules",
+    "sortOrder": "Sort order",
+    "isDefault": "Default type",
+    "assignAutomatically": "Assign automatically"
   },
   "links": {
-    "validationRules": "Validation Rules"
+    "validationRules": "Validation rules"
   },
   "exceptions": {
     "fileAssetTypeIsRequired": "The 'File' asset type must always exist."

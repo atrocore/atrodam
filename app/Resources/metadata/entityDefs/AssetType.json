@@ -37,6 +37,10 @@
     "isDefault": {
       "type": "bool",
       "default": false
+    },
+    "assignAutomatically": {
+      "type": "bool",
+      "default": false
     }
   },
   "links": {
@@ -56,8 +60,8 @@
     }
   },
   "collection": {
-    "sortBy": "createdAt",
-    "asc": false
+    "sortBy": "name",
+    "asc": true
   },
   "indexes": {
     "name": {
