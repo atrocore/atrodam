@@ -33,18 +33,13 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
+use Dam\Repositories\AssetType;
 use Espo\Listeners\AbstractListener;
 use Espo\Core\EventManager\Event;
 
-/**
- * Class Metadata
- */
 class Metadata extends AbstractListener
 {
-    /**
-     * @param Event $event
-     */
-    public function modify(Event $event)
+    public function modify(Event $event): void
     {
         $data = $event->getArgument('data');
 
@@ -57,9 +52,13 @@ class Metadata extends AbstractListener
             $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
             $data['entityDefs']['Asset']['fields']['type']['default'] = 'File';
+            $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'] = [];
             foreach ($typesData as $item) {
-                if (!empty($item['is_default'])) {
+                if (!empty($item['isDefault'])) {
                     $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
+                }
+                if (!empty($item['assignAutomatically'])) {
+                    $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'][] = $item['name'];
                 }
             }
         }
@@ -69,29 +68,27 @@ class Metadata extends AbstractListener
 
     protected function getAssetTypes(): array
     {
-        /** @var \PDO $pdo */
-        $pdo = $this->getContainer()->get('pdo');
+        /** @var AssetType $repository */
+        $repository = $this->getEntityManager()->getRepository('AssetType');
 
-        try {
-            $types = $pdo
-                ->query("SELECT id, name, is_default FROM asset_type WHERE deleted=0 ORDER BY sort_order ASC")
-                ->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\Throwable $e) {
-            $types = [];
-        }
+        $types = $repository
+            ->select(['id', 'name', 'isDefault', 'assignAutomatically'])
+            ->order('sort_order', 'ASC')
+            ->find()
+            ->toArray();
 
         if (!in_array('File', array_column($types, 'name'))) {
-            $types[] = ['id' => 'file', 'name' => 'File', 'is_default' => false];
-            $pdo->exec("DELETE FROM asset_type WHERE id='file';INSERT INTO asset_type (id, name, sort_order) VALUE ('file', 'File', 999)");
+            $fileTypeData = ['name' => 'File', 'isDefault' => false, 'assignAutomatically' => true];
+            $fileType = $repository->get();
+            $fileType->set($fileTypeData);
+            $repository->save($fileType);
+            $types[] = $fileTypeData;
         }
 
         return $types;
     }
 
-    /**
-     * @param array $data
-     */
-    protected function updateRelationMetadata(array &$data)
+    protected function updateRelationMetadata(array &$data): void
     {
         $scopes = [];
 

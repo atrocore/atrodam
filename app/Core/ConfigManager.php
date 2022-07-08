@@ -53,7 +53,7 @@ class ConfigManager extends Injectable
      */
     public static function getType($type)
     {
-        return strtolower(str_replace(" ", '-', $type));
+        return strtolower(str_replace(" ", '-', $type[0]));
     }
 
     /**

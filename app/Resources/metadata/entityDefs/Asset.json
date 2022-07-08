@@ -210,7 +210,7 @@
       "tooltip": false
     },
     "type": {
-      "type": "enum",
+      "type": "multiEnum",
       "required": false,
       "fontSize": 1,
       "options": [],
@@ -341,11 +341,6 @@
       "columns": [
         "name",
         "deleted"
-      ]
-    },
-    "type": {
-      "columns": [
-        "type"
       ]
     }
   }
