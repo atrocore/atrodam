@@ -144,6 +144,10 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                 attrs._relationEntityId = hashParts[1];
             }
 
+            if (attrs.type && attrs.type.length === 0) {
+                delete attrs.type;
+            }
+
             let self = this;
             if (count > 0) {
                 this.model.save(attrs, {
