@@ -54,7 +54,7 @@ class Metadata extends AbstractListener
             $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'] = [];
             foreach ($typesData as $item) {
                 if (!empty($item['isDefault'])) {
-                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
+//                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
                 }
                 if (!empty($item['assignAutomatically'])) {
                     $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'][] = $item['name'];
