@@ -159,8 +159,7 @@ class Attachment extends \Espo\Services\Attachment
 
         $entity->set('contents', $data->contents);
 
-        /** @var string $type */
-        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType'], 'File');
+        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType'], ['File']);
         if (!empty($data->modelAttributes->type)) {
             $type = $data->modelAttributes->type;
         }
