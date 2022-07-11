@@ -2,7 +2,6 @@
   "fields": {
     "validationRules": "Validation rules",
     "sortOrder": "Sort order",
-    "isDefault": "Default type",
     "assignAutomatically": "Assign automatically"
   },
   "links": {

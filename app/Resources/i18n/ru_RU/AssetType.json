@@ -2,7 +2,6 @@
   "fields": {
     "validationRules": "Правила проверки",
     "sortOrder": "Порядок сортировки",
-    "isDefault": "Тип по умолчанию",
     "assignAutomatically": "Назначать автоматически"
   },
   "links": {

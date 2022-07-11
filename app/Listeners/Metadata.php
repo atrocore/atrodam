@@ -53,9 +53,6 @@ class Metadata extends AbstractListener
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
             $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'] = [];
             foreach ($typesData as $item) {
-                if (!empty($item['isDefault'])) {
-//                    $data['entityDefs']['Asset']['fields']['type']['default'] = $item['name'];
-                }
                 if (!empty($item['assignAutomatically'])) {
                     $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'][] = $item['name'];
                 }
@@ -71,13 +68,13 @@ class Metadata extends AbstractListener
         $repository = $this->getEntityManager()->getRepository('AssetType');
 
         $types = $repository
-            ->select(['id', 'name', 'isDefault', 'assignAutomatically'])
+            ->select(['id', 'name', 'assignAutomatically'])
             ->order('sort_order', 'ASC')
             ->find()
             ->toArray();
 
         if (!in_array('File', array_column($types, 'name'))) {
-            $fileTypeData = ['name' => 'File', 'isDefault' => false, 'assignAutomatically' => true];
+            $fileTypeData = ['name' => 'File', 'assignAutomatically' => true];
             $fileType = $repository->get();
             $fileType->set($fileTypeData);
             $repository->save($fileType);
