@@ -34,7 +34,7 @@
     "sortOrder": {
       "type": "int"
     },
-    "isDefault": {
+    "assignAutomatically": {
       "type": "bool",
       "default": false
     }
@@ -56,8 +56,8 @@
     }
   },
   "collection": {
-    "sortBy": "createdAt",
-    "asc": false
+    "sortBy": "name",
+    "asc": true
   },
   "indexes": {
     "name": {

@@ -46,10 +46,6 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
      */
     protected function beforeSave(Entity $entity, array $options = [])
     {
-        if ($entity->isAttributeChanged('isDefault')) {
-            $this->getEntityManager()->nativeQuery("UPDATE `asset_type` SET is_default=0 WHERE 1");
-        }
-
         if ($entity->isAttributeChanged('name') && $entity->getFetched('name') == 'File') {
             throw new BadRequest($this->getInjection('language')->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
         }

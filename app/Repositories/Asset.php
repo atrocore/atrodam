@@ -33,8 +33,8 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
 
 /**
@@ -139,27 +139,33 @@ class Asset extends AbstractRepository
             throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
         }
 
-        // set default type
+        /**
+         * Assign types automatically if it needs
+         */
         if (empty($entity->get('type'))) {
-            $entity->set('type', 'File');
+            $type = [];
+            foreach ($this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'assignAutomatically'], []) as $assetType) {
+                try {
+                    $this->getInjection(AssetValidator::class)->validateViaTypes([$assetType], $file);
+                    $type[] = $assetType;
+                } catch (\Throwable $e) {
+                    // ignore validation error
+                }
+            }
+            if (empty($type)) {
+                $type = ['File'];
+            }
+            $entity->set('type', $type);
         }
 
         // validate asset if type changed
         if (!$entity->isNew() && $entity->isAttributeChanged('type')) {
-            $config = $this->getInjection("configManager")->getByType([\Dam\Core\ConfigManager::getType($entity->get('type'))]);
-            if (!empty($config['validations'])) {
-                foreach ($config['validations'] as $type => $value) {
-                    $this->getInjection('validator')->validate($type, clone $file, ($value['private'] ?? $value));
-                }
-            }
+            $this->getInjection(AssetValidator::class)->validate($entity);
         }
 
         // set defaults
         if (empty($entity->get('libraryId'))) {
             $entity->set('libraryId', '1');
-        }
-        if (empty($entity->get('type'))) {
-            $entity->set('type', 'File');
         }
 
         // prepare name
@@ -272,8 +278,7 @@ class Asset extends AbstractRepository
     {
         parent::init();
 
-        $this->addDependency('configManager');
-        $this->addDependency('validator');
+        $this->addDependency(AssetValidator::class);
         $this->addDependency('serviceFactory');
         $this->addDependency('language');
     }

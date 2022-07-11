@@ -39,19 +39,12 @@ class ConfigManager extends Injectable
 {
     protected $config;
 
-    const PATH_TO_DAM = "data/dam";
-
     public function __construct()
     {
         $this->addDependency('entityManager');
     }
 
-    /**
-     * @param $type
-     *
-     * @return string
-     */
-    public static function getType($type)
+    public static function getType(string $type): string
     {
         return strtolower(str_replace(" ", '-', $type));
     }

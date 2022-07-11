@@ -2,7 +2,7 @@
   "fields": {
     "validationRules": "Validierungsregel",
     "sortOrder": "Sortierung",
-    "isDefault": "Standardtyp"
+    "assignAutomatically": "Automatisch zuweisen"
   },
   "links": {
     "validationRules": "Validierungsregel"
