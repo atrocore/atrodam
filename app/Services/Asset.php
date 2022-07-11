@@ -159,8 +159,6 @@ class Asset extends Base
      */
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {
-        $type = ConfigManager::getType($asset->get('type'));
-
         $fileInfo = $this->getService("Attachment")->getFileInfo($asset->get("file"));
 
         $asset->set(
