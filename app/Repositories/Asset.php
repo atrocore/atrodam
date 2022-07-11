@@ -33,8 +33,8 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
 
 /**
@@ -141,17 +141,12 @@ class Asset extends AbstractRepository
 
         // set default type
         if (empty($entity->get('type'))) {
-            $entity->set('type', 'File');
+            $entity->set('type', ['File']);
         }
 
         // validate asset if type changed
         if (!$entity->isNew() && $entity->isAttributeChanged('type')) {
-            $config = $this->getInjection("configManager")->getByType([\Dam\Core\ConfigManager::getType($entity->get('type'))]);
-            if (!empty($config['validations'])) {
-                foreach ($config['validations'] as $type => $value) {
-                    $this->getInjection('validator')->validate($type, clone $file, ($value['private'] ?? $value));
-                }
-            }
+            $this->getInjection(AssetValidator::class)->validate($entity);
         }
 
         // set defaults
@@ -272,8 +267,7 @@ class Asset extends AbstractRepository
     {
         parent::init();
 
-        $this->addDependency('configManager');
-        $this->addDependency('validator');
+        $this->addDependency(AssetValidator::class);
         $this->addDependency('serviceFactory');
         $this->addDependency('language');
     }

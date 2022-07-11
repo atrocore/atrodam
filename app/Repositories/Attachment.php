@@ -33,7 +33,7 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
-use Dam\Core\ConfigManager;
+use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Dam\Entities\Asset;
@@ -85,12 +85,7 @@ class Attachment extends \Espo\Repositories\Attachment
 
         try {
             if (!$skipValidation) {
-                $config = $this->getInjection("configManager")->getByType([ConfigManager::getType($asset->get('type'))]);
-                if (!empty($config['validations']) && is_array($config['validations'])) {
-                    foreach ($config['validations'] as $type => $value) {
-                        $this->getInjection('validator')->validate($type, $attachment, ($value['private'] ?? $value));
-                    }
-                }
+                $this->getInjection(AssetValidator::class)->validate($asset);
             }
             $this->getEntityManager()->saveEntity($asset);
         } catch (Throwable $exception) {
@@ -100,15 +95,11 @@ class Attachment extends \Espo\Repositories\Attachment
         }
     }
 
-    /**
-     * Init
-     */
     protected function init()
     {
         parent::init();
 
-        $this->addDependency("validator");
-        $this->addDependency("configManager");
+        $this->addDependency(AssetValidator::class);
     }
 
     /**

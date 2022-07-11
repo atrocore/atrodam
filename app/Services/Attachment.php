@@ -33,6 +33,7 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
+use Dam\Core\AssetValidator;
 use Dam\Core\Exceptions\SuchAssetAlreadyExists;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
@@ -143,22 +144,6 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @inheritDoc
-     */
-    public function createByChunks(\stdClass $attachment): Entity
-    {
-        $entity = parent::createByChunks($attachment);
-
-        // validate
-        $this->validateAttachment($entity, $attachment);
-
-        // create asset
-        $this->createAsset($entity, $attachment);
-
-        return $entity;
-    }
-
-    /**
      * @param Entity    $entity
      * @param \stdClass $data
      *
@@ -183,15 +168,7 @@ class Attachment extends \Espo\Services\Attachment
             $type = $data->modelAttributes->attributeAssetType;
         }
 
-        /** @var array $config */
-        $config = $this->getInjection("configManager")->getByType([\Dam\Core\ConfigManager::getType($type)]);
-
-        // validate
-        if (!empty($config['validations'])) {
-            foreach ($config['validations'] as $type => $value) {
-                $this->getInjection('validator')->validate($type, $entity, ($value['private'] ?? $value));
-            }
-        }
+        $this->getInjection(AssetValidator::class)->validateViaTypes($type, $entity);
     }
 
     /**
@@ -303,8 +280,7 @@ class Attachment extends \Espo\Services\Attachment
         parent::init();
 
         $this->addDependency('fileStorageManager');
-        $this->addDependency('configManager');
-        $this->addDependency('validator');
+        $this->addDependency(AssetValidator::class);
     }
 
     /**
