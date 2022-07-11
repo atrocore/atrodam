@@ -51,7 +51,6 @@ class Metadata extends AbstractListener
             $data['fields']['asset']['hasPreviewExtensions'][] = 'pdf';
             $data['entityDefs']['Asset']['fields']['type']['options'] = $data['fields']['asset']['types'];
             $data['entityDefs']['Asset']['fields']['type']['optionsIds'] = array_column($typesData, 'id');
-            $data['entityDefs']['Asset']['fields']['type']['default'] = ['File'];
             $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'] = [];
             foreach ($typesData as $item) {
                 if (!empty($item['isDefault'])) {

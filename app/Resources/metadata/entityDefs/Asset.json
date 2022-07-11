@@ -214,6 +214,7 @@
       "required": false,
       "fontSize": 1,
       "options": [],
+      "default": [],
       "isSorted": false,
       "audited": false,
       "readOnly": false,
