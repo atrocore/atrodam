@@ -163,7 +163,7 @@ class Asset extends Base
 
         $asset->set(
             [
-                "size" => round($fileInfo['size'] / 1024, 1),
+                "size"     => round($fileInfo['size'] / 1024, 1),
                 "sizeUnit" => "kb",
             ]
         );
@@ -230,26 +230,39 @@ class Asset extends Base
 
     protected function massCreateAssets(\stdClass $data): Entity
     {
+        $inTransaction = false;
+        if (!$this->getEntityManager()->getPDO()->inTransaction()) {
+            $this->getEntityManager()->getPDO()->beginTransaction();
+            $inTransaction = true;
+        }
+
         $entity = $this->getRepository()->get();
 
-        foreach ($data->filesIds as $fileId) {
-            $fileName = $data->filesNames->$fileId;
+        try {
+            foreach ($data->filesIds as $fileId) {
+                $fileName = $data->filesNames->$fileId;
 
-            $postData = clone $data;
-            $postData->fileId = $fileId;
-            $postData->fileName = $fileName;
-            $postData->name = $fileName;
-            $postData->sorting = null;
+                $postData = clone $data;
+                $postData->fileId = $fileId;
+                $postData->fileName = $fileName;
+                $postData->name = $fileName;
+                $postData->sorting = null;
 
-            unset($postData->filesIds);
-            unset($postData->filesNames);
-            unset($postData->filesTypes);
+                unset($postData->filesIds);
+                unset($postData->filesNames);
+                unset($postData->filesTypes);
 
-            try {
                 $entity = parent::createEntity($postData);
-            } catch (\Throwable $e) {
-                $GLOBALS['log']->error("ERROR in massCreateAssets: " . $e->getMessage());
             }
+
+            if ($inTransaction) {
+                $this->getEntityManager()->getPDO()->commit();
+            }
+        } catch (\Throwable $e) {
+            if ($inTransaction) {
+                $this->getEntityManager()->getPDO()->rollBack();
+            }
+            throw new BadRequest("{$fileName}: {$e->getMessage()}");
         }
 
         return $entity;
