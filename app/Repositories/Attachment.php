@@ -81,7 +81,7 @@ class Attachment extends \Espo\Repositories\Attachment
         $asset->set('name', $attachment->get('name'));
         $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
         $asset->set('fileId', $attachment->get('id'));
-        $asset->set('type', $type);
+        $asset->set('type', [$type]);
 
         try {
             if (!$skipValidation) {

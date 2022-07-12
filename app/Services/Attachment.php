@@ -155,11 +155,7 @@ class Attachment extends \Espo\Services\Attachment
             throw (new SuchAssetAlreadyExists($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset')))->setAsset($asset);
         }
 
-        $entity = clone $entity;
-
-        $entity->set('contents', $data->contents);
-
-        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType'], ['File']);
+        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType']);
         if (!empty($data->modelAttributes->type)) {
             $type = $data->modelAttributes->type;
         }
@@ -167,7 +163,14 @@ class Attachment extends \Espo\Services\Attachment
             $type = $data->modelAttributes->attributeAssetType;
         }
 
-        $this->getInjection(AssetValidator::class)->validateViaTypes($type, $entity);
+        if (is_string($type)) {
+            $type = [$type];
+        }
+
+        $attachment = clone $entity;
+        $attachment->set('contents', $data->contents);
+
+        $this->getInjection(AssetValidator::class)->validateViaTypes($type, $attachment);
     }
 
     /**
