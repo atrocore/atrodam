@@ -33,7 +33,6 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
-use Dam\Repositories\AssetType;
 use Espo\Listeners\AbstractListener;
 use Espo\Core\EventManager\Event;
 
