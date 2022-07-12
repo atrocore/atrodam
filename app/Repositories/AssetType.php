@@ -65,6 +65,15 @@ class AssetType extends Base
         return !empty($asset);
     }
 
+    protected function beforeSave(Entity $entity, array $options = [])
+    {
+        if ($this->isInUse($entity)) {
+            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUse', 'exceptions', 'AssetType'));
+        }
+
+        parent::beforeSave($entity, $options);
+    }
+
     protected function afterSave(Entity $entity, array $options = [])
     {
         $this->clearCache();
