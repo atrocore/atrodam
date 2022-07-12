@@ -53,6 +53,7 @@
     "assetsAdded": "Ассеты добавлены и будут доступны через несколько минут."
   },
   "exceptions": {
+    "noAssetTypeProvided": "Тип ассета не указан.",
     "assetExistWithOtherType": "Ассет '%s' уже существует с другим типом.",
     "fileExtensionCannotBeChanged": "Расширение файла не может быть изменено.",
     "urlDownloadFailed": "Загрузка для '%s' не удалась.",

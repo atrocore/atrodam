@@ -57,6 +57,7 @@
     "assetsAdded": "Assets werden hinzugefügt und werden in wenigen Augenblicken verfügbar sein."
   },
   "exceptions": {
+    "noAssetTypeProvided": "Kein Asset-Typ angegeben.",
     "assetExistWithOtherType": "Asset '%s' existiert bereits mit einem anderen Asset-Typ.",
     "fileExtensionCannotBeChanged": "Die Dateierweiterung kann nicht geändert werden.",
     "urlDownloadFailed": "Download für '%s' fehlgeschlagen.",

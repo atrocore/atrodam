@@ -129,6 +129,21 @@ class Asset extends AbstractRepository
         return $this->getMapper()->unrelate($foreign, "relatedAssets", $main);
     }
 
+    public function getPossibleTypes(Entity $attachment): array
+    {
+        $types = [];
+        foreach ($this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'assignAutomatically'], []) as $assetType) {
+            try {
+                $this->getInjection(AssetValidator::class)->validateViaTypes([$assetType], $attachment);
+                $types[] = $assetType;
+            } catch (\Throwable $e) {
+                // ignore validation error
+            }
+        }
+
+        return $types;
+    }
+
     /**
      * @inheritDoc
      */
@@ -139,23 +154,13 @@ class Asset extends AbstractRepository
             throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
         }
 
-        /**
-         * Assign types automatically if it needs
-         */
         if (empty($entity->get('type'))) {
-            $type = [];
-            foreach ($this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'assignAutomatically'], []) as $assetType) {
-                try {
-                    $this->getInjection(AssetValidator::class)->validateViaTypes([$assetType], $file);
-                    $type[] = $assetType;
-                } catch (\Throwable $e) {
-                    // ignore validation error
-                }
+            $possibleTypes = $this->getPossibleTypes($file);
+            if (empty($possibleTypes)) {
+                throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
             }
-            if (empty($type)) {
-                $type = ['File'];
-            }
-            $entity->set('type', $type);
+
+            $entity->set('type', $possibleTypes);
         }
 
         // validate asset if type changed
