@@ -163,14 +163,16 @@ class Attachment extends \Espo\Services\Attachment
             $type = $data->modelAttributes->attributeAssetType;
         }
 
-        if (is_string($type)) {
-            $type = [$type];
+        if (!empty($type)) {
+            if (is_string($type)) {
+                $type = [$type];
+            }
+
+            $attachment = clone $entity;
+            $attachment->set('contents', $data->contents);
+
+            $this->getInjection(AssetValidator::class)->validateViaTypes($type, $attachment);
         }
-
-        $attachment = clone $entity;
-        $attachment->set('contents', $data->contents);
-
-        $this->getInjection(AssetValidator::class)->validateViaTypes($type, $attachment);
     }
 
     /**
