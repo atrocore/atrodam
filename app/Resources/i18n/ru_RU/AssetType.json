@@ -8,7 +8,7 @@
     "validationRules": "Правила проверки"
   },
   "exceptions": {
-    "fileAssetTypeIsRequired": "Тип 'Файл' должен существовать всегда."
+    "assetTypeInUse": "Тип ассета используется."
   },
   "labels": {
     "Create AssetType": "Создать тип ассета"

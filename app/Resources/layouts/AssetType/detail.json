@@ -8,6 +8,12 @@
         {
           "name": "assignAutomatically"
         }
+      ],
+      [
+        {
+          "name": "sortOrder"
+        },
+        false
       ]
     ],
     "style": "default",

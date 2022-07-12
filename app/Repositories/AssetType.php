@@ -33,29 +33,38 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Espo\Core\Templates\Repositories\Base;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
-/**
- * Class AssetType
- */
-class AssetType extends \Espo\Core\Templates\Repositories\Base
+class AssetType extends Base
 {
-    /**
-     * @inheritDoc
-     */
-    protected function beforeSave(Entity $entity, array $options = [])
+    public function deleteValidationRules(Entity $entity): void
     {
-        if ($entity->isAttributeChanged('name') && $entity->getFetched('name') == 'File') {
-            throw new BadRequest($this->getInjection('language')->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
-        }
-
-        parent::beforeSave($entity, $options);
+        $this
+            ->getEntityManager()
+            ->getRepository('ValidationRule')
+            ->where(['assetTypeId' => $entity->get('id')])
+            ->removeCollection();
     }
 
-    /**
-     * @inheritDoc
-     */
+    public function clearCache(): void
+    {
+        $this->getInjection('dataManager')->clearCache();
+    }
+
+    public function isInUse(Entity $entity): bool
+    {
+        $asset = $this
+            ->getEntityManager()
+            ->getRepository('Asset')
+            ->select(['id'])
+            ->where(['type*' => '%"' . $entity->get('name') . '"%'])
+            ->findOne();
+
+        return !empty($asset);
+    }
+
     protected function afterSave(Entity $entity, array $options = [])
     {
         $this->clearCache();
@@ -63,44 +72,29 @@ class AssetType extends \Espo\Core\Templates\Repositories\Base
         parent::afterSave($entity, $options);
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function beforeRemove(Entity $entity, array $options = [])
     {
-        if ($entity->get('name') == 'File') {
-            throw new BadRequest($this->getInjection('language')->translate('fileAssetTypeIsRequired', 'exceptions', 'AssetType'));
+        if ($this->isInUse($entity)) {
+            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUse', 'exceptions', 'AssetType'));
         }
 
         parent::beforeRemove($entity, $options);
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function afterRemove(Entity $entity, array $options = [])
     {
+        $this->deleteValidationRules($entity);
+
         $this->clearCache();
 
         parent::afterRemove($entity, $options);
     }
 
-    /**
-     * @inheritDoc
-     */
     protected function init()
     {
         parent::init();
 
         $this->addDependency('dataManager');
         $this->addDependency('language');
-    }
-
-    /**
-     * Clearing cache
-     */
-    protected function clearCache(): void
-    {
-        $this->getInjection('dataManager')->clearCache();
     }
 }

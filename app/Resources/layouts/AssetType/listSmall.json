@@ -5,5 +5,8 @@
   },
   {
     "name": "assignAutomatically"
+  },
+  {
+    "name": "sortOrder"
   }
 ]

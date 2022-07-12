@@ -8,7 +8,7 @@
     "validationRules": "Validierungsregel"
   },
   "exceptions": {
-    "fileAssetTypeIsRequired": "Der Asset-Typ 'Datei' muss immer vorhanden sein."
+    "assetTypeInUse": "Asset-Typ wird verwendet."
   },
   "labels": {
     "Create AssetType": "Asset-Typ erstellen"

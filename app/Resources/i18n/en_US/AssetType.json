@@ -8,7 +8,7 @@
     "validationRules": "Validation rules"
   },
   "exceptions": {
-    "fileAssetTypeIsRequired": "The 'File' asset type must always exist."
+    "assetTypeInUse": "Asset type is in use."
   },
   "labels": {
     "Create AssetType": "Create Asset Type"

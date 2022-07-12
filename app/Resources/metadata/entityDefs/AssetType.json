@@ -56,7 +56,7 @@
     }
   },
   "collection": {
-    "sortBy": "name",
+    "sortBy": "sortOrder",
     "asc": true
   },
   "indexes": {

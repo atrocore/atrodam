@@ -64,24 +64,19 @@ class Metadata extends AbstractListener
 
     protected function getAssetTypes(): array
     {
-        /** @var AssetType $repository */
-        $repository = $this->getEntityManager()->getRepository('AssetType');
-
-        $types = $repository
-            ->select(['id', 'name', 'assignAutomatically'])
-            ->order('sort_order', 'ASC')
-            ->find()
-            ->toArray();
-
-        if (!in_array('File', array_column($types, 'name'))) {
-            $fileTypeData = ['name' => 'File', 'assignAutomatically' => true];
-            $fileType = $repository->get();
-            $fileType->set($fileTypeData);
-            $repository->save($fileType);
-            $types[] = $fileTypeData;
+        $assetTypes = $this->getContainer()->get('dataManager')->getCacheData('assetTypes');
+        if (empty($data)) {
+            $assetTypes = $this
+                ->getEntityManager()
+                ->getRepository('AssetType')
+                ->select(['id', 'name', 'assignAutomatically'])
+                ->order('sortOrder', 'ASC')
+                ->find()
+                ->toArray();
+            $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
         }
 
-        return $types;
+        return $assetTypes;
     }
 
     protected function updateRelationMetadata(array &$data): void
