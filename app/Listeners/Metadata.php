@@ -64,15 +64,19 @@ class Metadata extends AbstractListener
     protected function getAssetTypes(): array
     {
         $assetTypes = $this->getContainer()->get('dataManager')->getCacheData('assetTypes');
-        if (empty($data)) {
-            $assetTypes = $this
-                ->getEntityManager()
-                ->getRepository('AssetType')
-                ->select(['id', 'name', 'assignAutomatically'])
-                ->order('sortOrder', 'ASC')
-                ->find()
-                ->toArray();
-            $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
+        if (empty($assetTypes)) {
+            try {
+                $assetTypes = $this
+                    ->getEntityManager()
+                    ->getRepository('AssetType')
+                    ->select(['id', 'name', 'assignAutomatically'])
+                    ->order('sortOrder', 'ASC')
+                    ->find()
+                    ->toArray();
+                $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
+            } catch (\Throwable $e) {
+                $assetTypes = [];
+            }
         }
 
         return $assetTypes;
