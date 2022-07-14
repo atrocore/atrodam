@@ -50,9 +50,6 @@ class AssetValidator extends Injectable
     public function validateViaTypes(array $types, Entity $attachment): void
     {
         foreach ($types as $type) {
-            if (empty($type)) {
-                continue 1;
-            }
             $config = $this->getInjection("configManager")->getByType([ConfigManager::getType($type)]);
             if (!empty($config['validations'])) {
                 foreach ($config['validations'] as $type => $value) {
