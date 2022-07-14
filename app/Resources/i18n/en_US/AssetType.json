@@ -8,7 +8,8 @@
     "validationRules": "Validation rules"
   },
   "exceptions": {
-    "assetTypeInUse": "Asset type is in use."
+    "assetTypeInUseRename": "Such asset type is in use and cannot be renamed.",
+    "assetTypeInUseDelete": "Such asset type is in use and cannot be deleted."
   },
   "labels": {
     "Create AssetType": "Create Asset Type"

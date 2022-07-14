@@ -8,7 +8,8 @@
     "validationRules": "Validierungsregel"
   },
   "exceptions": {
-    "assetTypeInUse": "Asset-Typ wird verwendet."
+    "assetTypeInUseRename": "Ein solcher Asset-Typ wird verwendet und kann nicht umbenannt werden.",
+    "assetTypeInUseDelete": "Ein solcher Asset-Typ wird verwendet und kann nicht gelöscht werden."
   },
   "labels": {
     "Create AssetType": "Asset-Typ erstellen"

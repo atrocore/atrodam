@@ -59,7 +59,7 @@ class AssetType extends Base
             ->getEntityManager()
             ->getRepository('Asset')
             ->select(['id'])
-            ->where(['type*' => '%"' . $entity->get('name') . '"%'])
+            ->where(['type*' => '%"' . $entity->getFetched('name') . '"%'])
             ->findOne();
 
         return !empty($asset);
@@ -67,8 +67,8 @@ class AssetType extends Base
 
     protected function beforeSave(Entity $entity, array $options = [])
     {
-        if ($this->isInUse($entity)) {
-            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUse', 'exceptions', 'AssetType'));
+        if ($entity->isAttributeChanged('name') && $this->isInUse($entity)) {
+            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUseRename', 'exceptions', 'AssetType'));
         }
 
         parent::beforeSave($entity, $options);
@@ -84,7 +84,7 @@ class AssetType extends Base
     protected function beforeRemove(Entity $entity, array $options = [])
     {
         if ($this->isInUse($entity)) {
-            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUse', 'exceptions', 'AssetType'));
+            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUseDelete', 'exceptions', 'AssetType'));
         }
 
         parent::beforeRemove($entity, $options);
