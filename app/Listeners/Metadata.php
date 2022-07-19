@@ -55,6 +55,9 @@ class Metadata extends AbstractListener
                 if (!empty($item['assignAutomatically'])) {
                     $data['entityDefs']['Asset']['fields']['type']['assignAutomatically'][] = $item['name'];
                 }
+                if (!empty($item['typesToExclude'])) {
+                    $data['entityDefs']['Asset']['fields']['type']['typesToExclude'][$item['name']] = $item['typesToExclude'];
+                }
             }
         }
 
@@ -69,7 +72,7 @@ class Metadata extends AbstractListener
                 $assetTypes = $this
                     ->getEntityManager()
                     ->getRepository('AssetType')
-                    ->select(['id', 'name', 'assignAutomatically'])
+                    ->select(['id', 'name', 'assignAutomatically', 'typesToExclude'])
                     ->order('sortOrder', 'ASC')
                     ->find()
                     ->toArray();

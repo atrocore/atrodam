@@ -2,7 +2,8 @@
   "fields": {
     "validationRules": "Правила проверки",
     "sortOrder": "Порядок сортировки",
-    "assignAutomatically": "Назначать автоматически"
+    "assignAutomatically": "Назначать автоматически",
+    "typesToExclude": "Типы для исключения"
   },
   "links": {
     "validationRules": "Правила проверки"
@@ -13,5 +14,8 @@
   },
   "labels": {
     "Create AssetType": "Создать тип ассета"
+  },
+  "tooltips": {
+    "typesToExclude": "Если текущий тип успешно назначен ассету, эти типы будут удалены из него."
   }
 }

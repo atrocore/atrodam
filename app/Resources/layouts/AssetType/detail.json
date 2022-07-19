@@ -13,7 +13,9 @@
         {
           "name": "sortOrder"
         },
-        false
+        {
+          "name": "typesToExclude"
+        }
       ]
     ],
     "style": "default",
