@@ -165,7 +165,24 @@ class Asset extends AbstractRepository
 
         // validate asset if type changed
         if (!$entity->isNew() && $entity->isAttributeChanged('type')) {
-            $this->getInjection(AssetValidator::class)->validate($entity);
+            $typesToExclude = [];
+            foreach ($entity->get('type') as $type) {
+                $this->getInjection(AssetValidator::class)->validateViaType($type, $file);
+                $typesToExclude = array_merge($typesToExclude, $this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'typesToExclude', $type], []));
+            }
+
+            if (!empty($typesToExclude)) {
+                $filteredTypes = [];
+                foreach ($entity->get('type') as $type) {
+                    if (!in_array($type, $typesToExclude)) {
+                        $filteredTypes[] = $type;
+                    }
+                }
+                if (empty($filteredTypes)) {
+                    throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
+                }
+                $entity->set('type', $filteredTypes);
+            }
         }
 
         // set defaults

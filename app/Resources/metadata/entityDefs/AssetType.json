@@ -37,6 +37,11 @@
     "assignAutomatically": {
       "type": "bool",
       "default": false
+    },
+    "typesToExclude": {
+      "type": "array",
+      "tooltip": true,
+      "view": "dam:views/asset-type/fields/types-to-exclude"
     }
   },
   "links": {
