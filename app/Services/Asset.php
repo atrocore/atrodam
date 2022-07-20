@@ -63,7 +63,7 @@ class Asset extends Base
 
         $file = $entity->get('file');
         if (!empty($file)) {
-            $entity->set('icon', $this->prepareAssetIcon((string)$entity->get('type'), (string)$file->get('name')));
+            $entity->set('icon', $this->prepareAssetIcon((string)$file->get('name')));
             $entity->set('private', $file->get('private'));
 
             $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'));
@@ -379,7 +379,7 @@ class Asset extends Base
         return !empty($entity->get('filesIds')) && $entity->isNew();
     }
 
-    protected function prepareAssetIcon(string $type, string $fileName): ?string
+    protected function prepareAssetIcon(string $fileName): ?string
     {
         $fileNameParts = explode('.', $fileName);
         $fileExt = strtolower(array_pop($fileNameParts));
