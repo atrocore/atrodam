@@ -36,14 +36,11 @@ Espo.define('dam:views/settings/edit', 'views/settings/edit', function (Dep) {
 
         recordView: 'dam:views/admin/settings',
 
-        setupHeader: function () {
-            this.createView('header', this.headerView, {
-                model: this.model,
-                el: '#main > .header',
-                template: 'dam:admin/settings/headers/settings'
-            });
+        getHeader() {
+            return this.buildHeaderHtml([
+                this.getLanguage().translate('Dam', 'labels', 'Admin')
+            ], true)
         }
-
     });
 
 });

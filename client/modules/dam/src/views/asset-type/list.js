@@ -34,7 +34,9 @@ Espo.define('dam:views/asset-type/list', 'views/list',
         headerView: 'dam:views/asset-type/header',
 
         getHeader() {
-            return  `<a href="#Admin">${this.translate('Administration', 'labels', 'Admin')}</a><span class="subsection">${this.translate('Dam', 'labels', 'Admin')}</span>` + this.translate('AssetTypes', 'labels', 'Admin');
+            return this.buildHeaderHtml([
+                this.getLanguage().translate('AssetTypes', 'labels', 'Admin')
+            ], true)
         },
 
     })

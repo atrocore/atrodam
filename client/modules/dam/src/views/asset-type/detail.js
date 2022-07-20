@@ -39,7 +39,10 @@ Espo.define('dam:views/asset-type/detail', 'views/detail',
 
             const rootUrl = this.options.rootUrl || this.options.params.rootUrl || '#' + this.scope;
 
-            return `<a href="#Admin">${this.translate('Administration', 'labels', 'Admin')}</a><span class="subsection">${this.translate('Dam', 'labels', 'Admin')}</span><a href="${rootUrl}" class="action" data-action="navigateToRoot">${this.translate(this.scope, 'scopeNamesPlural')}</a>${name}`;
+            return this.buildHeaderHtml([
+                `<a href="${rootUrl}" class="action" data-action="navigateToRoot">${this.getLanguage().translate(this.scope, 'scopeNamesPlural')}</a>`,
+                name
+            ], true);
         },
 
     })
