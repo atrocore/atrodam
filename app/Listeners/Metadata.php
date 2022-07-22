@@ -127,10 +127,13 @@ class Metadata extends AbstractListener
                         ];
 
                         $data['entityDefs'][$scope]['fields']['mainImage'] = [
-                            'type'        => 'image',
-                            'notStorable' => true,
-                            'previewSize' => 'medium',
-                            'readOnly'    => true
+                            'type'               => 'image',
+                            'previewSize'        => 'medium',
+                            'notStorable'        => true,
+                            'readOnly'           => true,
+                            'massUpdateDisabled' => true,
+                            'filterDisabled'     => true,
+                            'emHidden'           => true
                         ];
 
                         $data['entityDefs'][$scope]['links']['mainImage'] = [
@@ -146,6 +149,7 @@ class Metadata extends AbstractListener
                             'layoutListSmallDisabled'   => true,
                             'layoutDetailDisabled'      => true,
                             'layoutDetailSmallDisabled' => true,
+                            'massUpdateDisabled'        => true,
                             'filterDisabled'            => true,
                             'exportDisabled'            => true,
                             'emHidden'                  => true
