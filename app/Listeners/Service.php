@@ -39,6 +39,22 @@ use Espo\Core\EventManager\Event;
 
 class Service extends AbstractListener
 {
+    public function beforeUpdateEntity(Event $event): void
+    {
+        $id = $event->getArgument('id');
+        $entityType = substr_replace($event->getArgument('target'), "", -7);
+        $data = $event->getArgument('data');
+
+        if (property_exists($data, 'mainImageAddOnly')) {
+            if (property_exists($data, 'mainImageId') && !empty($data->mainImageAddOnly)) {
+                $entity = $this->getService($entityType)->getEntity($id);
+                if (!empty($entity->get('mainImageId'))) {
+                    $data->mainImageId = $entity->get('mainImageId');
+                }
+            }
+        }
+    }
+
     public function afterLinkEntity(Event $event): void
     {
         /** @var Entity $entity */
