@@ -35,8 +35,7 @@ namespace Dam\Listeners;
 
 use Espo\Core\Utils\Util;
 use Espo\ORM\Entity;
-use Espo\ORM\EntityCollection;
-use Treo\Core\EventManager\Event;
+use Espo\Core\EventManager\Event;
 
 class Service extends AbstractListener
 {

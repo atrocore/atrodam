@@ -1,6 +1,7 @@
 {
   "fields": {
-    "mainImage": "Hauptbild"
+    "mainImage": "Hauptbild",
+    "mainImageAddOnly": "Hauptbild: AddOnly-Modus"
   },
   "scopeNames": {
     "Asset": "Asset",

@@ -1,6 +1,7 @@
 {
   "fields": {
-    "mainImage": "Main Image"
+    "mainImage": "Main Image",
+    "mainImageAddOnly": "Main Image: AddOnly Mode"
   },
   "scopeNames": {
     "Asset": "Asset",

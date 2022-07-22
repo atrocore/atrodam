@@ -138,6 +138,18 @@ class Metadata extends AbstractListener
                             'entity'      => 'Attachment',
                             'skipOrmDefs' => true
                         ];
+
+                        $data['entityDefs'][$scope]['fields']['mainImageAddOnly'] = [
+                            'type'                      => 'bool',
+                            'notStorable'               => true,
+                            'layoutListDisabled'        => true,
+                            'layoutListSmallDisabled'   => true,
+                            'layoutDetailDisabled'      => true,
+                            'layoutDetailSmallDisabled' => true,
+                            'filterDisabled'            => true,
+                            'exportDisabled'            => true,
+                            'emHidden'                  => true
+                        ];
                     }
 
                     $scopes[] = $scope;
