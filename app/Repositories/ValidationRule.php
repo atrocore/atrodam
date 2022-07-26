@@ -75,11 +75,16 @@ class ValidationRule extends Base
 
     public function recheckAllAssets(Entity $entity): void
     {
+        $assetType = $entity->get('assetType');
+        if (empty($assetType)) {
+            return;
+        }
+
         $assets = $this
             ->getEntityManager()
             ->getRepository('Asset')
             ->select(['id'])
-            ->where(['type*' => '%"' . $entity->get('assetTypeName') . '"%'])
+            ->where(['type*' => '%"' . $assetType->get('name') . '"%'])
             ->find();
 
         if (count($assets) === 0) {
