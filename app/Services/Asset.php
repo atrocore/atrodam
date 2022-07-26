@@ -26,13 +26,14 @@
  *  In accordance with Section 7(b) of the GNU General Public License version 3,
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  *
- * This software is not allowed to be used in Russia and Belarus.
+ *  This software is not allowed to be used in Russia and Belarus.
  */
 
 declare(strict_types=1);
 
 namespace Dam\Services;
 
+use Dam\Core\AssetValidator;
 use Dam\Core\ConfigManager;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\NotFound;
@@ -70,6 +71,49 @@ class Asset extends Base
             if (!empty($pathData['download'])) {
                 $entity->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
             }
+        }
+    }
+
+    public function recheckAssetTypes(array $data): void
+    {
+        if (empty($data['assetId'])) {
+            return;
+        }
+
+        try {
+            $asset = $this->getEntity($data['assetId']);
+        } catch (\Throwable $e) {
+            return;
+        }
+
+        $attachment = $asset->get('file');
+        if (empty($attachment)) {
+            return;
+        }
+
+        $typesToExclude = [];
+        foreach ($asset->get('type') as $type) {
+            try {
+                $this->getInjection(AssetValidator::class)->validateViaType($type, clone $attachment);
+            } catch (\Throwable $e) {
+                $typesToExclude[] = $type;
+            }
+        }
+
+        if (!empty($typesToExclude)) {
+            $filteredTypes = [];
+            foreach ($asset->get('type') as $type) {
+                if (!in_array($type, $typesToExclude)) {
+                    $filteredTypes[] = $type;
+                }
+            }
+
+            if (empty($filteredTypes)) {
+                $filteredTypes = ['File'];
+            }
+
+            $asset->set('type', $filteredTypes);
+            $this->getEntityManager()->saveEntity($asset, ['skipAll' => true]);
         }
     }
 
@@ -280,6 +324,7 @@ class Asset extends Base
         $this->addDependency('log');
         $this->addDependency('eventManager');
         $this->addDependency('queueManager');
+        $this->addDependency(AssetValidator::class);
     }
 
     protected function prepareUrl(string $downloadPath): string

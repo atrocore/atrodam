@@ -26,7 +26,7 @@
  *  In accordance with Section 7(b) of the GNU General Public License version 3,
  *  these Appropriate Legal Notices must retain the display of the "AtroDAM" word.
  *
- * This software is not allowed to be used in Russia and Belarus.
+ *  This software is not allowed to be used in Russia and Belarus.
  */
 
 declare(strict_types=1);
@@ -34,11 +34,9 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Espo\ORM\Entity;
+use Espo\Core\Templates\Repositories\Base;
 
-/**
- * Class ValidationRule
- */
-class ValidationRule extends \Espo\Core\Templates\Repositories\Base
+class ValidationRule extends Base
 {
     /**
      * @inheritDoc
@@ -49,5 +47,59 @@ class ValidationRule extends \Espo\Core\Templates\Repositories\Base
         $entity->set('name', $entity->get('type'));
 
         parent::beforeSave($entity, $options);
+    }
+
+    public function save(Entity $entity, array $options = [])
+    {
+        $inTransaction = false;
+        if (!$this->getEntityManager()->getPDO()->inTransaction()) {
+            $this->getEntityManager()->getPDO()->beginTransaction();
+            $inTransaction = true;
+        }
+
+        try {
+            $result = parent::save($entity, $options);
+            $this->recheckAllAssets($entity);
+            if ($inTransaction) {
+                $this->getEntityManager()->getPDO()->commit();
+            }
+        } catch (\Throwable $e) {
+            if ($inTransaction) {
+                $this->getEntityManager()->getPDO()->rollBack();
+            }
+            throw $e;
+        }
+
+        return $result;
+    }
+
+    public function recheckAllAssets(Entity $entity): void
+    {
+        $assetType = $entity->get('assetType');
+        if (empty($assetType)) {
+            return;
+        }
+
+        $assets = $this
+            ->getEntityManager()
+            ->getRepository('Asset')
+            ->select(['id'])
+            ->where(['type*' => '%"' . $assetType->get('name') . '"%'])
+            ->find();
+
+        if (count($assets) === 0) {
+            return;
+        }
+
+        foreach ($assets as $asset) {
+            $this->getInjection('pseudoTransactionManager')->pushCustomJob('Asset', 'recheckAssetTypes', ['assetId' => $asset->get('id')]);
+        }
+    }
+
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('pseudoTransactionManager');
     }
 }
