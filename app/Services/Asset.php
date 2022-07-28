@@ -94,7 +94,7 @@ class Asset extends Base
         $typesToExclude = [];
         foreach ($asset->get('type') as $type) {
             try {
-                $this->getInjection(AssetValidator::class)->validateViaType($type, clone $attachment);
+                $this->getInjection(AssetValidator::class)->validateViaType((string)$type, clone $attachment);
             } catch (\Throwable $e) {
                 $typesToExclude[] = $type;
             }

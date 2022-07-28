@@ -151,11 +151,15 @@ class Attachment extends \Espo\Services\Attachment
      */
     protected function validateAttachment(Entity $entity, \stdClass $data): void
     {
-        if (($data->parentType == 'Asset' || $data->relatedType == 'Asset') && in_array($data->field, ['file', 'files']) && !empty($asset = $entity->getAsset())) {
+        $parentType = property_exists($data, 'parentType') ? $data->parentType : '';
+        $relatedType = property_exists($data, 'relatedType') ? $data->relatedType : '';
+        $field = property_exists($data, 'field') ? $data->field : '';
+
+        if (($parentType === 'Asset' || $relatedType === 'Asset') && in_array($field, ['file', 'files']) && !empty($asset = $entity->getAsset())) {
             throw (new SuchAssetAlreadyExists($this->getInjection('language')->translate('suchAssetAlreadyExists', 'exceptions', 'Asset')))->setAsset($asset);
         }
 
-        $type = $this->getMetadata()->get(['entityDefs', $data->relatedType, 'fields', $data->field, 'assetType']);
+        $type = $this->getMetadata()->get(['entityDefs', $relatedType, 'fields', $field, 'assetType']);
         if (!empty($data->modelAttributes->type)) {
             $type = $data->modelAttributes->type;
         }
@@ -169,7 +173,9 @@ class Attachment extends \Espo\Services\Attachment
             }
 
             $attachment = clone $entity;
-            $attachment->set('contents', $data->contents);
+            if (property_exists($data, 'contents')) {
+                $attachment->set('contents', $data->contents);
+            }
 
             $this->getInjection(AssetValidator::class)->validateViaTypes($type, $attachment);
         }
