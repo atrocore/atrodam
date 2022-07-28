@@ -145,7 +145,6 @@
     },
     "library": {
       "type": "link",
-      "required": true,
       "defaultAttributes": {
         "libraryId": "1",
         "libraryName": "Default Library"
