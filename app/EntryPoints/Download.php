@@ -53,12 +53,10 @@ class Download extends \Espo\EntryPoints\Download
      */
     public function run()
     {
-        switch ($_GET['type']) {
-            case "custom" :
-                $this->custom();
-                break;
-            default:
-                $this->runDownload();
+        if (!empty($_GET['type']) && $_GET['type'] === 'custom') {
+            $this->custom();
+        } else {
+            $this->runDownload();
         }
     }
 
