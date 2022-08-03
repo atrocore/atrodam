@@ -340,7 +340,11 @@ class Attachment extends \Espo\Services\Attachment
      */
     protected function createAsset(Entity $entity, \stdClass $attachment): void
     {
-        if ($this->getMetadata()->get(['entityDefs', $attachment->relatedType, 'fields', $attachment->field, 'noAsset'], false)) {
+        if (
+            property_exists($attachment, 'relatedType')
+            && property_exists($attachment, 'field')
+            && $this->getMetadata()->get(['entityDefs', $attachment->relatedType, 'fields', $attachment->field, 'noAsset'], false)
+        ) {
             return;
         }
 
