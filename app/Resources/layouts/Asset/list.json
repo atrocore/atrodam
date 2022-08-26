@@ -13,5 +13,11 @@
   },
   {
     "name": "tags"
+  },
+  {
+    "name": "private"
+  },
+  {
+    "name": "isActive"
   }
 ]
