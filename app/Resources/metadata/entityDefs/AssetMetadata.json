@@ -17,7 +17,7 @@
   "links": {
     "asset": {
       "type": "belongsTo",
-      "foreign": "assetMetaDatas",
+      "foreign": "assetMetadata",
       "entity": "Asset"
     }
   },

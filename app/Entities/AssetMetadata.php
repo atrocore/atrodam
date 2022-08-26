@@ -31,10 +31,14 @@
 
 declare(strict_types=1);
 
-namespace Dam\Services;
+namespace Dam\Entities;
 
-use Espo\Core\Templates\Services\Base;
+use Espo\Core\Templates\Entities\Base;
 
-class AssetMetaData extends Base
+class AssetMetadata extends Base
 {
+    /**
+     * @var string
+     */
+    protected $entityType = "AssetMetadata";
 }

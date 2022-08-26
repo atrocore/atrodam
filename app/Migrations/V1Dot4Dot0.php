@@ -79,6 +79,8 @@ class V1Dot4Dot0 extends Base
         $this->execute("ALTER TABLE asset_meta_data DROP modified_by_id");
         $this->execute("ALTER TABLE asset_meta_data DROP assigned_user_id");
         $this->execute("ALTER TABLE asset_meta_data DROP owner_user_id");
+
+        $this->execute("RENAME TABLE `asset_meta_data` TO `asset_metadata`");
     }
 
     public function down(): void

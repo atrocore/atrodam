@@ -150,13 +150,13 @@
         "libraryName": "Default Library"
       }
     },
-    "assetMetaDatas": {
+    "assetMetadata": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
       "importDisabled": true,
-      "exportDisabled": true
+      "exportDisabled": false
     },
     "assetCategories": {
       "type": "linkMultiple",
@@ -270,10 +270,10 @@
       "audited": false,
       "entityAsset": false
     },
-    "assetMetaDatas": {
+    "assetMetadata": {
       "type": "hasMany",
       "foreign": "asset",
-      "entity": "AssetMetaData",
+      "entity": "AssetMetadata",
       "audited": false,
       "entityAsset": false,
       "disableMassRelation": true

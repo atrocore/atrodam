@@ -119,7 +119,7 @@ class Asset extends AbstractRepository
 
     public function clearAssetMetadata(Entity $asset): void
     {
-        $this->getEntityManager()->getRepository('AssetMetaData')->where(['assetId' => $asset->get('id')])->removeCollection();
+        $this->getEntityManager()->getRepository('AssetMetadata')->where(['assetId' => $asset->get('id')])->removeCollection();
     }
 
     public function updateMetadata(Entity $asset): void
@@ -147,7 +147,7 @@ class Asset extends AbstractRepository
         }
 
         foreach ($metadata as $name => $value) {
-            $item = $this->getEntityManager()->getEntity('AssetMetaData');
+            $item = $this->getEntityManager()->getEntity('AssetMetadata');
             $item->set('name', $name);
             $item->set('value', $value);
             $item->set('assetId', $asset->get('id'));
