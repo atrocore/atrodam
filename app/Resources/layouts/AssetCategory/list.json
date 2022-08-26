@@ -1,15 +1,12 @@
 [
-    {
-        "name": "name",
-        "link": true
-    },
-    {
-        "name": "code"
-    },
-    {
-        "name": "categoryRouteName"
-    },
-    {
-        "name": "isActive"
-    }
+  {
+    "name": "name",
+    "link": true
+  },
+  {
+    "name": "code"
+  },
+  {
+    "name": "isActive"
+  }
 ]

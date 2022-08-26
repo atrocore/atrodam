@@ -1,4 +1,6 @@
 {
+  "type": "Hierarchy",
+  "module": "Dam",
   "entity": true,
   "layouts": true,
   "tab": true,
@@ -16,11 +18,15 @@
   "notifications": true,
   "stream": false,
   "disabled": false,
-  "type": "Base",
-  "module": "Dam",
   "object": true,
   "hasAssignedUser": true,
   "hasTeam": true,
   "hasOwner": true,
-  "skipAssetSorting": true
+  "skipAssetSorting": true,
+  "multiParents": false,
+  "fieldValueInheritance": false,
+  "mandatoryUnInheritedFields": [
+    "code"
+  ],
+  "relationInheritance": false
 }

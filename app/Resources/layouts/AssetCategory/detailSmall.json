@@ -1,20 +1,21 @@
 [
-    {
-        "rows": [
-            [
-                {
-                    "name": "name",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "code",
-                    "fullWidth": true
-                }
-            ]
-        ],
-        "style": "default",
-        "label": ""
-    }
+  {
+    "label": "",
+    "rows": [
+      [
+        {
+          "name": "name"
+        },
+        {
+          "name": "sortOrder"
+        }
+      ],
+      [
+        {
+          "name": "code"
+        },
+        false
+      ]
+    ]
+  }
 ]

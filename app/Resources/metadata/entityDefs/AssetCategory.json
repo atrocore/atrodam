@@ -1,29 +1,5 @@
 {
   "fields": {
-    "libraries": {
-      "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "importDisabled": true,
-      "noLoad": true,
-      "isCustom": true
-    },
-    "categoryRoute": {
-      "type": "varchar",
-      "required": false,
-      "trim": true,
-      "readOnly": true,
-      "audited": false,
-      "tooltip": false
-    },
-    "categoryRouteName": {
-      "type": "varchar",
-      "required": false,
-      "trim": true,
-      "readOnly": true,
-      "audited": false,
-      "tooltip": false
-    },
     "name": {
       "type": "varchar",
       "required": true,
@@ -50,72 +26,61 @@
       "readOnly": true,
       "view": "views/fields/user"
     },
-    "assignedUser": {
-      "type": "link",
-      "required": true,
-      "view": "views/fields/assigned-user"
-    },
-    "teams": {
-      "type": "linkMultiple",
-      "view": "views/fields/teams"
-    },
     "code": {
       "type": "varchar",
+      "view": "dam:views/fields/code-from-name",
+      "pattern": "/^[a-z_0-9]+$/",
       "required": true,
       "trim": true,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false,
-      "emHidden": true,
-      "layoutMassUpdateDisabled": true,
-      "view": "dam:views/fields/code-from-name",
-      "pattern": "/^[a-z_0-9]+$/"
+      "emHidden": true
     },
     "isActive": {
-      "notNull": true,
-      "type": "bool",
-      "default": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
+      "type": "bool"
     },
-    "hasChild": {
-      "type": "bool",
-      "emHidden": true,
-      "hidden": true,
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "layoutListDisabled": true
-    },
-    "categories": {
+    "libraries": {
       "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "noLoad": true,
-      "importDisabled": true,
-      "layoutRelationshipsDisabled": true
-    },
-    "categoryParent": {
-      "type": "link",
-      "layoutMassUpdateDisabled": true
+      "noLoad": true
     },
     "assets": {
       "type": "linkMultiple",
-      "layoutDetailDisabled": true,
-      "layoutMassUpdateDisabled": true,
-      "importDisabled": true,
       "noLoad": false
+    },
+    "children": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "massUpdateDisabled": true,
+      "noLoad": true
+    },
+    "parents": {
+      "type": "linkMultiple",
+      "view": "views/fields/hierarchy-parents",
+      "massUpdateDisabled": true,
+      "noLoad": true
+    },
+    "sortOrder": {
+      "type": "int",
+      "default": null,
+      "massUpdateDisabled": true,
+      "filterDisabled": true
+    },
+    "hierarchySortOrder": {
+      "type": "int",
+      "notStorable": true,
+      "relatingEntityField": [
+        "AssetCategory"
+      ],
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "massUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true,
+      "emHidden": true
     }
   },
   "links": {
-    "libraries": {
-      "type": "hasMany",
-      "relationName": "libraryAssetCategory",
-      "foreign": "assetCategories",
-      "entity": "Library",
-      "audited": false,
-      "isCustom": true
-    },
     "createdBy": {
       "type": "belongsTo",
       "entity": "User"
@@ -124,34 +89,44 @@
       "type": "belongsTo",
       "entity": "User"
     },
-    "assignedUser": {
-      "type": "belongsTo",
-      "entity": "User"
-    },
-    "teams": {
+    "libraries": {
       "type": "hasMany",
-      "entity": "Team",
-      "relationName": "EntityTeam",
-      "layoutRelationshipsDisabled": true
-    },
-    "categories": {
-      "type": "hasMany",
-      "foreign": "categoryParent",
-      "entity": "AssetCategory",
-      "audited": false
-    },
-    "categoryParent": {
-      "type": "belongsTo",
-      "foreign": "categories",
-      "entity": "AssetCategory",
-      "audited": false
+      "relationName": "libraryAssetCategory",
+      "foreign": "assetCategories",
+      "entity": "Library"
     },
     "assets": {
       "type": "hasMany",
       "relationName": "assetCategoryAsset",
       "foreign": "assetCategories",
-      "entity": "Asset",
-      "audited": false
+      "entity": "Asset"
+    },
+    "children": {
+      "type": "hasMany",
+      "relationName": "AssetCategoryHierarchy",
+      "foreign": "parents",
+      "entity": "AssetCategory",
+      "audited": false,
+      "midKeys": [
+        "entityId",
+        "parentId"
+      ],
+      "additionalColumns": {
+        "hierarchySortOrder": {
+          "type": "int"
+        }
+      }
+    },
+    "parents": {
+      "type": "hasMany",
+      "relationName": "AssetCategoryHierarchy",
+      "foreign": "children",
+      "entity": "AssetCategory",
+      "audited": false,
+      "midKeys": [
+        "parentId",
+        "entityId"
+      ]
     }
   },
   "collection": {
@@ -166,12 +141,6 @@
     "name": {
       "columns": [
         "name",
-        "deleted"
-      ]
-    },
-    "assignedUser": {
-      "columns": [
-        "assignedUserId",
         "deleted"
       ]
     }
