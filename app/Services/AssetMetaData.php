@@ -33,16 +33,15 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
-/**
- * Class AssetMetaData
- * @package Dam\Services
- */
-class AssetMetaData extends \Espo\Core\Templates\Services\Base
+use Espo\Core\Templates\Services\Base;
+
+class AssetMetaData extends Base
 {
     /**
      * @param $entityType
      * @param $entityId
      * @param $metaData
+     *
      * @return mixed
      */
     public function insertData($entityType, $entityId, $metaData)

@@ -33,22 +33,44 @@ declare(strict_types=1);
 
 namespace Dam\Controllers;
 
-use Espo\Core\Exceptions\NotFound;
+use Espo\Core\Controllers\Base;
 
-/**
- * Class AssetMetaData
- * @package Dam\Controllers
- */
-class AssetMetaData extends \Espo\Core\Templates\Controllers\Base
+class AssetMetaData extends Base
 {
-    /**
-     * @param $params
-     * @param $data
-     * @param $request
-     * @throws NotFound
-     */
-    public function actionList($params, $data, $request)
+    const MAX_SIZE_LIMIT = 200;
+
+    public function actionListLinked($params, $data, $request)
     {
-        throw new NotFound();
+        $id = $params['id'];
+        $link = $params['link'];
+
+        $where = $request->get('where');
+        $offset = $request->get('offset');
+        $maxSize = $request->get('maxSize');
+        $asc = $request->get('asc', 'true') === 'true';
+        $sortBy = $request->get('sortBy');
+        $q = $request->get('q');
+        $textFilter = $request->get('textFilter');
+
+        if (empty($maxSize)) {
+            $maxSize = self::MAX_SIZE_LIMIT;
+        }
+
+        $params = [
+            'where'      => $where,
+            'offset'     => $offset,
+            'maxSize'    => $maxSize,
+            'asc'        => $asc,
+            'sortBy'     => $sortBy,
+            'q'          => $q,
+            'textFilter' => $textFilter
+        ];
+
+        $result = $this->getServiceFactory()->create('AssetMetaData')->findLinkedEntities($id, $link, $params);
+
+        return [
+            'total' => $result['total'],
+            'list'  => isset($result['collection']) ? $result['collection']->getValueMapList() : $result['list']
+        ];
     }
 }

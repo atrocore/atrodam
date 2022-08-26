@@ -210,12 +210,14 @@ class Asset extends AbstractRepository
 
     protected function afterRemove(Entity $entity, array $options = [])
     {
-        if (!empty($entity->get("fileId"))) {
-            $attachment = $this->getEntityManager()->getEntity('Attachment', $entity->get("fileId"));
+        if (!empty($attachmentId = $entity->get('fileId'))) {
+            $attachment = $this->getEntityManager()->getEntity('Attachment', $attachmentId);
             if (!empty($attachment)) {
                 $this->getEntityManager()->removeEntity($attachment);
             }
         }
+
+        $this->getEntityManager()->getRepository('AssetMetaData')->where(['assetId' => $entity->get('id')])->removeCollection();
 
         parent::afterRemove($entity, $options);
     }

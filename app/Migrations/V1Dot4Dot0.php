@@ -65,6 +65,20 @@ class V1Dot4Dot0 extends Base
         $this->execute("ALTER TABLE asset_category DROP category_route_name");
         $this->execute("ALTER TABLE asset_category DROP has_child");
         $this->execute("ALTER TABLE asset_category DROP category_parent_id");
+
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER ON asset_meta_data");
+        $this->execute("DROP INDEX IDX_ASSIGNED_USER_ID ON asset_meta_data");
+        $this->execute("DROP INDEX IDX_CREATED_BY_ID ON asset_meta_data");
+        $this->execute("DROP INDEX IDX_MODIFIED_BY_ID ON asset_meta_data");
+        $this->execute("DROP INDEX IDX_OWNER_USER ON asset_meta_data");
+        $this->execute("DROP INDEX IDX_OWNER_USER_ID ON asset_meta_data");
+        $this->execute("ALTER TABLE asset_meta_data DROP `description`");
+        $this->execute("ALTER TABLE asset_meta_data DROP created_at");
+        $this->execute("ALTER TABLE asset_meta_data DROP modified_at");
+        $this->execute("ALTER TABLE asset_meta_data DROP created_by_id");
+        $this->execute("ALTER TABLE asset_meta_data DROP modified_by_id");
+        $this->execute("ALTER TABLE asset_meta_data DROP assigned_user_id");
+        $this->execute("ALTER TABLE asset_meta_data DROP owner_user_id");
     }
 
     public function down(): void
