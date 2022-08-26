@@ -97,7 +97,6 @@
     },
     "categoryParent": {
       "type": "link",
-      "view": "dam:views/asset_category/fields/category-parent",
       "layoutMassUpdateDisabled": true
     },
     "assets": {

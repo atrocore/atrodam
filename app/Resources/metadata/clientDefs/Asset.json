@@ -1,4 +1,6 @@
 {
+  "controller": "dam:controllers/asset",
+  "iconClass": "fas fa-archive",
   "sidePanels": {
     "edit": [
       {
@@ -32,20 +34,6 @@
         "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
       }
-    ]
-  },
-  "controller": "dam:controllers/asset",
-  "boolFilterList": [
-    "onlyMy",
-    "notSelectAssets"
-  ],
-  "hiddenBoolFilterList": [
-    "notSelectAssets",
-    "onlyActive"
-  ],
-  "selectDefaultFilters": {
-    "boolFilterList": [
-      "onlyActive"
     ]
   },
   "modalViews": {
@@ -103,7 +91,6 @@
       ]
     }
   },
-  "iconClass": "fas fa-archive",
   "dynamicLogic": {
     "fields": {
       "name": {
@@ -179,16 +166,6 @@
     }
   },
   "relationshipPanels": {
-    "assetCategories": {
-      "selectBoolFilterList": [
-        "onlyChildCategory",
-        "notSelectCategories",
-        "byCollection",
-        "onlyActive"
-      ],
-      "view": "dam:views/asset/record/panels/asset_category",
-      "selectAction": "selectRelatedEntity"
-    },
     "assetMetaDatas": {
       "select": false,
       "create": false,

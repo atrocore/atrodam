@@ -28,7 +28,7 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/list', ['dam:views/list', 'search-manager'],
+Espo.define('dam:views/asset/list', ['views/list', 'search-manager'],
     (Dep, SearchManager) => Dep.extend({
 
         template: 'dam:asset/list',
