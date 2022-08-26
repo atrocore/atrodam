@@ -7,12 +7,20 @@
           "name": "name"
         },
         {
-          "name": "sortOrder"
+          "name": "isActive"
         }
       ],
       [
         {
           "name": "code"
+        },
+        {
+          "name": "parents"
+        }
+      ],
+      [
+        {
+          "name": "sortOrder"
         },
         false
       ]

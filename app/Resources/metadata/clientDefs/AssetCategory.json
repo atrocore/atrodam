@@ -2,9 +2,6 @@
   "controller": "controllers/record",
   "iconClass": "fas fa-layer-group",
   "boolFilterList": [
-    "onlyMy",
-    "assignedToMe",
-    "ownedByMe",
     "notParents",
     "notChildren"
   ],

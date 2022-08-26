@@ -55,7 +55,7 @@
       "type": "linkMultiple",
       "view": "views/fields/hierarchy-parents",
       "massUpdateDisabled": true,
-      "noLoad": true
+      "noLoad": false
     },
     "sortOrder": {
       "type": "int",

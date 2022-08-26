@@ -6,16 +6,22 @@
           "name": "name"
         },
         {
-          "name": "code"
+          "name": "isActive"
         }
       ],
       [
         {
-          "name": "isActive"
+          "name": "code"
         },
         {
-          "name": "sortOrder"
+          "name": "parents"
         }
+      ],
+      [
+        {
+          "name": "sortOrder"
+        },
+        false
       ],
       [
         {
