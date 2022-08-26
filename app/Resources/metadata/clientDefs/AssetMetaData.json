@@ -1,12 +1,3 @@
 {
-    "controller": "dam:controllers/block-show-list",
-    "boolFilterList": [
-        "onlyMy"
-    ],
-    "recordViews":{
-        "detail": "dam:views/asset_meta_data/record/detail"
-    },
-    "views" : {
-        "detail" : "dam:views/asset_meta_data/detail"
-    }
+  "controller": "controllers/record"
 }
