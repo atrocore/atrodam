@@ -35,10 +35,6 @@ namespace Dam\Repositories;
 
 use Espo\Core\Templates\Repositories\Hierarchy;
 
-/**
- * Class AssetCategory
- * @package Dam\Repositories
- */
 class AssetCategory extends Hierarchy
 {
 }

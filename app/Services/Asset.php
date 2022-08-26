@@ -246,32 +246,6 @@ class Asset extends Base
         );
     }
 
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return mixed
-     */
-    public function linkToAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        if ($main->id === $foreign->id) {
-            throw new BadRequest($this->translate("JoinMainAsset", "exceptions", "Asset"));
-        }
-
-        return $this->getRepository()->linkAsset($main, $foreign);
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return mixed
-     */
-    public function unlinkToAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        return $this->getRepository()->unlinkAsset($main, $foreign);
-    }
-
     protected function massCreateAssets(\stdClass $data): Entity
     {
         $inTransaction = false;

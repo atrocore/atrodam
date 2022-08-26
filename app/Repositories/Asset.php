@@ -37,11 +37,6 @@ use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
-/**
- * Class Asset
- *
- * @package Dam\Repositories
- */
 class Asset extends AbstractRepository
 {
     public function getNextSorting(string $entityType, string $link, string $entityId): int
@@ -107,28 +102,6 @@ class Asset extends AbstractRepository
         return true;
     }
 
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return bool
-     */
-    public function linkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        return $this->getMapper()->relate($foreign, "relatedAssets", $main) && $this->getMapper()->relate($main, "relatedAssets", $foreign);
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return mixed
-     */
-    public function unlinkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        return $this->getMapper()->unrelate($foreign, "relatedAssets", $main);
-    }
-
     public function getPossibleTypes(Entity $attachment): array
     {
         $types = [];
@@ -185,11 +158,6 @@ class Asset extends AbstractRepository
             }
         }
 
-        // set defaults
-        if (empty($entity->get('libraryId'))) {
-            $entity->set('libraryId', '1');
-        }
-
         // prepare name
         if (empty($entity->get('name'))) {
             $entity->set('name', $file->get('name'));
@@ -242,58 +210,14 @@ class Asset extends AbstractRepository
 
     protected function afterRemove(Entity $entity, array $options = [])
     {
-        if (!empty($attachment = $entity->get("file"))) {
-            $this->getEntityManager()->removeEntity($attachment);
+        if (!empty($entity->get("fileId"))) {
+            $attachment = $this->getEntityManager()->getEntity('Attachment', $entity->get("fileId"));
+            if (!empty($attachment)) {
+                $this->getEntityManager()->removeEntity($attachment);
+            }
         }
 
         parent::afterRemove($entity, $options);
-    }
-
-    protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
-    {
-        if (is_string($foreign) && $relationName === "assetsLeft") {
-            $foreign = $this->getEntityManager()->getEntity("Asset", $foreign);
-        }
-
-        // check any relation for inactive assets
-        if (!$entity->get("isActive")) {
-            throw new BadRequest($this->getInjection('language')->translate("CantAddInActive", 'exceptions', 'Asset'));
-        }
-
-        // create leftAsset relation
-        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
-            $this->getInjection('serviceFactory')->create('Asset')->linkToAsset($entity, $foreign);
-        }
-
-        // check join with last (list) category
-        if ($relationName === "assetCategories" && $this->hasChildCategory($foreign)) {
-            throw new BadRequest($this->getInjection('language')->translate("Category is not last", 'exceptions', 'Global'));
-        }
-
-        parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
-    }
-
-    protected function beforeUnrelate(Entity $entity, $relationName, $foreign, array $options = [])
-    {
-        // remove leftAsset relation
-        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
-            $this->getInjection('serviceFactory')->create('Asset')->unlinkToAsset($entity, $foreign);
-        }
-
-        parent::beforeUnrelate($entity, $relationName, $foreign, $options);
-    }
-
-    private function hasChildCategory($entity): bool
-    {
-        if (is_string($entity)) {
-            $entity = $this->getEntityManager()->getRepository("AssetCategory")->where(['id' => $entity])->findOne();
-        }
-
-        if (!is_object($entity)) {
-            return false;
-        }
-
-        return $entity->get('hasChild');
     }
 
     protected function init()
