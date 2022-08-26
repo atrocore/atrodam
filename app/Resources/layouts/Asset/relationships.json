@@ -1,11 +1,11 @@
 [
   {
+    "name": "assetMetadata"
+  },
+  {
     "name": "assetCategories"
   },
   {
     "name": "relatedAssets"
-  },
-  {
-    "name": "assetMetadata"
   }
 ]

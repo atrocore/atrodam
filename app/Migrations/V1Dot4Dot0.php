@@ -33,7 +33,6 @@ declare(strict_types=1);
 
 namespace Dam\Migrations;
 
-use Espo\Core\Exceptions\Error;
 use Treo\Core\Migration\Base;
 
 class V1Dot4Dot0 extends Base
@@ -81,6 +80,13 @@ class V1Dot4Dot0 extends Base
         $this->execute("ALTER TABLE asset_meta_data DROP owner_user_id");
 
         $this->execute("RENAME TABLE `asset_meta_data` TO `asset_metadata`");
+
+        foreach (['Asset', 'AssetCategory'] as $v) {
+            try {
+                \Espo\Core\Utils\Util::removeDir('custom/Espo/Custom/Resources/layouts/' . $v);
+            } catch (\Throwable $e) {
+            }
+        }
     }
 
     public function down(): void
