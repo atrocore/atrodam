@@ -21,7 +21,7 @@
     "image": "Изображение",
     "relatedAssets": "Связанные ассеты",
     "assetCategories": "Категории ассетов",
-    "assetMetaDatas": "Мета данные ассета",
+    "assetMetaDatas": "Метаданные ассета",
     "assetVersions": "Версии ассета",
     "type": "Типы",
     "library": "Библиотека",
@@ -42,14 +42,14 @@
   },
   "links": {
     "assetCategories": "Категории ассета",
-    "assetMetaDatas": "Мета данные ассета",
+    "assetMetaDatas": "Метаданные ассета",
     "assetVersions": "Версии ассета",
     "renditions": "Преобразование",
     "relatedAssets": "Связанные ассеты"
   },
   "messages": {
     "assetCouldNotBeUploaded": "Не удалось загрузить ассет.",
-    "notAllAssetsWereUploaded" : "XX из YY ассетов не были загружены.",
+    "notAllAssetsWereUploaded": "XX из YY ассетов не были загружены.",
     "assetsAdded": "Ассеты добавлены и будут доступны через несколько минут."
   },
   "exceptions": {

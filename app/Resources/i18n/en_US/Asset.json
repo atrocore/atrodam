@@ -21,7 +21,7 @@
     "image": "Image",
     "relatedAssets": "Related Assets",
     "assetCategories": "Asset Categories",
-    "assetMetaDatas": "Asset Meta Datas",
+    "assetMetaDatas": "Asset Metadata",
     "assetVersions": "Asset Versions",
     "type": "Types",
     "library": "Library",
@@ -42,7 +42,7 @@
   },
   "links": {
     "assetCategories": "Asset Categories",
-    "assetMetaDatas": "Asset Meta Datas",
+    "assetMetaDatas": "Asset Metadata",
     "assetVersions": "Asset Versions",
     "renditions": "Renditions",
     "relatedAssets": "Related Assets"
