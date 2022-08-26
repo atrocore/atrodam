@@ -245,44 +245,6 @@ class Attachment extends \Espo\Services\Attachment
     }
 
     /**
-     * @param \Dam\Entities\Attachment $attachment
-     *
-     * @return array|mixed
-     * @throws Error
-     * @throws \ImagickException
-     */
-    public function getFileMetaData(\Dam\Entities\Attachment $attachment)
-    {
-        $mime = $attachment->get('type');
-        $meta = [];
-
-        switch (true) {
-            case (stripos($mime, "image") !== false):
-                $meta = $this->getImageMeta($attachment);
-                break;
-        }
-
-        return $meta;
-    }
-
-    /**
-     * @param \Dam\Entities\Attachment $attachment
-     *
-     * @return array
-     * @throws Error
-     * @throws \ImagickException
-     */
-    public function getImageMeta(\Dam\Entities\Attachment $attachment)
-    {
-        $path = $this->getFileStorageManager()->getLocalFilePath($attachment);
-
-        $imagick = new \Imagick();
-        $imagick->readImage($path);
-
-        return $imagick->getImageProperties();
-    }
-
-    /**
      * @inheritDoc
      */
     protected function init()

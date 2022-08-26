@@ -186,20 +186,6 @@ class Asset extends Base
 
     /**
      * @param \Dam\Entities\Asset $asset
-     *
-     * @return mixed
-     */
-    public function updateMetaData(\Dam\Entities\Asset $asset)
-    {
-        $attachment = $asset->get('file');
-
-        $metaData = $this->getServiceFactory()->create("Attachment")->getFileMetaData($attachment);
-
-        return $this->getService("AssetMetaData")->insertData("asset", $asset->id, $metaData);
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $asset
      */
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {

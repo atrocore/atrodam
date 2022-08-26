@@ -37,21 +37,4 @@ use Espo\Core\Templates\Services\Base;
 
 class AssetMetaData extends Base
 {
-    /**
-     * @param $entityType
-     * @param $entityId
-     * @param $metaData
-     *
-     * @return mixed
-     */
-    public function insertData($entityType, $entityId, $metaData)
-    {
-        $field = $entityType . "_id";
-
-        $repository = $this->getRepository();
-
-        $repository->clearData($field, $entityId);
-
-        return $repository->insertMeta($field, $entityId, $metaData);
-    }
 }

@@ -117,6 +117,44 @@ class Asset extends AbstractRepository
         return $types;
     }
 
+    public function clearAssetMetadata(Entity $asset): void
+    {
+        $this->getEntityManager()->getRepository('AssetMetaData')->where(['assetId' => $asset->get('id')])->removeCollection();
+    }
+
+    public function updateMetadata(Entity $asset): void
+    {
+        $attachment = $this->getEntityManager()->getEntity('Attachment', $asset->get('fileId'));
+        if (empty($attachment)) {
+            throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+        }
+
+        $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($attachment);
+
+        /**
+         * @todo develop metadata readers
+         */
+        if (stripos($attachment->get('type'), "image") !== false) {
+            $imagick = new \Imagick();
+            $imagick->readImage($filePath);
+            $metadata = $imagick->getImageProperties();
+        }
+
+        $this->clearAssetMetadata($asset);
+
+        if (empty($metadata) || !is_array($metadata)) {
+            return;
+        }
+
+        foreach ($metadata as $name => $value) {
+            $item = $this->getEntityManager()->getEntity('AssetMetaData');
+            $item->set('name', $name);
+            $item->set('value', $value);
+            $item->set('assetId', $asset->get('id'));
+            $this->getEntityManager()->saveEntity($item);
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -202,7 +240,7 @@ class Asset extends AbstractRepository
 
         // update metadata
         if ($entity->isAttributeChanged('fileId')) {
-            $this->getInjection('serviceFactory')->create('Asset')->updateMetaData($entity);
+            $this->updateMetadata($entity);
         }
 
         parent::afterSave($entity, $options);
@@ -217,7 +255,7 @@ class Asset extends AbstractRepository
             }
         }
 
-        $this->getEntityManager()->getRepository('AssetMetaData')->where(['assetId' => $entity->get('id')])->removeCollection();
+        $this->clearAssetMetadata($entity);
 
         parent::afterRemove($entity, $options);
     }
