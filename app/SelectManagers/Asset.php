@@ -33,8 +33,26 @@ declare(strict_types=1);
 
 namespace Dam\SelectManagers;
 
+use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\SelectManagers\Base;
 
 class Asset extends Base
 {
+    protected function boolFilterLinkedWithAssetCategory(array &$result): void
+    {
+        $assetCategoryId = (string)$this->getBoolFilterParameter('linkedWithAssetCategory');
+        if (empty($assetCategoryId)) {
+            return;
+        }
+
+        $assetCategory = $this->getEntityManager()->getEntity('AssetCategory', $assetCategoryId);
+        if (empty($assetCategory)) {
+            throw new BadRequest('No such asset category.');
+        }
+
+        $ids = $this->getEntityManager()->getRepository('AssetCategory')->getChildrenRecursivelyArray($assetCategoryId);
+        $ids = implode("','", array_merge($ids, [$assetCategoryId]));
+
+        $result['customWhere'] .= " AND asset.id IN (SELECT asset_id FROM `asset_category_asset` WHERE asset_id IS NOT NULL AND deleted=0 AND asset_category_id IN ('$ids'))";
+    }
 }

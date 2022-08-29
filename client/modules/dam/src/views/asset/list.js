@@ -73,6 +73,7 @@ Espo.define('dam:views/asset/list', 'views/list-tree',
                 view.render();
             });
         },
+
     })
 );
 

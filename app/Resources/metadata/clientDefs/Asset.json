@@ -1,13 +1,19 @@
 {
   "controller": "dam:controllers/asset",
   "iconClass": "fas fa-archive",
+  "treeScopes": [
+    "AssetCategory",
+    "Asset"
+  ],
   "boolFilterList": [
     "notParents",
-    "notChildren"
+    "notChildren",
+    "linkedWithAssetCategory"
   ],
   "hiddenBoolFilterList": [
     "notParents",
-    "notChildren"
+    "notChildren",
+    "linkedWithAssetCategory"
   ],
   "views": {
     "list": "dam:views/asset/list",
