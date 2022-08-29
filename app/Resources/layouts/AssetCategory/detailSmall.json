@@ -1,20 +1,29 @@
 [
-    {
-        "rows": [
-            [
-                {
-                    "name": "name",
-                    "fullWidth": true
-                }
-            ],
-            [
-                {
-                    "name": "code",
-                    "fullWidth": true
-                }
-            ]
-        ],
-        "style": "default",
-        "label": ""
-    }
+  {
+    "label": "",
+    "rows": [
+      [
+        {
+          "name": "name"
+        },
+        {
+          "name": "isActive"
+        }
+      ],
+      [
+        {
+          "name": "code"
+        },
+        {
+          "name": "parents"
+        }
+      ],
+      [
+        {
+          "name": "sortOrder"
+        },
+        false
+      ]
+    ]
+  }
 ]

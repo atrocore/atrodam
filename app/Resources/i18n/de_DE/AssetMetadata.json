@@ -3,11 +3,7 @@
     "rendition": "Derivat",
     "value": "Wert"
   },
-  "labels": {
-    "Create AssetMetaData": "Asset Metadaten erstellen"
-  },
   "links": {
-    "rendition": "Derivat",
     "asset": "Asset"
   }
 }

@@ -33,13 +33,13 @@ declare(strict_types=1);
 
 namespace Dam\Controllers;
 
-use Espo\Core\Templates\Controllers\Base;
+use Espo\Core\Templates\Controllers\Hierarchy;
 
 /**
  * Class AssetCategory
  *
  * @package Dam\Controllers
  */
-class AssetCategory extends Base
+class AssetCategory extends Hierarchy
 {
 }

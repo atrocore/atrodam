@@ -33,14 +33,14 @@ declare(strict_types=1);
 
 namespace Dam\Entities;
 
-use Espo\Core\Templates\Entities\Base;
+use Espo\Core\Templates\Entities\Hierarchy;
 
 /**
  * Class Asset
  *
  * @package Dam\Entities
  */
-class Asset extends Base
+class Asset extends Hierarchy
 {
     /**
      * @var string

@@ -1,0 +1,16 @@
+{
+  "entity": true,
+  "layouts": false,
+  "tab": false,
+  "acl": false,
+  "aclPortal": false,
+  "customizable": false,
+  "importable": false,
+  "notifications": false,
+  "stream": false,
+  "disabled": false,
+  "type": "Base",
+  "module": "Dam",
+  "object": true,
+  "skipAssetSorting": true
+}

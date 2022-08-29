@@ -150,13 +150,13 @@
         "libraryName": "Default Library"
       }
     },
-    "assetMetaDatas": {
+    "assetMetadata": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "noLoad": true,
       "importDisabled": true,
-      "exportDisabled": true
+      "exportDisabled": false
     },
     "assetCategories": {
       "type": "linkMultiple",
@@ -260,6 +260,40 @@
       "importDisabled": true,
       "exportDisabled": true,
       "noLoad": true
+    },
+    "children": {
+      "type": "linkMultiple",
+      "layoutDetailDisabled": true,
+      "massUpdateDisabled": true,
+      "noLoad": true
+    },
+    "parents": {
+      "type": "linkMultiple",
+      "view": "views/fields/hierarchy-parents",
+      "massUpdateDisabled": true,
+      "noLoad": false
+    },
+    "sortOrder": {
+      "type": "int",
+      "default": null,
+      "massUpdateDisabled": true,
+      "filterDisabled": true
+    },
+    "hierarchySortOrder": {
+      "type": "int",
+      "notStorable": true,
+      "relatingEntityField": [
+        "Asset"
+      ],
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "massUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true,
+      "emHidden": true
     }
   },
   "links": {
@@ -270,10 +304,10 @@
       "audited": false,
       "entityAsset": false
     },
-    "assetMetaDatas": {
+    "assetMetadata": {
       "type": "hasMany",
       "foreign": "asset",
-      "entity": "AssetMetaData",
+      "entity": "AssetMetadata",
       "audited": false,
       "entityAsset": false,
       "disableMassRelation": true
@@ -327,6 +361,33 @@
         "leftId"
       ],
       "disableMassRelation": true
+    },
+    "children": {
+      "type": "hasMany",
+      "relationName": "AssetHierarchy",
+      "foreign": "parents",
+      "entity": "Asset",
+      "audited": false,
+      "midKeys": [
+        "entityId",
+        "parentId"
+      ],
+      "additionalColumns": {
+        "hierarchySortOrder": {
+          "type": "int"
+        }
+      }
+    },
+    "parents": {
+      "type": "hasMany",
+      "relationName": "AssetHierarchy",
+      "foreign": "children",
+      "entity": "Asset",
+      "audited": false,
+      "midKeys": [
+        "parentId",
+        "entityId"
+      ]
     }
   },
   "collection": {

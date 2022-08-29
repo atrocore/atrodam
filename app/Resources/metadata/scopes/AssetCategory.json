@@ -1,26 +1,29 @@
 {
-    "entity": true,
-    "layouts": true,
-    "tab": true,
-    "acl": true,
-    "aclPortal": true,
-    "aclPortalLevelList": [
-        "all",
-        "account",
-        "contact",
-        "own",
-        "no"
-    ],
-    "customizable": true,
-    "importable": true,
-    "notifications": true,
-    "stream": false,
-    "disabled": false,
-    "type": "Base",
-    "module": "Dam",
-    "object": true,
-    "hasAssignedUser": true,
-    "hasTeam": true,
-    "hasOwner": true,
-    "skipAssetSorting": true
+  "type": "Hierarchy",
+  "module": "Dam",
+  "entity": true,
+  "layouts": true,
+  "tab": true,
+  "acl": true,
+  "aclPortal": true,
+  "aclPortalLevelList": [
+    "all",
+    "account",
+    "contact",
+    "own",
+    "no"
+  ],
+  "customizable": true,
+  "importable": true,
+  "notifications": true,
+  "stream": false,
+  "disabled": false,
+  "object": true,
+  "skipAssetSorting": true,
+  "multiParents": false,
+  "fieldValueInheritance": false,
+  "mandatoryUnInheritedFields": [
+    "code"
+  ],
+  "relationInheritance": false
 }

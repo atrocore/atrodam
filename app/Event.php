@@ -74,9 +74,6 @@ class Event extends AfterInstallAfterDelete
         // add menu items
         $this->addMenuItems();
 
-        // add units
-        $this->addUnit();
-
         if ($this->getConfig()->get('isInstalled')) {
             // insert DB data to DB
             $this->insertDbData();
@@ -94,29 +91,6 @@ class Event extends AfterInstallAfterDelete
      */
     public function afterDelete(): void
     {
-    }
-
-    /**
-     * Add new Unit
-     */
-    protected function addUnit(): void
-    {
-        $unitsOfMeasure = $this->getConfig()->get("unitsOfMeasure", new \stdClass());
-
-        $name = "File Size";
-
-        if (!property_exists($unitsOfMeasure, $name)) {
-            $unitsOfMeasure->{$name} = (object)[
-                'unitList'  => [
-                    'kb',
-                ],
-                'baseUnit'  => 'kb',
-                'unitRates' => (object)[],
-            ];
-
-            $this->getConfig()->set("unitsOfMeasure", $unitsOfMeasure);
-            $this->getConfig()->save();
-        }
     }
 
     /**
@@ -191,17 +165,10 @@ class Event extends AfterInstallAfterDelete
         $this->execute("INSERT INTO `library` (`id`, `name`, `code`, `is_active`) VALUES ('1', 'Default Library', 'default_library', 1)");
     }
 
-    /**
-     * @param string $sql
-     */
-    protected function execute(string $sql)
+    protected function execute(string $query): void
     {
         try {
-            $sth = $this
-                ->getContainer()
-                ->get('pdo')
-                ->prepare($sql);
-            $sth->execute();
+            $this->getContainer()->get('pdo')->exec($query);
         } catch (\Throwable $e) {
             // ignore all
         }

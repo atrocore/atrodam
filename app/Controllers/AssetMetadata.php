@@ -1,3 +1,4 @@
+<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,14 +29,48 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset_category/list', 'dam:views/list', function (Dep) {
-    return Dep.extend({
+declare(strict_types=1);
 
-        afterRender() {
-            this.collection.isFetched = false;
-            this.clearView('list');
-            Dep.prototype.afterRender.call(this);
+namespace Dam\Controllers;
+
+use Espo\Core\Controllers\Base;
+
+class AssetMetadata extends Base
+{
+    const MAX_SIZE_LIMIT = 200;
+
+    public function actionListLinked($params, $data, $request)
+    {
+        $id = $params['id'];
+        $link = $params['link'];
+
+        $where = $request->get('where');
+        $offset = $request->get('offset');
+        $maxSize = $request->get('maxSize');
+        $asc = $request->get('asc', 'true') === 'true';
+        $sortBy = $request->get('sortBy');
+        $q = $request->get('q');
+        $textFilter = $request->get('textFilter');
+
+        if (empty($maxSize)) {
+            $maxSize = self::MAX_SIZE_LIMIT;
         }
 
-    });
-});
+        $params = [
+            'where'      => $where,
+            'offset'     => $offset,
+            'maxSize'    => $maxSize,
+            'asc'        => $asc,
+            'sortBy'     => $sortBy,
+            'q'          => $q,
+            'textFilter' => $textFilter
+        ];
+
+        $result = $this->getServiceFactory()->create('AssetMetadata')->findLinkedEntities($id, $link, $params);
+
+        return [
+            'total' => $result['total'],
+            'list'  => isset($result['collection']) ? $result['collection']->getValueMapList() : $result['list']
+        ];
+    }
+}

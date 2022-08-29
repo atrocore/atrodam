@@ -4,19 +4,19 @@
     "mainImageAddOnly": "Hauptbild: AddOnly-Modus"
   },
   "scopeNames": {
+    "AssetMetadata": "Asset-Metadaten",
     "Asset": "Asset",
     "Library": "Bibliothek",
     "Rendition": "Derivat",
-    "RenditionMetaData": "Derivat-Metadata",
     "AssetType": "Asset-Typ",
     "ValidationRule": "Validierungsregel"
   },
   "scopeNamesPlural": {
+    "AssetMetadata": "Asset-Metadaten",
     "Asset": "Assets",
     "Library": "Bibliotheken",
     "AssetVersion": "Asset Versionen",
     "Rendition": "Derivate",
-    "RenditionMetaData": "Derivat-Metadata",
     "RenditionVersion": "Derivatversionen",
     "AssetType": "Asset-Typen",
     "validationRules": "Validierungsregel"

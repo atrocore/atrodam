@@ -1,17 +1,4 @@
 {
   "controller": "controllers/record",
-  "boolFilterList": [
-    "onlyMy"
-  ],
-  "relationshipPanels": {
-    "assetCategories": {
-      "view": "dam:views/library/record/panels/asset_category",
-      "selectAction": "selectRelatedEntity",
-      "selectBoolFilterList": [
-        "notEntity",
-        "onlyRoot"
-      ]
-    }
-  },
   "iconClass": "fas fa-book-open"
 }

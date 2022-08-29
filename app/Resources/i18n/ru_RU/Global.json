@@ -10,9 +10,8 @@
     "Library": "Библиотека",
     "AssetVariant": "Вариант ассета",
     "AssetCategory": "Категория ассета",
-    "AssetMetaData": "Мета данные ассета",
+    "AssetMetadata": "Метаданные ассета",
     "AssetVersion": "Версия ассета",
-    "RenditionVersion": "Версия преобразования",
     "AssetType": "Тип ассета",
     "ValidationRule": "Правило проверки"
   },
@@ -22,8 +21,7 @@
     "AssetVersion": "Версии ассета",
     "AssetVariant": "Варианты ассета",
     "AssetCategory": "Категория ассета",
-    "AssetMetaData": "Мета данные ассета",
-    "RenditionVersion": "Версия преобразования",
+    "AssetMetadata": "Метаданные ассета",
     "AssetType": "Типы ассета",
     "validationRules": "Правила проверки"
   },

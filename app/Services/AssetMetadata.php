@@ -1,3 +1,4 @@
+<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,19 +29,12 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset_category/fields/category-parent', 'treo-core:views/fields/filtered-link',
-    Dep => Dep.extend({
+declare(strict_types=1);
 
-        selectBoolFilterList:  ['onlyActive', 'notEntity', 'notChildCategory', 'notAttachment'],
-    
-        boolFilterData: {
-            notEntity() {
-                return [this.model.id, this.model.get('categoryParentId')] || this.model.get('ids') || [];
-            },
-            notChildCategory() {
-                return this.model.id;
-            }
-        },
+namespace Dam\Services;
 
-    })
-);
+use Espo\Core\Templates\Services\Base;
+
+class AssetMetadata extends Base
+{
+}

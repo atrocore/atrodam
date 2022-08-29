@@ -28,10 +28,12 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/record/detail', 'views/record/detail',
+Espo.define('dam:views/asset/record/detail', 'views/record/detail-tree',
     Dep => Dep.extend({
+
         duplicateAction: false,
-        sideView       : "dam:views/asset/record/detail-side"
-        
+
+        sideView: "dam:views/asset/record/detail-side",
+
     })
 );

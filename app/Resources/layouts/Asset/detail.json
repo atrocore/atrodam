@@ -27,15 +27,19 @@
       ],
       [
         {
-          "name": "tags",
-          "fullWidth": true
+          "name": "parents"
+        },
+        {
+          "name": "sortOrder"
         }
       ],
       [
         {
           "name": "description"
         },
-        false
+        {
+          "name": "tags"
+        }
       ]
     ],
     "style": "default",

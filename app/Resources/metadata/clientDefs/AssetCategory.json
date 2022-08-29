@@ -1,82 +1,47 @@
 {
-  "controller": "dam:controllers/record-tree",
+  "controller": "controllers/record",
+  "iconClass": "fas fa-layer-group",
   "boolFilterList": [
-    "onlyMy",
-    "notEntity",
-    "notAttachment",
-    "notChildCategory",
-    "onlyChildCategory",
-    "notSelectCategories",
-    "onlyRoot",
-    "byCollection"
+    "notParents",
+    "notChildren"
   ],
   "hiddenBoolFilterList": [
-    "notEntity",
-    "notAttachment",
-    "notChildCategory",
-    "onlyChildCategory",
-    "notSelectCategories",
-    "onlyRoot",
-    "byCollection"
+    "notParents",
+    "notChildren"
   ],
-  "iconClass": "fas fa-layer-group",
-  "recordViews": {
-    "listTree": "dam:views/asset_category/record/list-tree",
-    "detail": "dam:views/asset_category/record/detail"
-  },
   "views": {
-    "list": "dam:views/asset_category/list",
-    "detail": "dam:views/detail"
+    "list": "views/list-tree",
+    "detail": "views/detail-tree"
   },
-  "menu": {
-    "listTree": {
-      "buttons": [
-        {
-          "label": "List View",
-          "link": "#AssetCategory",
-          "acl": "read",
-          "style": "default"
-        }
-      ]
-    },
-    "list": {
-      "buttons": [
-        {
-          "label": "Tree View",
-          "link": "#AssetCategory/listTree",
-          "acl": "read",
-          "style": "default"
-        }
-      ]
-    }
+  "recordViews": {
+    "detail": "views/record/detail-tree"
   },
   "relationshipPanels": {
-    "assets": {
+    "parents": {
+      "selectAction": "selectRelatedEntity",
       "selectBoolFilterList": [
-        "notSelectAssets"
+        "notChildren"
+      ]
+    },
+    "children": {
+      "selectAction": "selectRelatedEntity",
+      "selectBoolFilterList": [
+        "notParents"
       ],
-      "view": "dam:views/asset_category/record/panels/assets",
-      "selectAction": "selectRelatedEntity"
+      "dragDrop": {
+        "isActive": true,
+        "sortField": "sortOrder"
+      }
     }
   },
   "dynamicLogic": {
-    "panels": {
-      "assets": {
+    "fields": {
+      "sortOrder": {
         "visible": {
           "conditionGroup": [
             {
-              "type": "isFalse",
-              "attribute": "hasChild"
-            }
-          ]
-        }
-      },
-      "collections": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isEmpty",
-              "attribute": "categoryParentId"
+              "type": "isTrue",
+              "attribute": "isRoot"
             }
           ]
         }

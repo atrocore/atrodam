@@ -1,23 +1,13 @@
 {
   "fields": {
-    "categories": "Kategorien",
-    "categoryParent": "Parent-Kategorie",
-    "categoryRouteName": "Kategoriebaum",
-    "categoryRoute": "Kategoriepfad",
-    "collections": "Kollektionen",
-    "createdBy": "Erstellt vom",
-    "hasChild": "hat eine Child-Kategorie",
+    "code": "Code",
     "isActive": "Aktiv",
-    "modifiedBy": "Geändert vom"
+    "assets": "Assets"
+  },
+  "links": {
+    "assets": "Assets"
   },
   "labels": {
     "Create AssetCategory": "Asset Kategorie erstellen"
-  },
-  "links": {
-    "categories": "Kategorien",
-    "categoryParent": "Parent-Kategorie",
-    "collections": "Kollektionen",
-    "createdBy": "Erstellt vom",
-    "modifiedBy": "Geändert vom"
   }
 }

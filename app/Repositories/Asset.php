@@ -35,17 +35,17 @@ namespace Dam\Repositories;
 
 use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Templates\Repositories\Hierarchy;
 use Espo\ORM\Entity;
 
-/**
- * Class Asset
- *
- * @package Dam\Repositories
- */
-class Asset extends AbstractRepository
+class Asset extends Hierarchy
 {
     public function getNextSorting(string $entityType, string $link, string $entityId): int
     {
+        if (in_array($link, ['parents', 'children'])) {
+            return 0;
+        }
+
         $relationName = $this->getMetadata()->get(['entityDefs', $entityType, 'links', $link, 'relationName']);
 
         $table = $this->getEntityManager()->getQuery()->toDb($relationName);
@@ -107,28 +107,6 @@ class Asset extends AbstractRepository
         return true;
     }
 
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return bool
-     */
-    public function linkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        return $this->getMapper()->relate($foreign, "relatedAssets", $main) && $this->getMapper()->relate($main, "relatedAssets", $foreign);
-    }
-
-    /**
-     * @param \Dam\Entities\Asset $main
-     * @param \Dam\Entities\Asset $foreign
-     *
-     * @return mixed
-     */
-    public function unlinkAsset(\Dam\Entities\Asset $main, \Dam\Entities\Asset $foreign)
-    {
-        return $this->getMapper()->unrelate($foreign, "relatedAssets", $main);
-    }
-
     public function getPossibleTypes(Entity $attachment): array
     {
         $types = [];
@@ -144,6 +122,44 @@ class Asset extends AbstractRepository
         return $types;
     }
 
+    public function clearAssetMetadata(Entity $asset): void
+    {
+        $this->getEntityManager()->getRepository('AssetMetadata')->where(['assetId' => $asset->get('id')])->removeCollection();
+    }
+
+    public function updateMetadata(Entity $asset): void
+    {
+        $attachment = $this->getEntityManager()->getEntity('Attachment', $asset->get('fileId'));
+        if (empty($attachment)) {
+            throw new BadRequest($this->getInjection('language')->translate('noAttachmentExist', 'exceptions', 'Asset'));
+        }
+
+        $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($attachment);
+
+        /**
+         * @todo develop metadata readers
+         */
+        if (stripos($attachment->get('type'), "image") !== false) {
+            $imagick = new \Imagick();
+            $imagick->readImage($filePath);
+            $metadata = $imagick->getImageProperties();
+        }
+
+        $this->clearAssetMetadata($asset);
+
+        if (empty($metadata) || !is_array($metadata)) {
+            return;
+        }
+
+        foreach ($metadata as $name => $value) {
+            $item = $this->getEntityManager()->getEntity('AssetMetadata');
+            $item->set('name', $name);
+            $item->set('value', $value);
+            $item->set('assetId', $asset->get('id'));
+            $this->getEntityManager()->saveEntity($item);
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -151,13 +167,13 @@ class Asset extends AbstractRepository
     {
         $file = $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'));
         if (empty($file)) {
-            throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+            throw new BadRequest($this->getInjection('language')->translate('noAttachmentExist', 'exceptions', 'Asset'));
         }
 
         if (empty($entity->get('type'))) {
             $possibleTypes = $this->getPossibleTypes($file);
             if (empty($possibleTypes)) {
-                throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
+                throw new BadRequest($this->getInjection('language')->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
             }
 
             $entity->set('type', $possibleTypes);
@@ -179,15 +195,10 @@ class Asset extends AbstractRepository
                     }
                 }
                 if (empty($filteredTypes)) {
-                    throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
+                    throw new BadRequest($this->getInjection('language')->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
                 }
                 $entity->set('type', $filteredTypes);
             }
-        }
-
-        // set defaults
-        if (empty($entity->get('libraryId'))) {
-            $entity->set('libraryId', '1');
         }
 
         // prepare name
@@ -203,7 +214,7 @@ class Asset extends AbstractRepository
             $attachmentExt = array_pop($attachmentParts);
 
             if (!empty($assetExt) && $assetExt !== $attachmentExt) {
-                throw new BadRequest($this->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
+                throw new BadRequest($this->getInjection('language')->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
             }
 
             $entity->set('name', implode('.', $assetParts) . '.' . $attachmentExt);
@@ -234,7 +245,7 @@ class Asset extends AbstractRepository
 
         // update metadata
         if ($entity->isAttributeChanged('fileId')) {
-            $this->getInjection('serviceFactory')->create('Asset')->updateMetaData($entity);
+            $this->updateMetadata($entity);
         }
 
         parent::afterSave($entity, $options);
@@ -242,58 +253,16 @@ class Asset extends AbstractRepository
 
     protected function afterRemove(Entity $entity, array $options = [])
     {
-        if (!empty($attachment = $entity->get("file"))) {
-            $this->getEntityManager()->removeEntity($attachment);
+        if (!empty($attachmentId = $entity->get('fileId'))) {
+            $attachment = $this->getEntityManager()->getEntity('Attachment', $attachmentId);
+            if (!empty($attachment)) {
+                $this->getEntityManager()->removeEntity($attachment);
+            }
         }
+
+        $this->clearAssetMetadata($entity);
 
         parent::afterRemove($entity, $options);
-    }
-
-    protected function beforeRelate(Entity $entity, $relationName, $foreign, $data = null, array $options = [])
-    {
-        if (is_string($foreign) && $relationName === "assetsLeft") {
-            $foreign = $this->getEntityManager()->getEntity("Asset", $foreign);
-        }
-
-        // check any relation for inactive assets
-        if (!$entity->get("isActive")) {
-            throw new BadRequest($this->getInjection('language')->translate("CantAddInActive", 'exceptions', 'Asset'));
-        }
-
-        // create leftAsset relation
-        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
-            $this->getInjection('serviceFactory')->create('Asset')->linkToAsset($entity, $foreign);
-        }
-
-        // check join with last (list) category
-        if ($relationName === "assetCategories" && $this->hasChildCategory($foreign)) {
-            throw new BadRequest($this->getInjection('language')->translate("Category is not last", 'exceptions', 'Global'));
-        }
-
-        parent::beforeRelate($entity, $relationName, $foreign, $data, $options);
-    }
-
-    protected function beforeUnrelate(Entity $entity, $relationName, $foreign, array $options = [])
-    {
-        // remove leftAsset relation
-        if (is_object($foreign) && $foreign->getEntityType() === 'Asset') {
-            $this->getInjection('serviceFactory')->create('Asset')->unlinkToAsset($entity, $foreign);
-        }
-
-        parent::beforeUnrelate($entity, $relationName, $foreign, $options);
-    }
-
-    private function hasChildCategory($entity): bool
-    {
-        if (is_string($entity)) {
-            $entity = $this->getEntityManager()->getRepository("AssetCategory")->where(['id' => $entity])->findOne();
-        }
-
-        if (!is_object($entity)) {
-            return false;
-        }
-
-        return $entity->get('hasChild');
     }
 
     protected function init()

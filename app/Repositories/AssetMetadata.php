@@ -1,3 +1,4 @@
+<?php
 /*
  *  This file is part of AtroDAM.
  *
@@ -28,10 +29,12 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/record/panels/relations/asset-meta-data/list', 'views/record/list',
-    Dep => {
-        return Dep.extend({
-            rowActionsDisabled: true
-        });
-    }
-);
+declare(strict_types=1);
+
+namespace Dam\Repositories;
+
+use Espo\Core\Templates\Repositories\Base;
+
+class AssetMetadata extends Base
+{
+}

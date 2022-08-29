@@ -33,12 +33,12 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
-use \Espo\Core\Templates\Services\Base;
+use Espo\Core\Templates\Services\Hierarchy;
 
 /**
  * Class AssetCategory
  * @package Dam\Services
  */
-class AssetCategory extends Base
+class AssetCategory extends Hierarchy
 {
 }
