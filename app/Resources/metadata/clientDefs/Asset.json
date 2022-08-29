@@ -1,6 +1,47 @@
 {
   "controller": "dam:controllers/asset",
   "iconClass": "fas fa-archive",
+  "boolFilterList": [
+    "notParents",
+    "notChildren"
+  ],
+  "hiddenBoolFilterList": [
+    "notParents",
+    "notChildren"
+  ],
+  "views": {
+    "list": "dam:views/asset/list",
+    "detail": "views/detail-tree",
+    "plate": "dam:views/asset/plate"
+  },
+  "recordViews": {
+    "plate": "dam:views/asset/record/plate",
+    "plateItem": "dam:views/asset/record/plate-item",
+    "detail": "dam:views/asset/record/detail"
+  },
+  "relationshipPanels": {
+    "parents": {
+      "selectAction": "selectRelatedEntity",
+      "selectBoolFilterList": [
+        "notChildren"
+      ]
+    },
+    "children": {
+      "selectAction": "selectRelatedEntity",
+      "selectBoolFilterList": [
+        "notParents"
+      ],
+      "dragDrop": {
+        "isActive": true,
+        "sortField": "sortOrder"
+      }
+    },
+    "assetMetadata": {
+      "create": false,
+      "select": false,
+      "rowActionsView": "views/record/row-actions/empty"
+    }
+  },
   "sidePanels": {
     "edit": [
       {
@@ -39,15 +80,6 @@
   "modalViews": {
     "select": "dam:views/asset/modals/select-records",
     "edit": "dam:views/asset/modals/edit"
-  },
-  "views": {
-    "list": "dam:views/asset/list",
-    "plate": "dam:views/asset/plate"
-  },
-  "recordViews": {
-    "plate": "dam:views/asset/record/plate",
-    "plateItem": "dam:views/asset/record/plate-item",
-    "detail": "dam:views/asset/record/detail"
   },
   "menu": {
     "list": {
@@ -93,6 +125,16 @@
   },
   "dynamicLogic": {
     "fields": {
+      "sortOrder": {
+        "visible": {
+          "conditionGroup": [
+            {
+              "type": "isTrue",
+              "attribute": "isRoot"
+            }
+          ]
+        }
+      },
       "name": {
         "visible": {
           "conditionGroup": [
@@ -163,13 +205,6 @@
           ]
         }
       }
-    }
-  },
-  "relationshipPanels": {
-    "assetMetaDatas": {
-      "select": false,
-      "create": false,
-      "view": "dam:views/asset/record/panels/relations/asset-meta-data/main"
     }
   }
 }

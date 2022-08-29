@@ -33,6 +33,8 @@ declare(strict_types=1);
 
 namespace Dam\Controllers;
 
-class Asset extends AbstractController
+use Espo\Core\Templates\Controllers\Hierarchy;
+
+class Asset extends Hierarchy
 {
 }

@@ -35,9 +35,10 @@ namespace Dam\Repositories;
 
 use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
+use Espo\Core\Templates\Repositories\Hierarchy;
 use Espo\ORM\Entity;
 
-class Asset extends AbstractRepository
+class Asset extends Hierarchy
 {
     public function getNextSorting(string $entityType, string $link, string $entityId): int
     {
@@ -126,7 +127,7 @@ class Asset extends AbstractRepository
     {
         $attachment = $this->getEntityManager()->getEntity('Attachment', $asset->get('fileId'));
         if (empty($attachment)) {
-            throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+            throw new BadRequest($this->getInjection('language')->translate('noAttachmentExist', 'exceptions', 'Asset'));
         }
 
         $filePath = $this->getEntityManager()->getRepository('Attachment')->getFilePath($attachment);
@@ -162,13 +163,13 @@ class Asset extends AbstractRepository
     {
         $file = $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'));
         if (empty($file)) {
-            throw new BadRequest($this->translate('noAttachmentExist', 'exceptions', 'Asset'));
+            throw new BadRequest($this->getInjection('language')->translate('noAttachmentExist', 'exceptions', 'Asset'));
         }
 
         if (empty($entity->get('type'))) {
             $possibleTypes = $this->getPossibleTypes($file);
             if (empty($possibleTypes)) {
-                throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
+                throw new BadRequest($this->getInjection('language')->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
             }
 
             $entity->set('type', $possibleTypes);
@@ -190,7 +191,7 @@ class Asset extends AbstractRepository
                     }
                 }
                 if (empty($filteredTypes)) {
-                    throw new BadRequest($this->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
+                    throw new BadRequest($this->getInjection('language')->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
                 }
                 $entity->set('type', $filteredTypes);
             }
@@ -209,7 +210,7 @@ class Asset extends AbstractRepository
             $attachmentExt = array_pop($attachmentParts);
 
             if (!empty($assetExt) && $assetExt !== $attachmentExt) {
-                throw new BadRequest($this->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
+                throw new BadRequest($this->getInjection('language')->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
             }
 
             $entity->set('name', implode('.', $assetParts) . '.' . $attachmentExt);

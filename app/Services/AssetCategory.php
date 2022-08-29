@@ -33,7 +33,7 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
-use \Espo\Core\Templates\Services\Hierarchy;
+use Espo\Core\Templates\Services\Hierarchy;
 
 /**
  * Class AssetCategory

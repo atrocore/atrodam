@@ -28,7 +28,7 @@
  *  This software is not allowed to be used in Russia and Belarus.
  */
 
-Espo.define('dam:views/asset/list', 'views/list',
+Espo.define('dam:views/asset/list', 'views/list-tree',
     Dep => Dep.extend({
 
         createButton: false,

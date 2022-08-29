@@ -36,19 +36,16 @@ namespace Dam\Services;
 use Dam\Core\AssetValidator;
 use Dam\Core\ConfigManager;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Exceptions\NotFound;
-use Espo\Core\Templates\Services\Base;
-use Espo\Core\Utils\Json;
+use Espo\Core\Templates\Services\Hierarchy;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
-use Treo\Core\EventManager\Event;
 
 /**
  * Class Asset
  *
  * @package Dam\Services
  */
-class Asset extends Base
+class Asset extends Hierarchy
 {
     /**
      * @var string[]
@@ -287,11 +284,6 @@ class Asset extends Base
         $this->addDependency(AssetValidator::class);
     }
 
-    protected function prepareUrl(string $downloadPath): string
-    {
-        return rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $downloadPath;
-    }
-
     /**
      * @return ConfigManager
      */
@@ -316,52 +308,6 @@ class Asset extends Base
     protected function getService($name)
     {
         return $this->getServiceFactory()->create($name);
-    }
-
-    /**
-     * @param Entity $entity
-     *
-     * @return array
-     */
-    protected function checkIssetLink(Entity $entity)
-    {
-        $list = [];
-
-        foreach ($entity->getRelations() as $key => $relation) {
-            if ($this->isMulti($entity, $relation, $key)) {
-                $list[] = [
-                    "entityName" => $relation['entity'],
-                    "entityId"   => $entity->get($relation['key']),
-                ];
-            }
-        }
-
-        return $list;
-    }
-
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function skipEntityAssets(string $key)
-    {
-        return !$this->getMetadata()->get(['entityDefs', 'Asset', 'links', $key, 'entityAsset']);
-    }
-
-    /**
-     * @param Entity $entity
-     * @param        $relation
-     * @param        $key
-     *
-     * @return bool
-     */
-    protected function isMulti(Entity $entity, $relation, $key): bool
-    {
-        return $relation['type'] === "belongsTo"
-            && $entity->isAttributeChanged($relation['key'])
-            && $key !== "ownerUser"
-            && !$this->skipEntityAssets($key);
     }
 
     protected function attributeMapping(string $name): string
