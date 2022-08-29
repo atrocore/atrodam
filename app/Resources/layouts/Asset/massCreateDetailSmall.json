@@ -19,9 +19,11 @@
       ],
       [
         {
-          "name": "assetCategories"
+          "name": "parents"
         },
-        false
+        {
+          "name": "assetCategories"
+        }
       ],
       [
         {

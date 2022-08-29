@@ -42,6 +42,10 @@ class Asset extends Hierarchy
 {
     public function getNextSorting(string $entityType, string $link, string $entityId): int
     {
+        if (in_array($link, ['parents', 'children'])) {
+            return 0;
+        }
+
         $relationName = $this->getMetadata()->get(['entityDefs', $entityType, 'links', $link, 'relationName']);
 
         $table = $this->getEntityManager()->getQuery()->toDb($relationName);
