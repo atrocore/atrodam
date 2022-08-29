@@ -27,14 +27,25 @@
   "multiParents": false,
   "fieldValueInheritance": false,
   "mandatoryUnInheritedFields": [
+    "preview",
+    "sorting",
+    "isMainImage",
+    "icon",
+    "url",
+    "afterSaveMessage",
     "height",
     "width",
     "colorSpace",
     "colorDepth",
     "orientation",
+    "size",
+    "name",
     "type",
     "file",
-    "size"
+    "fileId",
+    "fileName",
+    "filePathsData",
+    "sortOrder"
   ],
   "relationInheritance": false
 }
