@@ -138,9 +138,6 @@
 	    vertical-align: middle;
         margin-right: 5px;
 	}
-    .sort-container .sort-field {
-	    margin-right: 5px;
-	}
 	.sort-container .sort-field .dropdown-menu {
         max-height: 500px;
         overflow-y: auto;
