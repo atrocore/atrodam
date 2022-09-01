@@ -65,9 +65,9 @@
         <div class="btn-group sort-direction">
             <button type="button" class="btn btn-default sort-direction-button" data-action="sortByDirection">
                 {{#if collection.asc}}
-                &#129057;
+                &#8593;
                 {{else}}
-                &#129059;
+                &#8595;
                 {{/if}}
             </button>
         </div>
@@ -137,9 +137,6 @@
 	    display: inline-block;
 	    vertical-align: middle;
         margin-right: 5px;
-	}
-    .sort-container .sort-field {
-	    margin-right: 5px;
 	}
 	.sort-container .sort-field .dropdown-menu {
         max-height: 500px;
