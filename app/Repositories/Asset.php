@@ -217,6 +217,12 @@ class Asset extends Hierarchy
                 throw new BadRequest($this->getInjection('language')->translate('fileExtensionCannotBeChanged', 'exceptions', 'Asset'));
             }
 
+            if (!empty($fileNameRegexPattern = $this->getConfig()->get('fileNameRegexPattern')) && !preg_match($fileNameRegexPattern, implode('.', $assetParts))) {
+                $msg = sprintf($this->getInjection('language')->translate('fileNameNotValidByUserRegex', 'exceptions', 'Asset'), $fileNameRegexPattern);
+
+                throw new BadRequest($msg);
+            }
+
             $entity->set('name', implode('.', $assetParts) . '.' . $attachmentExt);
         }
 
