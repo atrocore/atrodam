@@ -262,10 +262,6 @@ class Attachment extends \Espo\Services\Attachment
      */
     private function getPath(\Espo\Entities\Attachment $attachment)
     {
-        if ($attachment->get('sourceId')) {
-            $attachment = $this->getRepository()->where(['id' => $attachment->get('sourceId')])->findOne();
-        }
-
         return $this->getRepository()->getFilePath($attachment);
     }
 

@@ -33,70 +33,70 @@ declare(strict_types=1);
 
 namespace Dam\Core\Download;
 
-use Dam\Entities\Attachment;
+use Espo\Core\Exceptions\Error;
+use Espo\Entities\Attachment;
+use Espo\Core\Exceptions\NotFound;
+use Espo\Core\Injectable;
+use Espo\Core\Utils\Util;
 use Imagick;
 
-/**
- * Class Custom
- * @package Dam\Core\Download
- */
-class Custom
+class Custom extends Injectable
 {
     /**
-     * @var Imagick|null
+     * @var Imagick
      */
-    protected $imagick = null;
+    protected $imagick;
+
     /**
      * @var string
      */
     protected $scale;
+
     /**
      * @var integer
      */
     protected $width;
+
     /**
      * @var integer
      */
     protected $height;
+
     /**
      * @var integer
      */
     protected $quality;
+
     /**
      * @var string
      */
     protected $format;
+
     /**
      * @var Attachment
      */
     protected $attachment;
 
-    /**
-     * Custom constructor.
-     * @param string $filePath
-     * @throws \ImagickException
-     */
-    public function __construct(string $filePath)
+    public function __construct()
     {
-        $this->imagick = new \Imagick($filePath);
+        $this->addDependency('config');
+        $this->addDependency('entityManager');
     }
 
-    /**
-     * @param Attachment $attachment
-     * @return $this
-     */
-    public function setAttachment(Attachment $attachment)
+    public function setAttachment(Attachment $attachment): Custom
     {
+        $filePath = $this->getInjection('entityManager')->getRepository('Attachment')->getFilePath($attachment);
+        if (!file_exists($filePath)) {
+            throw new NotFound();
+        }
+
         $this->attachment = $attachment;
+        $this->imagick = new \Imagick($filePath);
 
         return $this;
     }
 
-    /**
-     * @param array $params
-     * @return $this
-     */
-    public function setParams(array $params)
+    public function setParams(array $params): Custom
     {
         foreach ($params as $propName => $value) {
             if (!property_exists($this, $propName)) {
@@ -109,34 +109,52 @@ class Custom
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getImage()
+    public function getDirPath(): string
     {
-        return $this->imagick->getImageBlob();
+        if (empty($this->attachment)) {
+            throw new Error('Attachment is required for converter.');
+        }
+
+        return $this->getInjection('config')->get('renditionPath', 'upload/rendition/') . $this->attachment->get('id') . '/' . $this->createSubDir();
     }
 
-    /**
-     * @return Custom
-     */
-    public function convert()
+    public function getFilePath(): string
     {
-        return $this->resize()->quality()->format();
+        return $this->getDirPath() . '/' . $this->getName();
     }
 
-    /**
-     * @return int
-     */
-    public function getImageSize()
+    public function convert(): Custom
     {
-        return mb_strlen($this->imagick->getImageBlob(), "8bit");
+        if (file_exists($this->getFilePath())) {
+            return $this;
+        }
+
+        Util::createDir($this->getDirPath());
+
+        $this->resize()->quality()->format();
+        $this->imagick->writeImage($this->getFilePath());
+
+        return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function createSubDir(): string
+    {
+        $key = $this->getInjection('config')->get('passwordSalt', '') . '_' . $this->width . '_' . $this->height . '_' . $this->quality . '_' . $this->scale . '_' . $this->format;
+
+        return md5($key);
+    }
+
+    public function getImageWidth(): int
+    {
+        return $this->imagick->getImageWidth();
+    }
+
+    public function getImageHeight(): int
+    {
+        return $this->imagick->getImageHeight();
+    }
+
+    public function getName(): string
     {
         $name = explode(".", $this->attachment->get("name"));
         array_pop($name);
@@ -145,18 +163,12 @@ class Custom
         return str_replace("\"", "\\\"", implode(".", $name));
     }
 
-    /**
-     * @return string
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->format === "png" ? "image/png" : "image/jpeg";
     }
 
-    /**
-     * @return $this
-     */
-    protected function resize()
+    protected function resize(): Custom
     {
         switch ($this->scale) {
             case "resize":
@@ -190,10 +202,7 @@ class Custom
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function quality()
+    protected function quality(): Custom
     {
         switch (true) {
             case $this->format === "jpeg":
@@ -206,11 +215,7 @@ class Custom
         return $this;
     }
 
-    /**
-     * @return $this
-     * @throws \ImagickException
-     */
-    protected function format()
+    protected function format(): Custom
     {
         if ($this->format === "jpeg") {
             $this->imagick->setBackgroundColor("#ffffff");
