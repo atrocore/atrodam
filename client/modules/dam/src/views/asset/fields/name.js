@@ -103,15 +103,10 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
 
         validateName() {
             let name = this.model.get(this.name);
-            let regexp = new RegExp('^(?!(?:COM[0-9]|CON|LPT[0-9]|NUL|PRN|AUX|com[0-9]|con|lpt[0-9]|nul|prn|aux)|[\\s\\.])[^\\\\\\/:\\*\\"\\?<>%|\\s\\r\\n=,]{1,254}$');
             let fileNameRegexPatternString = this.getConfig().get('fileNameRegexPattern');
             let fileNameRegexPattern = this.convertStrToRegex(fileNameRegexPatternString);
 
-            if (!regexp.test(name)) {
-                let msg = this.translate('fileNameNotValid', 'exceptions', 'Asset');
-                this.showValidationMessage(msg, '[name="' + this.name + '"]');
-                return true;
-            } else if (fileNameRegexPattern && !fileNameRegexPattern.test(name)) {
+            if (fileNameRegexPattern && !fileNameRegexPattern.test(name)) {
                 let msg = this.translate('fileNameNotValidByUserRegex', 'exceptions', 'Asset').replace('%s', fileNameRegexPattern);
                 this.showValidationMessage(msg, '[name="' + this.name + '"]');
                 return true;
