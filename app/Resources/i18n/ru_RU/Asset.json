@@ -47,6 +47,9 @@
     "renditions": "Преобразование",
     "relatedAssets": "Связанные ассеты"
   },
+  "boolFilters": {
+    "onlyPrivate": "Приватный"
+  },
   "messages": {
     "assetCouldNotBeUploaded": "Не удалось загрузить ассет.",
     "notAllAssetsWereUploaded": "XX из YY ассетов не были загружены.",

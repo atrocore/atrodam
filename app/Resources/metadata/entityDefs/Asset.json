@@ -206,7 +206,8 @@
       "default": false,
       "audited": false,
       "readOnly": false,
-      "tooltip": false
+      "tooltip": false,
+      "filterDisabled": true
     },
     "type": {
       "type": "multiEnum",
