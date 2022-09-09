@@ -52,7 +52,8 @@
     "preview": "Vorschau"
   },
   "boolFilters": {
-    "onlyPrivate": "Privat"
+    "onlyPrivate": "Privat",
+    "onlyPublic": "Öffentlich"
   },
   "messages": {
     "assetCouldNotBeUploaded": "Asset konnte nicht hochgeladen werden.",

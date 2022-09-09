@@ -48,7 +48,8 @@
     "relatedAssets": "Связанные ассеты"
   },
   "boolFilters": {
-    "onlyPrivate": "Приватный"
+    "onlyPrivate": "Приватный",
+    "onlyPublic": "Публичный"
   },
   "messages": {
     "assetCouldNotBeUploaded": "Не удалось загрузить ассет.",
