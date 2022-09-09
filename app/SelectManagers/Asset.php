@@ -58,8 +58,11 @@ class Asset extends Base
 
     protected function boolFilterOnlyPrivate(array &$result): void
     {
-
-        $result['customWhere'] .= " AND EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id =  asset.file_id AND e_attachment.private = 1 AND deleted=0 )";
+        $result['customWhere'] .= " AND EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id=asset.file_id AND e_attachment.private=1 AND deleted=0)";
     }
 
+    protected function boolFilterOnlyPublic(array &$result): void
+    {
+        $result['customWhere'] .= " AND EXISTS (SELECT a2.id FROM `attachment` a2 WHERE a2.id=asset.file_id AND a2.private=0 AND deleted=0)";
+    }
 }

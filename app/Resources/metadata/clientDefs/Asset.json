@@ -9,6 +9,7 @@
     "notParents",
     "notChildren",
     "onlyPrivate",
+    "onlyPublic",
     "linkedWithAssetCategory"
   ],
   "hiddenBoolFilterList": [
