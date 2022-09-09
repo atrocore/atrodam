@@ -47,6 +47,9 @@
     "renditions": "Renditions",
     "relatedAssets": "Related Assets"
   },
+  "boolFilters": {
+    "onlyPrivate": "Private"
+  },
   "messages": {
     "assetCouldNotBeUploaded": "Asset could not be uploaded.",
     "notAllAssetsWereUploaded" : "XX of YY assets were not uploaded.",

@@ -55,4 +55,11 @@ class Asset extends Base
 
         $result['customWhere'] .= " AND asset.id IN (SELECT asset_id FROM `asset_category_asset` WHERE asset_id IS NOT NULL AND deleted=0 AND asset_category_id IN ('$ids'))";
     }
+
+    protected function boolFilterOnlyPrivate(array &$result): void
+    {
+
+        $result['customWhere'] .= " AND EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id =  asset.file_id AND e_attachment.private = 1 AND deleted=0 )";
+    }
+
 }
