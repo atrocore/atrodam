@@ -4,7 +4,8 @@
       "type": "varchar",
       "required": true,
       "unique": true,
-      "trim": true
+      "trim": true,
+      "isMultilang": true
     },
     "createdAt": {
       "type": "datetime",
