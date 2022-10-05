@@ -159,6 +159,12 @@ Espo.define('dam:views/asset/record/plate', 'views/record/list',
             }
         },
 
+        selectAllResult() {
+            Dep.prototype.selectAllResult.call(this);
+
+            this.$el.find('.list .plate-item').removeClass('active');
+        },
+
         sortByDirection() {
             this.toggleSort(this.collection.sortBy);
         },
