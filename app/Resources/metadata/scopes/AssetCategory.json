@@ -23,7 +23,9 @@
   "multiParents": false,
   "fieldValueInheritance": false,
   "mandatoryUnInheritedFields": [
-    "code"
+    "code",
+    "assetsIds",
+    "assetsNames"
   ],
   "relationInheritance": false
 }

@@ -41,4 +41,15 @@ use Espo\Core\Templates\Services\Hierarchy;
  */
 class AssetCategory extends Hierarchy
 {
+    public function createEntity($attachment)
+    {
+        if (!property_exists($attachment, 'assetsIds')) {
+            $attachment->assetsIds = [];
+        }
+        if (!property_exists($attachment, 'assetsNames')) {
+            $attachment->assetsNames = null;
+        }
+
+        return parent::createEntity($attachment);
+    }
 }
