@@ -43,8 +43,12 @@ class AssetCategory extends Hierarchy
 {
     public function createEntity($attachment)
     {
-        $attachment->assetsIds = [];
-        $attachment->assetsNames = null;
+        if (!property_exists($attachment, 'assetsIds')) {
+            $attachment->assetsIds = [];
+        }
+        if (!property_exists($attachment, 'assetsNames')) {
+            $attachment->assetsNames = null;
+        }
 
         return parent::createEntity($attachment);
     }
