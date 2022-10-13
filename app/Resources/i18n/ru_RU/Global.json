@@ -1,9 +1,9 @@
 {
+  "fields": {
+    "mainImage": "Основное изображение",
+    "mainImageAddOnly": "Основное изображение: режим AddOnly"
+  },
   "scopeNames": {
-    "fields": {
-      "mainImage": "Основное изображение",
-      "mainImageAddOnly": "Основное изображение: режим AddOnly"
-    },
     "Asset": "Ассет",
     "Rendition": "Преобразование",
     "RenditionMetaData": "Преобразование мета данные",
