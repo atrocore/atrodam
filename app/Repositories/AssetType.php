@@ -59,7 +59,7 @@ class AssetType extends Base
             ->getEntityManager()
             ->getRepository('Asset')
             ->select(['id'])
-            ->where(['type*' => '%"' . $entity->getFetched('name') . '"%'])
+            ->where(['type*' => '%"' . ($entity->isNew() ? $entity->get('name') : $entity->getFetched('name')) . '"%'])
             ->findOne();
 
         return !empty($asset);
