@@ -265,7 +265,6 @@
     "children": {
       "type": "linkMultiple",
       "layoutDetailDisabled": true,
-      "massUpdateDisabled": true,
       "noLoad": true
     },
     "parents": {
