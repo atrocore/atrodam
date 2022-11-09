@@ -60,14 +60,19 @@
     ],
     "detail": [
       {
-        "name": "custom_download",
-        "label": "Custom Download",
-        "view": "dam:views/asset/record/panels/side/download/main"
-      },
-      {
         "name": "preview",
         "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
+      },
+      {
+        "name": "sharing",
+        "label": "Sharing",
+        "view": "views/record/panels/sharing"
+      },
+      {
+        "name": "custom_download",
+        "label": "Custom Download",
+        "view": "dam:views/asset/record/panels/side/download/main"
       }
     ],
     "detailSmall": [
@@ -75,6 +80,11 @@
         "name": "preview",
         "label": "assetPreview",
         "view": "dam:views/asset/record/panels/side/preview/main"
+      },
+      {
+        "name": "sharing",
+        "label": "Sharing",
+        "view": "views/record/panels/sharing"
       }
     ],
     "editSmall": [
