@@ -34,23 +34,20 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
         setup() {
             Dep.prototype.setup.call(this);
 
-            this.listenTo(this.model, "change:name", () => {
-                if (this.model.get('name')) {
-                    const name = this.model.get('name');
-                    const ext = (this.model.get('fileName') || '').split('.').pop();
-
-                    if (!name.endsWith('.' + ext)) {
-                        this.model.set('name', name + '.' + ext, {silent: true});
-                        this.model.set('fileName', this.model.get('name'));
-                    }
-
-                    this.reRender();
+            this.listenTo(this.model, "change:fileId", () => {
+                if (this.mode === 'edit') {
+                    this.model.set("name", this.model.get("fileName"));
                 }
+            });
+
+            this.listenTo(this.model, "change:fileName", () => {
+                this.reRender();
             });
 
             this.listenTo(this.model, "after:save", () => {
                 this.reRender();
             });
-        }
+        },
+
     })
 );

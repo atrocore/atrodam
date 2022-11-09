@@ -163,56 +163,6 @@
           ]
         }
       },
-      "height": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "height"
-            }
-          ]
-        }
-      },
-      "width": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "width"
-            }
-          ]
-        }
-      },
-      "colorSpace": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "colorSpace"
-            }
-          ]
-        }
-      },
-      "colorDepth": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "colorDepth"
-            }
-          ]
-        }
-      },
-      "orientation": {
-        "visible": {
-          "conditionGroup": [
-            {
-              "type": "isNotEmpty",
-              "attribute": "colorDepth"
-            }
-          ]
-        }
-      },
       "size": {
         "visible": {
           "conditionGroup": [

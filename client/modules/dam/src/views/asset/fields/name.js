@@ -31,29 +31,11 @@
 Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
     Dep => Dep.extend({
 
-        fileName: null,
-
         detailTemplate: "dam:fields/name/detail",
 
         editTemplate: 'dam:asset/fields/name/edit',
 
         validations: ['name'],
-
-        setup() {
-            Dep.prototype.setup.call(this);
-            this.fileName = this._getFileName();
-
-            this.registerListeners();
-
-            this.listenTo(this.model, 'before:save', function (attrs) {
-                let name = attrs[this.name] || null;
-                let filename = attrs['fileName'] || this.fileName;
-
-                if (name && filename && name !== filename) {
-                    attrs[this.name] = filename;
-                }
-            }.bind(this));
-        },
 
         data() {
             let data = _.extend({attachmentId: this.model.get("fileId")}, Dep.prototype.data.call(this));
@@ -64,41 +46,6 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
             data['valueWithoutExt'] = parts.length > 1 ? parts.join('.') : parts[0];
 
             return data;
-        },
-
-        registerListeners() {
-            this.listenTo(this.model, "change:fileId", () => {
-                this.updateName();
-            });
-
-            this.listenTo(this.model, "change:imageId", () => {
-                this.updateName();
-            });
-        },
-
-        updateName() {
-            if (this._isGeneratedName()) {
-                this.model.set("name", this._normalizeName(this._getFileName()), {silent: true});
-                this.fileName = this._getFileName();
-            }
-        },
-
-        _getFileName() {
-            let name = this.model.get("fileName") || this.model.get("imageName");
-
-            return name ? name : '';
-        },
-
-        _normalizeName(name) {
-            return name;
-        },
-
-        _isGeneratedName() {
-            if (!this.model.get("name")) {
-                return true;
-            }
-
-            return this.model.get("name") === this._normalizeName(this.fileName);
         },
 
         validateName() {

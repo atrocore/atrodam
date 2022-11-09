@@ -201,6 +201,10 @@ class Asset extends Hierarchy
             }
         }
 
+        if ($entity->isAttributeChanged('fileId') && !$entity->isAttributeChanged('name')) {
+            $entity->set('name', $file->get('name'));
+        }
+
         // prepare name
         if (empty($entity->get('name'))) {
             $entity->set('name', $file->get('name'));
@@ -232,7 +236,7 @@ class Asset extends Hierarchy
         }
 
         // rename file
-        if (!$entity->isNew() && $entity->isAttributeChanged("name")) {
+        if (!$entity->isNew() && $entity->isAttributeChanged("name") && !$entity->isAttributeChanged('fileId')) {
             $this->getInjection('serviceFactory')->create('Attachment')->changeName($file, $entity->get('name'));
         }
 

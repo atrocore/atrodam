@@ -14,7 +14,7 @@
   "customizable": true,
   "importable": true,
   "notifications": true,
-  "stream": false,
+  "stream": true,
   "disabled": false,
   "type": "Hierarchy",
   "module": "Dam",

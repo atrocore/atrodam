@@ -175,6 +175,7 @@
     },
     "description": {
       "type": "text",
+      "audited": true,
       "rows": 4,
       "lengthOfCut": 400,
       "isMultilang": true
@@ -226,7 +227,7 @@
       "required": true,
       "sourceList": [],
       "noAsset": true,
-      "audited": false,
+      "audited": true,
       "tooltip": false,
       "view": "dam:views/asset/fields/file",
       "layoutMassUpdateDisabled": true,

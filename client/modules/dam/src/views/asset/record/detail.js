@@ -35,5 +35,56 @@ Espo.define('dam:views/asset/record/detail', 'views/record/detail-tree',
 
         sideView: "dam:views/asset/record/detail-side",
 
+        setup() {
+            Dep.prototype.setup.call(this);
+
+            this.listenTo(this.model, 'before:save', attrs => {
+                let name = attrs[this.name] || null;
+                let filename = attrs['fileName'] || this.model.get("fileName") || '';
+
+                if (name && filename && name !== filename) {
+                    attrs[this.name] = filename;
+                }
+            });
+
+            this.listenTo(this.model, "change:name", () => {
+                const name = this.model.get('name');
+                if (this.mode === 'edit' && name) {
+                    const ext = (this.model.get('fileName') || '').split('.').pop();
+                    if (!name.endsWith('.' + ext)) {
+                        this.model.set('name', name + '.' + ext, {silent: true});
+                        this.model.set('fileName', this.model.get('name'));
+                    }
+                }
+            });
+
+            this.listenTo(this.model, "change:fileId", () => {
+                this.toggleVisibilityForImagesAttributesFields();
+            });
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+
+            this.toggleVisibilityForImagesAttributesFields();
+        },
+
+        toggleVisibilityForImagesAttributesFields() {
+            ['width', 'height', 'orientation', 'colorDepth', 'colorSpace'].forEach(name => {
+                if (this.isImage()) {
+                    this.getView('middle').getView(name).show();
+                } else {
+                    this.getView('middle').getView(name).hide();
+                }
+            });
+        },
+
+        isImage() {
+            const imageExtensions = this.getMetadata().get('dam.image.extensions') || [];
+            const fileExt = (this.model.get('fileName') || '').split('.').pop().toLowerCase();
+
+            return $.inArray(fileExt, imageExtensions) !== -1;
+        },
+
     })
 );
