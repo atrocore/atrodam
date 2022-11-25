@@ -68,7 +68,7 @@ class AssetType extends Base
     protected function beforeSave(Entity $entity, array $options = [])
     {
         if ($entity->isAttributeChanged('name') && $this->isInUse($entity)) {
-            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUseRename', 'exceptions', 'AssetType'));
+            throw new BadRequest($this->getInjection('container')->get('language')->translate('assetTypeInUseRename', 'exceptions', 'AssetType'));
         }
 
         parent::beforeSave($entity, $options);
@@ -84,7 +84,7 @@ class AssetType extends Base
     protected function beforeRemove(Entity $entity, array $options = [])
     {
         if ($this->isInUse($entity)) {
-            throw new BadRequest($this->getInjection('language')->translate('assetTypeInUseDelete', 'exceptions', 'AssetType'));
+            throw new BadRequest($this->getInjection('container')->get('language')->translate('assetTypeInUseDelete', 'exceptions', 'AssetType'));
         }
 
         parent::beforeRemove($entity, $options);
@@ -104,6 +104,5 @@ class AssetType extends Base
         parent::init();
 
         $this->addDependency('dataManager');
-        $this->addDependency('language');
     }
 }
