@@ -21,6 +21,7 @@
   "object": true,
   "skipAssetSorting": true,
   "multiParents": false,
+  "dragAndDrop": true,
   "fieldValueInheritance": false,
   "mandatoryUnInheritedFields": [
     "code",

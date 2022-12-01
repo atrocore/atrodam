@@ -25,6 +25,7 @@
   "skipAssetSorting": true,
   "addRelationEnabled": true,
   "multiParents": false,
+  "dragAndDrop": true,
   "fieldValueInheritance": false,
   "mandatoryUnInheritedFields": [
     "preview",
