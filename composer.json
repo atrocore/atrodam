@@ -3,7 +3,7 @@
   "description": "AtroDAM. Open source DAM application.",
   "require": {
     "ext-fileinfo": "*",
-    "atrocore/core": "~1.4.126"
+    "atrocore/core": "~1.4.131"
   },
   "conflict": {
     "atrocore/pim": "<1.5.23 || >=1.6.0"
