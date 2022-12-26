@@ -6,7 +6,7 @@
     "atrocore/core": "~1.4.131"
   },
   "conflict": {
-    "atrocore/pim": "<1.5.23 || >=1.6.0"
+    "atrocore/pim": "<1.5.23 || >=1.7.0"
   },
   "autoload": {
     "psr-4": {
