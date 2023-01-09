@@ -74,7 +74,7 @@ Installation Guide is available [here](https://github.com/atrocore/docs/blob/mas
 
 ## License
 
-AtroDAM is published under the GNU GPLv3 [license](https://github.com/atrocore/atrodam/blob/master/LICENSE.txt). This software is not allowed to be used in Russia and Belarus.
+AtroDAM is published under the GNU GPLv3 [license](https://github.com/atrocore/atrodam/blob/master/LICENSE.txt).
 
 ## Support
 
