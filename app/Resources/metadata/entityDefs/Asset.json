@@ -126,6 +126,13 @@
       "storeArrayValues": true,
       "required": false,
       "fontSize": 1,
+      "optionsIds": [
+        "tag1",
+        "tag2",
+        "tag3",
+        "tag4",
+        "tag5"
+      ],
       "options": [
         "tag1",
         "tag2",
