@@ -174,7 +174,18 @@ class Asset extends Hierarchy
                 throw new BadRequest($this->getInjection('language')->translate('noAssetTypeProvided', 'exceptions', 'Asset'));
             }
 
-            $entity->set('type', $possibleTypes);
+            $options = $this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'options'], []);
+            $optionsIds = $this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'optionsIds'], []);
+
+            $possibleTypesIds = [];
+            foreach ($possibleTypes as $possibleType) {
+                $key = array_search($possibleType, $options);
+                if ($key !== false && isset($optionsIds[$key])) {
+                    $possibleTypesIds[] = $optionsIds[$key];
+                }
+            }
+
+            $entity->set('type', $possibleTypesIds);
         }
 
         // validate asset if type changed
