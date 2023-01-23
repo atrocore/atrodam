@@ -80,6 +80,14 @@ class Attachment extends \Espo\Repositories\Attachment
         $asset->set('private', $this->getConfig()->get('isUploadPrivate', true));
         $asset->set('fileId', $attachment->get('id'));
         if (!empty($type)) {
+            $options = $this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'options'], []);
+            $optionsIds = $this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'type', 'optionsIds'], []);
+
+            $key = array_search($type, $options);
+            if ($key !== false && isset($optionsIds[$key])) {
+                $type = $optionsIds[$key];
+            }
+
             $asset->set('type', [$type]);
             if (!$skipValidation) {
                 try {
