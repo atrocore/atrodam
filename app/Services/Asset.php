@@ -135,10 +135,11 @@ class Asset extends Hierarchy
             }
 
             if (!empty($asset = $this->getEntityManager()->getRepository('Asset')->where(['fileId' => $attachment->get('id')])->findOne())) {
+                $asset = $this->readEntity($asset->get('id'));
                 if (property_exists($data, 'type') && $data->type !== $asset->get('type')) {
                     throw new BadRequest(sprintf($this->translate('assetExistWithOtherType', 'exceptions', 'Asset'), $data->url));
                 }
-                return $this->readEntity($asset->get('id'));
+                return $asset;
             }
 
             $data->name = $attachment->get('name');
