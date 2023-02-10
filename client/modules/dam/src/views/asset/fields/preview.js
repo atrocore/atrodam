@@ -64,13 +64,7 @@ Espo.define('dam:views/asset/fields/preview', 'view',
             Dep.prototype.afterRender.call(this);
 
             if (this.$el && this.model.get('isMainImage')) {
-                const parent = this.$el.parent();
-
-                parent.addClass('main-image');
-
-                if (this.model.get('isGlobalMainImage') === true) {
-                    parent.addClass('global-main-image');
-                }
+                this.$el.parent().addClass('main-image global-main-image');
             }
         }
     })
