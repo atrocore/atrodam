@@ -144,6 +144,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
             let self = this;
             if (count > 0) {
+                this.trigger('before:save', attrs);
                 this.model.save(attrs, {
                     patch: !this.model.isNew(),
                     success(response) {
