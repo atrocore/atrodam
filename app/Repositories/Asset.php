@@ -66,15 +66,6 @@ class Asset extends Hierarchy
 
     public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
     {
-        $scope = ucfirst(str_replace('asset', '', strtolower($relationName)));
-        $foreignRepository = $this->getEntityManager()->getRepository($scope);
-
-        if (!empty($foreignRepository) && method_exists($foreignRepository, 'updateMainImageRelationData')) {
-            $foreignRepository->updateMainImageRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
-            parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
-            return;
-        }
-
         if (!empty($setData['isMainImage'])) {
             $table = $this->getEntityManager()->getQuery()->toDb($relationName);
             $column = $this->getEntityManager()->getQuery()->toDb($re1);
