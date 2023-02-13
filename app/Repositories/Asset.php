@@ -38,64 +38,6 @@ use Espo\ORM\Entity;
 
 class Asset extends Hierarchy
 {
-    public function getNextSorting(string $entityType, string $link, string $entityId): int
-    {
-        if (in_array($link, ['parents', 'children'])) {
-            return 0;
-        }
-
-        $relationName = $this->getMetadata()->get(['entityDefs', $entityType, 'links', $link, 'relationName']);
-
-        $table = $this->getEntityManager()->getQuery()->toDb($relationName);
-        $column = $this->getEntityManager()->getQuery()->toDb("{$entityType}Id");
-        $entityId = $this->getPDO()->quote($entityId);
-
-        $query = "SELECT r.sorting 
-                  FROM `$table` r 
-                  LEFT JOIN asset a ON a.id=r.asset_id 
-                  WHERE r.{$column}=$entityId 
-                    AND r.deleted=0 
-                    AND a.deleted=0 
-                  ORDER BY r.sorting DESC 
-                  LIMIT 0,1";
-
-        $max = $this->getPDO()->query($query)->fetch(\PDO::FETCH_COLUMN);
-
-        return empty($max) ? 0 : $max + 10;
-    }
-
-    public function updateRelationData(string $relationName, array $setData, string $re1, string $re1Id, string $re2, string $re2Id): void
-    {
-        if (!empty($setData['isMainImage'])) {
-            $table = $this->getEntityManager()->getQuery()->toDb($relationName);
-            $column = $this->getEntityManager()->getQuery()->toDb($re1);
-            $entityId = $this->getPDO()->quote($re1Id);
-            $this->getPDO()->exec("UPDATE `$table` SET is_main_image=0 WHERE deleted=0 AND $column=$entityId");
-        }
-
-        parent::updateRelationData($relationName, $setData, $re1, $re1Id, $re2, $re2Id);
-    }
-
-    public function updateSortOrder(string $entityId, array $assetsIds, string $scope, string $link): bool
-    {
-        $relationName = $this->getMetadata()->get(['entityDefs', $scope, 'links', $link, 'relationName']);
-        if (empty($relationName)) {
-            throw new BadRequest("No 'relationName' for relation.");
-        }
-
-        $table = $this->getEntityManager()->getQuery()->toDb($relationName);
-        $column = $this->getEntityManager()->getQuery()->toDb("{$scope}Id");
-        $entityId = $this->getPDO()->quote($entityId);
-
-        foreach ($assetsIds as $k => $assetId) {
-            $assetId = $this->getPDO()->quote($assetId);
-            $sorting = $k * 10;
-            $this->getPDO()->exec("UPDATE `$table` SET sorting=$sorting WHERE asset_id=$assetId AND $column=$entityId AND deleted=0");
-        }
-
-        return true;
-    }
-
     public function getPossibleTypes(Entity $attachment): array
     {
         $types = [];
