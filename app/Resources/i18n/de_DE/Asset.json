@@ -23,8 +23,6 @@
     "relatedAssets": "Verwandte Assets"
   },
   "fields": {
-    "sorting": "Sortierreihenfolge",
-    "isMainImage": "Hauptbild",
     "url": "URL",
     "type": "Typen",
     "renditions": "Derivate",

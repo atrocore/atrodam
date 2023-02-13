@@ -29,8 +29,6 @@
   "fieldValueInheritance": false,
   "mandatoryUnInheritedFields": [
     "preview",
-    "sorting",
-    "isMainImage",
     "icon",
     "url",
     "afterSaveMessage",
