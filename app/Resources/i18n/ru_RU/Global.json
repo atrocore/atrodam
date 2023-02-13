@@ -1,8 +1,4 @@
 {
-  "fields": {
-    "mainImage": "Основное изображение",
-    "mainImageAddOnly": "Основное изображение: режим AddOnly"
-  },
   "scopeNames": {
     "Asset": "Ассет",
     "Rendition": "Преобразование",
@@ -26,7 +22,6 @@
     "validationRules": "Правила проверки"
   },
   "labels": {
-    "mainImage": "Основное изображение",
     "dragAndDropBtnText": "Перетяните",
     "dragAndDropBtnTextSmall": "Ваши ассеты или",
     "upload": "Загрузка",

@@ -70,24 +70,6 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
             });
         },
 
-        actionSetAsMainImage(data) {
-            const pathData = window.location.hash.replace('#', '').split('/view/');
-
-            let inputData = {
-                isMainImage: true,
-                _relationEntity: pathData.shift(),
-                _relationEntityId: pathData.pop(),
-                _relationName: this.panelName
-            };
-
-            this.notify('Saving...');
-            this.ajaxPutRequest(`Asset/${data.asset_id}`, inputData).done(asset => {
-                this.model.trigger('asset:saved');
-                this.notify('Saved', 'success');
-                this.actionRefresh();
-            });
-        },
-
     })
 );
 
