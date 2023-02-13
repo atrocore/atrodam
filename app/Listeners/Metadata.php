@@ -40,7 +40,7 @@ class Metadata extends AbstractListener
     {
         $data = $event->getArgument('data');
 
-        $this->updateRelationMetadata($data);
+        $this->updateRelationshipPanels($data);
 
         if ($this->getConfig()->get('isInstalled', false)) {
             $typesData = $this->getAssetTypes();
@@ -83,85 +83,17 @@ class Metadata extends AbstractListener
         return $assetTypes;
     }
 
-    protected function updateRelationMetadata(array &$data): void
+    protected function updateRelationshipPanels(array &$data): void
     {
-        $scopes = [];
-
         foreach ($data['entityDefs'] as $scope => $defs) {
-            if (empty($defs['links']) || !empty($data['scopes'][$scope]['skipAssetSorting'])) {
+            if (empty($defs['links'])) {
                 continue 1;
             }
             foreach ($defs['links'] as $link => $linkData) {
                 if (!empty($linkData['entity']) && $linkData['entity'] == 'Asset') {
-                    $data['clientDefs'][$scope]['relationshipPanels'][$link]['entityName'] = $scope;
                     $data['clientDefs'][$scope]['relationshipPanels'][$link]['view'] = "dam:views/record/panels/assets";
-
-                    if (!empty($linkData['relationName'])) {
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['dragDrop'] = [
-                            'isActive'  => true,
-                            'sortField' => 'sorting'
-                        ];
-
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['sortBy'] = 'sorting';
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['asc'] = true;
-
-                        $data['clientDefs'][$scope]['relationshipPanels'][$link]['rowActionsView'] = "dam:views/asset/record/row-actions/relationship";
-
-                        foreach (['edit', 'detail', 'detailSmall'] as $mode) {
-                            $data['clientDefs'][$scope]['sidePanels'][$mode][] = [
-                                'name'    => 'mainImage',
-                                'unshift' => true,
-                                'label'   => 'mainImage',
-                                'view'    => 'dam:views/asset/fields/main-image'
-                            ];
-                        }
-
-                        $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['sorting'] = [
-                            'type' => 'int'
-                        ];
-
-                        $data['entityDefs'][$scope]['links'][$link]['additionalColumns']['isMainImage'] = [
-                            'type' => 'bool'
-                        ];
-
-                        $data['entityDefs'][$scope]['fields']['mainImage'] = [
-                            'type'               => 'image',
-                            'previewSize'        => 'medium',
-                            'notStorable'        => true,
-                            'readOnly'           => true,
-                            'massUpdateDisabled' => true,
-                            'filterDisabled'     => true,
-                            'emHidden'           => true
-                        ];
-
-                        $data['entityDefs'][$scope]['links']['mainImage'] = [
-                            'type'        => 'belongsTo',
-                            'entity'      => 'Attachment',
-                            'skipOrmDefs' => true
-                        ];
-
-                        $data['entityDefs'][$scope]['fields']['mainImageAddOnly'] = [
-                            'type'                      => 'bool',
-                            'notStorable'               => true,
-                            'layoutListDisabled'        => true,
-                            'layoutListSmallDisabled'   => true,
-                            'layoutDetailDisabled'      => true,
-                            'layoutDetailSmallDisabled' => true,
-                            'massUpdateDisabled'        => true,
-                            'filterDisabled'            => true,
-                            'exportDisabled'            => true,
-                            'emHidden'                  => true
-                        ];
-                    }
-
-                    $scopes[] = $scope;
                 }
             }
         }
-
-        $data['entityDefs']['Asset']['fields']['sorting']['relatingEntityField'] = $scopes;
-        $data['entityDefs']['Asset']['fields']['isMainImage']['relatingEntityField'] = $scopes;
-
-        $data['app']['nonInheritedFields'][] = 'mainImage';
     }
 }

@@ -1,8 +1,4 @@
 {
-  "fields": {
-    "mainImage": "Hauptbild",
-    "mainImageAddOnly": "Hauptbild: AddOnly-Modus"
-  },
   "scopeNames": {
     "AssetMetadata": "Asset-Metadaten",
     "Asset": "Asset",
@@ -33,7 +29,6 @@
     "imageSizeValidationFailed": "Asset-Größe sollte zwischen %skb und %skb sein."
   },
   "labels": {
-    "mainImage": "Hauptbild",
     "dragAndDropBtnText": "Drag & Drop",
     "dragAndDropBtnTextSmall": "Ihre Assets hierher oder",
     "upload": "Hochladen",

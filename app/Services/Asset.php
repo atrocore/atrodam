@@ -161,25 +161,6 @@ class Asset extends Hierarchy
         return parent::createEntity($data);
     }
 
-    public function updateEntity($id, $data)
-    {
-        if (property_exists($data, '_sortedIds') && property_exists($data, '_id') && property_exists($data, '_scope') && property_exists($data, '_link')) {
-            $this->getRepository()->updateSortOrder($data->_id, $data->_sortedIds, $data->_scope, $data->_link);
-            return $this->getEntity($id);
-        }
-
-        return parent::updateEntity($id, $data);
-    }
-
-    protected function updateRelationData(Entity $entity, \stdClass $data): void
-    {
-        if (property_exists($data, '_relationEntityId') && property_exists($data, 'sorting') && $data->sorting === null) {
-            $data->sorting = $this->getRepository()->getNextSorting($data->_relationEntity, $data->_relationName, $data->_relationEntityId);
-        }
-
-        parent::updateRelationData($entity, $data);
-    }
-
     /**
      * @param \Dam\Entities\Asset $asset
      */

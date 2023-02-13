@@ -32,19 +32,10 @@ declare(strict_types=1);
 namespace Dam\Listeners;
 
 use Espo\Core\Exceptions\BadRequest;
-use Treo\Core\EventManager\Event;
+use Espo\Core\EventManager\Event;
 
-/**
- * SettingsController class
- */
-class SettingsController extends \Treo\Listeners\AbstractListener
+class SettingsController extends \Espo\Listeners\AbstractListener
 {
-    /**
-     * @param Event $event
-     *
-     * @throws BadRequest
-     * @throws \Espo\Core\Exceptions\Error
-     */
     public function beforeActionUpdate(Event $event): void
     {
         $data = $event->getArgument('data');

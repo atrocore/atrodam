@@ -36,7 +36,7 @@ Espo.define('dam:views/asset/fields/preview', 'view',
                 e.stopPropagation();
                 e.preventDefault();
                 let id = $(e.currentTarget).data('id');
-                this.createView('preview', 'dam:views/asset/modals/image-preview', {
+                this.createView('preview', 'dam:views/modals/image-preview', {
                     id: id,
                     model: this.model,
                     type: "asset"
@@ -60,18 +60,5 @@ Espo.define('dam:views/asset/fields/preview', 'view',
             return (Math.random() * 10000000000).toFixed();
         },
 
-        afterRender() {
-            Dep.prototype.afterRender.call(this);
-
-            if (this.$el && this.model.get('isMainImage')) {
-                const parent = this.$el.parent();
-
-                parent.addClass('main-image');
-
-                if (this.model.get('isGlobalMainImage') === true) {
-                    parent.addClass('global-main-image');
-                }
-            }
-        }
     })
 );
