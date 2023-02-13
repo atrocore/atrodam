@@ -60,12 +60,5 @@ Espo.define('dam:views/asset/fields/preview', 'view',
             return (Math.random() * 10000000000).toFixed();
         },
 
-        afterRender() {
-            Dep.prototype.afterRender.call(this);
-
-            if (this.$el && this.model.get('isMainImage')) {
-                this.$el.parent().addClass('main-image global-main-image');
-            }
-        }
     })
 );
