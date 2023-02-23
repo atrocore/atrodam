@@ -59,7 +59,8 @@
       "disableFormatting": false,
       "audited": false,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "width": {
       "type": "int",
@@ -68,7 +69,8 @@
       "disableFormatting": false,
       "audited": false,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "colorSpace": {
       "type": "varchar",
@@ -77,7 +79,8 @@
       "readOnly": true,
       "audited": false,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "colorDepth": {
       "type": "varchar",
@@ -86,7 +89,8 @@
       "readOnly": true,
       "audited": false,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "orientation": {
       "type": "varchar",
@@ -95,7 +99,8 @@
       "readOnly": true,
       "audited": false,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "isActive": {
       "notNull": true,
@@ -174,22 +179,26 @@
     "createdAt": {
       "type": "datetime",
       "readOnly": true,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "modifiedAt": {
       "type": "datetime",
       "readOnly": true,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "createdBy": {
       "type": "link",
       "readOnly": true,
-      "view": "views/fields/user"
+      "view": "views/fields/user",
+      "massUpdateDisabled": true
     },
     "modifiedBy": {
       "type": "link",
       "readOnly": true,
-      "view": "views/fields/user"
+      "view": "views/fields/user",
+      "massUpdateDisabled": true
     },
     "private": {
       "notNull": true,
@@ -244,7 +253,8 @@
       "audited": false,
       "readOnly": true,
       "tooltip": false,
-      "importDisabled": true
+      "importDisabled": true,
+      "massUpdateDisabled": true
     },
     "relatedAssets": {
       "type": "linkMultiple",
