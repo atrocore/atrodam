@@ -1,0 +1,11 @@
+{
+  "labels": {
+    "AssetTypes": "Типы ассета",
+    "Dam": "DAM",
+    "GeneralSetting": "Общие настройки"
+  },
+  "descriptions": {
+    "listOfSupportedAssetsTypes": "Список поддерживаемых типов ассета",
+    "damSettings": "DAM настройки системы"
+  }
+}
