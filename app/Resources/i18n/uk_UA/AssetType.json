@@ -1,21 +1,21 @@
 {
   "fields": {
-    "validationRules": "Правила проверки",
-    "sortOrder": "Порядок сортировки",
-    "assignAutomatically": "Назначать автоматически",
-    "typesToExclude": "Типы для исключения"
+    "validationRules": "Правила перевірки",
+    "sortOrder": "Порядок сортування",
+    "assignAutomatically": "Призначати автоматично",
+    "typesToExclude": "Типи для виключення"
   },
   "links": {
-    "validationRules": "Правила проверки"
+    "validationRules": "Правила перевірки"
   },
   "exceptions": {
-    "assetTypeInUseRename": "Ассет тип используется и не может быть переименован.",
-    "assetTypeInUseDelete": "Ассет тип используется и не может быть удален."
+    "assetTypeInUseRename": "Ассет тип використовується і не може бути перейменований.",
+    "assetTypeInUseDelete": "Ассет тип використовується і не може бути видалений."
   },
   "labels": {
-    "Create AssetType": "Создать тип ассета"
+    "Create AssetType": "Створити тип асета"
   },
   "tooltips": {
-    "typesToExclude": "Если текущий тип успешно назначен ассету, эти типы будут удалены из него."
+    "typesToExclude": "Якщо поточний тип успішно призначено ассету, ці типи будуть видалені з нього."
   }
 }
