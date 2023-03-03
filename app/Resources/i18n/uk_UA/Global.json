@@ -2,13 +2,13 @@
   "scopeNames": {
     "Asset": "Ассет",
     "Rendition": "Перетворення",
-"RenditionMetaData": "Перетворення мета даних",
+    "RenditionMetaData": "Перетворення мета даних",
     "Library": "Бібліотека",
     "AssetVariant": "Варіант асета",
-"AssetCategory": "Категорія асету",
-"AssetMetadata": "Метадані асету",
+    "AssetCategory": "Категорія асету",
+    "AssetMetadata": "Метадані асету",
     "AssetVersion": "Версія асету",
-"AssetType": "Тип асету",
+    "AssetType": "Тип асету",
     "ValidationRule": "Правило перевірки"
   },
   "scopeNamesPlural": {
@@ -16,8 +16,8 @@
     "Asset": "Асети",
     "AssetVersion": "Версії асету",
     "AssetVariant": "Варіанти асету",
-"AssetCategory": "Категорія асету",
-"AssetMetadata": "Метадані асету",
+    "AssetCategory": "Категорія асету",
+    "AssetMetadata": "Метадані асету",
     "AssetType": "Типи асету",
     "validationRules": "Правила перевірки"
   },
