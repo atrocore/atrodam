@@ -23,7 +23,7 @@
   "hasAssignedUser": false,
   "hasTeam": false,
   "skipAssetSorting": true,
-  "addRelationEnabled": false,
+  "addRelationEnabled": true,
   "multiParents": false,
   "dragAndDrop": true,
   "fieldValueInheritance": false,
