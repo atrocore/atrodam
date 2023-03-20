@@ -29,15 +29,9 @@
     "url": {
       "type": "varchar",
       "notStorable": true,
-      "default": null,
-      "layoutDetailDisabled": true,
-      "layoutDetailSmallDisabled": true,
-      "layoutListDisabled": true,
-      "layoutListSmallDisabled": true,
-      "layoutMassUpdateDisabled": true,
+      "readOnly": true,
       "filterDisabled": true,
-      "importDisabled": false,
-      "exportDisabled": false
+      "importDisabled": false
     },
     "afterSaveMessage": {
       "type": "text",
