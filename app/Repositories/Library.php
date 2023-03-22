@@ -31,7 +31,6 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
-use Dam\Listeners\AbstractListener;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
@@ -40,6 +39,8 @@ use Espo\ORM\Entity;
  */
 class Library extends AbstractRepository
 {
+    public const CODE_PATTERN = '/^[\p{Ll}0-9_]*$/u';
+
     /**
      * @inheritDoc
      *
@@ -104,7 +105,7 @@ class Library extends AbstractRepository
     {
         $result = false;
 
-        if (!empty($entity->get('code')) && preg_match(AbstractListener::CODE_PATTERN, $entity->get('code'))) {
+        if (!empty($entity->get('code')) && preg_match(self::CODE_PATTERN, $entity->get('code'))) {
             $result = $this->isUnique($entity);
         }
 
