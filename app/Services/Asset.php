@@ -129,8 +129,8 @@ class Asset extends Hierarchy
      */
     public function createEntity($data)
     {
-        if (property_exists($data, 'url') && !empty($data->url)) {
-            if (empty($attachment = $this->getService('Attachment')->createEntityByUrl($data->url, false))) {
+        if (property_exists($data, 'url')) {
+            if (empty($data->url) || empty($attachment = $this->getService('Attachment')->createEntityByUrl($data->url, false))) {
                 throw new BadRequest(sprintf($this->translate('wrongUrl', 'exceptions', 'Asset'), $data->url));
             }
 
