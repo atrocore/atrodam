@@ -89,6 +89,8 @@ class Event extends AfterInstallAfterDelete
      */
     public function afterDelete(): void
     {
+        $this->execute("DELETE FROM `job` WHERE `scheduled_job_id` IN (SELECT id FROM `scheduled_job` WHERE `job` = 'PdfTemplate')");
+        $this->execute("DELETE FROM `scheduled_job` WHERE `job`='PdfTemplate'");
     }
 
     /**
