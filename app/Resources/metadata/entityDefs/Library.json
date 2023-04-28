@@ -51,13 +51,8 @@
     },
     "code": {
       "type": "varchar",
-      "required": true,
       "trim": true,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false,
-      "view": "dam:views/fields/code-from-name",
-      "pattern": "/^[a-z_0-9]+$/"
+      "unique": true
     },
     "isActive": {
       "notNull": true,

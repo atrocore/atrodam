@@ -28,11 +28,8 @@
     },
     "code": {
       "type": "varchar",
-      "view": "dam:views/fields/code-from-name",
-      "pattern": "/^[a-z_0-9]+$/",
-      "required": true,
       "trim": true,
-      "emHidden": true
+      "unique": true
     },
     "isActive": {
       "type": "bool"

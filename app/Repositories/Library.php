@@ -39,22 +39,6 @@ use Espo\ORM\Entity;
  */
 class Library extends AbstractRepository
 {
-    public const CODE_PATTERN = '/^[\p{Ll}0-9_]*$/u';
-
-    /**
-     * @inheritDoc
-     *
-     * @throws BadRequest
-     */
-    protected function beforeSave(Entity $entity, array $options = [])
-    {
-        if (!$this->isValidCode($entity)) {
-            throw new BadRequest($this->translate('codeInvalid', 'exceptions', 'Global'));
-        }
-
-        parent::beforeSave($entity, $options);
-    }
-
     /**
      * @param Entity $entity
      * @param array  $options
@@ -94,37 +78,5 @@ class Library extends AbstractRepository
         }
 
         return !$entity->get("categoryParentId");
-    }
-
-    /**
-     * @param Entity $entity
-     *
-     * @return bool
-     */
-    protected function isValidCode(Entity $entity): bool
-    {
-        $result = false;
-
-        if (!empty($entity->get('code')) && preg_match(self::CODE_PATTERN, $entity->get('code'))) {
-            $result = $this->isUnique($entity);
-        }
-
-        return $result;
-    }
-
-    /**
-     * @param Entity $entity
-     *
-     * @return bool
-     */
-    protected function isUnique(Entity $entity)
-    {
-        $entity = $this
-            ->getEntityManager()
-            ->getRepository('Library')
-            ->where([['code' => $entity->get('code')], ["id!=" => $entity->get("id")],])
-            ->findOne();
-
-        return empty($entity);
     }
 }
