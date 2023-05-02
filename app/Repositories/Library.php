@@ -39,6 +39,15 @@ use Espo\ORM\Entity;
  */
 class Library extends AbstractRepository
 {
+    protected function beforeSave(Entity $entity, array $options = [])
+    {
+        if ($entity->get('code') === '') {
+            $entity->set('code', null);
+        }
+
+        parent::beforeSave($entity, $options);
+    }
+
     /**
      * @param Entity $entity
      * @param array  $options
