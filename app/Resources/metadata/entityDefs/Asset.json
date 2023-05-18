@@ -241,9 +241,8 @@
       "exportDisabled": true
     },
     "size": {
-      "type": "unit",
+      "type": "float",
       "required": false,
-      "measure": "File Size",
       "audited": false,
       "readOnly": true,
       "tooltip": false,
