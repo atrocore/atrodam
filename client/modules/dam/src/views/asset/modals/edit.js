@@ -41,7 +41,7 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
                     style: 'link'
                 };
 
-                if (this.options.layoutName === 'massCreateDetailSmall') {
+                if (this.options.layoutName === 'detailSmall') {
                     button.name = 'simpleUpload';
                     button.label = this.translate('simpleUpload', 'labels', 'Asset');
                 } else {
@@ -69,21 +69,21 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
 
         actionSimpleUpload() {
             this.actionClose();
-            this.actionQuickCreate('detailSmall');
+            this.actionQuickCreate(false);
         },
 
         actionMassUpload() {
             this.actionClose();
-            this.actionQuickCreate('massCreateDetailSmall');
+            this.actionQuickCreate(true);
         },
 
-        actionQuickCreate(layout) {
+        actionQuickCreate(massCreate) {
             let options = _.extend({
                 model: this.model,
                 scope: this.scope,
-                attributes: {}
+                attributes: {massCreate}
             }, this.options || {});
-            options.layoutName = layout;
+            options.layoutName = 'detailSmall';
 
             this.notify('Loading...');
             let viewName = this.getMetadata().get('clientDefs.' + this.scope + '.modalViews.edit') || 'views/modals/edit';

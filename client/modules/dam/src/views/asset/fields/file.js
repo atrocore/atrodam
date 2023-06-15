@@ -46,6 +46,9 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
                 this.reRender();
             });
         },
-
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+            if (this.model.get('massCreate')) this.hide()
+        },
     })
 );

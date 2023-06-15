@@ -50,6 +50,7 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
             this.model.defs['_relationName'] = link;
 
             this.notify('Loading...');
+            console.log('create view in panel')
             this.createView('massCreate', 'dam:views/asset/modals/edit', {
                 name: 'massCreate',
                 scope: 'Asset',
@@ -57,9 +58,9 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
                     model: this.model,
                     link: foreignLink,
                 },
-                attributes: {},
+                attributes: {massCreate: true},
                 fullFormDisabled: true,
-                layoutName: 'massCreateDetailSmall'
+                layoutName: 'detailSmall'
             }, view => {
                 view.render();
                 view.notify(false);
