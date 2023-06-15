@@ -50,7 +50,6 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
             this.model.defs['_relationName'] = link;
 
             this.notify('Loading...');
-            console.log('create view in panel')
             this.createView('massCreate', 'dam:views/asset/modals/edit', {
                 name: 'massCreate',
                 scope: 'Asset',
