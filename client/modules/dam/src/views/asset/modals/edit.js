@@ -77,11 +77,11 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             this.actionQuickCreate(true);
         },
 
-        actionQuickCreate(massCreate) {
+        actionQuickCreate(isMassCreate = false) {
             let options = _.extend({
                 model: this.model,
                 scope: this.scope,
-                attributes: {massCreate}
+                attributes: {massCreate: isMassCreate}
             }, this.options || {});
             options.layoutName = 'detailSmall';
 
