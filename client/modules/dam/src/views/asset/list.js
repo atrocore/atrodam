@@ -57,9 +57,9 @@ Espo.define('dam:views/asset/list', 'views/list-tree',
             this.notify('Loading...');
             this.createView('massCreate', 'dam:views/asset/modals/edit', {
                 scope: 'Asset',
-                attributes: this.getCreateAttributes() || {},
+                attributes: _.extend({massCreate: true}, this.getCreateAttributes() || {}),
                 fullFormDisabled: true,
-                layoutName: 'massCreateDetailSmall'
+                layoutName: 'detailSmall'
             }, view => {
                 view.notify(false);
                 this.listenToOnce(view, 'after:save', () => {

@@ -57,9 +57,9 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
                     model: this.model,
                     link: foreignLink,
                 },
-                attributes: {},
+                attributes: {massCreate: true},
                 fullFormDisabled: true,
-                layoutName: 'massCreateDetailSmall'
+                layoutName: 'detailSmall'
             }, view => {
                 view.render();
                 view.notify(false);

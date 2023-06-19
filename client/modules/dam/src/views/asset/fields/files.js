@@ -106,7 +106,7 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
         setup() {
             Dep.prototype.setup.call(this);
 
-            this.model.set('name', 'massUpload', {silent: true});
+            if (this.model.get('massCreate')) this.model.set('name', 'massUpload', {silent: true});
 
             this.fileList = [];
             this.uploadedSize = {};
@@ -136,6 +136,11 @@ Espo.define('dam:views/asset/fields/files', ['views/fields/attachment-multiple',
                 this.isUploading = false;
                 $('.attachment-upload .progress').hide();
             }.bind(this));
+        },
+
+        afterRender() {
+            Dep.prototype.afterRender.call(this);
+            if (!this.model.get('massCreate')) this.hide()
         },
 
         afterShowNotification: function () {
