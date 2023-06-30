@@ -69,6 +69,15 @@ class Asset extends Hierarchy
         }
     }
 
+    public function isEntityUpdated(Entity $entity, \stdClass $data): bool
+    {
+        $file = $entity->get('file');
+        if (!empty($file)) {
+            $entity->set('private', $file->get('private'));
+        }
+        return parent::isEntityUpdated($entity, $data);
+    }
+
     public function recheckAssetTypes(array $data): void
     {
         if (empty($data['assetId'])) {
@@ -183,7 +192,7 @@ class Asset extends Hierarchy
 
     /**
      * @param \Dam\Entities\Asset $asset
-     * @param array               $imageInfo
+     * @param array $imageInfo
      */
     public function updateAttributes(\Dam\Entities\Asset $asset, array $imageInfo)
     {
