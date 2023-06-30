@@ -188,7 +188,7 @@ class Asset extends Hierarchy
     protected function afterSave(Entity $entity, array $options = [])
     {
         if ($entity->isAttributeChanged('private')) {
-            $file = $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'));
+            $file = $entity->get('file');
             if (!empty($file)) {
                 $file->set('private', $entity->get('private'));
                 $this->getEntityManager()->saveEntity($file);
