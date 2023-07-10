@@ -132,22 +132,41 @@ class Attachment extends \Espo\Services\Attachment
     {
         $entity = parent::createEntity($attachment);
 
-        // validate
-        $this->validateAttachment($entity, $attachment);
-
-        // create asset
-        $this->createAsset($entity, $attachment);
+        if ($this->attachmentHasAsset($attachment)) {
+            $this->validateAttachment($entity, $attachment);
+            $this->createAsset($entity, $attachment);
+        }
 
         return $entity;
     }
 
-    /**
-     * @param Entity    $entity
-     * @param \stdClass $data
-     *
-     * @throws BadRequest
-     */
-    protected function validateAttachment(Entity $entity, \stdClass $data): void
+    public function attachmentHasAsset(\stdClass $input = null): bool
+    {
+        if (!empty($input) && property_exists($input, 'relatedType') && $input->relatedType === 'Note') {
+            return false;
+        }
+
+        if (property_exists($input, 'relatedType') && property_exists($input, 'field')) {
+            if ($this->getMetadata()->get(['entityDefs', $input->relatedType, 'fields', $input->field, 'noAsset'])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function createAsset(Entity $entity, ?\stdClass $attachment = null): void
+    {
+        if (empty($entity->getAsset())) {
+            $type = null;
+            if (!empty($attachment) && !empty($attachment->modelAttributes->attributeAssetType)) {
+                $type = $attachment->modelAttributes->attributeAssetType;
+            }
+            $this->getRepository()->createAsset($entity, false, $type);
+        }
+    }
+
+    public function validateAttachment(Entity $entity, \stdClass $data): void
     {
         $parentType = property_exists($data, 'parentType') ? $data->parentType : '';
         $relatedType = property_exists($data, 'relatedType') ? $data->relatedType : '';
@@ -280,36 +299,5 @@ class Attachment extends \Espo\Services\Attachment
         }
 
         return $result;
-    }
-
-    /**
-     * @return Manager
-     */
-    protected function getFileStorageManager(): Manager
-    {
-        return $this->getInjection("fileStorageManager");
-    }
-
-    /**
-     * @param Entity    $entity
-     * @param \stdClass $attachment
-     */
-    protected function createAsset(Entity $entity, \stdClass $attachment): void
-    {
-        if (
-            property_exists($attachment, 'relatedType')
-            && property_exists($attachment, 'field')
-            && $this->getMetadata()->get(['entityDefs', $attachment->relatedType, 'fields', $attachment->field, 'noAsset'], false)
-        ) {
-            return;
-        }
-
-        if (empty($entity->getAsset())) {
-            $type = null;
-            if (!empty($attachment->modelAttributes->attributeAssetType)) {
-                $type = $attachment->modelAttributes->attributeAssetType;
-            }
-            $this->getRepository()->createAsset($entity, false, $type);
-        }
     }
 }
