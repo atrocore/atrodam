@@ -3,6 +3,8 @@
     "attachmentDuplicates": {
       "type": "enum",
       "default": "notAllowByContentAndName",
+      "prohibitedEmptyValue": true,
+      "required": true,
       "optionsIds": [
         "notAllowByContentAndName",
         "notAllowByContent",
