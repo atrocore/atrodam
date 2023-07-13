@@ -4,6 +4,12 @@
     "rows": [
       [
         {
+          "name": "attachmentDuplicates"
+        },
+        false
+      ],
+      [
+        {
           "name": "fileNameRegexPattern"
         },
         false

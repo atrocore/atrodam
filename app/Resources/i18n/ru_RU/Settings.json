@@ -1,5 +1,6 @@
 {
   "fields": {
+    "attachmentDuplicates": "Дубликаты ресурсов",
     "fileNameRegexPattern": "Шаблон для имени файла"
   },
   "tooltips": {

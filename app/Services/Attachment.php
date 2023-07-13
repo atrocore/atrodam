@@ -140,6 +140,30 @@ class Attachment extends \Espo\Services\Attachment
         return $entity;
     }
 
+    public function findAttachmentDuplicate(\stdClass $attachment): ?Entity
+    {
+        // skip duplicates checking for stream attachments
+        if (property_exists($attachment, 'relatedType') && $attachment->relatedType === 'Note') {
+            return null;
+        }
+
+        $duplicateParam = $this->getConfig()->get('attachmentDuplicates', 'notAllowByContentAndName');
+
+        if ($duplicateParam == 'notAllowByContent' && property_exists($attachment, 'md5')) {
+            return $this->getRepository()->where(['md5' => $attachment->md5])->findOne();
+        }
+
+        if ($duplicateParam == 'notAllowByName' && property_exists($attachment, 'name')) {
+            return $this->getRepository()->where(['name' => $attachment->name])->findOne();
+        }
+
+        if ($duplicateParam == 'notAllowByContentAndName' && property_exists($attachment, 'md5') && property_exists($attachment, 'name')) {
+            return $this->getRepository()->where(['md5' => $attachment->md5, 'name' => $attachment->name])->findOne();
+        }
+
+        return null;
+    }
+
     public function attachmentHasAsset(\stdClass $input = null): bool
     {
         if (!empty($input) && property_exists($input, 'relatedType') && $input->relatedType === 'Note') {

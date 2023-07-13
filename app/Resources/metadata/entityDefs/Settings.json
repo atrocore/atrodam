@@ -1,5 +1,21 @@
 {
   "fields": {
+    "attachmentDuplicates": {
+      "type": "enum",
+      "default": "notAllowByContentAndName",
+      "optionsIds": [
+        "notAllowByContentAndName",
+        "notAllowByContent",
+        "notAllowByName",
+        "allow"
+      ],
+      "options": [
+        "notAllowByContentAndName",
+        "notAllowByContent",
+        "notAllowByName",
+        "allow"
+      ]
+    },
     "fileNameRegexPattern": {
       "type": "varchar",
       "default": "/^[^\\\\\\/:\\*\\\"\\?<>%|\\s,]{1,64}/",

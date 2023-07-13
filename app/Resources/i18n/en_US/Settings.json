@@ -1,5 +1,6 @@
 {
   "fields": {
+    "attachmentDuplicates": "Asset Duplicates",
     "fileNameRegexPattern": "Filename Regex Pattern"
   },
   "tooltips": {
