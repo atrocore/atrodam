@@ -37,16 +37,14 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             if (this.options.relate) {
                 let button = {
                     name: '',
-                    label: '',
+                    label: this.translate('upload', 'labels', 'Asset'),
                     style: 'link'
                 };
 
                 if (this.options.layoutName === 'detailSmall') {
                     button.name = 'simpleUpload';
-                    button.label = this.translate('simpleUpload', 'labels', 'Asset');
                 } else {
                     button.name = 'massUpload';
-                    button.label = this.translate('massUpload', 'labels', 'Asset');
                 }
 
                 this.addButton(button);

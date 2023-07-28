@@ -33,7 +33,7 @@ Espo.define('dam:views/record/panels/assets', 'views/record/panels/relationship'
             Dep.prototype.setup.call(this);
 
             this.actionList.unshift({
-                label: this.translate('massUpload', 'labels', 'Asset'),
+                label: this.translate('upload', 'labels', 'Asset'),
                 action: 'massAssetCreate',
                 data: {
                     link: this.link
