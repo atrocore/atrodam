@@ -170,6 +170,46 @@ class Asset extends Hierarchy
         return parent::createEntity($data);
     }
 
+    protected function beforeCreateEntity(Entity $entity, $data)
+    {
+        $this->validateAttachment($entity, $data);
+        parent::beforeCreateEntity($entity, $data);
+    }
+
+    protected function beforeUpdateEntity(Entity $entity, $data)
+    {
+        $this->validateAttachment($entity, $data);
+        parent::beforeUpdateEntity($entity, $data);
+    }
+
+    protected function validateAttachment($entity, $data)
+    {
+        if (!empty($entity->get('fileId')) && property_exists($data, 'type')) {
+            $this->getInjection(AssetValidator::class)->validateViaTypes($this->getTypeValue($data->type), $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId')));
+        }
+    }
+
+    public function getTypeValue($type)
+    {
+        if (empty($type)) {
+            return [];
+        }
+
+        $defs = $this->getMetadata()->get(['entityDefs', $this->entityName, 'fields', 'type'], []);
+        $options = [];
+        foreach ($type as $optionId) {
+            $key = array_search($optionId, $defs['optionsIds']);
+            if ($key === false) {
+                // for create or massupload
+                $options[] = $optionId;
+            } else {
+                // for update
+                $options[] = $defs['options'][$key];
+            }
+        }
+        return $options;
+    }
+
     /**
      * @param \Dam\Entities\Asset $asset
      */
