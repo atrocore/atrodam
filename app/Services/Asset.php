@@ -160,9 +160,6 @@ class Asset extends Hierarchy
         $entity = $this->getRepository()->get();
         $entity->set($data);
 
-        // validate files
-        $this->validateAttachments($entity);
-
         // Are all required fields filled ?
         $this->checkRequiredFields($entity, $data);
 
@@ -173,17 +170,22 @@ class Asset extends Hierarchy
         return parent::createEntity($data);
     }
 
+    protected function beforeCreateEntity(Entity $entity, $data)
+    {
+        $this->validateAttachment($entity, $data);
+        parent::beforeCreateEntity($entity, $data);
+    }
+
     protected function beforeUpdateEntity(Entity $entity, $data)
     {
-        $this->validateAttachments($entity);
+        $this->validateAttachment($entity, $data);
         parent::beforeUpdateEntity($entity, $data);
     }
 
-    protected function validateAttachments($entity)
+    protected function validateAttachment($entity, $data)
     {
-        $filesIds = $this->isMassCreating($entity) ? $entity->get('filesIds') : [$entity->get('fileId')];
-        foreach ($filesIds as $fileId) {
-            $this->getInjection(AssetValidator::class)->validateViaTypes($this->getTypeValue($entity), $this->getEntityManager()->getEntity('Attachment', $fileId));
+        if (!empty($entity->get('fileId')) && property_exists($data, 'type')) {
+            $this->getInjection(AssetValidator::class)->validateViaTypes($this->getTypeValue($data->type), $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId')));
         }
     }
 
