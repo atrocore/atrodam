@@ -189,11 +189,15 @@ class Asset extends Hierarchy
         }
     }
 
-    public function getTypeValue($entity)
+    public function getTypeValue($type)
     {
+        if (empty($type)) {
+            return [];
+        }
+
         $defs = $this->getMetadata()->get(['entityDefs', $this->entityName, 'fields', 'type'], []);
         $options = [];
-        foreach ($entity->get('type') as $optionId) {
+        foreach ($type as $optionId) {
             $key = array_search($optionId, $defs['optionsIds']);
             if ($key === false) {
                 // for create or massupload
