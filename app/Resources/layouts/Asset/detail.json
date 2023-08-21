@@ -40,12 +40,6 @@
         {
           "name": "tags"
         }
-      ],
-      [
-        {
-          "name": "assetCategories"
-        },
-        false
       ]
     ],
     "style": "default",
