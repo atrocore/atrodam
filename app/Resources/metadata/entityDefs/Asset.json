@@ -150,7 +150,6 @@
     },
     "assetCategories": {
       "type": "linkMultiple",
-      "layoutDetailDisabled": true,
       "layoutMassUpdateDisabled": true,
       "importDisabled": false,
       "exportDisabled": false,
