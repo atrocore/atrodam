@@ -37,11 +37,13 @@ Espo.define('dam:views/asset/record/detail', 'views/record/detail-tree',
             Dep.prototype.setup.call(this);
 
             this.listenTo(this.model, 'before:save', attrs => {
-                let name = attrs[this.name] || null;
-                let filename = attrs['fileName'] || this.model.get("fileName") || '';
+                if (attrs) {
+                    let name = attrs[this.name] || null;
+                    let filename = attrs['fileName'] || this.model.get("fileName") || '';
 
-                if (name && filename && name !== filename) {
-                    attrs[this.name] = filename;
+                    if (name && filename && name !== filename) {
+                        attrs[this.name] = filename;
+                    }
                 }
             });
 
