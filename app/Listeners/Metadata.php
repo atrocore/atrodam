@@ -66,14 +66,15 @@ class Metadata extends AbstractListener
     {
         $assetTypes = $this->getContainer()->get('dataManager')->getCacheData('assetTypes');
         if (empty($assetTypes)) {
+            $query = "SELECT id, name, assign_Automatically as assignAutomatically, types_to_exclude as typesToExclude FROM asset_type WHERE deleted=0 ORDER BY sort_order";
             try {
-                $assetTypes = $this
-                    ->getEntityManager()
-                    ->getRepository('AssetType')
-                    ->select(['id', 'name', 'assignAutomatically', 'typesToExclude'])
-                    ->order('sortOrder', 'ASC')
-                    ->find()
-                    ->toArray();
+                $assetTypes = $this->getContainer()->get('pdo')->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+                foreach ($assetTypes as &$assetType) {
+                    $assetType['assignAutomatically'] = !empty($assetType['assignAutomatically']);
+                    $assetType['typesToExclude'] = !empty($assetType['typesToExclude']) ? @json_decode((string)$assetType['typesToExclude'], true) : [];
+                }
+                unset($assetType);
+
                 $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
             } catch (\Throwable $e) {
                 $assetTypes = [];
