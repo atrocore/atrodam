@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Dam\Core\Utils;
 
+use Espo\Core\Utils\Config;
+
 /**
  * Class PDFLib
  */
@@ -38,7 +40,9 @@ class PDFLib
     private $gs_is_64 = null;
     private $gs_path = null;
 
-    public function __construct()
+    private $config = null;
+
+    public function __construct(Config $config = null)
     {
         $this->resolution = 0;
         $this->jpeg_quality = 100;
@@ -62,6 +66,10 @@ class PDFLib
             if ($gs_version < 9.16) {
                 throw new \Exception("Your version of GhostScript $gs_version is not compatible with  the library", 403);
             }
+        }
+
+        if (!empty($config)) {
+            $this->config = $config;
         }
     }
 
@@ -154,17 +162,19 @@ class PDFLib
      *
      * @return self
      */
-    public function setImageFormat($imageformat, $pngScaleFactor = null)
+    public function setImageFormat($imageformat)
     {
+        $pngScaleFactor = !empty($this->config) ? $this->config->get('gsDownScaleFactor') : null;
+
         if ($imageformat == self::$IMAGE_FORMAT_JPEG) {
             $this->imageDeviceCommand = "jpeg";
             $this->imageExtention = "jpg";
-            $this->pngDownScaleFactor = isset($pngScaleFactor) ? "-dDownScaleFactor=" . $pngScaleFactor : "";
+            $this->pngDownScaleFactor = !empty($pngScaleFactor) ? "-dDownScaleFactor=" . $pngScaleFactor : "";
         } else {
             if ($imageformat == self::$IMAGE_FORMAT_PNG) {
                 $this->imageDeviceCommand = "png16m";
                 $this->imageExtention = "png";
-                $this->pngDownScaleFactor = "";
+                $this->pngDownScaleFactor = !empty($pngScaleFactor) ? "-dDownScaleFactor=" . $pngScaleFactor : "";
             }
         }
         return $this;

@@ -167,5 +167,23 @@ class Attachment extends \Espo\Repositories\Attachment
         if (!$res) {
             parent::afterRemove($entity, $options);
         }
+
+        if ($this->isPdf($entity)) {
+            $dirPath = $this->getConfig()->get('filesPath', 'upload/files/') . $entity->getStorageFilePath();
+
+            $this->getFileManager()->unlink($dirPath . '/page-1.png');
+        }
+    }
+
+    /**
+     * @param Entity $entity
+     *
+     * @return bool
+     */
+    protected function isPdf(Entity $entity): bool
+    {
+        $parts = explode('.', $entity->get('name'));
+
+        return strtolower(array_pop($parts)) === 'pdf';
     }
 }

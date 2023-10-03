@@ -59,7 +59,7 @@ class Image extends \Espo\Core\Thumbnail\Image
 
         $original = $dirPath . '/page-1.png';
         if (!file_exists($original)) {
-            $pdflib = new PDFLib();
+            $pdflib = new PDFLib($this->getConfig());
             $pdflib->setPdfPath($pdfPath);
             $pdflib->setOutputPath($dirPath);
             $pdflib->setImageFormat(PDFLib::$IMAGE_FORMAT_PNG);
