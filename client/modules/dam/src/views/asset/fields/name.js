@@ -17,13 +17,39 @@ Espo.define('dam:views/asset/fields/name', 'views/fields/varchar',
 
         validations: ['name'],
 
+        extension: null,
+
         data() {
             let data = _.extend({attachmentId: this.model.get("fileId")}, Dep.prototype.data.call(this));
 
             const parts = (data.value || '').split('.');
 
-            data['fileExt'] = parts.length >= 2 ? parts.pop() : '';
+            this.extension = parts.length >= 2 ? parts.pop() : '';
+
+            data['fileExt'] = this.extension;
             data['valueWithoutExt'] = parts.length > 1 ? parts.join('.') : parts[0];
+
+            return data;
+        },
+
+        fetch() {
+            let data = {};
+
+            let $el = this.$element;
+            if ($el) {
+                let value = $el.val();
+
+                if (this.extension) {
+                    value += '.' + this.extension;
+                }
+
+                if (this.params.trim || this.forceTrim) {
+                    if (typeof value.trim === 'function') {
+                        value = value.trim();
+                    }
+                }
+                data[this.name] = value ? value : null;
+            }
 
             return data;
         },
