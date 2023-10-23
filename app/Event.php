@@ -150,10 +150,12 @@ class Event extends AfterInstallAfterDelete
             ->setValue($connection->quoteIdentifier('name'), ':name')
             ->setValue('created_at', ':date')
             ->setValue('created_by_id', ':userId')
+            ->setValue('assign_automatically', ':true')
             ->setParameter('id', 'file')
             ->setParameter('name', 'File')
             ->setParameter('date', (new \DateTime())->format('Y-m-d H:i:s'))
             ->setParameter('userId', '1')
+            ->setParameter('true', true, Mapper::getParameterType(true))
             ->executeQuery();
 
         $connection->createQueryBuilder()
