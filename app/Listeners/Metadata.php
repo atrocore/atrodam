@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Dam\Listeners;
 
+use Atro\ORM\DB\RDB\Mapper;
+use Doctrine\DBAL\Connection;
 use Espo\Listeners\AbstractListener;
 use Espo\Core\EventManager\Event;
 
@@ -48,14 +50,25 @@ class Metadata extends AbstractListener
     {
         $assetTypes = $this->getContainer()->get('dataManager')->getCacheData('assetTypes');
         if (empty($assetTypes)) {
-            $query = "SELECT id, name, assign_Automatically as assignAutomatically, types_to_exclude as typesToExclude FROM asset_type WHERE deleted=0 ORDER BY sort_order";
+            /** @var Connection $connection */
+            $connection = $this->getContainer()->get('connection');
+
             try {
-                $assetTypes = $this->getContainer()->get('pdo')->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-                foreach ($assetTypes as &$assetType) {
-                    $assetType['assignAutomatically'] = !empty($assetType['assignAutomatically']);
-                    $assetType['typesToExclude'] = !empty($assetType['typesToExclude']) ? @json_decode((string)$assetType['typesToExclude'], true) : [];
+                $res = $connection->createQueryBuilder()
+                    ->select('at.id, at.name, at.assign_automatically, at.types_to_exclude')
+                    ->from($connection->quoteIdentifier('asset_type'), 'at')
+                    ->where('at.deleted = :false')
+                    ->setParameter('false', false, Mapper::getParameterType(false))
+                    ->orderBy('at.sort_order', 'ASC')
+                    ->fetchAllAssociative();
+
+                $assetTypes = [];
+                foreach ($res as $k => $row) {
+                    $assetTypes[$k]['id'] = $row['id'];
+                    $assetTypes[$k]['name'] = $row['name'];
+                    $assetTypes[$k]['assignAutomatically'] = !empty($row['assign_automatically']);
+                    $assetTypes[$k]['typesToExclude'] = !empty($row['types_to_exclude']) ? @json_decode((string)$row['types_to_exclude'], true) : [];
                 }
-                unset($assetType);
 
                 $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
             } catch (\Throwable $e) {
