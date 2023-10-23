@@ -171,15 +171,6 @@ class Event extends AfterInstallAfterDelete
             ->executeQuery();
     }
 
-    protected function execute(string $query): void
-    {
-        try {
-            $this->getContainer()->get('pdo')->exec($query);
-        } catch (\Throwable $e) {
-            // ignore all
-        }
-    }
-
     /**
      * Create assets if it needs
      */
