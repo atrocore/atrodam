@@ -40,6 +40,7 @@ class Asset extends Hierarchy
     {
         $this->getEntityManager()->getRepository('AssetMetadata')->where(['assetId' => $asset->get('id')])->removeCollection();
     }
+
     public function restoreClearAssetMetadata(Entity $asset): void
     {
         $this->getConnection()
@@ -225,7 +226,6 @@ class Asset extends Hierarchy
         }
 
         $this->restoreClearAssetMetadata($entity);
-
     }
 
     protected function init()
