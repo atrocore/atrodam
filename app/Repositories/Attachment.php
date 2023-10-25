@@ -175,13 +175,12 @@ class Attachment extends \Espo\Repositories\Attachment
         }
     }
 
-    /**
-     * @param Entity $entity
-     *
-     * @return bool
-     */
     protected function isPdf(Entity $entity): bool
     {
+        if (empty($entity->get('name'))) {
+            return false;
+        }
+
         $parts = explode('.', $entity->get('name'));
 
         return strtolower(array_pop($parts)) === 'pdf';
