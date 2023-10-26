@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Dam\Repositories;
 
 use Dam\Core\AssetValidator;
+use Doctrine\DBAL\ParameterType;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Templates\Repositories\Hierarchy;
+use Atro\Core\Templates\Repositories\Hierarchy;
 use Espo\ORM\Entity;
 
 class Asset extends Hierarchy
@@ -38,6 +39,18 @@ class Asset extends Hierarchy
     public function clearAssetMetadata(Entity $asset): void
     {
         $this->getEntityManager()->getRepository('AssetMetadata')->where(['assetId' => $asset->get('id')])->removeCollection();
+    }
+
+    public function restoreClearAssetMetadata(Entity $asset): void
+    {
+        $this->getConnection()
+            ->createQueryBuilder()
+            ->update($this->getConnection()->quoteIdentifier('AssetMetadata'))
+            ->set('deleted', ':deleted')
+            ->where('asset_id = :assetId')
+            ->setParameter('deleted', false, ParameterType::BOOLEAN)
+            ->setParameter('asset_id', $asset->get('id'))
+            ->executeQuery();
     }
 
     public function updateMetadata(Entity $asset): void
@@ -197,6 +210,22 @@ class Asset extends Hierarchy
         $this->clearAssetMetadata($entity);
 
         parent::afterRemove($entity, $options);
+    }
+
+    public function afterRestore($entity, array $options = []){
+        parent::afterRestore($entity, $options );
+        if (!empty($attachmentId = $entity->get('fileId'))) {
+            $this->getConnection()
+                ->createQueryBuilder()
+                ->update($this->getConnection()->quoteIdentifier('Attachment'))
+                ->set('deleted', ':deleted')
+                ->where('id = :attachmentId')
+                ->setParameter('deleted', false, ParameterType::BOOLEAN)
+                ->setParameter('attachmentId', $attachmentId)
+                ->executeQuery();
+        }
+
+        $this->restoreClearAssetMetadata($entity);
     }
 
     protected function init()

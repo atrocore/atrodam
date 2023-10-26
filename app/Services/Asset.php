@@ -16,7 +16,7 @@ namespace Dam\Services;
 use Dam\Core\AssetValidator;
 use Dam\Core\ConfigManager;
 use Espo\Core\Exceptions\BadRequest;
-use Espo\Core\Templates\Services\Hierarchy;
+use Atro\Core\Templates\Services\Hierarchy;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
 
@@ -39,12 +39,16 @@ class Asset extends Hierarchy
     {
         parent::prepareEntityForOutput($entity);
 
-        $file = $entity->get('file');
+          $file  = $this->getEntityManager()
+                ->getRepository('Attachment')
+                ->where(['id' => $entity->get('fileId')])
+                ->findOne(['withDeleted' => $entity->get('deleted')]);
+
         if (!empty($file)) {
             $entity->set('icon', $this->prepareAssetIcon((string)$file->get('name')));
             $entity->set('private', $file->get('private'));
 
-            $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($entity->get('fileId'));
+            $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($file);
             if (!empty($pathData['download'])) {
                 $entity->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
             }

@@ -34,7 +34,7 @@ class Attachment extends \Espo\Repositories\Attachment
      */
     public function getAsset(Entity $entity): ?Asset
     {
-        return $this->getEntityManager()->getRepository('Asset')->where(['fileId' => $entity->get('id')])->findOne();
+        return $this->getEntityManager()->getRepository('Asset')->where(['fileId' => $entity->get('id')])->findOne(["withDeleted" => $entity->get('deleted')]);
     }
 
     /**
