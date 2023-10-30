@@ -44,7 +44,6 @@ class Asset extends Hierarchy
 
     public function restoreClearAssetMetadata(Entity $asset): void
     {
-        try{
             $this->getConnection()
                 ->createQueryBuilder()
                 ->update($this->getConnection()->quoteIdentifier('asset_metadata'))
@@ -53,10 +52,6 @@ class Asset extends Hierarchy
                 ->setParameter('deleted', false, Mapper::getParameterType(false))
                 ->setParameter('assetId', $asset->get('id'))
                 ->executeQuery();
-        }catch (\Throwable $e){
-            $GLOBALS['log']->error($e->getMessage());
-        }
-
     }
 
     public function updateMetadata(Entity $asset): void
