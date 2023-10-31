@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Atro\ORM\DB\RDB\Mapper;
 use Dam\Core\AssetValidator;
 use Doctrine\DBAL\ParameterType;
 use Espo\Core\Exceptions\BadRequest;
@@ -43,14 +44,14 @@ class Asset extends Hierarchy
 
     public function restoreClearAssetMetadata(Entity $asset): void
     {
-        $this->getConnection()
-            ->createQueryBuilder()
-            ->update($this->getConnection()->quoteIdentifier('AssetMetadata'))
-            ->set('deleted', ':deleted')
-            ->where('asset_id = :assetId')
-            ->setParameter('deleted', false, ParameterType::BOOLEAN)
-            ->setParameter('asset_id', $asset->get('id'))
-            ->executeQuery();
+            $this->getConnection()
+                ->createQueryBuilder()
+                ->update($this->getConnection()->quoteIdentifier('asset_metadata'))
+                ->set('deleted', ":deleted")
+                ->where('asset_id = :assetId')
+                ->setParameter('deleted', false, Mapper::getParameterType(false))
+                ->setParameter('assetId', $asset->get('id'))
+                ->executeQuery();
     }
 
     public function updateMetadata(Entity $asset): void
@@ -212,15 +213,15 @@ class Asset extends Hierarchy
         parent::afterRemove($entity, $options);
     }
 
-    public function afterRestore($entity, array $options = []){
-        parent::afterRestore($entity, $options );
+    public function afterRestore($entity){
+        parent::afterRestore($entity);
         if (!empty($attachmentId = $entity->get('fileId'))) {
             $this->getConnection()
                 ->createQueryBuilder()
-                ->update($this->getConnection()->quoteIdentifier('Attachment'))
+                ->update($this->getConnection()->quoteIdentifier('attachment'))
                 ->set('deleted', ':deleted')
                 ->where('id = :attachmentId')
-                ->setParameter('deleted', false, ParameterType::BOOLEAN)
+                ->setParameter('deleted', false, Mapper::getParameterType(false))
                 ->setParameter('attachmentId', $attachmentId)
                 ->executeQuery();
         }
