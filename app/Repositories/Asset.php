@@ -218,10 +218,10 @@ class Asset extends Hierarchy
         if (!empty($attachmentId = $entity->get('fileId'))) {
             $this->getConnection()
                 ->createQueryBuilder()
-                ->update($this->getConnection()->quoteIdentifier('Attachment'))
+                ->update($this->getConnection()->quoteIdentifier('attachment'))
                 ->set('deleted', ':deleted')
                 ->where('id = :attachmentId')
-                ->setParameter('deleted', false, ParameterType::BOOLEAN)
+                ->setParameter('deleted', false, Mapper::getParameterType(false))
                 ->setParameter('attachmentId', $attachmentId)
                 ->executeQuery();
         }
