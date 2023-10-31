@@ -213,8 +213,8 @@ class Asset extends Hierarchy
         parent::afterRemove($entity, $options);
     }
 
-    public function afterRestore($entity, array $options = []){
-        parent::afterRestore($entity, $options );
+    public function afterRestore($entity){
+        parent::afterRestore($entity);
         if (!empty($attachmentId = $entity->get('fileId'))) {
             $this->getConnection()
                 ->createQueryBuilder()
