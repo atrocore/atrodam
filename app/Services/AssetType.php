@@ -15,6 +15,8 @@ namespace Dam\Services;
 
 use Espo\Core\EventManager\Event;
 use Espo\Core\Templates\Services\Base;
+use Espo\Core\Utils\Util;
+use Espo\ORM\Entity;
 
 class AssetType extends Base
 {
@@ -64,5 +66,30 @@ class AssetType extends Base
         }
 
         return $this->dispatchEvent('afterMassRemove', new Event(['result' => ['count' => count($ids), 'ids' => $ids]]))->getArgument('result');
+    }
+
+    public function duplicateValidationRules(Entity $assetType, Entity $duplicatingAssetType): void
+    {
+        $validationRules = $duplicatingAssetType->get('validationRules');
+
+        if (empty($validationRules) || count($validationRules) === 0) {
+            return;
+        }
+
+        /** @var \Dam\Repositories\ValidationRule $repository */
+        $repository = $this->getEntityManager()->getRepository('ValidationRule');
+
+        foreach ($validationRules as $rule) {
+            $entity = $repository->get();
+            $entity->set($rule->toArray());
+            $entity->id = Util::generateId();
+            $entity->set('assetTypeId', $assetType->get('id'));
+
+            try {
+                $repository->save($entity);
+            } catch (\Throwable $e) {
+                $GLOBALS['log']->error('ValidationRule duplicating failed: ' . $e->getMessage());
+            }
+        }
     }
 }
