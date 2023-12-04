@@ -19,6 +19,7 @@ use Espo\Core\Exceptions\BadRequest;
 use Atro\Core\Templates\Services\Hierarchy;
 use Espo\Core\Utils\Log;
 use Espo\ORM\Entity;
+use Espo\ORM\EntityCollection;
 
 /**
  * Class Asset
@@ -32,6 +33,38 @@ class Asset extends Hierarchy
      */
     protected $mandatorySelectAttributeList = ['fileId', 'type'];
 
+    public function prepareCollectionForOutput(EntityCollection $collection, array $selectParams = []): void
+    {
+        parent::prepareCollectionForOutput($collection, $selectParams);
+
+        $attachments = $this->getEntityManager()
+            ->getRepository('Attachment')
+            ->where(['id' => array_column($collection->toArray(), 'fileId')])
+            ->find(['withDeleted' => true]);
+
+        foreach ($collection as $entity) {
+            foreach ($attachments as $attachment) {
+                if ($attachment->get('id') === $entity->get('fileId')) {
+                    $this->setAttachmentData($entity, $attachment);
+                    continue 2;
+                }
+            }
+        }
+    }
+
+    public function setAttachmentData(Entity $asset, Entity $attachment): void
+    {
+        $asset->_hasAttachmentData = true;
+
+        $asset->set('icon', $this->prepareAssetIcon((string)$attachment->get('name')));
+        $asset->set('private', $attachment->get('private'));
+
+        $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachment);
+        if (!empty($pathData['download'])) {
+            $asset->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
+        }
+    }
+
     /**
      * @inheritDoc
      */
@@ -39,18 +72,12 @@ class Asset extends Hierarchy
     {
         parent::prepareEntityForOutput($entity);
 
-          $file  = $this->getEntityManager()
-                ->getRepository('Attachment')
+        if (!property_exists($entity, '_hasAttachmentData')) {
+            $file = $this->getEntityManager()->getRepository('Attachment')
                 ->where(['id' => $entity->get('fileId')])
-                ->findOne(['withDeleted' => $entity->get('deleted')]);
-
-        if (!empty($file)) {
-            $entity->set('icon', $this->prepareAssetIcon((string)$file->get('name')));
-            $entity->set('private', $file->get('private'));
-
-            $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($file);
-            if (!empty($pathData['download'])) {
-                $entity->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
+                ->findOne(['withDeleted' => true]);
+            if (!empty($file)) {
+                $this->setAttachmentData($entity, $file);
             }
         }
     }
@@ -171,7 +198,9 @@ class Asset extends Hierarchy
     protected function validateAttachment($entity, $data)
     {
         if (!empty($entity->get('fileId')) && property_exists($data, 'type')) {
-            $this->getInjection(AssetValidator::class)->validateViaTypes($this->getTypeValue($data->type), $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId')));
+            $this->getInjection(AssetValidator::class)->validateViaTypes(
+                $this->getTypeValue($data->type), $this->getEntityManager()->getEntity('Attachment', $entity->get('fileId'))
+            );
         }
     }
 
@@ -218,7 +247,7 @@ class Asset extends Hierarchy
 
     /**
      * @param \Dam\Entities\Asset $asset
-     * @param array $imageInfo
+     * @param array               $imageInfo
      */
     public function updateAttributes(\Dam\Entities\Asset $asset, array $imageInfo)
     {
