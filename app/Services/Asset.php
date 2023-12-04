@@ -37,16 +37,18 @@ class Asset extends Hierarchy
     {
         parent::prepareCollectionForOutput($collection, $selectParams);
 
-        $attachments = $this->getEntityManager()
-            ->getRepository('Attachment')
-            ->where(['id' => array_column($collection->toArray(), 'fileId')])
-            ->find(['withDeleted' => true]);
+        if (!empty($collection[0])) {
+            $attachments = $this->getEntityManager()
+                ->getRepository('Attachment')
+                ->where(['id' => array_column($collection->toArray(), 'fileId')])
+                ->find(['withDeleted' => true]);
 
-        foreach ($collection as $entity) {
-            foreach ($attachments as $attachment) {
-                if ($attachment->get('id') === $entity->get('fileId')) {
-                    $this->setAttachmentData($entity, $attachment);
-                    continue 2;
+            foreach ($collection as $entity) {
+                foreach ($attachments as $attachment) {
+                    if ($attachment->get('id') === $entity->get('fileId')) {
+                        $this->setAttachmentData($entity, $attachment);
+                        continue 2;
+                    }
                 }
             }
         }
