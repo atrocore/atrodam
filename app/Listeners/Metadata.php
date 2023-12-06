@@ -49,7 +49,7 @@ class Metadata extends AbstractListener
     protected function getAssetTypes(): array
     {
         $assetTypes = $this->getContainer()->get('dataManager')->getCacheData('assetTypes');
-        if (empty($assetTypes)) {
+        if (!is_array($assetTypes)) {
             /** @var Connection $connection */
             $connection = $this->getContainer()->get('connection');
 
@@ -69,11 +69,10 @@ class Metadata extends AbstractListener
                     $assetTypes[$k]['assignAutomatically'] = !empty($row['assign_automatically']);
                     $assetTypes[$k]['typesToExclude'] = !empty($row['types_to_exclude']) ? @json_decode((string)$row['types_to_exclude'], true) : [];
                 }
-
-                $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
             } catch (\Throwable $e) {
                 $assetTypes = [];
             }
+            $this->getContainer()->get('dataManager')->setCacheData('assetTypes', $assetTypes);
         }
 
         return $assetTypes;
