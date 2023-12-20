@@ -274,6 +274,7 @@ class Attachment extends \Espo\Services\Attachment
     {
         parent::init();
 
+        $this->addDependency('fileStorageManager');
         $this->addDependency(AssetValidator::class);
     }
 
