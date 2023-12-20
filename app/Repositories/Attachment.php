@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Atro\Core\PseudoTransactionManager;
 use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
@@ -89,6 +90,12 @@ class Attachment extends \Espo\Repositories\Attachment
         parent::init();
 
         $this->addDependency(AssetValidator::class);
+        $this->addDependency('pseudoTransactionManager');
+    }
+
+    protected function getPseudoTransactionManager(): PseudoTransactionManager
+    {
+        return $this->getInjection('pseudoTransactionManager');
     }
 
     /**
@@ -172,6 +179,32 @@ class Attachment extends \Espo\Repositories\Attachment
             $dirPath = $this->getConfig()->get('filesPath', 'upload/files/') . $entity->getStorageFilePath();
 
             $this->getFileManager()->unlink($dirPath . '/page-1.png');
+        }
+
+        if ($this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'file', 'required'], false)) {
+            $offset = 0;
+            $limit = 20;
+
+            while(true) {
+                $assets = $this
+                    ->getEntityManager()
+                    ->getRepository('Asset')
+                    ->where([
+                        'fileId' => $entity->id
+                    ])
+                    ->limit($offset, $limit)
+                    ->find();
+
+                if (count($assets) == 0) {
+                    break;
+                }
+
+                foreach ($assets as $asset) {
+                    $this->getPseudoTransactionManager()->pushDeleteEntityJob('Asset', $asset->id);
+                }
+
+                $offset += $limit;
+            }
         }
     }
 
