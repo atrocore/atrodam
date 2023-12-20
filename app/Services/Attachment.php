@@ -267,37 +267,6 @@ class Attachment extends \Espo\Services\Attachment
         return $this->getRepository()->renameFile($attachment, $newName);
     }
 
-    public function afterDeleteEntity(Entity $entity)
-    {
-        parent::afterDeleteEntity($entity);
-
-        if ($this->getMetadata()->get(['entityDefs', 'Asset', 'fields', 'file', 'required'], false)) {
-            $offset = 0;
-            $limit = 20;
-
-            while(true) {
-                $assets = $this
-                    ->getEntityManager()
-                    ->getRepository('Asset')
-                    ->where([
-                        'fileId' => $entity->id
-                    ])
-                    ->limit($offset, $limit)
-                    ->find();
-
-                if (count($assets) == 0) {
-                    break;
-                }
-
-                foreach ($assets as $asset) {
-                    $this->getPseudoTransactionManager()->pushDeleteEntityJob('Asset', $asset->id);
-                }
-
-                $offset += $limit;
-            }
-        }
-    }
-
     /**
      * @inheritDoc
      */
@@ -305,7 +274,6 @@ class Attachment extends \Espo\Services\Attachment
     {
         parent::init();
 
-        $this->addDependency('fileStorageManager');
         $this->addDependency(AssetValidator::class);
     }
 
