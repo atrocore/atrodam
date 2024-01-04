@@ -232,7 +232,9 @@ class Asset extends Hierarchy
      */
     public function getFileInfo(\Dam\Entities\Asset $asset)
     {
-        $fileInfo = $this->getService("Attachment")->getFileInfo($asset->get("file"));
+        $attachment = $this->getEntityManager()->getEntity('Attachment', $asset->get('fileId'));
+
+        $fileInfo = $this->getService("Attachment")->getFileInfo($attachment);
 
         $asset->set(
             [
@@ -242,7 +244,7 @@ class Asset extends Hierarchy
         );
 
         if ($this->isImage($asset)) {
-            $imageInfo = $this->getService("Attachment")->getImageInfo($asset->get("file"));
+            $imageInfo = $this->getService("Attachment")->getImageInfo($attachment);
             $this->updateAttributes($asset, $imageInfo);
         }
     }
