@@ -28,9 +28,49 @@ Espo.define('dam:views/asset/fields/file', 'views/fields/file',
                 this.reRender();
             });
         },
+
         afterRender() {
             Dep.prototype.afterRender.call(this);
             if (this.model.get('massCreate')) this.hide()
         },
+
+        initDownloadIcon: function () {
+            if (this.model.get('hasOpen')) {
+                this.initOpenIcon();
+            }
+
+            Dep.prototype.initDownloadIcon.call(this);
+        },
+
+        initOpenIcon: function () {
+            const $cell = this.getCellElement();
+
+            $cell.find('.fa-external-link-alt').parent().remove();
+
+            const id = this.model.get(this.idName);
+            if (!id) {
+                return;
+            }
+
+            const $editLink = $('<a href="' + this.getDownloadUrl(id) + '" target="_blank" class="pull-right hidden" style="margin-right: 5px"><span class="fas fa-external-link-alt fa-sm"></span></a>');
+
+            $cell.prepend($editLink);
+
+            $cell.on('mouseenter', function (e) {
+                e.stopPropagation();
+                if (this.disabled || this.readOnly) {
+                    return;
+                }
+                if (this.mode === 'detail') {
+                    $editLink.removeClass('hidden');
+                }
+            }.bind(this)).on('mouseleave', function (e) {
+                e.stopPropagation();
+                if (this.mode === 'detail') {
+                    $editLink.addClass('hidden');
+                }
+            }.bind(this));
+        },
+
     })
 );

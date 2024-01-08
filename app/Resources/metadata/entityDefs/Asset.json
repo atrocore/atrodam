@@ -33,6 +33,18 @@
       "filterDisabled": true,
       "importDisabled": false
     },
+    "hasOpen": {
+      "type": "bool",
+      "notStorable": true,
+      "layoutDetailDisabled": true,
+      "layoutDetailSmallDisabled": true,
+      "layoutListDisabled": true,
+      "layoutListSmallDisabled": true,
+      "layoutMassUpdateDisabled": true,
+      "filterDisabled": true,
+      "importDisabled": true,
+      "exportDisabled": true
+    },
     "afterSaveMessage": {
       "type": "text",
       "notStorable": true,

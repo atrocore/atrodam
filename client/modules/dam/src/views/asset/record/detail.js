@@ -45,6 +45,21 @@ Espo.define('dam:views/asset/record/detail', 'views/record/detail-tree',
             });
         },
 
+        setupActionItems: function () {
+            Dep.prototype.setupActionItems.call(this);
+
+            if (this.model.get('hasOpen')) {
+                this.dropdownItemList.push({
+                    'label': 'Open',
+                    'name': 'openInTab'
+                });
+            }
+        },
+
+        actionOpenInTab: function () {
+            window.open(this.model.get('url'), "_blank");
+        },
+
         afterRender() {
             Dep.prototype.afterRender.call(this);
 

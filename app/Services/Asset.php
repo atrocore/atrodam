@@ -60,10 +60,16 @@ class Asset extends Hierarchy
 
         $asset->set('icon', $this->prepareAssetIcon((string)$attachment->get('name')));
         $asset->set('private', $attachment->get('private'));
+        $asset->set('hasOpen', false);
 
         $pathData = $this->getEntityManager()->getRepository('Attachment')->getAttachmentPathsData($attachment);
         if (!empty($pathData['download'])) {
             $asset->set('url', rtrim($this->getConfig()->get('siteUrl', ''), '/') . '/' . $pathData['download']);
+
+            $nameParts = explode('.', $attachment->get('name'));
+            $fileExt = array_pop($nameParts);
+
+            $asset->set('hasOpen', in_array($fileExt, $this->getMetadata()->get('dam.image.extensions', [])) || $fileExt === 'pdf');
         }
     }
 
