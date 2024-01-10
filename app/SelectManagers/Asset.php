@@ -13,13 +13,22 @@ declare(strict_types=1);
 
 namespace Dam\SelectManagers;
 
+use Atro\ORM\DB\RDB\Mapper;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\SelectManagers\Base;
+use Espo\ORM\IEntity;
 
 class Asset extends Base
 {
     protected function boolFilterLinkedWithAssetCategory(array &$result): void
     {
+        $result['callbacks'][] = [$this, 'filterLinkedWithAssetCategory'];
+    }
+
+    public function filterLinkedWithAssetCategory(QueryBuilder $qb, IEntity $relEntity, array $params, Mapper $mapper): void
+    {
+        $tableAlias = $mapper->getQueryConverter()->getMainTableAlias();
         $assetCategoryId = (string)$this->getBoolFilterParameter('linkedWithAssetCategory');
         if (empty($assetCategoryId)) {
             return;
@@ -31,18 +40,30 @@ class Asset extends Base
         }
 
         $ids = $this->getEntityManager()->getRepository('AssetCategory')->getChildrenRecursivelyArray($assetCategoryId);
-        $ids = implode("','", array_merge($ids, [$assetCategoryId]));
-
-        $result['customWhere'] .= " AND asset.id IN (SELECT asset_id FROM `asset_category_asset` WHERE asset_id IS NOT NULL AND deleted=0 AND asset_category_id IN ('$ids'))";
+        $ids = array_merge($ids, [$assetCategoryId]);
+        $qb->andWhere("EXISTS (SELECT asset_id FROM `asset_category_asset` WHERE asset_id=$tableAlias.id AND deleted=0 AND asset_category_id IN (:categoryIds))");
+        $qb->setParameter('categoryIds', $ids, Mapper::getParameterType($ids));
     }
 
     protected function boolFilterOnlyPrivate(array &$result): void
     {
-        $result['customWhere'] .= " AND EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id=asset.file_id AND e_attachment.private=1 AND deleted=0)";
+        $result['callbacks'][] = [$this, 'filterOnlyPrivate'];
     }
 
     protected function boolFilterOnlyPublic(array &$result): void
     {
-        $result['customWhere'] .= " AND EXISTS (SELECT a2.id FROM `attachment` a2 WHERE a2.id=asset.file_id AND a2.private=0 AND deleted=0)";
+        $result['callbacks'][] = [$this, 'filterOnlyPublic'];
+    }
+
+    public function filterOnlyPublic(QueryBuilder $qb, IEntity $relEntity, array $params, Mapper $mapper): void
+    {
+        $tableAlias = $mapper->getQueryConverter()->getMainTableAlias();
+        $qb->andWhere("EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id=$tableAlias.file_id AND e_attachment.private=0 AND deleted=0)");
+    }
+
+    public function filterOnlyPrivate(QueryBuilder $qb, IEntity $relEntity, array $params, Mapper $mapper): void
+    {
+        $tableAlias = $mapper->getQueryConverter()->getMainTableAlias();
+        $qb->andWhere("EXISTS (SELECT e_attachment.id FROM `attachment` e_attachment WHERE e_attachment.id=$tableAlias.file_id AND e_attachment.private=1 AND deleted=0)");
     }
 }
