@@ -16,22 +16,6 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
         setup() {
             Dep.prototype.setup.call(this);
 
-            if (this.options.relate) {
-                let button = {
-                    name: '',
-                    label: this.translate('upload', 'labels', 'Asset'),
-                    style: 'link'
-                };
-
-                if (this.options.layoutName === 'detailSmall') {
-                    button.name = 'simpleUpload';
-                } else {
-                    button.name = 'massUpload';
-                }
-
-                this.addButton(button);
-            }
-
             this.listenTo(this, 'after:save', model => {
                 if (this.getParentModel()) {
                     this.getParentModel().trigger('asset:saved');
@@ -45,36 +29,6 @@ Espo.define('dam:views/asset/modals/edit', 'views/modals/edit',
             }
 
             return this.getParentView().getParentView().model;
-        },
-
-        actionSimpleUpload() {
-            this.actionClose();
-            this.actionQuickCreate(false);
-        },
-
-        actionMassUpload() {
-            this.actionClose();
-            this.actionQuickCreate(true);
-        },
-
-        actionQuickCreate(isMassCreate = false) {
-            let options = _.extend({
-                model: this.model,
-                scope: this.scope,
-                attributes: {massCreate: isMassCreate}
-            }, this.options || {});
-            options.layoutName = 'detailSmall';
-
-            this.notify('Loading...');
-            let viewName = this.getMetadata().get('clientDefs.' + this.scope + '.modalViews.edit') || 'views/modals/edit';
-
-            this.createView('quickCreate', viewName, options, function (view) {
-                view.render();
-                view.notify(false);
-                this.listenToOnce(view, 'after:save', function () {
-                    $('button[data-action="refresh"][data-panel="assets"]').click();
-                }, this);
-            }.bind(this));
         },
 
         actionSave() {
