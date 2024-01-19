@@ -237,7 +237,7 @@
       "view": "dam:views/asset/fields/file",
       "layoutMassUpdateDisabled": true,
       "importDisabled": true,
-      "exportDisabled": true
+      "exportDisabled": false
     },
     "files": {
       "type": "attachmentMultiple",
