@@ -65,7 +65,7 @@ Please visit our Help Center: https://help.atrocore.com/
 
 ### Installation
 
-Installation Guide is available [here](https://github.com/atrocore/docs/blob/master/atrocore/admin-guide/installation.md).
+Installation Guide is available [here](https://help.atrocore.com/atrocore/admin-guide/installation/).
 
 ### Demo
 - URL: https://demo.atrodam.com/
