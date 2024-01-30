@@ -85,6 +85,9 @@ class Attachment extends \Espo\Services\Attachment
         // load file from url
         set_time_limit(0);
         $fp = fopen($attachment->fileName, 'w+');
+        if ($fp === false) {
+            throw new Error(sprintf($this->getInjection('language')->translate('fileResourceWriteFailed', 'exceptions', 'Asset'), $attachment->name));
+        }
         $ch = curl_init(str_replace(" ", "%20", $url));
         curl_setopt($ch, CURLOPT_TIMEOUT, 50);
         curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -94,7 +97,10 @@ class Attachment extends \Espo\Services\Attachment
         curl_close($ch);
         fclose($fp);
 
-        if (!empty($responseCode) && !in_array($responseCode, [200, 201]) || !file_exists($attachment->fileName)) {
+        if (!in_array($responseCode, [200, 201])) {
+            if (file_exists($attachment->fileName)) {
+                unlink($attachment->fileName);
+            }
             throw new Error(sprintf($this->getInjection('language')->translate('urlDownloadFailed', 'exceptions', 'Asset'), $url));
         }
 
