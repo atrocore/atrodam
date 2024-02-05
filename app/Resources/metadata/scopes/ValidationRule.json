@@ -10,5 +10,5 @@
   "module": "Dam",
   "object": true,
   "skipAssetSorting": true,
-  "hasActive": true
+  "isActiveUnavailable": true
 }

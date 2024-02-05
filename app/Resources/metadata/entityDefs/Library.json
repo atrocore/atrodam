@@ -53,14 +53,6 @@
       "type": "varchar",
       "trim": true,
       "unique": true
-    },
-    "isActive": {
-      "notNull": true,
-      "type": "bool",
-      "default": false,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
     }
   },
   "links": {

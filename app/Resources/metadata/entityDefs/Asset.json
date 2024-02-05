@@ -109,12 +109,7 @@
       "massUpdateDisabled": true
     },
     "isActive": {
-      "notNull": true,
-      "type": "bool",
-      "default": true,
-      "audited": false,
-      "readOnly": false,
-      "tooltip": false
+      "default": true
     },
     "tags": {
       "type": "multiEnum",

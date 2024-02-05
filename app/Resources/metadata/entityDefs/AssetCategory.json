@@ -31,9 +31,6 @@
       "trim": true,
       "unique": true
     },
-    "isActive": {
-      "type": "bool"
-    },
     "libraries": {
       "type": "linkMultiple",
       "noLoad": true
