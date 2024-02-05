@@ -38,5 +38,6 @@
     "filePathsData",
     "sortOrder"
   ],
-  "relationInheritance": false
+  "relationInheritance": false,
+  "hasActive": true
 }

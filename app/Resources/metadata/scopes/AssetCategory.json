@@ -20,5 +20,6 @@
     "assetsIds",
     "assetsNames"
   ],
-  "relationInheritance": false
+  "relationInheritance": false,
+  "hasActive": true
 }
