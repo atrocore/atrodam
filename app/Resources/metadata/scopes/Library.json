@@ -14,5 +14,6 @@
   "hasAssignedUser": true,
   "hasTeam": true,
   "hasOwner": true,
-  "skipAssetSorting": true
+  "skipAssetSorting": true,
+  "hasActive": true
 }
