@@ -13,44 +13,48 @@ declare(strict_types=1);
 
 namespace Dam\Controllers;
 
-use Espo\Core\Controllers\Base;
+use Atro\Core\Templates\Controllers\Base;
+use Espo\Core\Exceptions\Forbidden;
 
 class AssetMetadata extends Base
 {
-    const MAX_SIZE_LIMIT = 200;
-
-    public function actionListLinked($params, $data, $request)
+    public function actionCreate($params, $data, $request)
     {
-        $id = $params['id'];
-        $link = $params['link'];
+        throw new Forbidden();
+    }
 
-        $where = $request->get('where');
-        $offset = $request->get('offset');
-        $maxSize = $request->get('maxSize');
-        $asc = $request->get('asc', 'true') === 'true';
-        $sortBy = $request->get('sortBy');
-        $q = $request->get('q');
-        $textFilter = $request->get('textFilter');
+    public function actionUpdate($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
 
-        if (empty($maxSize)) {
-            $maxSize = self::MAX_SIZE_LIMIT;
-        }
+    public function actionDelete($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
 
-        $params = [
-            'where'      => $where,
-            'offset'     => $offset,
-            'maxSize'    => $maxSize,
-            'asc'        => $asc,
-            'sortBy'     => $sortBy,
-            'q'          => $q,
-            'textFilter' => $textFilter
-        ];
+    public function actionMassUpdate($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
 
-        $result = $this->getServiceFactory()->create('AssetMetadata')->findLinkedEntities($id, $link, $params);
+    public function actionMassDelete($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
 
-        return [
-            'total' => $result['total'],
-            'list'  => isset($result['collection']) ? $result['collection']->getValueMapList() : $result['list']
-        ];
+    public function actionCreateLink($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
+
+    public function actionRemoveLink($params, $data, $request)
+    {
+        throw new Forbidden();
+    }
+
+    public function actionMerge($params, $data, $request)
+    {
+        throw new Forbidden();
     }
 }
