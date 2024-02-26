@@ -33,8 +33,6 @@ class Module extends AbstractModule
     {
         parent::onLoad();
 
-        $this->container->setClassAlias('configManager', \Dam\Core\ConfigManager::class);
-        $this->container->setClassAlias('thumbnail', \Dam\Core\Thumbnail\Image::class);
         $this->container->setClassAlias('validator', \Dam\Core\Validation\Validator::class);
     }
 
