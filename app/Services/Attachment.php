@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
+use Atro\Core\Exceptions\SuchAssetAlreadyExists;
 use Dam\Core\AssetValidator;
-use Dam\Core\Exceptions\SuchAssetAlreadyExists;
-use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Error;
 use Espo\Core\FilePathBuilder;
-use Espo\Core\FileStorage\Manager;
 use Espo\ORM\Entity;
 use Imagick;
 
