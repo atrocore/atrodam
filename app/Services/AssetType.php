@@ -76,7 +76,7 @@ class AssetType extends Base
             return;
         }
 
-        /** @var \Dam\Repositories\ValidationRule $repository */
+        /** @var \Atro\Repositories\ValidationRule $repository */
         $repository = $this->getEntityManager()->getRepository('ValidationRule');
 
         foreach ($validationRules as $rule) {

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Dam\Services;
 
+use Atro\Core\AssetValidator;
 use Atro\Core\Exceptions\SuchAssetAlreadyExists;
-use Dam\Core\AssetValidator;
 use Espo\Core\Exceptions\Error;
 use Espo\Core\FilePathBuilder;
 use Espo\ORM\Entity;
