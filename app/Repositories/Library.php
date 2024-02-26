@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Dam\Repositories;
 
+use Atro\Core\Templates\Repositories\Base;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\ORM\Entity;
 
 /**
  * Class Library
  */
-class Library extends AbstractRepository
+class Library extends Base
 {
     protected function beforeSave(Entity $entity, array $options = [])
     {
@@ -69,5 +70,17 @@ class Library extends AbstractRepository
         }
 
         return !$entity->get("categoryParentId");
+    }
+
+    protected function init()
+    {
+        parent::init();
+
+        $this->addDependency('language');
+    }
+
+    protected function translate(string $key, string $category, string $scope): string
+    {
+        return $this->getInjection('language')->translate($key, $category, $scope);
     }
 }
