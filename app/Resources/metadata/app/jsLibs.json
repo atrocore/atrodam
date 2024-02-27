@@ -1,5 +1,0 @@
-{
-  "crypto": {
-    "path": "client/modules/dam/lib/crypto-js.min.js"
-  }
-}

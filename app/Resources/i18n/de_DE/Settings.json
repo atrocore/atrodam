@@ -1,9 +1,0 @@
-{
-  "fields": {
-    "attachmentDuplicates": "Asset-Duplikat",
-    "fileNameRegexPattern": "Dateiname Regex Pattern"
-  },
-  "tooltips": {
-    "fileNameRegexPattern": "Um nur die Kleinbuchstaben mit max. Länge von 24 Symbolen zu erlauben, verwenden Sie \"/^[a-z]{1,24}$/\"."
-  }
-}
