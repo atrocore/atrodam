@@ -1,3 +1,9 @@
+
+### The functionality of AtroDAM has been fully integrated into AtroCore. This project has been discontinued.
+
+<hr>
+<br><br>
+  
 ![logo](_assets/AtroDAM_logo_color_250.png)
 
 # What Is AtroDAM?
